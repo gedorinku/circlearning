@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">Study Battle</string>
+    <string name="title_activity_registrarion">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="errorLoginStatus">ユーザー名とパスワードを入力してください</string>
+    <string name="hint_input_user_name">ユーザー名（半角英数のみ使用可能,2文字以上20文字以下）</string>
+    <string name="hint_input_user_password">パスワード</string>
+    <string name="chenge_image_button_text">プロフィール画像を フォルダから選ぶ</string>
+    <string name="account_registe">アカウント登録</string>
+    <string name="displayNameHint">表示する名前（2文字以上20文字以下）</string>
+    <string name="usedUserNameAlart">すでに使われているUserNameです.</string>
 </resources>
