@@ -21,6 +21,7 @@ import java.io.IOException;
 
 
 
+
 public class CameraModeActivity extends Activity {
 
     private final static int RESULT_CAMERA = 1001;
@@ -28,9 +29,14 @@ public class CameraModeActivity extends Activity {
 
     private ImageView imageview;
     private Button libraryButton;
-    private TextView commnent_;
+    private Button submissionButton;
+    private Button returnButton;
+    private Button passButton;
+    private Button cameraButton;
+    private TextView comment;
     private ImageView shock;
     private int flag=0;
+    final Handler handler=new Handler();
 
 
     @Override
@@ -38,16 +44,18 @@ public class CameraModeActivity extends Activity {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.activity_camera_mode);
         // 宣言
-        commnent_ = (TextView) findViewById(R.id.comment);
-        //commnent_.setText("ギャラリーのpath: " + getGalleryPath());//ギャラリーのpathを取得する
+        comment= (TextView) findViewById(R.id.comment);
         imageview = (ImageView) findViewById((R.id.answer));//解答の写真
         libraryButton = (Button) findViewById(R.id.library_button);
-        final Button submissionButton=(Button) findViewById(R.id.submission_button);
-        final Button returnButton = (Button) findViewById(R.id.return_button1);
-        Button passButton=(Button) findViewById(R.id.pass_button);
         shock=(ImageView) findViewById(R.id.shock_character);
+        submissionButton=(Button) findViewById(R.id.submission_button);
+        returnButton = (Button) findViewById(R.id.return_button1);
+        passButton=(Button) findViewById(R.id.pass_button);
+        cameraButton = (Button) findViewById(R.id.camera_button);
+
 
         shock.setVisibility(View.INVISIBLE);
+        //commnent_.setText("ギャラリーのpath: " + getGalleryPath());//ギャラリーのpathを取得する
 
 
         libraryButton.setOnClickListener(new View.OnClickListener() {
@@ -63,8 +71,6 @@ public class CameraModeActivity extends Activity {
             }
         });
 
-        //カメラ撮影ボタン
-        final Button cameraButton = (Button) findViewById(R.id.camera_button);
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,19 +92,15 @@ public class CameraModeActivity extends Activity {
             @Override
             public void onClick(View view) {
 
-                //他の画面に遷移しないようにする
-                returnButton.setEnabled(false);
-                submissionButton.setEnabled(false);
-                cameraButton.setEnabled(false);
-                libraryButton.setEnabled(false);
+                buttonKill();
 
-                commnent_.setText("次は頑張ろう.....");
+                comment.setText("次は頑張ろう.....");
                 shock.setVisibility(View.VISIBLE);
                 Bitmap bitmap=BitmapFactory.decodeResource(getResources(),R.drawable.shock);
                 shock.setImageBitmap(bitmap);
 
 
-                final Handler handler=new Handler();
+
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -113,9 +115,22 @@ public class CameraModeActivity extends Activity {
             @Override
             public void onClick(View view) {
                 if(flag==1) {
-                    Intent intent1 = new Intent(getApplication(), LotteryActivity.class);
-                    startActivity(intent1);
-                }else commnent_.setText("解答を提出してください");
+                    buttonKill();
+                    //キャラクターがにっこり
+                    shock.setVisibility(View.VISIBLE);
+                    Bitmap bitmap=BitmapFactory.decodeResource(getResources(),R.drawable.glad);
+                    shock.setImageBitmap(bitmap);
+                    comment.setText("解答の提出に成功しました");
+
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent1 = new Intent(getApplication(), LotteryActivity.class);
+                            startActivity(intent1);
+                        }
+                    },2500);
+
+                }else comment.setText("解答を提出してください");
             }
         });
     }
@@ -144,7 +159,7 @@ public class CameraModeActivity extends Activity {
             }
         }
         flag=1;
-        commnent_.setText("解答を提出してね");
+        comment.setText("解答を提出してね");
     }
 
     //ギャラリーpath取得関数
@@ -162,5 +177,14 @@ public class CameraModeActivity extends Activity {
         return image;
     }
 
+    private void buttonKill(){
+        //他の画面に遷移しないようにする
+        returnButton.setEnabled(false);
+        submissionButton.setEnabled(false);
+        cameraButton.setEnabled(false);
+        libraryButton.setEnabled(false);
+        passButton.setEnabled(false);
     }
+
+}
 
