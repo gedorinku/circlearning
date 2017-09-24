@@ -131,7 +131,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
                     })
             countDown.await()
             if (countSuccess == 2) {
-                callback.onLogin()
+                callback.onLogin(userName,userPassword)
             }
         }
     }
@@ -172,7 +172,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
 
         fun toLoginActivity()
 
-        fun onLogin()
+        fun onLogin(name : String, password : String)
 
         fun startActivityForResult(intent: Intent, requestCode: Int)
 

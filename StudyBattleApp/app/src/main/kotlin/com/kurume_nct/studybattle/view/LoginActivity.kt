@@ -9,19 +9,19 @@ import android.provider.ContactsContract
 import com.kurume_nct.studybattle.Main2Activity
 
 import com.kurume_nct.studybattle.R
+import com.kurume_nct.studybattle.`object`.UnitPersonal
 import com.kurume_nct.studybattle.databinding.ActivityLoginBinding
 import com.kurume_nct.studybattle.viewModel.LoginViewModel
 
 class LoginActivity : AppCompatActivity(), LoginViewModel.Callback {
 
-    var used = false
     private lateinit var binding : ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_login)
         binding.userLogin = LoginViewModel(this,this)
-        if(used){
+        if(!UnitPersonal().newUser){
             toMain2Activity("つちのこ")
         }
     }
@@ -29,6 +29,11 @@ class LoginActivity : AppCompatActivity(), LoginViewModel.Callback {
     fun toMain2Activity(name: String){
         val intent = Intent(this,Main2Activity::class.java)
         //add photo and userName
+        if(UnitPersonal().newUser) {
+            UnitPersonal().userName = name
+            UnitPersonal().writeFile()
+            //server
+        }
         intent.putExtra("userName",name)
         startActivity(intent)
         finish()
