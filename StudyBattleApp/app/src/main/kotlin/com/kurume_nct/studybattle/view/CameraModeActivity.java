@@ -30,32 +30,35 @@ public class CameraModeActivity extends Activity {
     private ImageView imageview;
     private Button libraryButton;
     private Button submissionButton;
-    private Button returnButton;
     private Button passButton;
     private Button cameraButton;
     private TextView comment;
     private ImageView shock;
-    private int flag=0;
+    private int flag;
+    private Bitmap bitmap;
     final Handler handler=new Handler();
-
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.activity_camera_mode);
         // 宣言
+        flag=0;
         comment= (TextView) findViewById(R.id.comment);
         imageview = (ImageView) findViewById((R.id.answer));//解答の写真
         libraryButton = (Button) findViewById(R.id.library_button);
         shock=(ImageView) findViewById(R.id.shock_character);
         submissionButton=(Button) findViewById(R.id.submission_button);
-        returnButton = (Button) findViewById(R.id.return_button1);
         passButton=(Button) findViewById(R.id.pass_button);
         cameraButton = (Button) findViewById(R.id.camera_button);
 
 
         shock.setVisibility(View.INVISIBLE);
-        //commnent_.setText("ギャラリーのpath: " + getGalleryPath());//ギャラリーのpathを取得する
+        //commnent_.setText("ギャラリーのpath: " + getGalleryPath());//ギャラリーのpathを取得すru
+        submissionButton.setEnabled(true);
+        cameraButton.setEnabled(true);
+        libraryButton.setEnabled(true);
+        passButton.setEnabled(true);
 
 
         libraryButton.setOnClickListener(new View.OnClickListener() {
@@ -79,13 +82,7 @@ public class CameraModeActivity extends Activity {
             }
         });
 
-        //戻るボタン
-        returnButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+
 
         //パスするボタン
         passButton.setOnClickListener(new View.OnClickListener() {
@@ -112,15 +109,22 @@ public class CameraModeActivity extends Activity {
 
         //提出するボタン
         submissionButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
+
+                comment.setText("0");
                 if(flag==1) {
-                    buttonKill();
+
                     //キャラクターがにっこり
+                    comment.setText("1");
                     shock.setVisibility(View.VISIBLE);
-                    Bitmap bitmap=BitmapFactory.decodeResource(getResources(),R.drawable.glad);
+                    comment.setText("2");
+                    bitmap=BitmapFactory.decodeResource(getResources(),R.drawable.glad);
+                    comment.setText("3");
                     shock.setImageBitmap(bitmap);
                     comment.setText("解答の提出に成功しました");
+                    buttonKill();
 
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -179,7 +183,6 @@ public class CameraModeActivity extends Activity {
 
     private void buttonKill(){
         //他の画面に遷移しないようにする
-        returnButton.setEnabled(false);
         submissionButton.setEnabled(false);
         cameraButton.setEnabled(false);
         libraryButton.setEnabled(false);

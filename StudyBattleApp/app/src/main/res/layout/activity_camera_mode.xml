@@ -10,80 +10,103 @@
 
     <Button
         android:id="@+id/camera_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="CAMERA"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="46dp"
-        tools:ignore="HardcodedText" />
+        android:layout_width="50sp"
+        android:layout_height="32.5sp"
+        android:layout_marginLeft="250sp"
+        android:layout_marginTop="20sp"
+        android:background="@android:color/transparent"
+        android:drawableTop="@android:drawable/ic_menu_camera"
+        tools:ignore="HardcodedText,RtlHardcoded" />
 
-    <Button
-        android:id="@+id/return_button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="return "
-        tools:ignore="HardcodedText"
-        android:layout_alignBaseline="@+id/camera_button"
-        android:layout_alignBottom="@+id/camera_button"
-        android:layout_alignStart="@+id/answer" />
 
     <Button
         android:id="@+id/library_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/camera_button"
-        android:layout_marginStart="28dp"
-        android:layout_toEndOf="@+id/camera_button"
-        android:text="library"
-        tools:ignore="HardcodedText" />
+        android:layout_width="50sp"
+        android:layout_height="32.5sp"
+        android:layout_alignTop="@+id/problem_name"
+        android:layout_marginLeft="300sp"
+        android:layout_marginRight="22sp"
+        android:background="@android:color/transparent"
+        android:drawableTop="@android:drawable/ic_menu_gallery"
+        tools:ignore="HardcodedText,RtlHardcoded" />
 
     <Button
         android:id="@+id/pass_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80sp"
+        android:layout_height="60sp"
+        android:layout_marginLeft="70sp"
+        android:layout_marginTop="390sp"
         android:text="パス"
-        tools:ignore="HardcodedText"
-        android:layout_above="@+id/return_button1"
-        android:layout_toStartOf="@+id/camera_button"
-        android:layout_marginBottom="17dp" />
+        tools:ignore="HardcodedText,RtlHardcoded" />
 
     <Button
         android:id="@+id/submission_button"
+        android:layout_width="80sp"
+        android:layout_height="60sp"
+        android:layout_marginLeft="210sp"
+        android:layout_marginTop="390sp"
+        android:text="提出"
+        tools:ignore="HardcodedText,RtlHardcoded" />
+
+    <TextView
+        android:id="@+id/problem_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/pass_button"
-        android:layout_toEndOf="@+id/camera_button"
-        android:text="提出"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/answer"
+        android:layout_marginTop="17.5sp"
+        android:text="『掃き出し法』 \n by bayo"
         tools:ignore="HardcodedText" />
 
     <ImageButton
+        android:id="@+id/answer"
         android:layout_width="300sp"
         android:layout_height="300sp"
-        android:foregroundGravity="center"
-        android:scaleType="fitCenter"
-        tools:ignore="ContentDescription"
-        android:id="@+id/answer"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="12dp" />
+        android:background="@drawable/group"
+        android:foregroundGravity="center_horizontal|center"
+        tools:ignore="ContentDescription,RtlHardcoded"
+        android:layout_below="@+id/camera_button"
+        android:layout_centerHorizontal="true" />
 
     <ImageView
         android:id="@+id/shock_character"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/submission_button"
-        android:layout_centerHorizontal="true"
+        android:layout_width="500sp"
+        android:layout_height="500sp"
+        android:layout_alignParentEnd="true"
         app:srcCompat="@drawable/shock"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"
+        android:layout_alignBottom="@+id/pass_button" />
 
     <TextView
         android:id="@+id/comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/shock_character"
-        android:layout_centerHorizontal="true"
-        android:text="解答の写真を選択してね"
-        tools:ignore="HardcodedText,UnknownId" />
+        android:text="解答の写真を撮影・選択してね"
+        android:textSize="15sp"
+        tools:ignore="HardcodedText,UnknownId"
+        android:layout_marginTop="12.5dp"
+        android:layout_below="@+id/answer"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/item_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/item_image"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="40sp"
+        android:text="解答につけるアイテム"
+        tools:ignore="HardcodedText,RtlHardcoded" />
+
+    <ImageView
+        android:id="@+id/item_image"
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="19dp"
+        android:layout_marginLeft="40sp"
+        android:background="@android:color/background_light"
+        android:src="@drawable/magichand"
+        tools:ignore="ContentDescription,RtlHardcoded" />
 
 </RelativeLayout>
