@@ -16,6 +16,7 @@ import com.kurume_nct.studybattle.viewModel.RegistrationViewModel
 class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback {
 
     lateinit var binding: ActivityRegistrationBinding
+    lateinit var unitPer : UnitPersonal
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,8 +24,10 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
         binding = DataBindingUtil.setContentView(this, R.layout.activity_registration)
         binding.userEntity = RegistrationViewModel(this, this)
 
-        if (!UnitPersonal().newUser) {
-            onLogin(UnitPersonal().userName, "")
+        unitPer = application as UnitPersonal
+
+        if (unitPer.newUser) {
+            onLogin(unitPer.userName, "")
         }
 
     }
@@ -35,9 +38,9 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
     }
 
     override fun onLogin(name: String, password: String) {
-        if (UnitPersonal().newUser) {
-            UnitPersonal().userName = name
-            UnitPersonal().writeFile()
+        if (unitPer.newUser) {
+            unitPer.userName = name
+            unitPer.writeFile()
             //server
         }
         val intent = Intent(this, Main2Activity::class.java)

@@ -16,12 +16,14 @@ import com.kurume_nct.studybattle.viewModel.LoginViewModel
 class LoginActivity : AppCompatActivity(), LoginViewModel.Callback {
 
     private lateinit var binding : ActivityLoginBinding
+    lateinit var unitPer : UnitPersonal
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_login)
         binding.userLogin = LoginViewModel(this,this)
-        if(!UnitPersonal().newUser){
+        unitPer = application as UnitPersonal
+        if(unitPer.newUser){
             toMain2Activity("つちのこ")
         }
     }
@@ -30,8 +32,8 @@ class LoginActivity : AppCompatActivity(), LoginViewModel.Callback {
         val intent = Intent(this,Main2Activity::class.java)
         //add photo and userName
         if(UnitPersonal().newUser) {
-            UnitPersonal().userName = name
-            UnitPersonal().writeFile()
+            unitPer.userName = name
+            unitPer.writeFile()
             //server
         }
         intent.putExtra("userName",name)
