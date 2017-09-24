@@ -15,24 +15,23 @@ import com.kurume_nct.studybattle.adapter.PictureListAdapter
 import com.kurume_nct.studybattle.databinding.GroupListBinding
 
 
-
 class GroupListFragment : Fragment() {
 
-    private lateinit var binding : GroupListBinding
-    lateinit var grouplist : MutableList<Person_Group>
-    lateinit var listAdapter : PictureListAdapter
+    private lateinit var binding: GroupListBinding
+    lateinit var grouplist: MutableList<Person_Group>
+    lateinit var listAdapter: PictureListAdapter
     private var activityId = 0
 
 
-    fun newInstance(id : Int): GroupListFragment {
+    fun newInstance(id: Int): GroupListFragment {
         val fragment = GroupListFragment()
         val args = Bundle()
-        args.putInt("actId",id)
+        args.putInt("actId", id)
         fragment.arguments = args
         return fragment
     }
 
-    lateinit var mContext : Context
+    lateinit var mContext: Context
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,21 +41,33 @@ class GroupListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         activityId = arguments.getInt("actId")
-        binding = GroupListBinding.inflate(inflater,container,false)
+        binding = GroupListBinding.inflate(inflater, container, false)
         grouplist = mutableListOf(Person_Group())
         grouplist.add(Person_Group("pro"))
-        listAdapter = PictureListAdapter(context,grouplist){
+
+        listAdapter = PictureListAdapter(context, grouplist) {
             //item
         }
         binding.groupList2.adapter = listAdapter
         binding.groupList2.layoutManager = LinearLayoutManager(binding.groupList2.context)
+        addListInstance()
         return binding.root
     }
 
+    fun addListInstance(){
+        when (activityId) {
+            0 -> (0..10).forEach { grouplist.add(Person_Group(score = it.toString() + "点")) }
+        }
+        listAdapter.notifyItemRangeInserted(0,grouplist.size)
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
+    }
+
+    fun changeList() {
+        //activity側からの変更もちゃんと受け止める
     }
 
     override fun onDetach() {

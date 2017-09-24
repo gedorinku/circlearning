@@ -26,6 +26,7 @@ import com.kurume_nct.studybattle.databinding.AppBarMain2Binding
 import com.kurume_nct.studybattle.databinding.GroupListBinding
 import com.kurume_nct.studybattle.view.CameraModeActivity
 import com.kurume_nct.studybattle.view.ItemInfoActivity
+import com.kurume_nct.studybattle.view.RankingActivity
 import com.kurume_nct.studybattle.view.RegistrationActivity
 import com.mikepenz.google_material_typeface_library.GoogleMaterial
 import com.mikepenz.materialdrawer.DrawerBuilder
@@ -70,7 +71,7 @@ class Main2Activity : AppCompatActivity() {
             item ->
             when(item.itemId){
                 R.id.to_item -> startActivity(Intent(this,ItemInfoActivity::class.java))
-                R.id.to_ranking -> Toast.makeText(this,"Ranking", Toast.LENGTH_SHORT).show()
+                R.id.to_ranking -> startActivity(Intent(this,RankingActivity::class.java))
             }
             false
         }
@@ -161,7 +162,10 @@ class Main2Activity : AppCompatActivity() {
                 }
                 .build()
         //Create the Item of list
-        for ((name, id) in list) result.addItem(PrimaryDrawerItem().withIdentifier(id.toLong()).withName(name).withIcon(GoogleMaterial.Icon.gmd_people))
+        for(a in list){
+            result.addItem(PrimaryDrawerItem().withIdentifier(a.id.toLong()).withName(a.name).withIcon(GoogleMaterial.Icon.gmd_people))
+        }
+      //  for ((name, id) in list) result.addItem(PrimaryDrawerItem().withIdentifier(id.toLong()).withName(name).withIcon(GoogleMaterial.Icon.gmd_people))
         result.addItem(PrimaryDrawerItem().withIdentifier(list.size.toLong()).withName("新しくグループを作る").withIcon(GoogleMaterial.Icon.gmd_add))
     }
 

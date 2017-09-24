@@ -23,7 +23,8 @@
         <activity android:name=".view.LoginActivity" />
         <activity android:name=".view.LotteryActivity" />
         <activity android:name=".view.CameraModeActivity" />
-        <activity android:name=".view.ItemInfoActivity"></activity>
+        <activity android:name=".view.ItemInfoActivity" />
+        <activity android:name=".view.RankingActivity"></activity>
     </application>
 
 </manifest>
