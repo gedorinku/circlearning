@@ -12,10 +12,10 @@ import android.databinding.Bindable
 class ItemInfoViewModel(private val context: Context, private val callback : Callback) : BaseObservable(){
 
     @Bindable
-    var magicCount = ""
-    var bombCount = ""
-    var cardCount = ""
-    var shieldCount = ""
+    var magicCount = "×0"
+    var bombCount = "×0"
+    var cardCount = "×0"
+    var shieldCount = "×0"
 
     interface Callback{
 

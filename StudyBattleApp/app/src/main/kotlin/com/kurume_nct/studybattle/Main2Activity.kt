@@ -59,9 +59,9 @@ class Main2Activity : AppCompatActivity() {
         fab.setOnClickListener {
             Toast.makeText(this,"問題作成", Toast.LENGTH_SHORT).show()
             Log.d("ho","ho")
-            val intent = Intent(this,CameraModeActivity::class.java)
+            /*val intent = Intent(this,CameraModeActivity::class.java)
             intent.putExtra("userName",userName)
-            startActivity(intent)
+            startActivity(intent)*/
         }
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         toolbar.title = userName

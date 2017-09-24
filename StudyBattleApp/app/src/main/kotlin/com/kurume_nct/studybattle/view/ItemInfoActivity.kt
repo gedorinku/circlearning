@@ -16,5 +16,6 @@ class ItemInfoActivity : AppCompatActivity(), ItemInfoViewModel.Callback {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_item_info)
         binding.itemInfo = ItemInfoViewModel(this,this)
+        //持っているItemの個数をserverから取得
     }
 }
