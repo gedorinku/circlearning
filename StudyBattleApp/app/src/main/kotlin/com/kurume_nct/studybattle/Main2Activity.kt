@@ -25,6 +25,7 @@ import com.kurume_nct.studybattle.`object`.UnitPersonal
 import com.kurume_nct.studybattle.databinding.AppBarMain2Binding
 import com.kurume_nct.studybattle.databinding.GroupListBinding
 import com.kurume_nct.studybattle.view.CameraModeActivity
+import com.kurume_nct.studybattle.view.ItemInfoActivity
 import com.kurume_nct.studybattle.view.RegistrationActivity
 import com.mikepenz.google_material_typeface_library.GoogleMaterial
 import com.mikepenz.materialdrawer.DrawerBuilder
@@ -68,7 +69,7 @@ class Main2Activity : AppCompatActivity() {
         toolbar.setOnMenuItemClickListener {
             item ->
             when(item.itemId){
-                R.id.to_item -> Toast.makeText(this,"Item", Toast.LENGTH_SHORT).show()
+                R.id.to_item -> startActivity(Intent(this,ItemInfoActivity::class.java))
                 R.id.to_ranking -> Toast.makeText(this,"Ranking", Toast.LENGTH_SHORT).show()
             }
             false

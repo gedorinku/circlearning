@@ -1,17 +1,20 @@
 package com.kurume_nct.studybattle.ListFragment
 
+import android.content.ComponentCallbacks
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.kurume_nct.studybattle.`object`.Problem
 import com.kurume_nct.studybattle.adapter.ProblemListAdapter
 import com.kurume_nct.studybattle.databinding.FragmentProblemListBinding
+import com.kurume_nct.studybattle.view.CameraModeActivity
 import com.kurume_nct.studybattle.view.LoginActivity
 import com.kurume_nct.studybattle.view.RegistrationActivity
 
@@ -46,8 +49,10 @@ class MainListFragment : Fragment() {
         problemList = mutableListOf(Problem("hoge", "hoge"))
         listAdapter = ProblemListAdapter(context, problemList) {
             var intent = Intent(context, LoginActivity::class.java)
+            Log.d("hoge","Item clicked")
             when (tabId) {
-                0, 1 -> intent = Intent(context, RegistrationActivity::class.java)
+                0 -> intent = Intent(context, CameraModeActivity::class.java)
+                1 -> intent = Intent(context, RegistrationActivity::class.java)
                 2, 3 -> intent = Intent(context, LoginActivity::class.java)
             }
             startActivity(intent)
