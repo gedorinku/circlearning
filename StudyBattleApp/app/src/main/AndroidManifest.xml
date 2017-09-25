@@ -24,7 +24,8 @@
         <activity android:name=".view.LotteryActivity" />
         <activity android:name=".view.CameraModeActivity" />
         <activity android:name=".view.ItemInfoActivity" />
-        <activity android:name=".view.RankingActivity"></activity>
+        <activity android:name=".view.RankingActivity" />
+        <activity android:name=".view.CreateProblemActivity"></activity>
     </application>
 
 </manifest>

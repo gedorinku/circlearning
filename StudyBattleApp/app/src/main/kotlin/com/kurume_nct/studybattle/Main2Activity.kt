@@ -24,10 +24,7 @@ import com.kurume_nct.studybattle.`object`.Person_Group
 import com.kurume_nct.studybattle.`object`.UnitPersonal
 import com.kurume_nct.studybattle.databinding.AppBarMain2Binding
 import com.kurume_nct.studybattle.databinding.GroupListBinding
-import com.kurume_nct.studybattle.view.CameraModeActivity
-import com.kurume_nct.studybattle.view.ItemInfoActivity
-import com.kurume_nct.studybattle.view.RankingActivity
-import com.kurume_nct.studybattle.view.RegistrationActivity
+import com.kurume_nct.studybattle.view.*
 import com.mikepenz.google_material_typeface_library.GoogleMaterial
 import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.model.interfaces.IProfile
@@ -59,10 +56,8 @@ class Main2Activity : AppCompatActivity() {
         val fab = findViewById(R.id.fab)
         fab.setOnClickListener {
             Toast.makeText(this,"問題作成", Toast.LENGTH_SHORT).show()
-            Log.d("ho","ho")
-            /*val intent = Intent(this,CameraModeActivity::class.java)
-            intent.putExtra("userName",userName)
-            startActivity(intent)*/
+            val intent = Intent(this, CreateProblemActivity::class.java)
+            startActivity(intent)
         }
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         toolbar.title = userName
