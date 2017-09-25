@@ -29,9 +29,9 @@
                     android:textSize="18sp" />
 
                 <LinearLayout
-                    android:id="@+id/fragment_list_made_yet"
+                    android:id="@+id/fragment_list_ans_yet"
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="top"
                     android:orientation="vertical">
 
@@ -48,9 +48,9 @@
                     android:textSize="18sp" />
 
                 <LinearLayout
-                    android:id="@+id/fragment_list_made_fin"
+                    android:id="@+id/fragment_list_ans_fin"
                     android:layout_width="match_parent"
-                    android:layout_height="500dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="top"
                     android:orientation="vertical">
 

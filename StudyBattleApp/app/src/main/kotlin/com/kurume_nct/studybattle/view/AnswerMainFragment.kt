@@ -21,7 +21,7 @@ class AnswerMainFragment : Fragment() {
     lateinit var mContext : Main2Activity
     lateinit var binding : FragmentAnswerMainBinding
 
-    fun newInstanse() : AnswerMainFragment = AnswerMainFragment()
+    fun newInstance() : AnswerMainFragment = AnswerMainFragment()
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -30,13 +30,13 @@ class AnswerMainFragment : Fragment() {
 
         mContext.supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragment_list_made_yet, MainListFragment()
+                .add(R.id.fragment_list_ans_yet, MainListFragment()
                         .newInstance(resources.getInteger(R.integer.ANSWER_YET)))
                 .commit()
 
         mContext.supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragment_list_made_fin, MainListFragment()
+                .add(R.id.fragment_list_ans_fin, MainListFragment()
                         .newInstance(resources.getInteger(R.integer.ANSWER_FIN)))
                 .commit()
         return binding.root
