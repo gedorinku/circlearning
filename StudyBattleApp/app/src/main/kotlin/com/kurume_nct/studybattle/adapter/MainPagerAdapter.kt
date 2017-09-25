@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.util.Log
 import com.kurume_nct.studybattle.ListFragment.MainListFragment
 import com.kurume_nct.studybattle.R
+import com.kurume_nct.studybattle.view.AnswerMainFragment
 import com.kurume_nct.studybattle.view.ProbemMainFragment
 
 /**
@@ -18,7 +19,7 @@ class MainPagerAdapter(mf: FragmentManager) : FragmentPagerAdapter(mf){
 
     init {
         mFragment.add(ProbemMainFragment.newInstance())
-        mFragment.add(MainListFragment().newInstance(1))
+        mFragment.add(AnswerMainFragment().newInstanse())
         mFragment.add(MainListFragment().newInstance(2))
         mFragment.add(MainListFragment().newInstance(3))
     }

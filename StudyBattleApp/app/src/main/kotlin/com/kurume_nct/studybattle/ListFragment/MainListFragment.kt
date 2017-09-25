@@ -11,26 +11,28 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.`object`.Problem
 import com.kurume_nct.studybattle.adapter.ProblemListAdapter
 import com.kurume_nct.studybattle.databinding.FragmentProblemListBinding
 import com.kurume_nct.studybattle.view.CameraModeActivity
+import com.kurume_nct.studybattle.view.ItemInfoActivity
 import com.kurume_nct.studybattle.view.LoginActivity
 import com.kurume_nct.studybattle.view.RegistrationActivity
 
 class MainListFragment : Fragment() {
 
-    lateinit var binding : FragmentProblemListBinding
-    var tabId : Int = 0
-    lateinit var problemList : MutableList<Problem>
+    lateinit var binding: FragmentProblemListBinding
+    var tabId: Int = 0
+    lateinit var problemList: MutableList<Problem>
     //lateinit var problems : Problems
-    lateinit var mContext : Context
+    lateinit var mContext: Context
 
-    lateinit var listAdapter : ProblemListAdapter
-    fun newInstance(id: Int) : MainListFragment{
+    lateinit var listAdapter: ProblemListAdapter
+    fun newInstance(id: Int): MainListFragment {
         val fragment = MainListFragment()
         val args = Bundle()
-        args.putInt("id",id)
+        args.putInt("id", id)
         fragment.arguments = args
         return fragment
     }
@@ -43,27 +45,39 @@ class MainListFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
-        //binding = DataBindingUtil.inflate(inflater, R.layout.fragment_problem_list,container,false)
         binding = FragmentProblemListBinding.inflate(inflater, container, false)
-        problemList = mutableListOf(Problem("hoge", "hoge"))
+        problemList = mutableListOf(Problem())
         listAdapter = ProblemListAdapter(context, problemList) {
-            var intent = Intent(context, LoginActivity::class.java)
-            Log.d("hoge","Item clicked")
+            var intent = Intent(context, ItemInfoActivity::class.java)
+            Log.d("hoge", "Item clicked")
             when (tabId) {
-                0 -> intent = Intent(context, CameraModeActivity::class.java)
-                1 -> intent = Intent(context, RegistrationActivity::class.java)
-                2, 3 -> intent = Intent(context, LoginActivity::class.java)
+                resources.getInteger(R.integer.HAVE_PRO) -> {
+                    intent = Intent(context, CameraModeActivity::class.java)
+                }
+                resources.getInteger(R.integer.ANSWER_YET) -> {
+                }
+                resources.getInteger(R.integer.ANSWER_FIN) -> {
+                }
+                resources.getInteger(R.integer.MADE_COLLECT_YET) -> {
+                }
+                resources.getInteger(R.integer.MADE_JUDGE_YET) -> {
+                }
+                resources.getInteger(R.integer.MADE_FIN) -> {
+                }
+                resources.getInteger(R.integer.SUGGEST_YET) -> {
+                }
+                resources.getInteger(R.integer.SUGGEST_FIN) -> {
+                }
             }
             startActivity(intent)
         }
+
         binding.list.adapter = listAdapter
         binding.list.layoutManager = LinearLayoutManager(binding.list.context) as RecyclerView.LayoutManager?
         //setList()
         changeList(tabId)
         return binding.root
     }
-
 
 
     override fun onStart() {
@@ -75,31 +89,58 @@ class MainListFragment : Fragment() {
         mContext = context!!
     }
 
-    fun changeList(id : Int){
-        listAdapter.notifyItemRangeRemoved(0,problemList.size)
+    fun changeList(id: Int) {
+        listAdapter.notifyItemRangeRemoved(0, problemList.size)
         problemList.clear()
-        when(id){
-            0->{
-                //call server
-                (0..15).forEach { problemList.add(Problem("0", ":;(∩´﹏`∩);:")) }
+        when (tabId) {
+            resources.getInteger(R.integer.HAVE_PRO) -> {
+                (0..10).forEach {
+                    problemList.add(Problem("自分が持っている" + it + "問目", "の問題"))
+                }
             }
-            1->{
-                problemList.add(Problem("1", ":;(∩´﹏`∩);:"))
+            resources.getInteger(R.integer.ANSWER_YET) -> {
+                (0..10).forEach {
+                    problemList.add(Problem("全員が持っている" + it + "問目", "の問題"))
+                }
             }
-            2->{
-                problemList.add(Problem("2", ":;(∩´﹏`∩);:"))
+            resources.getInteger(R.integer.ANSWER_FIN) -> {
+                (0..10).forEach {
+                    problemList.add(Problem("自分が持っている" + it + "問目", "の問題だよ"))
+                }
             }
-            3->{
-                problemList.add(Problem("3", ":;(∩´﹏`∩);:"))
+            resources.getInteger(R.integer.MADE_COLLECT_YET) -> {
+                (0..10).forEach {
+                    problemList.add(Problem("自分が持っている" + it + "問目", "の問題だよ"))
+                }
+            }
+            resources.getInteger(R.integer.MADE_JUDGE_YET) -> {
+                (0..10).forEach {
+                    problemList.add(Problem("全員が持っている" + it + "問目", "の問題"))
+                }
+            }
+            resources.getInteger(R.integer.MADE_FIN) -> {
+                (0..10).forEach {
+                    problemList.add(Problem("全員が持っている" + it + "問目", "の問題"))
+                }
+            }
+            resources.getInteger(R.integer.SUGGEST_YET) -> {
+                (0..10).forEach {
+                    problemList.add(Problem("全員が持っている" + it + "問目", "の問題"))
+                }
+            }
+            resources.getInteger(R.integer.SUGGEST_FIN) -> {
+                (0..10).forEach {
+                    problemList.add(Problem("全員が持っている" + it + "問目", "の問題"))
+                }
             }
         }
         binding.list.adapter = listAdapter
         binding.list.layoutManager = LinearLayoutManager(binding.list.context)
-        listAdapter.notifyItemRangeInserted(0,problemList.size)
-       // Log.d(problemList.size.toString(), tabId.toString())
+        listAdapter.notifyItemRangeInserted(0, problemList.size)
+        // Log.d(problemList.size.toString(), tabId.toString())
     }
 
-    fun finish(){
+    fun finish() {
         fragmentManager.beginTransaction().remove(this).commit()
     }
 
