@@ -1,5 +1,6 @@
 package com.kurume_nct.studybattle.view
 
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -31,6 +32,11 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
     override fun checkNameEnable(enable: Boolean) {
         Log.d("checkBox is ", enable.toString())
         nameEnable = enable
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        binding.createView.onActivityResult(requestCode,resultCode,data)
     }
 
 }

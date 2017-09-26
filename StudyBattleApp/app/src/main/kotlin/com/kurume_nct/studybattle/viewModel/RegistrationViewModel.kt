@@ -48,7 +48,6 @@ class RegistrationViewModel(private val context: Context, private val callback: 
         @BindingAdapter("loadImage")
         @JvmStatic
         fun setIconImage(view: ImageView, uri: Uri?) {
-
             if (uri == null) {
                 Glide.with(view).load(R.drawable.icon_gost).into(view)//loadの中にresourceを入れたらtestできる
             } else {
