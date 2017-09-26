@@ -3,6 +3,7 @@ package com.kurume_nct.studybattle.view
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.`object`.UnitPersonal
@@ -13,6 +14,11 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
 
     lateinit var binding : ActivityCreateProblemBinding
     lateinit var unitPer : UnitPersonal
+    private var nameEnable : Boolean
+
+    init {
+        nameEnable = false
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,4 +27,10 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         unitPer = application as UnitPersonal
         binding.createView.creatorName = "Made by " + unitPer.userName
     }
+
+    override fun checkNameEnable(enable: Boolean) {
+        Log.d("checkBox is ", enable.toString())
+        nameEnable = enable
+    }
+
 }
