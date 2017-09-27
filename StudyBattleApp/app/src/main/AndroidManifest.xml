@@ -28,7 +28,7 @@
         <activity android:name=".view.RankingActivity" />
         <activity android:name=".view.CreateProblemActivity" />
         <activity android:name=".view.AnswerActivity" />
-        <activity android:name=".PersonalAnswerActivity"></activity>
+        <activity android:name=".view.PersonalAnswerActivity"></activity>
     </application>
 
 </manifest>

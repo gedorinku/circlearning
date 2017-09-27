@@ -1,6 +1,7 @@
 package com.kurume_nct.studybattle.view
 
 import android.content.Context
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -48,15 +49,14 @@ class AnswerFragment : Fragment() {
         (0..20).forEach {
             answerList.add(EveryAns(id = it, collect = (it % 2 == 0)))
         }
-        listAdapter = AnswerRecyclerViewAdapter(context, answerList) {
-            Toast.makeText(context, "sushi to yakiniku", Toast.LENGTH_SHORT).show()
-        }
+        listAdapter = AnswerRecyclerViewAdapter(context, answerList,{
+            position: Int ->
+            Log.d(position.toString() + " ","sushi")
+            val intent = Intent(context, PersonalAnswerActivity::class.java)
+            startActivity(intent)
+        })
         binding.answersList.adapter = listAdapter
-        if (mColumnCount <= 1) {
-            binding.answersList.layoutManager = LinearLayoutManager(binding.answersList.context)
-        } else {
-            binding.answersList.layoutManager = GridLayoutManager(binding.answersList.context, mColumnCount)
-        }
+        binding.answersList.layoutManager = GridLayoutManager(binding.answersList.context, mColumnCount)
         return binding.root
     }
 

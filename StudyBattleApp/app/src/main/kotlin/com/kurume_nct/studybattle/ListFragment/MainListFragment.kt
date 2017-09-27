@@ -44,24 +44,26 @@ class MainListFragment : Fragment() {
         //binding = DataBindingUtil.inflate(inflater, R.layout.fragment_problem_list,container,false)
         binding = FragmentProblemListBinding.inflate(inflater, container, false)
         problemList = mutableListOf(Problem(0, "hoge", 0, "hoge"))
-        listAdapter = ProblemListAdapter(context, problemList) {
-            var intent = Intent(context, LoginActivity::class.java)
-            when (tabId) {
-                resources.getInteger(R.integer.HAVE_PRO) -> {
-                    intent = Intent(context, CameraModeActivity::class.java)
-                }
-                resources.getInteger(R.integer.ANSWER_YET) -> {
-                    intent = Intent(context, AnswerActivity::class.java)
-                    intent.putExtra("fin", false)
-                }
-                resources.getInteger(R.integer.ANSWER_FIN) -> {
-                    intent = Intent(context, AnswerActivity::class.java)
-                    intent.putExtra("fin", true)
-                }
-                else -> intent = Intent(context, ItemInfoActivity::class.java)
-            }
-            startActivity(intent)
-        }
+        listAdapter = ProblemListAdapter(context, problemList,
+                {
+                    position: Int ->
+                    var intent = Intent(context, LoginActivity::class.java)
+                    when (tabId) {
+                        resources.getInteger(R.integer.HAVE_PRO) -> {
+                            intent = Intent(context, CameraModeActivity::class.java)
+                        }
+                        resources.getInteger(R.integer.ANSWER_YET) -> {
+                            intent = Intent(context, AnswerActivity::class.java)
+                            intent.putExtra("fin", false)
+                        }
+                        resources.getInteger(R.integer.ANSWER_FIN) -> {
+                            intent = Intent(context, AnswerActivity::class.java)
+                            intent.putExtra("fin", true)
+                        }
+                        else -> intent = Intent(context, ItemInfoActivity::class.java)
+                    }
+                    startActivity(intent)
+                })
         binding.list.adapter = listAdapter
         binding.list.layoutManager = LinearLayoutManager(binding.list.context) as RecyclerView.LayoutManager?
         //setList()

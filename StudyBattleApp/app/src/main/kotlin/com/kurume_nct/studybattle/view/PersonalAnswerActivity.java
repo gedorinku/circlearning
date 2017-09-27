@@ -1,4 +1,4 @@
-package com.kurume_nct.studybattle;
+package com.kurume_nct.studybattle.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

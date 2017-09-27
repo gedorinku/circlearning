@@ -43,9 +43,11 @@ class GroupListFragment : Fragment() {
         grouplist = mutableListOf(Person_())
         grouplist.add(Person_("pro"))
 
-        listAdapter = PictureListAdapter(context, grouplist) {
-            //item
-        }
+        listAdapter = PictureListAdapter(context, grouplist,
+                {
+                    position: Int ->
+                    //item
+                })
         binding.groupList2.adapter = listAdapter
         binding.groupList2.layoutManager = LinearLayoutManager(binding.groupList2.context)
         addListInstance()
