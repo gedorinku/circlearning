@@ -9,7 +9,7 @@ import android.os.Bundle
 import android.util.Log
 
 import com.kurume_nct.studybattle.R
-import com.kurume_nct.studybattle.`object`.UnitPersonal
+import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.databinding.ActivityCreateProblemBinding
 import com.kurume_nct.studybattle.viewModel.CreateProblemViewModel
 

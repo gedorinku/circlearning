@@ -1,4 +1,4 @@
-package com.kurume_nct.studybattle.`object`
+package com.kurume_nct.studybattle.model
 
 import android.app.Application
 import android.content.Context
@@ -27,10 +27,9 @@ class UnitPersonal : Application(){
         super.onCreate()
         prefer = getSharedPreferences(packageName + ".txt", Context.MODE_PRIVATE)
         userName = prefer.getString("userName", "?????")
-        if(userName == "?????"){
+        if(userName != "?????"){
             newUser = false
         }
-
     }
 
     fun writeFile(){

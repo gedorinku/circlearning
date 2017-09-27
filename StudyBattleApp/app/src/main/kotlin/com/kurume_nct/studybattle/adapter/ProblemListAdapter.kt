@@ -11,9 +11,6 @@ import android.view.ViewGroup
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.model.Problem
-import com.kurume_nct.studybattle.`object`.Person_Group
-import com.kurume_nct.studybattle.`object`.Problem
-import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter
 
 class ProblemListAdapter(context: Context, val list: MutableList<Problem>, val callBack: (Int) -> Unit)
     : RecyclerView.Adapter<ProblemListAdapter.ProblemListHolder>(){

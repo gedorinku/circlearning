@@ -17,7 +17,7 @@ class SuggestMainFragment : Fragment() {
     lateinit var mContext: Main2Activity
     lateinit var binding: FragmentSuggestMainBinding
 
-    fun newinstance() = SuggestMainFragment()
+    fun newInstance() = SuggestMainFragment()
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

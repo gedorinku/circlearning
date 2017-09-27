@@ -17,9 +17,8 @@ class RankingActivity : AppCompatActivity(), RankingViewModel.Callback {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_ranking)
         binding.ranking = RankingViewModel(this,this)
-        val fragment = GroupListFragment().newInstance(0)
-        val trancelation = supportFragmentManager.beginTransaction()
-        trancelation.replace(R.id.ranking_list_content,fragment)
-        trancelation.commit()
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.ranking_list_content, GroupListFragment().newInstance(0))
+                .commit()
     }
 }

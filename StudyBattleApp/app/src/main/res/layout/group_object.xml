@@ -4,7 +4,7 @@
     <data>
         <variable
             name="Group"
-            type="com.kurume_nct.studybattle.model.Person_Group"/>
+            type="com.kurume_nct.studybattle.model.Person_"/>
     </data>
 
     <LinearLayout

@@ -20,11 +20,11 @@ import android.widget.Button
 import android.widget.Toast
 import com.kurume_nct.studybattle.ListFragment.GroupListFragment
 import com.kurume_nct.studybattle.adapter.MainPagerAdapter
-import com.kurume_nct.studybattle.`object`.Person_Group
 import com.kurume_nct.studybattle.databinding.AppBarMain2Binding
 import com.kurume_nct.studybattle.databinding.GroupListBinding
-import com.kurume_nct.studybattle.view.CameraModeActivity
-import com.kurume_nct.studybattle.view.RegistrationActivity
+import com.kurume_nct.studybattle.model.Person_
+import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.view.*
 import com.mikepenz.google_material_typeface_library.GoogleMaterial
 import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.model.interfaces.IProfile
@@ -38,6 +38,7 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 class Main2Activity : AppCompatActivity() {
 
     private var userName = "Kotlin"
+    private lateinit var unitPer : UnitPersonal
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +46,7 @@ class Main2Activity : AppCompatActivity() {
         //userName = intent.getStringExtra("userName") ?: userName
         unitPer = application as UnitPersonal
         userName = unitPer.userName
+        Log.d(userName,unitPer.userName)
         onTabLayout()
         onNavigationDrower()
         onToolBar()
@@ -64,8 +66,8 @@ class Main2Activity : AppCompatActivity() {
         toolbar.setOnMenuItemClickListener {
             item ->
             when(item.itemId){
-                R.id.to_item -> startActivity(Intent(this,ItemInfoActivity::class.java))
-                R.id.to_ranking -> startActivity(Intent(this,RankingActivity::class.java))
+                R.id.to_item -> startActivity(Intent(this, ItemInfoActivity::class.java))
+                R.id.to_ranking -> startActivity(Intent(this, RankingActivity::class.java))
             }
             false
         }
@@ -104,8 +106,8 @@ class Main2Activity : AppCompatActivity() {
     fun onNavigationDrower(){
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         val groupID : Int = intent.getIntExtra("groupID",0)
-        val list : MutableList<Person_Group> = mutableListOf(Person_Group(id = 0))
-        list.add(Person_Group(id = list.size))
+        val list : MutableList<Person_> = mutableListOf(Person_(id = 0))
+        list.add(Person_(id = list.size))
         // Create the AccountHeader
         var acountCount : Long = 0
         val headerResult = AccountHeaderBuilder()
@@ -140,15 +142,14 @@ class Main2Activity : AppCompatActivity() {
                     var intent = Intent(this,Main2Activity::class.java)
                     if(position == list.size + 1){
                         intent.putExtra("groupID",position)
-                        intent.putExtra("userName",userName)
-                        startActivity(intent)
-                        finish()
+                        //intent.putExtra("userName",userName)
                         intent = Intent(this,RegistrationActivity::class.java)
                         startActivity(intent)
+                        finish()
                         //Still i have to update Main2Activity
                     }else{
                         intent.putExtra("groupID",position)
-                        intent.putExtra("userName",userName)
+                        //intent.putExtra("userName",userName)
                         startActivity(intent)
                         finish()
                     }

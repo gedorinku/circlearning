@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-import com.kurume_nct.studybattle.model.Person_Group
+import com.kurume_nct.studybattle.model.Person_
 import com.kurume_nct.studybattle.adapter.PictureListAdapter
 import com.kurume_nct.studybattle.databinding.GroupListBinding
 
@@ -16,7 +16,7 @@ import com.kurume_nct.studybattle.databinding.GroupListBinding
 class GroupListFragment : Fragment() {
 
     private lateinit var binding: GroupListBinding
-    lateinit var grouplist: MutableList<Person_Group>
+    lateinit var grouplist: MutableList<Person_>
     lateinit var listAdapter: PictureListAdapter
     private var activityId = 0
 
@@ -40,8 +40,8 @@ class GroupListFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         activityId = arguments.getInt("actId")
         binding = GroupListBinding.inflate(inflater, container, false)
-        grouplist = mutableListOf(Person_Group())
-        grouplist.add(Person_Group("pro"))
+        grouplist = mutableListOf(Person_())
+        grouplist.add(Person_("pro"))
 
         listAdapter = PictureListAdapter(context, grouplist) {
             //item
@@ -54,7 +54,7 @@ class GroupListFragment : Fragment() {
 
     fun addListInstance(){
         when (activityId) {
-            0 -> (0..10).forEach { grouplist.add(Person_Group(score = it.toString() + "点")) }
+            0 -> (0..10).forEach { grouplist.add(Person_(score = it.toString() + "点")) }
         }
         listAdapter.notifyItemRangeInserted(0,grouplist.size)
     }

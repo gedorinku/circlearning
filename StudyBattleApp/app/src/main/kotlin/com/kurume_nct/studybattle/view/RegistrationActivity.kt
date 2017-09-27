@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.kurume_nct.studybattle.Main2Activity
 import com.kurume_nct.studybattle.R
-import com.kurume_nct.studybattle.`object`.UnitPersonal
+import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.databinding.ActivityRegistrationBinding
 import com.kurume_nct.studybattle.viewModel.RegistrationViewModel
 
@@ -26,7 +26,7 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
 
         unitPer = application as UnitPersonal
 
-        if (unitPer.newUser) {
+        if (!unitPer.newUser) {
             onLogin(unitPer.userName, "")
         }
 
@@ -43,7 +43,7 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
             unitPer.writeFile()
             //server
         }
-        val intent = Intent(this, Main2Activity::class.java)
+        val intent = Intent(this, LoginActivity::class.java)
         intent.putExtra("userName", name)
         startActivity(intent)
         finish()

@@ -4,7 +4,6 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.util.Log
-import com.kurume_nct.studybattle.ListFragment.MainListFragment
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.view.AnswerMainFragment
 import com.kurume_nct.studybattle.view.MadeMainFragment
@@ -22,7 +21,7 @@ class MainPagerAdapter(private val mf: FragmentManager) : FragmentPagerAdapter(m
         mFragment.add(ProbemMainFragment.newInstance())
         mFragment.add(AnswerMainFragment().newInstance())
         mFragment.add(MadeMainFragment().newInstance())
-        mFragment.add(SuggestMainFragment().newinstance())
+        mFragment.add(SuggestMainFragment().newInstance())
     }
 
     override fun getItem(position: Int): Fragment {

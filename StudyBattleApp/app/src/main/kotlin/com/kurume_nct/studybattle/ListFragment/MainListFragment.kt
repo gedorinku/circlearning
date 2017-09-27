@@ -9,25 +9,25 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.kurume_nct.studybattle.`object`.Problem
+import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.adapter.ProblemListAdapter
 import com.kurume_nct.studybattle.databinding.FragmentProblemListBinding
-import com.kurume_nct.studybattle.view.LoginActivity
-import com.kurume_nct.studybattle.view.RegistrationActivity
+import com.kurume_nct.studybattle.model.Problem
+import com.kurume_nct.studybattle.view.*
 
 class MainListFragment : Fragment() {
 
-    lateinit var binding : FragmentProblemListBinding
-    var tabId : Int = 0
-    lateinit var problemList : MutableList<Problem>
+    lateinit var binding: FragmentProblemListBinding
+    var tabId: Int = 0
+    lateinit var problemList: MutableList<Problem>
     //lateinit var problems : Problems
-    lateinit var mContext : Context
+    lateinit var mContext: Context
 
-    lateinit var listAdapter : ProblemListAdapter
-    fun newInstance(id: Int) : MainListFragment{
+    lateinit var listAdapter: ProblemListAdapter
+    fun newInstance(id: Int): MainListFragment {
         val fragment = MainListFragment()
         val args = Bundle()
-        args.putInt("id",id)
+        args.putInt("id", id)
         fragment.arguments = args
         return fragment
     }
@@ -47,8 +47,18 @@ class MainListFragment : Fragment() {
         listAdapter = ProblemListAdapter(context, problemList) {
             var intent = Intent(context, LoginActivity::class.java)
             when (tabId) {
-                0, 1 -> intent = Intent(context, RegistrationActivity::class.java)
-                2, 3 -> intent = Intent(context, LoginActivity::class.java)
+                resources.getInteger(R.integer.HAVE_PRO) -> {
+                    intent = Intent(context, CameraModeActivity::class.java)
+                }
+                resources.getInteger(R.integer.ANSWER_YET) -> {
+                    intent = Intent(context, AnswerActivity::class.java)
+                    intent.putExtra("fin", false)
+                }
+                resources.getInteger(R.integer.ANSWER_FIN) -> {
+                    intent = Intent(context, AnswerActivity::class.java)
+                    intent.putExtra("fin", true)
+                }
+                else -> intent = Intent(context, ItemInfoActivity::class.java)
             }
             startActivity(intent)
         }
@@ -60,7 +70,6 @@ class MainListFragment : Fragment() {
     }
 
 
-
     override fun onStart() {
         super.onStart()
     }
@@ -70,48 +79,48 @@ class MainListFragment : Fragment() {
         mContext = context!!
     }
 
-    fun changeList(id : Int){
-        listAdapter.notifyItemRangeRemoved(0,problemList.size)
+    fun changeList(id: Int) {
+        listAdapter.notifyItemRangeRemoved(0, problemList.size)
         problemList.clear()
         when (tabId) {
             resources.getInteger(R.integer.HAVE_PRO) -> {
                 (0..10).forEach {
-                    problemList.add(Problem("自分が持っている" + it + "問目", "の問題"))
+                    problemList.add(Problem(title = "自分が持っている" + it + "問目", text = "時間"))
                 }
             }
             resources.getInteger(R.integer.ANSWER_YET) -> {
                 (0..10).forEach {
-                    problemList.add(Problem("全員が持っている" + it + "問目", "の問題"))
+                    problemList.add(Problem(title = "全員が持っている" + it + "問目"))
                 }
             }
             resources.getInteger(R.integer.ANSWER_FIN) -> {
                 (0..10).forEach {
-                    problemList.add(Problem("自分が持っている" + it + "問目", "の問題だよ"))
+                    problemList.add(Problem(title = "自分が持っている" + it + "問目"))
                 }
             }
             resources.getInteger(R.integer.MADE_COLLECT_YET) -> {
                 (0..10).forEach {
-                    problemList.add(Problem("自分が持っている" + it + "問目", "の問題だよ"))
+                    problemList.add(Problem())
                 }
             }
             resources.getInteger(R.integer.MADE_JUDGE_YET) -> {
                 (0..10).forEach {
-                    problemList.add(Problem("全員が持っている" + it + "問目", "の問題"))
+                    problemList.add(Problem())
                 }
             }
             resources.getInteger(R.integer.MADE_FIN) -> {
                 (0..10).forEach {
-                    problemList.add(Problem("全員が持っている" + it + "問目", "の問題"))
+                    problemList.add(Problem())
                 }
             }
             resources.getInteger(R.integer.SUGGEST_YET) -> {
                 (0..10).forEach {
-                    problemList.add(Problem("全員が持っている" + it + "問目", "の問題"))
+                    problemList.add(Problem())
                 }
             }
             resources.getInteger(R.integer.SUGGEST_FIN) -> {
                 (0..10).forEach {
-                    problemList.add(Problem("全員が持っている" + it + "問目", "の問題"))
+                    problemList.add(Problem())
                 }
             }
         }
@@ -121,7 +130,7 @@ class MainListFragment : Fragment() {
         // Log.d(problemList.size.toString(), tabId.toString())
     }
 
-    fun finish(){
+    fun finish() {
         fragmentManager.beginTransaction().remove(this).commit()
     }
 
