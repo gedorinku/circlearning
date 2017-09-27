@@ -1,5 +1,6 @@
 package com.kurume_nct.studybattle.viewModel
 
+import android.app.AlertDialog
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
@@ -85,13 +86,28 @@ class CreateProblemViewModel(private val context: Context, private val callback:
 
     fun onClickProblemImage(view: View) {
         //using alert screen ans to do to choice photo or image
-        val intent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
-        callback.startActivityForResult(intent, 0)
+        when(callback.alertDialog()){
+            0 -> {
+                val intent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
+                callback.startActivityForResult(intent, 0)
+            }
+            1 ->{
+
+            }
+        }
+
     }
 
     fun onClickAnswerImage(view: View) {
-        val intent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
-        callback.startActivityForResult(intent, 1)
+        when(callback.alertDialog()){
+            0 -> {
+                val intent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
+                callback.startActivityForResult(intent, 1)
+            }
+            1 ->{
+
+            }
+        }
     }
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?){
@@ -101,10 +117,12 @@ class CreateProblemViewModel(private val context: Context, private val callback:
             0 -> {
                 pUri = data.data
                 problemUri = pUri
+                callback.getProblemPhoto()
             }
             1 -> {
                 aUri = data.data
                 answerUri = aUri
+                callback.getAnswerPhoto()
             }
         }
     }
@@ -129,6 +147,8 @@ class CreateProblemViewModel(private val context: Context, private val callback:
 
         fun checkNameEnable(enable: Boolean)
         fun startActivityForResult(intent: Intent, requestCode: Int)
-
+        fun getProblemPhoto()
+        fun getAnswerPhoto()
+        fun alertDialog() : Int
     }
 }
