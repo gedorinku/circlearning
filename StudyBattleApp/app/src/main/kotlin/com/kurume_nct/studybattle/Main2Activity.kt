@@ -21,10 +21,10 @@ import android.widget.Toast
 import com.kurume_nct.studybattle.ListFragment.GroupListFragment
 import com.kurume_nct.studybattle.adapter.MainPagerAdapter
 import com.kurume_nct.studybattle.`object`.Person_Group
-import com.kurume_nct.studybattle.`object`.UnitPersonal
 import com.kurume_nct.studybattle.databinding.AppBarMain2Binding
 import com.kurume_nct.studybattle.databinding.GroupListBinding
-import com.kurume_nct.studybattle.view.*
+import com.kurume_nct.studybattle.view.CameraModeActivity
+import com.kurume_nct.studybattle.view.RegistrationActivity
 import com.mikepenz.google_material_typeface_library.GoogleMaterial
 import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.model.interfaces.IProfile
@@ -38,7 +38,6 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 class Main2Activity : AppCompatActivity() {
 
     private var userName = "Kotlin"
-    lateinit var unitPer : UnitPersonal
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

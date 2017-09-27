@@ -105,7 +105,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
             //sever処理
             val countDown: CountDownLatch = CountDownLatch(2)
             var countSuccess = 0
-            ServerClient().onRegistration(displayName, userName, userPassword)
+            ServerClient().register(displayName, userName, userPassword)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
@@ -116,12 +116,11 @@ class RegistrationViewModel(private val context: Context, private val callback: 
                         countSuccess++
                         countDown.countDown()
                     })
-            ServerClient().onUploadImage(userPassword, imageUri
-            )
+            ServerClient().uploadImage(imageUri, context)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
-                        iconId = it
+                        iconId = it.id
                         countDown.countDown()
                         countSuccess++
                     }, {
