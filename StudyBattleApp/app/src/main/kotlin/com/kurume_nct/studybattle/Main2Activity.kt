@@ -94,9 +94,9 @@ class Main2Activity : AppCompatActivity() {
                 1 -> tab?.customView =
                         LayoutInflater.from(this).inflate(R.layout.tab_custom_1,null)
                 2 -> tab?.customView =
-                        LayoutInflater.from(this).inflate(R.layout.tab_custom_0,null)
+                        LayoutInflater.from(this).inflate(R.layout.tab_custom_2,null)
                 3 -> tab?.customView =
-                        LayoutInflater.from(this).inflate(R.layout.tab_custom_1,null)
+                        LayoutInflater.from(this).inflate(R.layout.tab_custom_3,null)
             }
         }
     }

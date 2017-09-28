@@ -1,23 +1,19 @@
-package com.kurume_nct.studybattle.view
+package com.kurume_nct.studybattle.ListFragment
 
 import android.content.Context
 import android.content.Intent
-import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.adapter.AnswerRecyclerViewAdapter
-import com.kurume_nct.studybattle.databinding.ActivityAnswerBinding
 import com.kurume_nct.studybattle.databinding.FragmentAnswerListBinding
 import com.kurume_nct.studybattle.model.EveryAns
+import com.kurume_nct.studybattle.view.AnswerActivity
+import com.kurume_nct.studybattle.view.PersonalAnswerActivity
 
 
 class AnswerFragment : Fragment() {

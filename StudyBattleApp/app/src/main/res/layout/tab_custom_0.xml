@@ -4,18 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:gravity="center"
-        app:srcCompat="@drawable/problem_icon" />
+        app:srcCompat="@drawable/upicon2" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="top|center_horizontal"
-        android:text="hoge"
-        android:textSize="14sp" />
+        android:text="問題"
+        android:textSize="10sp" />
 </LinearLayout>

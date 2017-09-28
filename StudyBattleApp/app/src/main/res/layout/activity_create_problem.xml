@@ -56,8 +56,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:onClick="@{CreateView.onClickProblemImage}"
-                    app:loadProblem="@{CreateView.problemUri}"
-                    app:srcCompat="@drawable/group" />
+                    app:loadProblem="@{CreateView.problemUri}" />
 
                 <TextView
                     android:id="@+id/textView3__"
@@ -76,9 +75,9 @@
                     android:text="解答回収期間" />
 
                 <ExpandableListView
-                    android:id="@+id/termsList"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:id="@+id/direction_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/textView24"
@@ -113,8 +112,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:onClick="@{CreateView.onClickAnswerImage}"
-                    app:loadProblem="@{CreateView.answerUri}"
-                    app:srcCompat="@drawable/group" />
+                    app:loadProblem="@{CreateView.answerUri}" />
 
                 <Button
                     android:id="@+id/button6"

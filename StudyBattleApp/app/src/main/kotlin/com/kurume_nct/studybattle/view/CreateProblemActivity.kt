@@ -7,8 +7,10 @@ import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.ExpandableListView
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.SimpleExpandableListAdapter
 
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.model.UnitPersonal
@@ -18,11 +20,13 @@ import io.reactivex.Single
 
 class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callback {
 
-    lateinit var binding: ActivityCreateProblemBinding
-    lateinit var unitPer: UnitPersonal
+    private lateinit var binding: ActivityCreateProblemBinding
+    private lateinit var unitPer: UnitPersonal
     private var nameEnable: Boolean
     private lateinit var alertBuilder: AlertDialog.Builder
     private var prob: Int
+    private var direction : Long = 6
+    private lateinit var list : ExpandableListView
 
     init {
         nameEnable = false
@@ -35,7 +39,6 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         binding.createView = CreateProblemViewModel(this, this)
         unitPer = application as UnitPersonal
         binding.createView.creatorName = "Made by " + unitPer.userName
-
         alertBuilder = AlertDialog.Builder(this)
                 .setTitle("画像を取得する方法を選んでください")
                 .setPositiveButton("フォルダ📁", { dialog, which ->

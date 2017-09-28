@@ -13,13 +13,7 @@ import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import android.provider.MediaStore
-import android.provider.MediaStore.Images
 import android.content.ContentValues
-import android.os.Environment
-import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
-import android.os.Environment.getExternalStorageDirectory
 import android.widget.Toast
 
 
@@ -28,8 +22,8 @@ import android.widget.Toast
  */
 class CreateProblemViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
 
-    private lateinit var pUri: Uri
-    private lateinit var aUri: Uri
+    private var pUri: Uri
+    private var aUri: Uri
     private var checkCount: Boolean
     private var termOne: Double
     private val termExtra = "時間(解答回収期間より)"

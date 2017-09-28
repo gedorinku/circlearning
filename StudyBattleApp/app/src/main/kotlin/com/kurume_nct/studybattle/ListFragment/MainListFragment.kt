@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.adapter.ProblemListAdapter
 import com.kurume_nct.studybattle.databinding.FragmentProblemListBinding
@@ -45,29 +46,39 @@ class MainListFragment : Fragment() {
         binding = FragmentProblemListBinding.inflate(inflater, container, false)
         problemList = mutableListOf(Problem(0, "hoge", 0, "hoge"))
         listAdapter = ProblemListAdapter(context, problemList,
-                {
-                    position: Int ->
-                    var intent = Intent(context, LoginActivity::class.java)
+                { position: Int ->
+                    val intent: Intent
                     when (tabId) {
                         resources.getInteger(R.integer.HAVE_PRO) -> {
-                            intent = Intent(context, CameraModeActivity::class.java)
+                            if (position == (listAdapter.itemCount - 1)) {
+                                //server
+                                //changeList()
+                                Toast.makeText(mContext, "新しい問題を取得中...📚", Toast.LENGTH_LONG).show()
+                            } else {
+                                intent = Intent(context, CameraModeActivity::class.java)
+                                startActivity(intent)
+                            }
                         }
                         resources.getInteger(R.integer.ANSWER_YET) -> {
                             intent = Intent(context, AnswerActivity::class.java)
                             intent.putExtra("fin", false)
+                            startActivity(intent)
                         }
                         resources.getInteger(R.integer.ANSWER_FIN) -> {
                             intent = Intent(context, AnswerActivity::class.java)
                             intent.putExtra("fin", true)
+                            startActivity(intent)
                         }
-                        else -> intent = Intent(context, ItemInfoActivity::class.java)
+                        else -> {
+                            intent = Intent(context, ItemInfoActivity::class.java)
+                            startActivity(intent)
+                        }
                     }
-                    startActivity(intent)
                 })
         binding.list.adapter = listAdapter
         binding.list.layoutManager = LinearLayoutManager(binding.list.context) as RecyclerView.LayoutManager?
         //setList()
-        changeList(tabId)
+        changeList()
         return binding.root
     }
 
@@ -81,47 +92,50 @@ class MainListFragment : Fragment() {
         mContext = context!!
     }
 
-    fun changeList(id: Int) {
+    fun changeList() {
         listAdapter.notifyItemRangeRemoved(0, problemList.size)
         problemList.clear()
         when (tabId) {
             resources.getInteger(R.integer.HAVE_PRO) -> {
-                (0..10).forEach {
+                (1..3).forEach {
                     problemList.add(Problem(title = "自分が持っている" + it + "問目", text = "時間"))
+                }
+                if (1 < 3) {
+                    problemList.add(Problem(title = "　＋　新しい問題を追加で取得する"))
                 }
             }
             resources.getInteger(R.integer.ANSWER_YET) -> {
-                (0..10).forEach {
+                (1..3).forEach {
                     problemList.add(Problem(title = "全員が持っている" + it + "問目"))
                 }
             }
             resources.getInteger(R.integer.ANSWER_FIN) -> {
-                (0..10).forEach {
+                (1..3).forEach {
                     problemList.add(Problem(title = "自分が持っている" + it + "問目"))
                 }
             }
             resources.getInteger(R.integer.MADE_COLLECT_YET) -> {
-                (0..10).forEach {
+                (1..3).forEach {
                     problemList.add(Problem())
                 }
             }
             resources.getInteger(R.integer.MADE_JUDGE_YET) -> {
-                (0..10).forEach {
+                (1..3).forEach {
                     problemList.add(Problem())
                 }
             }
             resources.getInteger(R.integer.MADE_FIN) -> {
-                (0..10).forEach {
+                (1..3).forEach {
                     problemList.add(Problem())
                 }
             }
             resources.getInteger(R.integer.SUGGEST_YET) -> {
-                (0..10).forEach {
+                (1..3).forEach {
                     problemList.add(Problem())
                 }
             }
             resources.getInteger(R.integer.SUGGEST_FIN) -> {
-                (0..10).forEach {
+                (1..3).forEach {
                     problemList.add(Problem())
                 }
             }
