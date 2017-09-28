@@ -55,7 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:onClick="@{CreateView.onClickProblemImage ?? @drawable/group}"
+                    android:onClick="@{CreateView.onClickProblemImage}"
                     app:loadProblem="@{CreateView.problemUri}"
                     app:srcCompat="@drawable/group" />
 
@@ -112,7 +112,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:onClick="@{CreateView.onClickAnswerImage ?? @drawable/group}"
+                    android:onClick="@{CreateView.onClickAnswerImage}"
                     app:loadProblem="@{CreateView.answerUri}"
                     app:srcCompat="@drawable/group" />
 

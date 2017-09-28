@@ -28,24 +28,24 @@ import android.widget.Toast
  */
 class CreateProblemViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
 
-    private var pUri: Uri
-    private var aUri: Uri
+    private lateinit var pUri: Uri
+    private lateinit var aUri: Uri
     private var checkCount: Boolean
-    private var termOne : Double
+    private var termOne: Double
     private val termExtra = "時間(解答回収期間より)"
 
     init {
-        pUri = convertUrlFromDrawableResId(context, R.drawable.group)!!
-        aUri = convertUrlFromDrawableResId(context, R.drawable.group)!!
         checkCount = false
         termOne = 24.0
+        pUri = convertUrlFromDrawableResId(context, R.drawable.group)
+        aUri = convertUrlFromDrawableResId(context, R.drawable.group)
     }
 
     companion object {
         @BindingAdapter("loadProblem")
         @JvmStatic
         fun setCreateImage(view: ImageView, uri: Uri?) {
-            if(uri == null){
+            if (uri == null) {
                 Glide.with(view).load(R.drawable.group).into(view)
             }
             Glide.with(view).load(uri).into(view)
@@ -92,15 +92,25 @@ class CreateProblemViewModel(private val context: Context, private val callback:
         checkCount = !checkCount
     }
 
-    fun onGetImage(camera : Int, pro : Int){
-        when(camera){
+    fun onGetImage(camera: Int, pro: Int) {
+        when (camera) {
             0 -> {
                 val intent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
                 callback.startActivityForResult(intent, pro)
             }
-            1 ->{
+            1 -> {
                 //camera
-                Toast.makeText(context, "shushi~!!", Toast.LENGTH_SHORT).show()
+                val photoName = System.currentTimeMillis().toString() + ".jpg"
+                val contentValues = ContentValues()
+                contentValues.put(MediaStore.Images.Media.TITLE, photoName)
+                contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+                val uri = context.contentResolver
+                        .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
+                callback.startActivityForResult(intent, pro)
+                //Toast.makeText(context, "shushi~!!", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -114,28 +124,30 @@ class CreateProblemViewModel(private val context: Context, private val callback:
         callback.alertDialog(0)
     }
 
-    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?){
-        if(data == null)return
-        //Log.d("requestCode is " + requestCode.toString(),"resultCode is" + resultCode.toString())
-        when(requestCode){
+    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (data == null) return
+        when (requestCode) {
             1 -> {
                 pUri = data.data
                 problemUri = pUri
-                callback.getProblemPhoto()
             }
             0 -> {
                 aUri = data.data
                 answerUri = aUri
-                callback.getAnswerPhoto()
             }
         }
     }
 
     fun onClickFinish(view: View) {
-
+        val a = convertUrlFromDrawableResId(context, R.drawable.group)
+        if(problemUri == a || answerUri == a || problemName.isEmpty() || problemName.isBlank()) {
+            Toast.makeText(context, "入力に不備があります(`・ω・´)",Toast.LENGTH_SHORT).show()
+        }else{
+            callback.getCreateData(problemName, problemUri!!, answerUri!!)
+        }
     }
 
-    fun convertUrlFromDrawableResId(context: Context, drawableResId: Int): Uri? {
+    fun convertUrlFromDrawableResId(context: Context, drawableResId: Int): Uri {
         val sb = StringBuilder()
         sb.append(ContentResolver.SCHEME_ANDROID_RESOURCE)
         sb.append("://")
@@ -148,11 +160,9 @@ class CreateProblemViewModel(private val context: Context, private val callback:
     }
 
     interface Callback {
-
         fun checkNameEnable(enable: Boolean)
         fun startActivityForResult(intent: Intent, requestCode: Int)
-        fun getProblemPhoto()
-        fun getAnswerPhoto()
-        fun alertDialog(pro : Int)
+        fun getCreateData(title: String, problemUri: Uri, answerUri: Uri)
+        fun alertDialog(pro: Int)
     }
 }
