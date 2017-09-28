@@ -1,7 +1,6 @@
 package com.kurume_nct.studybattle.view
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
@@ -19,11 +18,11 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
     lateinit var unitPer : UnitPersonal
     private var nameEnable : Boolean
     private lateinit var alertBuilder: AlertDialog.Builder
-    private var photo : Int
+    private var prob: Int
 
     init {
         nameEnable = false
-        photo = -1
+        prob = -1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,20 +31,16 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         binding.createView = CreateProblemViewModel(this,this)
         unitPer = application as UnitPersonal
         binding.createView.creatorName = "Made by " + unitPer.userName
-    }
 
-    fun setAlert(){
         alertBuilder = AlertDialog.Builder(this)
-                .setMessage("")
-                .setTitle("")
-                .setPositiveButton("",DialogInterface
-                        .OnClickListener { dialog, which ->
-                            photo = 1
-                        })
-                .setNegativeButton("",DialogInterface
-                        .OnClickListener { dialog, which ->
-                            photo = 2
-                        })
+                .setTitle("画像を取得する方法を選んでください")
+                .setPositiveButton("フォルダ📁", { dialog, which ->
+                    binding.createView.onGetImage(0, prob)
+                })
+                .setNegativeButton("カメラ📷", { dialog, which ->
+                    binding.createView.onGetImage(1, prob)
+                })
+
     }
 
     override fun checkNameEnable(enable: Boolean) {
@@ -59,16 +54,15 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
     }
 
     override fun getProblemPhoto() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun getAnswerPhoto() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
-    override fun alertDialog(): Int {
-        photo = -1
-        alertBuilder.create()
-        return photo
+    override fun alertDialog(pro : Int){
+        prob = pro
+        alertBuilder.create().show()
     }
 }

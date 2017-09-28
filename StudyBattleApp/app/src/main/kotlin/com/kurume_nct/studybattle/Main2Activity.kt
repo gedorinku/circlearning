@@ -56,9 +56,7 @@ class Main2Activity : AppCompatActivity() {
     fun onToolBar(){
         val fab = findViewById(R.id.fab)
         fab.setOnClickListener {
-            Toast.makeText(this,"問題作成", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this, CreateProblemActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, CreateProblemActivity::class.java))
         }
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         toolbar.title = userName

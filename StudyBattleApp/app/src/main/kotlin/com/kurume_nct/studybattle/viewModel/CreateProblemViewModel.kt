@@ -1,6 +1,5 @@
 package com.kurume_nct.studybattle.viewModel
 
-import android.app.AlertDialog
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
@@ -8,12 +7,21 @@ import android.databinding.BaseObservable
 import android.databinding.Bindable
 import android.databinding.BindingAdapter
 import android.net.Uri
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
+import android.provider.MediaStore
+import android.provider.MediaStore.Images
+import android.content.ContentValues
+import android.os.Environment
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
+import android.os.Environment.getExternalStorageDirectory
+import android.widget.Toast
+
 
 /**
  * Created by hanah on 9/26/2017.
@@ -84,42 +92,38 @@ class CreateProblemViewModel(private val context: Context, private val callback:
         checkCount = !checkCount
     }
 
-    fun onClickProblemImage(view: View) {
-        //using alert screen ans to do to choice photo or image
-        when(callback.alertDialog()){
+    fun onGetImage(camera : Int, pro : Int){
+        when(camera){
             0 -> {
                 val intent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
-                callback.startActivityForResult(intent, 0)
+                callback.startActivityForResult(intent, pro)
             }
             1 ->{
-
+                //camera
+                Toast.makeText(context, "shushi~!!", Toast.LENGTH_SHORT).show()
             }
         }
+    }
 
+    fun onClickProblemImage(view: View) {
+        callback.alertDialog(1)
+        //using alert screen ans to do to choice photo or image
     }
 
     fun onClickAnswerImage(view: View) {
-        when(callback.alertDialog()){
-            0 -> {
-                val intent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
-                callback.startActivityForResult(intent, 1)
-            }
-            1 ->{
-
-            }
-        }
+        callback.alertDialog(0)
     }
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?){
         if(data == null)return
         //Log.d("requestCode is " + requestCode.toString(),"resultCode is" + resultCode.toString())
         when(requestCode){
-            0 -> {
+            1 -> {
                 pUri = data.data
                 problemUri = pUri
                 callback.getProblemPhoto()
             }
-            1 -> {
+            0 -> {
                 aUri = data.data
                 answerUri = aUri
                 callback.getAnswerPhoto()
@@ -149,6 +153,6 @@ class CreateProblemViewModel(private val context: Context, private val callback:
         fun startActivityForResult(intent: Intent, requestCode: Int)
         fun getProblemPhoto()
         fun getAnswerPhoto()
-        fun alertDialog() : Int
+        fun alertDialog(pro : Int)
     }
 }
