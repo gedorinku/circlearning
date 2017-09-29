@@ -86,6 +86,8 @@ class CreateProblemViewModel(private val context: Context, private val callback:
         checkCount = !checkCount
     }
 
+
+    //permission dialogをだす。
     fun onGetImage(camera: Int, pro: Int) {
         when (camera) {
             0 -> {

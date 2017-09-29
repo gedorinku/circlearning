@@ -3,7 +3,7 @@ package com.kurume_nct.studybattle.view
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import com.kurume_nct.studybattle.ListFragment.GroupListFragment
+import com.kurume_nct.studybattle.listFragment.GroupListFragment
 
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.databinding.ActivityRankingBinding

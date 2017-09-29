@@ -3,6 +3,8 @@ package com.kurume_nct.studybattle.view
 import android.app.AlertDialog
 import android.content.Intent
 import android.databinding.DataBindingUtil
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -15,6 +17,7 @@ import android.widget.SimpleExpandableListAdapter
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.databinding.ActivityCreateProblemBinding
+import com.kurume_nct.studybattle.listFragment.DirectionListFragment
 import com.kurume_nct.studybattle.viewModel.CreateProblemViewModel
 import io.reactivex.Single
 
@@ -47,7 +50,9 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
                 .setNegativeButton("カメラ📷", { dialog, which ->
                     binding.createView.onGetImage(1, prob)
                 })
-
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.directions_container, DirectionListFragment().newInstance())
+                .commit()
     }
 
     override fun checkNameEnable(enable: Boolean) {
@@ -68,11 +73,14 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
             finish()
         }
         thxAlert.setView(thxView)
-        thxAlert.create().show()
+        val alert = thxAlert.create()
+        alert.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alert.show()
     }
 
     override fun alertDialog(pro: Int) {
         prob = pro
-        alertBuilder.create().show()
+        val alert =  alertBuilder.create()
+        alert.show()
     }
 }
