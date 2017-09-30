@@ -12,6 +12,7 @@ class UnitPersonal : Application(){
 
     //書き直せるところはこのglobal変数を使うように書き換える
 
+    var groupCount : Int
     var userName : String
     var newUser : Boolean
     var nowGroup : Int
@@ -21,6 +22,7 @@ class UnitPersonal : Application(){
         userName = ""
         newUser = true
         nowGroup = 0
+        groupCount = 6
     }
 
     override fun onCreate() {
