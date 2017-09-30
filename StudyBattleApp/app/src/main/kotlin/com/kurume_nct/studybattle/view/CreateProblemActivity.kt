@@ -1,6 +1,7 @@
 package com.kurume_nct.studybattle.view
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.graphics.Color
@@ -9,19 +10,15 @@ import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.ExpandableListView
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.SimpleExpandableListAdapter
+import android.widget.*
 
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.databinding.ActivityCreateProblemBinding
-import com.kurume_nct.studybattle.listFragment.DirectionListFragment
+import com.kurume_nct.studybattle.listFragment.DirectionFragment
 import com.kurume_nct.studybattle.viewModel.CreateProblemViewModel
-import io.reactivex.Single
 
-class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callback {
+class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callback, DatePickerDialog.OnDateSetListener {
 
     private lateinit var binding: ActivityCreateProblemBinding
     private lateinit var unitPer: UnitPersonal
@@ -51,7 +48,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
                     binding.createView.onGetImage(1, prob)
                 })
         supportFragmentManager.beginTransaction()
-                .replace(R.id.directions_container, DirectionListFragment().newInstance())
+                .replace(R.id.directions_container, DirectionFragment().newInstance())
                 .commit()
     }
 
@@ -76,6 +73,17 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         val alert = thxAlert.create()
         alert.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         alert.show()
+    }
+
+    override fun onDateDialog() {
+        DirectionFragment().newInstance().show(supportFragmentManager,"tag")
+    }
+
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        binding.createView.let {
+            it.day = year.toString() + "年" + (month + 1).toString() + "月" + dayOfMonth.toString() + "日"
+        }
+        Log.d(binding.createView.day,"change")
     }
 
     override fun alertDialog(pro: Int) {

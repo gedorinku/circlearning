@@ -17,13 +17,5 @@
             android:layout_height="wrap_content"
             android:text="@{DierctionItem.num}" />
 
-        <TextView
-            android:id="@+id/textView33"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="日間"
-            android:textSize="14sp" />
-
     </LinearLayout>
 </layout>

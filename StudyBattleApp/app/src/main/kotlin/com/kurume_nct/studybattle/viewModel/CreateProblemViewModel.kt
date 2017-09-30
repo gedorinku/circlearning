@@ -69,6 +69,18 @@ class CreateProblemViewModel(private val context: Context, private val callback:
         }
 
     @Bindable
+    var day = "5日"
+        get
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.day)
+        }
+
+    fun onClickDateChange(view: View){
+        callback.onDateDialog()
+    }
+
+    @Bindable
     var answerUri = aUri
         get
         set(value) {
@@ -160,5 +172,6 @@ class CreateProblemViewModel(private val context: Context, private val callback:
         fun startActivityForResult(intent: Intent, requestCode: Int)
         fun getCreateData(title: String, problemUri: Uri, answerUri: Uri)
         fun alertDialog(pro: Int)
+        fun onDateDialog()
     }
 }

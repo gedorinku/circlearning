@@ -73,14 +73,50 @@
                     android:id="@+id/textView16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="解答回収期間" />
+                    android:text="解答回収日" />
 
                 <LinearLayout
                     android:id="@+id/directions_container"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView33"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@{CreateView.day}"
+                        android:textAlignment="textEnd"
+                        android:textSize="18sp" />
+
+                    <!-->
+                    <CheckedTextView
+                        android:id="@+id/checkedTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@{CreateView.day}"
+                        android:onClick="@{CreateView.onClickDateChange}"/>
+                   <-->
+
+                    <TextView
+                        android:id="@+id/textView36"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="に回収" />
+
+                    <Button
+                        android:id="@+id/button7"
+                        android:layout_width="20dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="@{CreateView.onClickDateChange}"
+                        android:text="変更" />
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/textView24"
