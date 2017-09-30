@@ -9,8 +9,9 @@ import org.joda.time.Duration
  */
 data class LoginResult(val authenticationKey: String = "")
 
-//TODO 名前とかも取得できるようにします、ごめんなさい
-data class Group(val id: Int = 0)
+data class User(val id: Int = 0, val userName: String = "", val displayName: String = "")
+
+data class Group(val id: Int = 0, val name: String = "", val owner: User = User())
 
 data class Image(
         val id: Int = 0,

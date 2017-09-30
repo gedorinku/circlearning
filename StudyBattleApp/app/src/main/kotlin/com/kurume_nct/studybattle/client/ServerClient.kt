@@ -60,6 +60,10 @@ class ServerClient(authenticationKey: String = "") {
 
     fun joinGroup(group: Group) = joinGroup(group.id)
 
+    fun getGroup(id: Int) = server.getGroup(id, authenticationKey)
+
+    fun getGroup(group: Group) = getGroup(group.id)
+
     fun uploadImage(inputStream: InputStream, type: String): Observable<Image> {
         val bytes = inputStream.use {
             val buffer = mutableListOf<Byte>()

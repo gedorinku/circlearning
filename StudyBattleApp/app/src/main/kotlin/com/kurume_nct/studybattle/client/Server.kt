@@ -39,6 +39,13 @@ interface Server {
             @Field("groupId") groupId: Int
     ): Observable<Unit>
 
+    @FormUrlEncoded
+    @POST("/group/{id}")
+    fun getGroup(
+            @Path("id") groupId: Int,
+            @Field("authenticationKey") authenticationKey: String
+    ): Observable<Group>
+
     @Multipart
     @POST("/image/upload")
     fun uploadImage(

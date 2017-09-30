@@ -69,9 +69,20 @@ class ServerClientTest {
     @Test
     fun createAndJoinGroupTest() {
         val groupName = "kamesan_" + printHex(generateRandomBytes(4))
-        client.createGroup(groupName)
-                .flatMap { client.joinGroup(it.id) }
-                .blockingSubscribe()
+
+        val group = client.createGroup(groupName)
+                .blockingFirst()
+        assertEquals(groupName, group.name)
+        assert(0 < group.id)
+
+
+        val testSubscriber = client.joinGroup(group)
+                .test()
+
+        testSubscriber.awaitTerminalEvent()
+        testSubscriber
+                .assertNoErrors()
+                .assertNoTimeout()
     }
 
     @Test
