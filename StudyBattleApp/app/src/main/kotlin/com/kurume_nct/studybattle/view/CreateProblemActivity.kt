@@ -50,6 +50,10 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         supportFragmentManager.beginTransaction()
                 .replace(R.id.directions_container, DirectionFragment().newInstance())
                 .commit()
+        val date = DirectionFragment().onGetInitDate()
+        binding.createView.let {
+            it.day = date[0].toString() + "年" + date[1].toString() + "月" + date[2].toString() + "日"
+        }
     }
 
     override fun checkNameEnable(enable: Boolean) {

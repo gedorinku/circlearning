@@ -2,20 +2,16 @@ package com.kurume_nct.studybattle.listFragment
 
 import android.app.DatePickerDialog
 import android.app.Dialog
-import android.icu.util.Calendar
-import android.icu.util.GregorianCalendar
-import android.os.Build
 import android.os.Bundle
-import android.support.annotation.RequiresApi
 import android.support.v4.app.DialogFragment
-import android.util.Log
 import android.widget.DatePicker
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.view.CreateProblemActivity
+import java.util.*
 
 class DirectionFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
-    @RequiresApi(Build.VERSION_CODES.N)
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val personal = UnitPersonal()
         val peopleCount = personal.groupCount
@@ -30,8 +26,7 @@ class DirectionFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
                 , cMonth
                 , cDay
         )
-
-        c.add(Calendar.DAY_OF_MONTH, 3)
+        c.add(Calendar.DAY_OF_MONTH, 6)
         val geoF = GregorianCalendar()
         geoF.set(c[Calendar.YEAR], c[Calendar.MONTH], c[Calendar.DAY_OF_MONTH])
         c.add(Calendar.DAY_OF_MONTH, peopleCount * 6)
@@ -41,6 +36,12 @@ class DirectionFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
         datePicker.minDate = geoF.timeInMillis
         datePicker.maxDate = geoE.timeInMillis
         return datePickerDialog
+    }
+
+    fun onGetInitDate() : MutableList<Int>{
+        val c = Calendar.getInstance()
+        c.add(Calendar.DAY_OF_MONTH, 6)
+        return mutableListOf(c[Calendar.YEAR], c[Calendar.MONTH] + 1,c[Calendar.DAY_OF_MONTH])
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
