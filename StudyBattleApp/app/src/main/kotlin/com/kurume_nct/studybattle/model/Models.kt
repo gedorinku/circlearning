@@ -36,6 +36,12 @@ data class Problem(
     val duration: Duration by lazy { Duration.millis(durationMillis) }
 }
 
+data class ProblemRequestResponse(
+        val accepted: Boolean = false,
+        val message: String = "",
+        val problem: Problem = Problem()
+)
+
 data class Solution(
         val id: Int = 0,
         val text: String = "",

@@ -66,6 +66,20 @@ interface Server {
     ): Observable<Problem>
 
     @FormUrlEncoded
+    @POST("/problem/assigned")
+    fun getAssignedProblems(
+            @Field("authenticationKey") authenticationKey: String,
+            @Field("groupId") groupId: Int
+    ): Observable<List<Problem>>
+
+    @FormUrlEncoded
+    @POST("/problem/request_new")
+    fun requestNewProblem(
+            @Field("authenticationKey") authenticationKey: String,
+            @Field("groupId") groupId: Int
+    ): Observable<ProblemRequestResponse>
+
+    @FormUrlEncoded
     @POST("/solution/create")
     fun createSolution(
             @Field("authenticationKey") authenticationKey: String,

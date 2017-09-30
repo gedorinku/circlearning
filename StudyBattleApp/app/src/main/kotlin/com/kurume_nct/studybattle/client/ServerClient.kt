@@ -35,8 +35,7 @@ class ServerClient(authenticationKey: String = "") {
                 .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
                 .create()
         val retrofit = Retrofit.Builder()
-                //.baseUrl("http://studybattle.dip.jp:8080")
-                .baseUrl("http://localhost:8080")
+                .baseUrl("http://studybattle.dip.jp:8080")
                 .addConverterFactory(StringConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -116,6 +115,20 @@ class ServerClient(authenticationKey: String = "") {
                     }
 
     fun getProblem(id: Int): Observable<Problem> = server.getProblem(authenticationKey, id)
+
+    fun getAssignedProblems(group: Group) = getAssignedProblems(group.id)
+
+    fun getAssignedProblems(groupId: Int) = server.getAssignedProblems(authenticationKey, groupId)
+
+    /**
+     * 新しい問題を自分に割り当てるよう要求します。
+     */
+    fun requestNewProblem(group: Group) = requestNewProblem(group.id)
+
+    /**
+     * 新しい問題を自分に割り当てるよう要求します。
+     */
+    fun requestNewProblem(groupId: Int) = server.requestNewProblem(authenticationKey, groupId)
 
     fun createSolution(
             text: String, problem: Problem, imageIds: List<Int>
