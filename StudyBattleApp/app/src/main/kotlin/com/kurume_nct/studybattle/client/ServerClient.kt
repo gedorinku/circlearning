@@ -35,7 +35,8 @@ class ServerClient(authenticationKey: String = "") {
                 .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
                 .create()
         val retrofit = Retrofit.Builder()
-                .baseUrl("http://studybattle.dip.jp:8080")
+                //.baseUrl("http://studybattle.dip.jp:8080")
+                .baseUrl("http://localhost:8080")
                 .addConverterFactory(StringConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -98,7 +99,7 @@ class ServerClient(authenticationKey: String = "") {
     }
 
     fun createProblem(
-            title: String, text: String, imageIds: List<Int>, startsAt: DateTime, duration: Duration
+            title: String, text: String, imageIds: List<Int>, startsAt: DateTime, duration: Duration, groupId: Int
     ): Observable<Problem> =
             server
                     .createProblem(
@@ -107,7 +108,8 @@ class ServerClient(authenticationKey: String = "") {
                             text,
                             imageIds.toIntArray(),
                             startsAt.toString(),
-                            duration.millis
+                            duration.millis,
+                            groupId
                     )
                     .flatMap {
                         getProblem(it.id)

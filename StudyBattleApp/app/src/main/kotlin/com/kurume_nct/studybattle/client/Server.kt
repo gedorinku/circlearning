@@ -54,7 +54,8 @@ interface Server {
             @Field("text") text: String,
             @Field("imageIds[]") imageIds: IntArray,
             @Field("startsAt") startsAt: String,
-            @Field("durationMillis") durationMillis: Long
+            @Field("durationMillis") durationMillis: Long,
+            @Field("groupId") groupId: Int
     ): Observable<IDResponse>
 
     @FormUrlEncoded

@@ -96,6 +96,17 @@ class ServerClientTest {
 
     @Test
     fun createProblemAndSolutionTest() {
+        val groupId = {
+            val groupName = "kamesan_" + printHex(generateRandomBytes(4))
+            client.createGroup(groupName)
+                    .map {
+                        client.joinGroup(it.id)
+                                .blockingSubscribe()
+                        it.id
+                    }
+                    .blockingFirst()
+        }()
+
         val problem = {
             val problemTitle = "hoge"
             val problemText = "うぇい\nそいい\nabc"
@@ -103,7 +114,7 @@ class ServerClientTest {
             val duration = Duration.standardHours(1)
 
             val testSubscriber = client
-                    .createProblem(problemTitle, problemText, emptyList(), startsAt, duration)
+                    .createProblem(problemTitle, problemText, emptyList(), startsAt, duration, groupId)
                     .test()
 
             testSubscriber.awaitTerminalEvent()
