@@ -49,7 +49,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:checked="false"
-                        android:text="〇正解"
+                        android:text="正解"
                         android:textAlignment="center" />
 
                     <RadioButton
@@ -57,7 +57,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:foregroundGravity="center"
-                        android:text="×間違え" />
+                        android:text="間違え" />
                 </RadioGroup>
 
                 <Button

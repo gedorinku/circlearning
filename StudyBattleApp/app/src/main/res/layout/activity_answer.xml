@@ -43,7 +43,7 @@
                         android:text="@{AnswerAct.masterNameAns}" />
 
                     <TextView
-                        android:id="@+id/textView15"
+                        android:id="@+id/problem_score_ans_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

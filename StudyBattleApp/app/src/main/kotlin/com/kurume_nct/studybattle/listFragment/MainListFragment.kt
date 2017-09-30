@@ -61,11 +61,36 @@ class MainListFragment : Fragment() {
                         }
                         resources.getInteger(R.integer.ANSWER_YET) -> {
                             intent = Intent(context, AnswerActivity::class.java)
-                            intent.putExtra("fin", false)
+                            intent.putExtra("fin", 1)
                             startActivity(intent)
                         }
                         resources.getInteger(R.integer.ANSWER_FIN) -> {
                             intent = Intent(context, AnswerActivity::class.java)
+                            intent.putExtra("fin", 2)
+                            startActivity(intent)
+                        }
+                        resources.getInteger(R.integer.MADE_COLLECT_YET) -> {
+                            //TODO
+                            intent = Intent(context, ItemInfoActivity::class.java)
+                            startActivity(intent)
+                        }
+                        resources.getInteger(R.integer.MADE_JUDGE_YET) -> {
+                            intent = Intent(context, AnswerActivity::class.java)
+                            intent.putExtra("fin", 0)
+                            startActivity(intent)
+                        }
+                        resources.getInteger(R.integer.MADE_FIN) -> {
+                            intent = Intent(context, AnswerActivity::class.java)
+                            intent.putExtra("fin", 2)
+                            startActivity(intent)
+                        }
+                        resources.getInteger(R.integer.SUGGEST_YET) -> {
+                            intent = Intent(context, PersonalAnswerActivity::class.java)
+                            intent.putExtra("fin", false)
+                            startActivity(intent)
+                        }
+                        resources.getInteger(R.integer.SUGGEST_FIN) -> {
+                            intent = Intent(context, PersonalAnswerActivity::class.java)
                             intent.putExtra("fin", true)
                             startActivity(intent)
                         }
