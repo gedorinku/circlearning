@@ -14,6 +14,8 @@ import com.kurume_nct.studybattle.databinding.FragmentAnswerListBinding
 import com.kurume_nct.studybattle.model.EveryAns
 import com.kurume_nct.studybattle.view.AnswerActivity
 import com.kurume_nct.studybattle.view.PersonalAnswerActivity
+import com.kurume_nct.studybattle.view.ScoringActivity
+import java.text.FieldPosition
 
 
 class AnswerFragment : Fragment() {
@@ -47,13 +49,27 @@ class AnswerFragment : Fragment() {
         }
         listAdapter = AnswerRecyclerViewAdapter(context, answerList,{
             position: Int ->
-            Log.d(position.toString() + " ","sushi")
-            val intent = Intent(context, PersonalAnswerActivity::class.java)
-            startActivity(intent)
+            val intent = Intent(context, ScoringActivity()::class.java)
+            intent.putExtra("position", position)
+            startActivityForResult(intent, position)
         })
         binding.answersList.adapter = listAdapter
         binding.answersList.layoutManager = GridLayoutManager(binding.answersList.context, mColumnCount)
         return binding.root
+    }
+
+    private fun changeImage(position: Int, cor : Boolean){
+        answerList[position].collect = cor
+        listAdapter.notifyItemChanged(position)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(resultCode){
+            5 ->{
+                changeImage(requestCode, data.getBooleanExtra("Result", false))
+            }
+        }
     }
 
 
