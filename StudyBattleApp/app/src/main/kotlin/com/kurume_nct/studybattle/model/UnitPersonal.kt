@@ -16,6 +16,7 @@ class UnitPersonal : Application(){
     var userName : String
     var newUser : Boolean
     var nowGroup : Int
+    var itemCount : MutableList<Int>
     private lateinit var prefer: SharedPreferences
 
     init {
@@ -23,6 +24,7 @@ class UnitPersonal : Application(){
         newUser = true
         nowGroup = 0
         groupCount = 6
+        itemCount = mutableListOf(0,0,0)
     }
 
     override fun onCreate() {
