@@ -10,13 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:gravity="center"
-        app:srcCompat="@drawable/upicon1" />
+        app:srcCompat="@drawable/upicon3" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="top|center_horizontal"
-        android:text="全員の解答"
+        android:text="自作の問題"
         android:textSize="10sp" />
 </LinearLayout>

@@ -3,8 +3,10 @@
     package="com.kurume_nct.studybattle">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
+        android:name=".model.UnitPersonal"
         android:allowBackup="true"
         android:icon="@drawable/icon_cut"
         android:label="@string/app_name"
@@ -15,12 +17,19 @@
         <activity android:name=".view.RegistrationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".view.LoginActivity" />
         <activity android:name=".view.LotteryActivity" />
         <activity android:name=".view.CameraModeActivity" />
+        <activity android:name=".view.ItemInfoActivity" />
+        <activity android:name=".view.RankingActivity" />
+        <activity android:name=".view.CreateProblemActivity" />
+        <activity android:name=".view.AnswerActivity" />
+        <activity android:name=".view.PersonalAnswerActivity" />
+        <activity android:name=".view.ScoringActivity"/>
     </application>
 
 </manifest>

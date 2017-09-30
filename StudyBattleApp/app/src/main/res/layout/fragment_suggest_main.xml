@@ -19,19 +19,38 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/textView3_"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"
+                    android:text="提出した解答(採点済み)"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:id="@+id/fragment_list_suggested"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+                <TextView
                     android:id="@+id/textView3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
-                    android:text="✎今持っている問題✎"
-                    android:textColor="@color/colorAccent"
+                    android:text="提出した解答(未採点)"
+                    android:textColor="@color/md_amber_800"
                     android:textSize="18sp"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:layout_editor_absoluteX="8dp" />
 
                 <LinearLayout
-                    android:id="@+id/fragment_list"
+                    android:id="@+id/fragment_list_suggested_yet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"

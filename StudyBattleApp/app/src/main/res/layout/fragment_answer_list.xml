@@ -6,7 +6,7 @@
         android:layout_height="wrap_content">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/list"
+            android:id="@+id/answers_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbarStyle="insideInset"

@@ -6,15 +6,17 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.kurume_nct.studybattle.Main2Activity
 import com.kurume_nct.studybattle.R
+import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.databinding.ActivityRegistrationBinding
 import com.kurume_nct.studybattle.viewModel.RegistrationViewModel
 
 /**
  * A login screen that offers login via email/password.
  */
-class RegistrationActivity : AppCompatActivity() , RegistrationViewModel.Callback {
+class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback {
 
-    lateinit var binding : ActivityRegistrationBinding
+    lateinit var binding: ActivityRegistrationBinding
+    lateinit var unitPer : UnitPersonal
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,16 +24,27 @@ class RegistrationActivity : AppCompatActivity() , RegistrationViewModel.Callbac
         binding = DataBindingUtil.setContentView(this, R.layout.activity_registration)
         binding.userEntity = RegistrationViewModel(this, this)
 
+        unitPer = application as UnitPersonal
+
+        if (!unitPer.newUser) {
+            onLogin(unitPer.userName, "")
+        }
+
     }
 
     override fun toLoginActivity() {
-        startActivity(Intent(this,LoginActivity::class.java))
+        startActivity(Intent(this, LoginActivity::class.java))
         finish()
     }
 
-    override fun onLogin() {
-        val intent = Intent(this,Main2Activity::class.java)
-        intent.putExtra("userName","葉月しずく")
+    override fun onLogin(name: String, password: String) {
+        if (unitPer.newUser) {
+            unitPer.userName = name
+            unitPer.writeFile()
+            //server
+        }
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.putExtra("userName", name)
         startActivity(intent)
         finish()
     }
