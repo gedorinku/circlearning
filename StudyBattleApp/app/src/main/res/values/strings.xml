@@ -14,6 +14,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="magic_hand_explain">提出する時に使うことができて\n自分が問題に正解したら、\nその問題を間違えた人から\nスコアを奪い取ることができるよ。</string>
     <string name="errorLoginStatus">ユーザー名とパスワードを入力してください</string>
     <string name="hint_input_user_name">ユーザー名（半角英数のみ2~20文字）</string>
     <string name="hint_input_user_password">パスワード</string>
@@ -31,6 +32,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="item_info_title">アイテム一覧</string>
+    <string name="magic_hand">マジックハンド</string>
+    <string name="bomb">爆弾</string>
+    <string name="twice_card">2倍カード</string>
+    <string name="shield">盾</string>
     <array name="item">
         <item>@drawable/framecard_bomb</item>
         <item>@drawable/framecard_card</item>

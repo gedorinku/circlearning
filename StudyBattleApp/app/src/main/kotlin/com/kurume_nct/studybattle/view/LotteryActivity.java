@@ -14,8 +14,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.kurume_nct.studybattle.MainActivity;
 import com.kurume_nct.studybattle.R;
 
 
@@ -121,8 +119,7 @@ public class LotteryActivity extends Activity{
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent=new Intent(getApplication(),MainActivity.class);
-                startActivity(intent);
+                finish();
             }
         },2500);
 

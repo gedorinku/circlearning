@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="HAVE_PRO">0</integer>
+    <integer name="ANSWER_YET">1</integer>
+    <integer name="ANSWER_FIN">2</integer>
+    <integer name="MADE_COLLECT_YET">3</integer>
+    <integer name="MADE_JUDGE_YET">4</integer>
+    <integer name="MADE_FIN">5</integer>
+    <integer name="SUGGEST_YET">6</integer>
+    <integer name="SUGGEST_FIN">7</integer>
+</resources>
