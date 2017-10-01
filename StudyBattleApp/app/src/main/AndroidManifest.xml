@@ -30,7 +30,8 @@
         <activity android:name=".view.AnswerActivity" />
         <activity android:name=".view.PersonalAnswerActivity" />
         <activity android:name=".view.ScoringActivity" />
-        <activity android:name=".view.MadeCollectYetActivity"></activity>
+        <activity android:name=".view.MadeCollectYetActivity" />
+        <activity android:name=".view.GroupSetChangeActivity"></activity>
     </application>
 
 </manifest>

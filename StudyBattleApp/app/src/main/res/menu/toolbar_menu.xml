@@ -5,21 +5,32 @@
     <item
         android:id="@+id/to_item"
         android:icon="@drawable/bomb"
-        android:title="@string/action_settings"
         android:orderInCategory="100"
-        app:showAsAction="always"/>
+        android:title="@string/action_settings"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/to_ranking"
         android:icon="@drawable/ranking"
         android:orderInCategory="100"
-        app:showAsAction="always"
-        android:title="hoge" />
+        android:title="hoge"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/to_setting"
         android:icon="@android:drawable/ic_menu_manage"
         android:orderInCategory="100"
         android:title="hoge"
-        app:showAsAction="always" />
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/to_change_member"
+                android:title="グループの設定">
+            </item>
+            <item
+                android:id="@+id/to_setting_group"
+                android:title="Information・・・？">
+            </item>
+        </menu>
+    </item>
 </menu>

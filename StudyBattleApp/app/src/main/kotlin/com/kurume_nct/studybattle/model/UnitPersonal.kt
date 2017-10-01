@@ -3,7 +3,13 @@ package com.kurume_nct.studybattle.model
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.Uri
+import com.bumptech.glide.Glide
+import com.kurume_nct.studybattle.R
 import com.mikepenz.materialdrawer.model.ExpandableDrawerItem
+import android.support.annotation.RawRes
+
+
 
 /**
  * Created by hanah on 9/24/2017.
@@ -12,12 +18,14 @@ class UnitPersonal : Application(){
 
     //書き直せるところはこのglobal変数を使うように書き換える
 
-    var groupCount : Int
+
     var userName : String
+    lateinit var userIcon : Uri
     var newUser : Boolean
     var nowGroup : Int
     var itemCount : MutableList<Int>
     private lateinit var prefer: SharedPreferences
+    var groupCount : Int
 
     init {
         userName = ""
@@ -34,7 +42,10 @@ class UnitPersonal : Application(){
         if(userName != "?????"){
             newUser = false
         }
+        userIcon = getIconUri(R.drawable.group)
     }
+
+    fun getIconUri(@RawRes resId: Int) = Uri.parse("android.resource://$packageName/$resId")
 
     fun writeFile(){
         //add login_key too

@@ -34,7 +34,7 @@ class Main2Activity : AppCompatActivity() {
         userName = unitPer.userName
         Log.d(userName,unitPer.userName)
         onTabLayout()
-        onNavigationDrower()
+        onNavigationDrawer()
         onToolBar()
     }
 
@@ -52,6 +52,7 @@ class Main2Activity : AppCompatActivity() {
             when(item.itemId){
                 R.id.to_item -> startActivity(Intent(this, ItemInfoActivity::class.java))
                 R.id.to_ranking -> startActivity(Intent(this, RankingActivity::class.java))
+                R.id.to_change_member -> startActivity(Intent(this, ItemInfoActivity::class.java))
             }
             false
         }
@@ -87,7 +88,7 @@ class Main2Activity : AppCompatActivity() {
         }
     }
 
-    fun onNavigationDrower(){
+    private fun onNavigationDrawer(){
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         val groupID : Int = intent.getIntExtra("groupID",0)
         val list : MutableList<Person_> = mutableListOf(Person_(id = 0))
@@ -101,7 +102,7 @@ class Main2Activity : AppCompatActivity() {
                         ProfileDrawerItem()
                                 .withName(userName)
                                 .withEmail("GroupID is " + groupID.toString())
-                                .withIcon(R.drawable.icon_gost)
+                                .withIcon(unitPer.userIcon)
                                 .withIdentifier(acountCount)
                 )
                 .withOnAccountHeaderListener(AccountHeader.OnAccountHeaderListener { view, profile, currentProfile -> false })

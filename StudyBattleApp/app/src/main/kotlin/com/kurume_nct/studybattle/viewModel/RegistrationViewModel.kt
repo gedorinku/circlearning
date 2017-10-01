@@ -110,10 +110,10 @@ class RegistrationViewModel(private val context: Context, private val callback: 
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
                     }, {
-                        Toast.makeText(context, context.getString(R.string.usedUserNameAlart), Toast.LENGTH_LONG).show()
+                        countSuccess++
                         countDown.countDown()
                     }, {
-                        countSuccess++
+                        Toast.makeText(context, context.getString(R.string.usedUserNameAlart), Toast.LENGTH_LONG).show()
                         countDown.countDown()
                     })
             ServerClient().uploadImage(imageUri, context)
@@ -129,7 +129,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
                     })
             countDown.await()
             if (countSuccess == 2) {
-                callback.onLogin(userName,userPassword)
+                callback.onLogin(userName,userPassword,iconImageUri)
             }
         }
     }
@@ -143,7 +143,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
         imageBitmap = ImageCustom().onUriToBitmap(context,iconImageUri)
     }
 
-    fun onClickChengeIconImage(view: View) {
+    fun onClickChangeIconImage(view: View) {
         val intent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
         callback.startActivityForResult(intent, REQUEST_CODE)
     }
@@ -154,7 +154,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
         return Bitmap.createScaledBitmap(bitmap, 100, 100, false)
     }
 
-    fun convertUrlFromDrawableResId(context: Context, drawableResId: Int): Uri? {
+    private fun convertUrlFromDrawableResId(context: Context, drawableResId: Int): Uri? {
         val sb = StringBuilder()
         sb.append(ContentResolver.SCHEME_ANDROID_RESOURCE)
         sb.append("://")
@@ -170,7 +170,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
 
         fun toLoginActivity()
 
-        fun onLogin(name : String, password : String)
+        fun onLogin(name : String, password : String, icon: Uri)
 
         fun startActivityForResult(intent: Intent, requestCode: Int)
 
