@@ -8,13 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.kurume_nct.studybattle.BR
+import com.kurume_nct.studybattle.CreateGroupViewModel
 import com.kurume_nct.studybattle.R
+import com.kurume_nct.studybattle.databinding.GroupObjectBinding
 import com.kurume_nct.studybattle.model.Person_
 
 /**
  * Created by hanah on 9/22/2017.
  */
-class PictureListAdapter(context: Context, val list: MutableList<Person_>, val callbacks: (Int) -> Unit)
+class PictureListAdapter(val context: Context, val list: MutableList<Person_>, val callbacks: (Int) -> Unit)
     : RecyclerView.Adapter<PictureListAdapter.GroupListHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupListHolder {
@@ -35,6 +37,6 @@ class PictureListAdapter(context: Context, val list: MutableList<Person_>, val c
     override fun getItemCount(): Int = list.size
 
     inner class GroupListHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val binding: ViewDataBinding = DataBindingUtil.bind(view)
+        val binding: GroupObjectBinding = DataBindingUtil.bind(view)
     }
 }

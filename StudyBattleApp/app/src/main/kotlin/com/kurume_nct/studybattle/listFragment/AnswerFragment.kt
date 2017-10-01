@@ -52,13 +52,13 @@ class AnswerFragment : Fragment() {
         (0 until ansCount).forEach {
             when (fin) {
                 CHECK_ANS -> {
-                    answerList.add(EveryAns(id = it))
+                    answerList.add(EveryAns(id = it, name = "hunachi" + "の解答"))
                 }
                 YET_ANS -> {
-                    answerList.add(EveryAns(id = it, fin = true))
+                    answerList.add(EveryAns(id = it, name = "hunachi" + "の解答", fin = true))
                 }
                 FIN_ANS -> {
-                    answerList.add(EveryAns(id = it, fin = true))
+                    answerList.add(EveryAns(id = it, name = "hunachi" + "の解答", fin = true))
                 }
             }
         }
@@ -90,6 +90,7 @@ class AnswerFragment : Fragment() {
 
     private fun changeImage(position: Int, cor: Boolean) {
         answerList[position].collect = cor
+        answerList[position].fin = true
         listAdapter.notifyItemChanged(position)
     }
 

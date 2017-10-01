@@ -33,10 +33,10 @@ class ScoringActivity : AppCompatActivity() {
         binding.radioScoring.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.radio_correct -> {
-                    scoreBoolean = false
+                    scoreBoolean = true
                 }
                 R.id.radio_mistake -> {
-                    scoreBoolean = true
+                    scoreBoolean = false
                 }
             }
         }

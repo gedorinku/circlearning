@@ -130,9 +130,7 @@ class Main2Activity : AppCompatActivity() {
                     view, position, drawerItem ->
                     var intent = Intent(this,Main2Activity::class.java)
                     if(position == list.size + 1){
-                        intent.putExtra("groupID",position)
-                        //intent.putExtra("userName",userName)
-                        intent = Intent(this,RegistrationActivity::class.java)
+                        intent = Intent(this,CreateGroupActivity::class.java)
                         startActivity(intent)
                         finish()
                         //Still i have to update Main2Activity

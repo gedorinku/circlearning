@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="SelectPeopleUnit"
+            type="com.kurume_nct.studybattle.SelectMainPeopleViewModel"/>
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageView15"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="right|center"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/upicon1" />
+
+            <EditText
+                android:id="@+id/editText7"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="検索したい名前を入力して下さい"
+                android:inputType="textPersonName"
+                android:text="まだこの機能は実装されてません。" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fragment_search_list"
+            android:layout_width="320dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/textView42"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="今の時点で選ばれている人" />
+
+        <LinearLayout
+            android:id="@+id/fragment_select_list"
+            android:layout_width="322dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:orientation="vertical" />
+
+    </LinearLayout>
+</layout>
