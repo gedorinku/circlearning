@@ -3,7 +3,11 @@
     package="com.kurume_nct.studybattle">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+<<<<<<< HEAD
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+=======
     <uses-permission android:name="android.permission.CAMERA" />
+>>>>>>> master
 
     <application
         android:name=".model.UnitPersonal"
@@ -13,16 +17,32 @@
         android:roundIcon="@drawable/icon_cut"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+<<<<<<< HEAD
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+
+=======
+>>>>>>> master
         <activity android:name=".Main2Activity" />
         <activity android:name=".view.RegistrationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".view.LoginActivity" />
         <activity android:name=".view.LotteryActivity" />
+<<<<<<< HEAD
+        <activity android:name=".view.CameraModeActivityllll" />
+=======
         <activity android:name=".view.CameraModeActivity" />
         <activity android:name=".view.ItemInfoActivity" />
         <activity android:name=".view.RankingActivity" />
@@ -30,6 +50,7 @@
         <activity android:name=".view.AnswerActivity" />
         <activity android:name=".view.PersonalAnswerActivity" />
         <activity android:name=".view.ScoringActivity"/>
+>>>>>>> master
     </application>
 
 </manifest>
