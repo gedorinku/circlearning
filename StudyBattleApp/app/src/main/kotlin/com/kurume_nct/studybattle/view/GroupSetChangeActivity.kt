@@ -3,15 +3,11 @@ package com.kurume_nct.studybattle.view
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.util.Log
-import android.widget.Toast
-import com.kurume_nct.studybattle.GroupSetChangeViewModel
+import com.kurume_nct.studybattle.viewModel.GroupSetChangeViewModel
 
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.databinding.ActivityGroupSetChangeBinding
 import com.kurume_nct.studybattle.listFragment.GroupListFragment
-import com.kurume_nct.studybattle.listFragment.MainListFragment
 
 class GroupSetChangeActivity : AppCompatActivity(), GroupSetChangeViewModel.Callback {
 
