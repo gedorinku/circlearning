@@ -1,60 +1,104 @@
 package com.kurume_nct.studybattle.client
 
-import android.media.Image
-import android.view.Display
+import com.kurume_nct.studybattle.model.*
 import io.reactivex.Observable
-import io.reactivex.Observer
-import io.reactivex.Single
-import okhttp3.RequestBody
+import okhttp3.MultipartBody
 import retrofit2.http.*
-import java.sql.Time
 
 /**
  * Created by hanah on 7/31/2017.
  */
 interface Server {
 
-    @Multipart
+    @FormUrlEncoded
     @POST("/register")
-    fun register(@Part("displayName") displayName : String, @Part("userName") userName: String, @Part("password") password: String) : Observable<String>
+    fun register(
+            @Field("displayName") displayName: String,
+            @Field("userName") userName: String,
+            @Field("password") password: String
+    ): Observable<Unit>
 
-    @Multipart
+    @FormUrlEncoded
     @POST("/login")
-    fun login(@Part("userName") userName: String, @Part("password") password: String) : Observable<String>
+    fun login(
+            @Field("userName") userName: String,
+            @Field("password") password: String
+    ): Observable<LoginResult>
+
+    @FormUrlEncoded
+    @POST("/group/new")
+    fun createGroup(
+            @Field("authenticationKey") authenticationKey: String,
+            @Field("name") name: String
+    ): Observable<Group>
+
+    @FormUrlEncoded
+    @POST("/group/join")
+    fun joinGroup(
+            @Field("authenticationKey") authenticationKey: String,
+            @Field("groupId") groupId: Int
+    ): Observable<Unit>
+
+    @FormUrlEncoded
+    @POST("/group/{id}")
+    fun getGroup(
+            @Path("id") groupId: Int,
+            @Field("authenticationKey") authenticationKey: String
+    ): Observable<Group>
 
     @Multipart
     @POST("/image/upload")
-    fun imageUpload(@Part("authenticationKey") password: RequestBody,@Part("image") image: RequestBody) : Single<Int>
-    /*これ以降は企画書のapiのところに合わせて書きなおす*/
+    fun uploadImage(
+            @Part() authenticationKey: MultipartBody.Part,
+            @Part() image: MultipartBody.Part
+    ): Observable<Image>
 
-    @Multipart
-    @POST("hoge/{title}/{contentId}/{lifeTime}")
-    fun setProblem(@Path("title") title : String, @Path("contnetId") content : Int, @Path("lifeTime") lifeTime : Time) : Observable<Problem> //Time->LocalDateTime
+    @FormUrlEncoded
+    @POST("/problem/create")
+    fun createProblem(
+            @Field("authenticationKey") authenticationKey: String,
+            @Field("title") title: String,
+            @Field("text") text: String,
+            @Field("imageIds[]") imageIds: IntArray,
+            @Field("startsAt") startsAt: String,
+            @Field("durationMillis") durationMillis: Long,
+            @Field("groupId") groupId: Int
+    ): Observable<IDResponse>
 
-    //いらない機能？
-    @Multipart
-    @POST("hoge/{id}/{title}/{contentId}/{text}/{lifeTime}")
-    fun repairProblem(@Path("id") id : Int, @Path("title") title: String, @Path("contentId") content: Int, @Path("text") text : String, @Path("lifeTime")lifeTime: Time) : Observable<Problem> //Time->TimeSpan
+    @FormUrlEncoded
+    @POST("/problem/{id}")
+    fun getProblem(
+            @Field("authenticationKey") authenticationKey: String,
+            @Path("id") id: Int
+    ): Observable<Problem>
 
-    @Multipart
-    @POST("hoge/{id}")
-    fun searchContent(@Path("id") id : Int) : Observable<Content>
+    @FormUrlEncoded
+    @POST("/problem/assigned")
+    fun getAssignedProblems(
+            @Field("authenticationKey") authenticationKey: String,
+            @Field("groupId") groupId: Int
+    ): Observable<List<Problem>>
 
-    @Multipart
-    @POST("hoge/{id}")
-    fun searchProblem(@Path("id") id: Int) : Observable<Problem>
+    @FormUrlEncoded
+    @POST("/problem/request_new")
+    fun requestNewProblem(
+            @Field("authenticationKey") authenticationKey: String,
+            @Field("groupId") groupId: Int
+    ): Observable<ProblemRequestResponse>
 
-    @Multipart
-    @POST("hoge/{id}")
-    fun getProblemItem(@Path("id") id: Int) : Observable<List<ItemStack>> //問題についているアイテム一覧の取得
+    @FormUrlEncoded
+    @POST("/solution/create")
+    fun createSolution(
+            @Field("authenticationKey") authenticationKey: String,
+            @Field("text") text: String,
+            @Field("problemId") problemId: Int,
+            @Field("imageIds[]") imageIds: IntArray
+    ): Observable<IDResponse>
 
-    @Multipart
-    @POST("hoge/{id}")
-    fun getSolution(@Path("id") id: Int) : Observable<Solution>
-
-    @Multipart
-    @POST("hoge/{id}") //Comment.id : ProblemIdと思ってる
-    fun getComment(@Path("id") id: Int) : Observable<Comment>
-
-    //AuthenticationResult??
+    @FormUrlEncoded
+    @POST("/solution/{id}")
+    fun getSolution(
+            @Field("authenticationKey") authenticationKey: String,
+            @Path("id") id: Int
+    ): Observable<Solution>
 }

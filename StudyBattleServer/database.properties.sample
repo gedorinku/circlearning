@@ -1,4 +1,0 @@
-url=jdbc:mysql://localhost/study_battle
-driver=com.mysql.jdbc.Driver
-user=root
-password=
