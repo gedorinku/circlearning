@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 
 import com.kurume_nct.studybattle.model.Person_
 import com.kurume_nct.studybattle.adapter.PictureListAdapter
@@ -33,7 +34,7 @@ class GroupListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        //listのしょりとか
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -47,6 +48,11 @@ class GroupListFragment : Fragment() {
                 {
                     position: Int ->
                     //item
+                    when(activityId){
+                        3 -> {
+                            Toast.makeText(activity, position.toString() + "さんを追加します", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 })
         binding.groupList2.adapter = listAdapter
         binding.groupList2.layoutManager = LinearLayoutManager(binding.groupList2.context)
@@ -55,8 +61,10 @@ class GroupListFragment : Fragment() {
     }
 
     fun addListInstance(){
+        grouplist.clear()
         when (activityId) {
-            0 -> (0..10).forEach { grouplist.add(Person_(score = it.toString() + "点")) }
+            0 -> (0..3).forEach { grouplist.add(Person_(score = it.toString() + "点")) }
+            3 -> (0..3).forEach { grouplist.add(Person_()) }
         }
         listAdapter.notifyItemRangeInserted(0,grouplist.size)
     }

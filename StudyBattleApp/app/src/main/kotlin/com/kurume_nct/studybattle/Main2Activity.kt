@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 
 import com.kurume_nct.studybattle.adapter.MainPagerAdapter
 import com.kurume_nct.studybattle.model.Person_
@@ -52,7 +53,10 @@ class Main2Activity : AppCompatActivity() {
             when(item.itemId){
                 R.id.to_item -> startActivity(Intent(this, ItemInfoActivity::class.java))
                 R.id.to_ranking -> startActivity(Intent(this, RankingActivity::class.java))
-                R.id.to_change_member -> startActivity(Intent(this, ItemInfoActivity::class.java))
+                R.id.to_change_member -> startActivity(Intent(this, GroupSetChangeActivity::class.java))
+                R.id.to_setting_group -> {
+                    Toast.makeText(this, "ググっGoogleさん！", Toast.LENGTH_SHORT).show()
+                }
             }
             false
         }
