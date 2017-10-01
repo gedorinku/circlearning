@@ -38,9 +38,10 @@
     <string name="twice_card">2倍カード</string>
     <string name="shield">盾</string>
     <array name="item">
-        <item>@drawable/bomb</item>
-        <item>@drawable/card</item>
-        <item>@drawable/magichand</item>
-        <item>@drawable/shield</item>
+        <item>@drawable/framecard_bomb</item>
+        <item>@drawable/framecard_card</item>
+        <item>@drawable/framecard_magichand</item>
+        <item>@drawable/framecard_shield</item>
+        <item>@drawable/hazure</item>
     </array>
 </resources>
