@@ -56,42 +56,49 @@ class MainListFragment : Fragment() {
                                 Toast.makeText(mContext, "新しい問題を取得中...📚", Toast.LENGTH_LONG).show()
                             } else {
                                 intent = Intent(context, CameraModeActivity::class.java)
+                                intent.putExtra("id", problemList[position].id)
                                 startActivity(intent)
                             }
                         }
                         resources.getInteger(R.integer.ANSWER_YET) -> {
                             intent = Intent(context, AnswerActivity::class.java)
+                            intent.putExtra("id", problemList[position].id)
                             intent.putExtra("fin", 1)
                             startActivity(intent)
                         }
                         resources.getInteger(R.integer.ANSWER_FIN) -> {
                             intent = Intent(context, AnswerActivity::class.java)
+                            intent.putExtra("id", problemList[position].id)
                             intent.putExtra("fin", 2)
                             startActivity(intent)
                         }
                         resources.getInteger(R.integer.MADE_COLLECT_YET) -> {
-                            //TODO
-                            intent = Intent(context, ItemInfoActivity::class.java)
+                            intent = Intent(context, MadeCollectYetActivity::class.java)
+                            intent.putExtra("id", problemList[position].id)
                             startActivity(intent)
                         }
                         resources.getInteger(R.integer.MADE_JUDGE_YET) -> {
                             intent = Intent(context, AnswerActivity::class.java)
                             intent.putExtra("fin", 0)
+                            intent.putExtra("id", problemList[position].id)
                             startActivity(intent)
                         }
                         resources.getInteger(R.integer.MADE_FIN) -> {
                             intent = Intent(context, AnswerActivity::class.java)
                             intent.putExtra("fin", 2)
+                            intent.putExtra("id", problemList[position].id)
                             startActivity(intent)
                         }
                         resources.getInteger(R.integer.SUGGEST_YET) -> {
                             intent = Intent(context, PersonalAnswerActivity::class.java)
                             intent.putExtra("fin", false)
+                            intent.putExtra("id", problemList[position].id)
                             startActivity(intent)
                         }
                         resources.getInteger(R.integer.SUGGEST_FIN) -> {
                             intent = Intent(context, PersonalAnswerActivity::class.java)
                             intent.putExtra("fin", true)
+                            intent.putExtra("id", problemList[position].id)
                             startActivity(intent)
                         }
                         else -> {
@@ -101,15 +108,9 @@ class MainListFragment : Fragment() {
                     }
                 })
         binding.list.adapter = listAdapter
-        binding.list.layoutManager = LinearLayoutManager(binding.list.context) as RecyclerView.LayoutManager?
-        //setList()
+        binding.list.layoutManager = LinearLayoutManager(binding.list.context)
         changeList()
         return binding.root
-    }
-
-
-    override fun onStart() {
-        super.onStart()
     }
 
     override fun onAttach(context: Context?) {
@@ -141,34 +142,33 @@ class MainListFragment : Fragment() {
             }
             resources.getInteger(R.integer.MADE_COLLECT_YET) -> {
                 (1..3).forEach {
-                    problemList.add(Problem())
+                    problemList.add(Problem(title = "自分が持っている" + it + "問目"))
                 }
             }
             resources.getInteger(R.integer.MADE_JUDGE_YET) -> {
                 (1..3).forEach {
-                    problemList.add(Problem())
+                    problemList.add(Problem(title = "自分が持っている" + it + "問目"))
                 }
             }
             resources.getInteger(R.integer.MADE_FIN) -> {
                 (1..3).forEach {
-                    problemList.add(Problem())
+                    problemList.add(Problem(title = "自分が持っている" + it + "問目"))
                 }
             }
             resources.getInteger(R.integer.SUGGEST_YET) -> {
                 (1..3).forEach {
-                    problemList.add(Problem())
+                    problemList.add(Problem(title = "自分が持っている" + it + "問目"))
                 }
             }
             resources.getInteger(R.integer.SUGGEST_FIN) -> {
                 (1..3).forEach {
-                    problemList.add(Problem())
+                    problemList.add(Problem(title = "自分が持っている" + it + "問目"))
                 }
             }
         }
         binding.list.adapter = listAdapter
         binding.list.layoutManager = LinearLayoutManager(binding.list.context)
         listAdapter.notifyItemRangeInserted(0, problemList.size)
-        // Log.d(problemList.size.toString(), tabId.toString())
     }
 
     fun finish() {

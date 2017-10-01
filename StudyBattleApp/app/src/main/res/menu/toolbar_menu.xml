@@ -15,4 +15,11 @@
         android:orderInCategory="100"
         app:showAsAction="always"
         android:title="hoge" />
+
+    <item
+        android:id="@+id/to_setting"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:orderInCategory="100"
+        android:title="hoge"
+        app:showAsAction="always" />
 </menu>

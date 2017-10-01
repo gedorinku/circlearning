@@ -29,7 +29,8 @@
         <activity android:name=".view.CreateProblemActivity" />
         <activity android:name=".view.AnswerActivity" />
         <activity android:name=".view.PersonalAnswerActivity" />
-        <activity android:name=".view.ScoringActivity"/>
+        <activity android:name=".view.ScoringActivity" />
+        <activity android:name=".view.MadeCollectYetActivity"></activity>
     </application>
 
 </manifest>
