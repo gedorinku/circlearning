@@ -53,16 +53,15 @@ interface Server {
             @Part() image: MultipartBody.Part
     ): Observable<Image>
 
-    @FormUrlEncoded
     @POST("/problem/create")
+    @Headers(
+            "Accept: application/JSON",
+            "Content-type: application/JSON",
+            "Data-Type: JSON",
+            "Script-Charset: utf-8"
+    )
     fun createProblem(
-            @Field("authenticationKey") authenticationKey: String,
-            @Field("title") title: String,
-            @Field("text") text: String,
-            @Field("imageIds[]") imageIds: IntArray,
-            @Field("startsAt") startsAt: String,
-            @Field("durationMillis") durationMillis: Long,
-            @Field("groupId") groupId: Int
+            @Body body: String
     ): Observable<IDResponse>
 
     @FormUrlEncoded

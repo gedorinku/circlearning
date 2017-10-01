@@ -3,6 +3,7 @@ package com.kurume_nct.studybattle.client
 import android.content.Context
 import android.net.Uri
 import com.google.gson.FieldNamingPolicy
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.kurume_nct.studybattle.model.Group
 import com.kurume_nct.studybattle.model.Image
@@ -36,6 +37,7 @@ class ServerClient(authenticationKey: String = "") {
                 .create()
         val retrofit = Retrofit.Builder()
                 .baseUrl("http://studybattle.dip.jp:8080")
+                //.baseUrl("http://localhost:8080")
                 .addConverterFactory(StringConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -102,21 +104,25 @@ class ServerClient(authenticationKey: String = "") {
     }
 
     fun createProblem(
-            title: String, text: String, imageIds: List<Int>, startsAt: DateTime, duration: Duration, groupId: Int
-    ): Observable<Problem> =
-            server
-                    .createProblem(
-                            authenticationKey,
-                            title,
-                            text,
-                            imageIds.toIntArray(),
-                            startsAt.toString(),
-                            duration.millis,
-                            groupId
-                    )
-                    .flatMap {
-                        getProblem(it.id)
-                    }
+            title: String, text: String, imageIds: List<Int>, startsAt: DateTime, duration: Duration, groupId: Int, assumedSolution: Solution
+    ): Observable<Problem> {
+        val gson = Gson()
+        val body = mapOf(
+                "authenticationKey" to authenticationKey,
+                "title" to title,
+                "text" to text,
+                "imageIds" to imageIds,
+                "startsAt" to startsAt.toString(),
+                "durationMillis" to duration.millis,
+                "groupId" to groupId,
+                "assumedSolution" to assumedSolution
+        )
+        val hoge = gson.toJson(body)
+        println(hoge)
+        return server
+                .createProblem(hoge)
+                .flatMap { server.getProblem(authenticationKey, it.id) }
+    }
 
     fun getProblem(id: Int): Observable<Problem> = server.getProblem(authenticationKey, id)
 
