@@ -16,9 +16,7 @@
                 android:layout_height="50dp"
                 android:background="@color/colorLightBlue"
                 android:title=""
-                android:titleTextColor="@color/colorPrimaryDark"
-                android:weightSum="1">
-            </android.support.v7.widget.Toolbar>
+                android:titleTextColor="@color/colorPrimaryDark" />
 
         </android.support.design.widget.AppBarLayout>
 

@@ -45,6 +45,7 @@ public class CameraModeActivity extends Activity {
 
     private ImageView imageview;
     private Button libraryButton;
+<<<<<<< HEAD
     private TextView comment;
     private TextView experiment;//これで実験試してる
     private int flag = 0;
@@ -54,6 +55,12 @@ public class CameraModeActivity extends Activity {
     private Uri cameraUri;
     private String filePath;
 
+=======
+    private TextView commnent_;
+    private ImageView shock;
+    private int flag=0;
+    private String userName;
+>>>>>>> master
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,10 +139,17 @@ public class CameraModeActivity extends Activity {
             public void onClick(View view) {
                 if (flag == 1) {
                     Intent intent1 = new Intent(getApplication(), LotteryActivity.class);
+<<<<<<< HEAD
                     intent1.putExtra("userName", userName);
                     startActivity(intent1);
                     finish();
                 } else comment.setText("解答を提出してください");
+=======
+                    intent1.putExtra("userName",userName);
+                    startActivity(intent1);
+                    finish();
+                }else commnent_.setText("解答を提出してください");
+>>>>>>> master
             }
         });
     }

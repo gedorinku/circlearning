@@ -1,44 +1,40 @@
 package com.kurume_nct.studybattle.client
 
+import android.content.Context
 import android.net.Uri
-import android.util.Log
-import android.widget.Toast
 import com.google.gson.FieldNamingPolicy
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.kurume_nct.studybattle.viewModel.RegistrationViewModel
-import io.reactivex.Observer
-import io.reactivex.Scheduler
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.exceptions.OnErrorNotImplementedException
-import io.reactivex.schedulers.Schedulers
-import okhttp3.MediaType
+import com.kurume_nct.studybattle.model.Group
+import com.kurume_nct.studybattle.model.Image
+import com.kurume_nct.studybattle.model.Problem
+import com.kurume_nct.studybattle.model.Solution
+import io.reactivex.Observable
+import okhttp3.*
+import org.joda.time.DateTime
+import org.joda.time.Duration
+import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import okhttp3.RequestBody
-import okhttp3.ResponseBody
-import retrofit2.Converter
-import java.io.File
-import java.io.IOException
+import java.io.InputStream
 import java.lang.reflect.Type
 
 
 /**
  * Created by hanah on 7/31/2017.
  */
-class ServerClient{
+class ServerClient(authenticationKey: String = "") {
 
-    var gson : Gson
-    var retrofit : Retrofit
-    var server : Server
+    private val server: Server
+
+    var authenticationKey: String = authenticationKey
+        private set
 
     init {
-        gson = GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_DASHES)
+        val gson = GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
                 .create()
-        retrofit = Retrofit.Builder()
+        val retrofit = Retrofit.Builder()
                 .baseUrl("http://studybattle.dip.jp:8080")
                 .addConverterFactory(StringConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
@@ -47,19 +43,112 @@ class ServerClient{
         server = retrofit.create(Server::class.java)
     }
 
-    fun onRegistration(displayName : String, userName: String, password: String)
-        = server.register(displayName, userName, password)
+    fun register(displayName: String, userName: String, password: String): Observable<Unit>
+            = server.register(displayName, userName, password)
 
-    fun onUploadImage(authorityKey : String, url: Uri): Single<Int> {
-        val file = File(url.path)
-        val keyRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), authorityKey)
-        val imageRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-        return server.imageUpload(keyRequestBody,imageRequestBody)
+    fun login(userName: String, password: String)
+            = server
+            .login(userName, password)
+            .map {
+                authenticationKey = it.authenticationKey
+                it
+            }!!
+
+    fun createGroup(name: String) = server.createGroup(authenticationKey, name)
+
+    fun joinGroup(id: Int) = server.joinGroup(authenticationKey, id)
+
+    fun joinGroup(group: Group) = joinGroup(group.id)
+
+    fun getGroup(id: Int) = server.getGroup(id, authenticationKey)
+
+    fun getGroup(group: Group) = getGroup(group.id)
+
+    fun uploadImage(inputStream: InputStream, type: String): Observable<Image> {
+        val bytes = inputStream.use {
+            val buffer = mutableListOf<Byte>()
+            while (true) {
+                val temp = it.read()
+                if (temp == -1) {
+                    break
+                }
+                buffer.add(temp.toByte())
+            }
+            buffer.toByteArray()
+        }
+
+        val authenticationKeyPart = MultipartBody.Part.create(
+                Headers.of(mapOf("Content-Disposition" to "form-data; name=\"authenticationKey\"")),
+                RequestBody.create(
+                        MediaType.parse(type),
+                        authenticationKey
+                )
+        )
+        val fileExtension = type.substring("image/".length)
+        val imagePart = MultipartBody.Part.create(
+                Headers.of(mapOf("Content-Disposition" to "form-data; name=\"image\"; filename=\"hoge.$fileExtension\"")),
+                RequestBody.create(
+                        MediaType.parse(type),
+                        bytes
+                )
+        )
+
+        return server.uploadImage(authenticationKeyPart, imagePart)
     }
 
+    fun uploadImage(uri: Uri, context: Context): Observable<Image> {
+        val contentResolver = context.contentResolver
+        return uploadImage(contentResolver.openInputStream(uri), contentResolver.getType(uri))
+    }
+
+    fun createProblem(
+            title: String, text: String, imageIds: List<Int>, startsAt: DateTime, duration: Duration, groupId: Int
+    ): Observable<Problem> =
+            server
+                    .createProblem(
+                            authenticationKey,
+                            title,
+                            text,
+                            imageIds.toIntArray(),
+                            startsAt.toString(),
+                            duration.millis,
+                            groupId
+                    )
+                    .flatMap {
+                        getProblem(it.id)
+                    }
+
+    fun getProblem(id: Int): Observable<Problem> = server.getProblem(authenticationKey, id)
+
+    fun getAssignedProblems(group: Group) = getAssignedProblems(group.id)
+
+    fun getAssignedProblems(groupId: Int) = server.getAssignedProblems(authenticationKey, groupId)
+
+    /**
+     * 新しい問題を自分に割り当てるよう要求します。
+     */
+    fun requestNewProblem(group: Group) = requestNewProblem(group.id)
+
+    /**
+     * 新しい問題を自分に割り当てるよう要求します。
+     */
+    fun requestNewProblem(groupId: Int) = server.requestNewProblem(authenticationKey, groupId)
+
+    fun createSolution(
+            text: String, problem: Problem, imageIds: List<Int>
+    ): Observable<Solution> = createSolution(text, problem.id, imageIds)
+
+    fun createSolution(
+            text: String, problemId: Int, imageIds: List<Int>
+    ): Observable<Solution> =
+            server
+                    .createSolution(authenticationKey, text, problemId, imageIds.toIntArray())
+                    .flatMap {
+                        server.getSolution(authenticationKey, it.id)
+                    }
 }
 
-class StringConverterFactory : Converter.Factory() {
+private class StringConverterFactory : Converter.Factory() {
 
     override fun responseBodyConverter(type: Type, annotations: Array<Annotation>, retrofit: Retrofit): Converter<ResponseBody, *>? {
         if (String::class.java == type) {

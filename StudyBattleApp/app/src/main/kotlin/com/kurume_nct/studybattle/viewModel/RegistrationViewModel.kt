@@ -48,7 +48,6 @@ class RegistrationViewModel(private val context: Context, private val callback: 
         @BindingAdapter("loadImage")
         @JvmStatic
         fun setIconImage(view: ImageView, uri: Uri?) {
-
             if (uri == null) {
                 Glide.with(view).load(R.drawable.icon_gost).into(view)//loadの中にresourceを入れたらtestできる
             } else {
@@ -106,7 +105,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
             //sever処理
             val countDown: CountDownLatch = CountDownLatch(2)
             var countSuccess = 0
-            ServerClient().onRegistration(displayName, userName, userPassword)
+            ServerClient().register(displayName, userName, userPassword)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
@@ -117,12 +116,11 @@ class RegistrationViewModel(private val context: Context, private val callback: 
                         countSuccess++
                         countDown.countDown()
                     })
-            ServerClient().onUploadImage(userPassword, imageUri
-            )
+            ServerClient().uploadImage(imageUri, context)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
-                        iconId = it
+                        iconId = it.id
                         countDown.countDown()
                         countSuccess++
                     }, {
@@ -131,7 +129,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
                     })
             countDown.await()
             if (countSuccess == 2) {
-                callback.onLogin()
+                callback.onLogin(userName,userPassword)
             }
         }
     }
@@ -172,7 +170,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
 
         fun toLoginActivity()
 
-        fun onLogin()
+        fun onLogin(name : String, password : String)
 
         fun startActivityForResult(intent: Intent, requestCode: Int)
 

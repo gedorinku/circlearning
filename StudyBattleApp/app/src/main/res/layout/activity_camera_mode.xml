@@ -6,9 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/backgroud"
+<<<<<<< HEAD
     tools:context=".CameraModeActivity"
     tools:layout_editor_absoluteY="81dp"
     tools:layout_editor_absoluteX="0dp">
+=======
+    tools:context=".view.CameraModeActivity">
+>>>>>>> master
 
 
     <LinearLayout

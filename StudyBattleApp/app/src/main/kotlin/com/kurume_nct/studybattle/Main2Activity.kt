@@ -1,45 +1,38 @@
 package com.kurume_nct.studybattle
 
-import android.content.Context
 import android.content.Intent
-import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.design.widget.NavigationView
 import android.support.design.widget.TabLayout
-import android.support.v4.view.GravityCompat
 import android.support.v4.view.ViewPager
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.*
-import android.widget.Button
 
-import android.widget.Toast
-import com.kurume_nct.studybattle.ListFragment.GroupListFragment
 import com.kurume_nct.studybattle.adapter.MainPagerAdapter
-import com.kurume_nct.studybattle.`object`.Person_Group
-import com.kurume_nct.studybattle.databinding.AppBarMain2Binding
-import com.kurume_nct.studybattle.databinding.GroupListBinding
-import com.kurume_nct.studybattle.view.RegistrationActivity
+import com.kurume_nct.studybattle.model.Person_
+import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.view.*
 import com.mikepenz.google_material_typeface_library.GoogleMaterial
 import com.mikepenz.materialdrawer.DrawerBuilder
-import com.mikepenz.materialdrawer.model.interfaces.IProfile
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
-import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 
 
 class Main2Activity : AppCompatActivity() {
 
+    private var userName = "Kotlin"
+    private lateinit var unitPer : UnitPersonal
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
+        //userName = intent.getStringExtra("userName") ?: userName
+        unitPer = application as UnitPersonal
+        userName = unitPer.userName
+        Log.d(userName,unitPer.userName)
         onTabLayout()
         onNavigationDrower()
         onToolBar()
@@ -49,17 +42,16 @@ class Main2Activity : AppCompatActivity() {
     fun onToolBar(){
         val fab = findViewById(R.id.fab)
         fab.setOnClickListener {
-            Toast.makeText(this,"問題作成", Toast.LENGTH_SHORT).show()
-            Log.d("ho","ho")
+            startActivity(Intent(this, CreateProblemActivity::class.java))
         }
         val toolbar = findViewById(R.id.toolbar) as Toolbar
-        toolbar.title = "hunachi"
+        toolbar.title = userName
         toolbar.inflateMenu(R.menu.toolbar_menu)
         toolbar.setOnMenuItemClickListener {
             item ->
             when(item.itemId){
-                R.id.to_item -> Toast.makeText(this,"Item", Toast.LENGTH_SHORT).show()
-                R.id.to_ranking -> Toast.makeText(this,"Ranking", Toast.LENGTH_SHORT).show()
+                R.id.to_item -> startActivity(Intent(this, ItemInfoActivity::class.java))
+                R.id.to_ranking -> startActivity(Intent(this, RankingActivity::class.java))
             }
             false
         }
@@ -88,9 +80,9 @@ class Main2Activity : AppCompatActivity() {
                 1 -> tab?.customView =
                         LayoutInflater.from(this).inflate(R.layout.tab_custom_1,null)
                 2 -> tab?.customView =
-                        LayoutInflater.from(this).inflate(R.layout.tab_custom_0,null)
+                        LayoutInflater.from(this).inflate(R.layout.tab_custom_2,null)
                 3 -> tab?.customView =
-                        LayoutInflater.from(this).inflate(R.layout.tab_custom_1,null)
+                        LayoutInflater.from(this).inflate(R.layout.tab_custom_3,null)
             }
         }
     }
@@ -98,8 +90,8 @@ class Main2Activity : AppCompatActivity() {
     fun onNavigationDrower(){
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         val groupID : Int = intent.getIntExtra("groupID",0)
-        val list : MutableList<Person_Group> = mutableListOf(Person_Group(id = 0))
-        list.add(Person_Group(id = list.size))
+        val list : MutableList<Person_> = mutableListOf(Person_(id = 0))
+        list.add(Person_(id = list.size))
         // Create the AccountHeader
         var acountCount : Long = 0
         val headerResult = AccountHeaderBuilder()
@@ -107,7 +99,7 @@ class Main2Activity : AppCompatActivity() {
                 .withHeaderBackground(R.color.md_red_A700)
                 .addProfiles(
                         ProfileDrawerItem()
-                                .withName("_hunachi")
+                                .withName(userName)
                                 .withEmail("GroupID is " + groupID.toString())
                                 .withIcon(R.drawable.icon_gost)
                                 .withIdentifier(acountCount)
@@ -118,7 +110,7 @@ class Main2Activity : AppCompatActivity() {
         acountCount++
         headerResult.addProfiles(
                 ProfileDrawerItem()
-                        .withName("hu_nachi")
+                        .withName("hunachi-bata")
                         .withEmail("GroupID is " + groupID.toString())
                         .withIcon(R.drawable.icon)
                         .withIdentifier(acountCount)
@@ -134,13 +126,14 @@ class Main2Activity : AppCompatActivity() {
                     var intent = Intent(this,Main2Activity::class.java)
                     if(position == list.size + 1){
                         intent.putExtra("groupID",position)
-                        startActivity(intent)
-                        finish()
+                        //intent.putExtra("userName",userName)
                         intent = Intent(this,RegistrationActivity::class.java)
                         startActivity(intent)
+                        finish()
                         //Still i have to update Main2Activity
                     }else{
                         intent.putExtra("groupID",position)
+                        //intent.putExtra("userName",userName)
                         startActivity(intent)
                         finish()
                     }
@@ -148,7 +141,10 @@ class Main2Activity : AppCompatActivity() {
                 }
                 .build()
         //Create the Item of list
-        for ((name, id) in list) result.addItem(PrimaryDrawerItem().withIdentifier(id.toLong()).withName(name).withIcon(GoogleMaterial.Icon.gmd_people))
+        for(a in list){
+            result.addItem(PrimaryDrawerItem().withIdentifier(a.id.toLong()).withName(a.name).withIcon(GoogleMaterial.Icon.gmd_people))
+        }
+      //  for ((name, id) in list) result.addItem(PrimaryDrawerItem().withIdentifier(id.toLong()).withName(name).withIcon(GoogleMaterial.Icon.gmd_people))
         result.addItem(PrimaryDrawerItem().withIdentifier(list.size.toLong()).withName("新しくグループを作る").withIcon(GoogleMaterial.Icon.gmd_add))
     }
 

@@ -10,13 +10,15 @@ import android.view.View
 import android.view.ViewGroup
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
-import com.kurume_nct.studybattle.`object`.Problem
-import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter
+import com.kurume_nct.studybattle.model.Problem
 
 class ProblemListAdapter(context: Context, val list: MutableList<Problem>, val callBack: (Int) -> Unit)
     : RecyclerView.Adapter<ProblemListAdapter.ProblemListHolder>(){
 
     override fun onBindViewHolder(holder: ProblemListHolder, position: Int) {
+        if(list[position].text == ""){
+            //holder.binding.setVariable()
+        }
         holder.binding.setVariable(BR.Item, list[position])
     }
 
