@@ -3,6 +3,7 @@ package com.kurume_nct.studybattle.view
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.kurume_nct.studybattle.listFragment.GroupListFragment
 
 import com.kurume_nct.studybattle.R
@@ -15,6 +16,7 @@ class RankingActivity : AppCompatActivity(), RankingViewModel.Callback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("i'm ", javaClass.name)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_ranking)
         binding.ranking = RankingViewModel(this,this)
         supportFragmentManager.beginTransaction()

@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.util.Log
 import android.widget.DatePicker
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.view.CreateProblemActivity
@@ -13,6 +14,7 @@ class DirectionFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        Log.d("i'm ", javaClass.name)
         val personal = UnitPersonal()
         val peopleCount = personal.groupCount
         val c = Calendar.getInstance()

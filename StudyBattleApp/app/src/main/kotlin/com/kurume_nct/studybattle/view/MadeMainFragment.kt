@@ -3,6 +3,7 @@ package com.kurume_nct.studybattle.view
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ class MadeMainFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        Log.d("i'm ", javaClass.name)
         binding = FragmentMadeMainBinding.inflate(inflater,container,false)
 
         mContent.supportFragmentManager

@@ -6,6 +6,7 @@ import android.graphics.drawable.Icon
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.kurume_nct.studybattle.Main2Activity
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.model.UnitPersonal
@@ -22,7 +23,7 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        Log.d("i'm ", javaClass.name)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_registration)
         binding.userEntity = RegistrationViewModel(this, this)
 

@@ -35,6 +35,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("i'm ", javaClass.name)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_problem)
         binding.createView = CreateProblemViewModel(this, this)
         unitPer = application as UnitPersonal

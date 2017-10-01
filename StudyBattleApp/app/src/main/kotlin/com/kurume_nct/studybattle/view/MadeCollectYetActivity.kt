@@ -3,6 +3,7 @@ package com.kurume_nct.studybattle.view
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.databinding.ActivityMadeCollectYetBinding
@@ -13,6 +14,7 @@ class MadeCollectYetActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("i'm ", javaClass.name)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_made_collect_yet)
         bindSetting()
     }

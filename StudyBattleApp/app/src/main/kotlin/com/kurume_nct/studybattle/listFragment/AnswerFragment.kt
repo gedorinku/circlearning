@@ -29,6 +29,7 @@ class AnswerFragment : Fragment() {
     private val CHECK_ANS = 0
     private val YET_ANS = 1
     private val FIN_ANS = 2
+    private var ansCount = 20
 
     init {
         fin = 0
@@ -44,11 +45,22 @@ class AnswerFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        Log.d("i'm ", javaClass.name)
         Log.d("oshushi", "oshushi")
         fin = arguments.getInt("fin")
         binding = FragmentAnswerListBinding.inflate(inflater, container, false)
-        (0..20).forEach {
-            answerList.add(EveryAns(id = it, collect = (it % 2 == 0)))
+        (0 until ansCount).forEach {
+            when (fin) {
+                CHECK_ANS -> {
+                    answerList.add(EveryAns(id = it))
+                }
+                YET_ANS -> {
+                    answerList.add(EveryAns(id = it, fin = true))
+                }
+                FIN_ANS -> {
+                    answerList.add(EveryAns(id = it, fin = true))
+                }
+            }
         }
         listAdapter = AnswerRecyclerViewAdapter(context, answerList, { position: Int ->
             when (fin) {

@@ -4,6 +4,7 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.kurume_nct.studybattle.listFragment.AnswerFragment
 import com.kurume_nct.studybattle.viewModel.AnswerViewModel
@@ -20,6 +21,7 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("i'm ", javaClass.name)
         unit = application as UnitPersonal
         binding = DataBindingUtil.setContentView(this, R.layout.activity_answer)
         binding.answerAct = AnswerViewModel(this, this)

@@ -24,6 +24,7 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("i'm ", javaClass.name)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_personal_answer)
         binding.personalAnswer = PersonalAnswerViewModel(this, this)
         unit = application as UnitPersonal

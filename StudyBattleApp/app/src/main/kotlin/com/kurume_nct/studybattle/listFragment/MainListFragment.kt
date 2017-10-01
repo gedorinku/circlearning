@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,7 +42,7 @@ class MainListFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
+        Log.d("i'm ", javaClass.name)
         //binding = DataBindingUtil.inflate(inflater, R.layout.fragment_problem_list,container,false)
         binding = FragmentProblemListBinding.inflate(inflater, container, false)
         problemList = mutableListOf(Problem(0, "hoge", 0, "hoge"))
