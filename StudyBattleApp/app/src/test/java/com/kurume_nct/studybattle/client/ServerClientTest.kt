@@ -69,9 +69,20 @@ class ServerClientTest {
     @Test
     fun createAndJoinGroupTest() {
         val groupName = "kamesan_" + printHex(generateRandomBytes(4))
-        client.createGroup(groupName)
-                .flatMap { client.joinGroup(it.id) }
-                .blockingSubscribe()
+
+        val group = client.createGroup(groupName)
+                .blockingFirst()
+        assertEquals(groupName, group.name)
+        assert(0 < group.id)
+
+
+        val testSubscriber = client.joinGroup(group)
+                .test()
+
+        testSubscriber.awaitTerminalEvent()
+        testSubscriber
+                .assertNoErrors()
+                .assertNoTimeout()
     }
 
     @Test
@@ -96,6 +107,17 @@ class ServerClientTest {
 
     @Test
     fun createProblemAndSolutionTest() {
+        val groupId = {
+            val groupName = "kamesan_" + printHex(generateRandomBytes(4))
+            client.createGroup(groupName)
+                    .map {
+                        client.joinGroup(it.id)
+                                .blockingSubscribe()
+                        it.id
+                    }
+                    .blockingFirst()
+        }()
+
         val problem = {
             val problemTitle = "hoge"
             val problemText = "うぇい\nそいい\nabc"
@@ -103,7 +125,7 @@ class ServerClientTest {
             val duration = Duration.standardHours(1)
 
             val testSubscriber = client
-                    .createProblem(problemTitle, problemText, emptyList(), startsAt, duration)
+                    .createProblem(problemTitle, problemText, emptyList(), startsAt, duration, groupId)
                     .test()
 
             testSubscriber.awaitTerminalEvent()

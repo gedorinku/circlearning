@@ -9,8 +9,9 @@ import org.joda.time.Duration
  */
 data class LoginResult(val authenticationKey: String = "")
 
-//TODO 名前とかも取得できるようにします、ごめんなさい
-data class Group(val id: Int = 0)
+data class User(val id: Int = 0, val userName: String = "", val displayName: String = "")
+
+data class Group(val id: Int = 0, val name: String = "", val owner: User = User())
 
 data class Image(
         val id: Int = 0,
@@ -35,6 +36,12 @@ data class Problem(
     val startsAtTime: DateTime by lazy { DateTime.parse(rawStartsAt) }
     val duration: Duration by lazy { Duration.millis(durationMillis) }
 }
+
+data class ProblemRequestResponse(
+        val accepted: Boolean = false,
+        val message: String = "",
+        val problem: Problem = Problem()
+)
 
 data class Solution(
         val id: Int = 0,

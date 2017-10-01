@@ -39,6 +39,13 @@ interface Server {
             @Field("groupId") groupId: Int
     ): Observable<Unit>
 
+    @FormUrlEncoded
+    @POST("/group/{id}")
+    fun getGroup(
+            @Path("id") groupId: Int,
+            @Field("authenticationKey") authenticationKey: String
+    ): Observable<Group>
+
     @Multipart
     @POST("/image/upload")
     fun uploadImage(
@@ -54,7 +61,8 @@ interface Server {
             @Field("text") text: String,
             @Field("imageIds[]") imageIds: IntArray,
             @Field("startsAt") startsAt: String,
-            @Field("durationMillis") durationMillis: Long
+            @Field("durationMillis") durationMillis: Long,
+            @Field("groupId") groupId: Int
     ): Observable<IDResponse>
 
     @FormUrlEncoded
@@ -63,6 +71,20 @@ interface Server {
             @Field("authenticationKey") authenticationKey: String,
             @Path("id") id: Int
     ): Observable<Problem>
+
+    @FormUrlEncoded
+    @POST("/problem/assigned")
+    fun getAssignedProblems(
+            @Field("authenticationKey") authenticationKey: String,
+            @Field("groupId") groupId: Int
+    ): Observable<List<Problem>>
+
+    @FormUrlEncoded
+    @POST("/problem/request_new")
+    fun requestNewProblem(
+            @Field("authenticationKey") authenticationKey: String,
+            @Field("groupId") groupId: Int
+    ): Observable<ProblemRequestResponse>
 
     @FormUrlEncoded
     @POST("/solution/create")

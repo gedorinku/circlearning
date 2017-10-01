@@ -60,6 +60,10 @@ class ServerClient(authenticationKey: String = "") {
 
     fun joinGroup(group: Group) = joinGroup(group.id)
 
+    fun getGroup(id: Int) = server.getGroup(id, authenticationKey)
+
+    fun getGroup(group: Group) = getGroup(group.id)
+
     fun uploadImage(inputStream: InputStream, type: String): Observable<Image> {
         val bytes = inputStream.use {
             val buffer = mutableListOf<Byte>()
@@ -98,7 +102,7 @@ class ServerClient(authenticationKey: String = "") {
     }
 
     fun createProblem(
-            title: String, text: String, imageIds: List<Int>, startsAt: DateTime, duration: Duration
+            title: String, text: String, imageIds: List<Int>, startsAt: DateTime, duration: Duration, groupId: Int
     ): Observable<Problem> =
             server
                     .createProblem(
@@ -107,13 +111,28 @@ class ServerClient(authenticationKey: String = "") {
                             text,
                             imageIds.toIntArray(),
                             startsAt.toString(),
-                            duration.millis
+                            duration.millis,
+                            groupId
                     )
                     .flatMap {
                         getProblem(it.id)
                     }
 
     fun getProblem(id: Int): Observable<Problem> = server.getProblem(authenticationKey, id)
+
+    fun getAssignedProblems(group: Group) = getAssignedProblems(group.id)
+
+    fun getAssignedProblems(groupId: Int) = server.getAssignedProblems(authenticationKey, groupId)
+
+    /**
+     * 新しい問題を自分に割り当てるよう要求します。
+     */
+    fun requestNewProblem(group: Group) = requestNewProblem(group.id)
+
+    /**
+     * 新しい問題を自分に割り当てるよう要求します。
+     */
+    fun requestNewProblem(groupId: Int) = server.requestNewProblem(authenticationKey, groupId)
 
     fun createSolution(
             text: String, problem: Problem, imageIds: List<Int>
