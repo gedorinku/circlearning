@@ -35,6 +35,12 @@ interface Server {
     ): Observable<LoginResult>
 
     @FormUrlEncoded
+    @POST("/verify_authentication")
+    fun verifyAuthentication(
+            @Field("authenticationKey") authenticationKey: String
+    ): Observable<User>
+
+    @FormUrlEncoded
     @POST("/group/new")
     fun createGroup(
             @Field("authenticationKey") authenticationKey: String,

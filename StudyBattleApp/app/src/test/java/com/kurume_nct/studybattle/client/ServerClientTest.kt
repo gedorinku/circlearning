@@ -66,6 +66,21 @@ class ServerClientTest {
         }
     }
 
+    @Test
+    fun verifyAuthenticationKeyTest() {
+        val testSubscriber = client
+                .verifyAuthentication()
+                .test()
+
+        testSubscriber.awaitTerminalEvent()
+        testSubscriber
+                .assertNoErrors()
+                .assertNoTimeout()
+
+        val user = testSubscriber.values()[0]
+        assertEquals(userName, user.userName)
+        assertEquals(displayName, user.displayName)
+    }
 
     @Test
     fun createAndJoinGroupTest() {

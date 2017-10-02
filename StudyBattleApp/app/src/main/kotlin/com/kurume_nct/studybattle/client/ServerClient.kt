@@ -56,6 +56,12 @@ class ServerClient(authenticationKey: String = "") {
                 it
             }!!
 
+    /**
+     * authentication keyを検証して、自身のユーザー情報を返します。
+     */
+    fun verifyAuthentication(authenticationKey: String = this.authenticationKey)
+            = server.verifyAuthentication(authenticationKey)
+
     fun createGroup(name: String) = server.createGroup(authenticationKey, name)
 
     fun joinGroup(id: Int) = server.joinGroup(authenticationKey, id)
