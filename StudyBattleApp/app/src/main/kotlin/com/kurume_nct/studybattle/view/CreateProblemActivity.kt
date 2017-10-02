@@ -10,6 +10,7 @@ import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.*
 
 import com.kurume_nct.studybattle.R
@@ -25,9 +26,10 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
     private lateinit var unitPer: UnitPersonal
     private var nameEnable: Boolean
     private lateinit var alertBuilder: AlertDialog.Builder
+    private lateinit var dialogBuilder: AlertDialog.Builder
     private var prob: Int
-    private var direction : Long = 6
-    private lateinit var list : ExpandableListView
+    private var direction: Long = 6
+    private lateinit var list: ExpandableListView
 
     init {
         nameEnable = false
@@ -52,7 +54,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         DatSetting()
     }
 
-    fun DatSetting(){
+    fun DatSetting() {
         val date = DirectionFragment().onGetInitDate()
         binding.createView.let {
             it.day = date[0].toString() + "年" + date[1].toString() + "月" + date[2].toString() + "日"
@@ -60,28 +62,23 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
     }
 
 
-    fun dialogSetting(){
-        /*val dialogView: DialogCameraStrageChooseBinding = DataBindingUtil.setContentView(this ,R.layout.dialog_camera_strage_choose)
+    fun dialogSetting() {
+        //val dialogView = this.layoutInflater.inflate(R.layout.dialog_camera_strage_choose, null)
+        val dialogView: DialogCameraStrageChooseBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(this), R.layout.dialog_camera_strage_choose, null, false
+        )
         dialogView.run {
             cameraButton.setOnClickListener {
-                binding.createView.onGetImage(0, prob)
+                binding.createView.onGetImage(1, prob)
             }
             strageButton.setOnClickListener {
-                binding.createView.onGetImage(1, prob)
+                binding.createView.onGetImage(0, prob)
             }
         }
 
-        alertBuilder = AlertDialog.Builder(this)
-                .setView(dialogView.root)*/
+        dialogBuilder = AlertDialog.Builder(this)
+                .setView(dialogView.root)
 
-        alertBuilder = AlertDialog.Builder(this)
-                .setTitle("画像を取得する方法を選んでください")
-                .setPositiveButton("フォルダ📁", { dialog, which ->
-                    binding.createView.onGetImage(0, prob)
-                })
-                .setNegativeButton("カメラ📷", { dialog, which ->
-                    binding.createView.onGetImage(1, prob)
-                })
     }
 
     override fun checkNameEnable(enable: Boolean) {
@@ -107,19 +104,19 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
     }
 
     override fun onDateDialog() {
-        DirectionFragment().newInstance().show(supportFragmentManager,"tag")
+        DirectionFragment().newInstance().show(supportFragmentManager, "tag")
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         binding.createView.let {
             it.day = year.toString() + "年" + (month + 1).toString() + "月" + dayOfMonth.toString() + "日"
         }
-        Log.d(binding.createView.day,"change")
+        Log.d(binding.createView.day, "change")
     }
 
     override fun alertDialog(pro: Int) {
         prob = pro
-        val alert =  alertBuilder.create()
+        val alert = dialogBuilder.create()
         alert.show()
     }
 }
