@@ -49,7 +49,6 @@ interface Server {
     @Multipart
     @POST("/image/upload")
     fun uploadImage(
-            @Part() authenticationKey: MultipartBody.Part,
             @Part() image: MultipartBody.Part
     ): Observable<Image>
 

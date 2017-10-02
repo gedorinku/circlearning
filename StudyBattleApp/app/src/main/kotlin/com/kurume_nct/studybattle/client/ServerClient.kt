@@ -79,13 +79,6 @@ class ServerClient(authenticationKey: String = "") {
             buffer.toByteArray()
         }
 
-        val authenticationKeyPart = MultipartBody.Part.create(
-                Headers.of(mapOf("Content-Disposition" to "form-data; name=\"authenticationKey\"")),
-                RequestBody.create(
-                        MediaType.parse(type),
-                        authenticationKey
-                )
-        )
         val fileExtension = type.substring("image/".length)
         val imagePart = MultipartBody.Part.create(
                 Headers.of(mapOf("Content-Disposition" to "form-data; name=\"image\"; filename=\"hoge.$fileExtension\"")),
@@ -95,7 +88,7 @@ class ServerClient(authenticationKey: String = "") {
                 )
         )
 
-        return server.uploadImage(authenticationKeyPart, imagePart)
+        return server.uploadImage(imagePart)
     }
 
     fun uploadImage(uri: Uri, context: Context): Observable<Image> {
