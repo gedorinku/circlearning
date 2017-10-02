@@ -26,7 +26,7 @@ class UnitPersonal : Application(){
     var itemCount : MutableList<Int>
     private lateinit var prefer: SharedPreferences
     var groupCount : Int
-    lateinit var autheticationKey: String
+    var autheticationKey: String = "6B97FDEC286D694CCB5752960DC37A972E312D891AB87573741476F70B3CC211"
 
     init {
         userName = ""

@@ -12,6 +12,7 @@ import android.view.*
 import android.widget.Toast
 
 import com.kurume_nct.studybattle.adapter.MainPagerAdapter
+import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.view.CreateGroupActivity
 import com.kurume_nct.studybattle.model.Person_
 import com.kurume_nct.studybattle.model.UnitPersonal
@@ -22,6 +23,8 @@ import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 
 class Main2Activity : AppCompatActivity() {
@@ -44,6 +47,20 @@ class Main2Activity : AppCompatActivity() {
         onNavigationDrawer()
         onToolBar()
 
+        createGroup()
+
+    }
+
+    fun createGroup(){
+        val client = ServerClient(unitPer.autheticationKey)
+                client.createGroup("てすと")
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({
+                            unitPer.nowGroup = it.id
+                        },{
+
+                        })
     }
 
 

@@ -45,7 +45,7 @@ class LoginActivity : AppCompatActivity(), LoginViewModel.Callback {
     }
 
     override fun onLogin(displayName: String, authentication: String) {
-        unitPer.autheticationKey = authentication
+        //unitPer.autheticationKey = authentication
         toMain2Activity(displayName)
     }
 

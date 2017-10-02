@@ -45,7 +45,7 @@ data class ProblemRequestResponse(
 
 data class Solution(
         val id: Int = 0,
-        val text: String = "",
+        val text: String = "sample",
         val authorId: Int = 0,
         val problemId: Int = 0,
         val imageCount: Int = 0,

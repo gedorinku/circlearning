@@ -10,7 +10,7 @@ import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.view.CreateProblemActivity
 import java.util.*
 
-class DirectionFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
+class DurationFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -40,17 +40,22 @@ class DirectionFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
         return datePickerDialog
     }
 
-    fun onGetInitDate() : MutableList<Int>{
+    fun onGetInitDate(): MutableList<Int> {
         val c = Calendar.getInstance()
         c.add(Calendar.DAY_OF_MONTH, 6)
-        return mutableListOf(c[Calendar.YEAR], c[Calendar.MONTH] + 1,c[Calendar.DAY_OF_MONTH])
+        return mutableListOf(c[Calendar.YEAR], c[Calendar.MONTH] + 1, c[Calendar.DAY_OF_MONTH])
+    }
+
+    fun onGetToday(): MutableList<Int> {
+        val c = Calendar.getInstance()
+        return mutableListOf(c[Calendar.YEAR], c[Calendar.MONTH] + 1, c[Calendar.DAY_OF_MONTH])
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
     }
 
-    fun newInstance(): DirectionFragment {
-        val fragment = DirectionFragment()
+    fun newInstance(): DurationFragment {
+        val fragment = DurationFragment()
         val args = Bundle()
         fragment.arguments = args
         return fragment
