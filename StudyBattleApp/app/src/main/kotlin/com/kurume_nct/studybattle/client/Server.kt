@@ -15,6 +15,15 @@ interface Server {
     fun register(
             @Field("displayName") displayName: String,
             @Field("userName") userName: String,
+            @Field("password") password: String,
+            @Field("iconImageId") iconImageId: Int
+    ): Observable<Unit>
+
+    @FormUrlEncoded
+    @POST("/register")
+    fun register(
+            @Field("displayName") displayName: String,
+            @Field("userName") userName: String,
             @Field("password") password: String
     ): Observable<Unit>
 

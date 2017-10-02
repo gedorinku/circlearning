@@ -45,6 +45,9 @@ class ServerClient(authenticationKey: String = "") {
         server = retrofit.create(Server::class.java)
     }
 
+    fun register(displayName: String, userName: String, password: String, iconImageId: Int): Observable<Unit>
+            = server.register(displayName, userName, password, iconImageId)
+
     fun register(displayName: String, userName: String, password: String): Observable<Unit>
             = server.register(displayName, userName, password)
 
