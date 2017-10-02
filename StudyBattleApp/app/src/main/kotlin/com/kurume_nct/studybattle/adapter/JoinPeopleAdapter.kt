@@ -1,45 +1,42 @@
 package com.kurume_nct.studybattle.adapter
 
+import android.databinding.BindingAdapter
 import android.databinding.DataBindingUtil
+import android.net.Uri
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.databinding.FragmentJoinperopleBinding
 
-import com.kurume_nct.studybattle.model.Group
-import com.kurume_nct.studybattle.model.People
-import java.util.concurrent.Callable
+import com.kurume_nct.studybattle.model.JoinPeople
 
-class JoinPeropleAdapter(private val list: MutableList<People>, val callback: (Int) -> Unit) : RecyclerView.Adapter<JoinPeropleAdapter.ViewHolder>() {
+class JoinPeopleAdapter(private val list: MutableList<JoinPeople>, val callback: (Int) -> Unit) : RecyclerView.Adapter<JoinPeopleAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.fragment_joinperople, parent, false)
         val holder = ViewHolder(view)
-        return ViewHolder(view)
+        return holder
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.peopleUnit.run {
-            iUri = list[position].uri
-            name = list[position].name
-        }
+        holder.binding.setVariable(BR.PeopleUnit, list[position])
         if(!list[position].selected){
             holder.binding.peopleDeleteButton.visibility = View.GONE
         }
         if(!list[position].selected){
             //already selected
-            holder.itemView.setOnClickListener {
+            holder.binding.joinPeopleLayout.setOnClickListener {
                 callback(position)
             }
-        }else{
-            //yet selected
-            holder.binding.peopleDeleteButton.setOnClickListener {
-                callback(position)
-            }
+        }
+        holder.binding.peopleDeleteButton.setOnClickListener {
+            callback(position)
         }
     }
 
@@ -47,5 +44,13 @@ class JoinPeropleAdapter(private val list: MutableList<People>, val callback: (I
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val binding: FragmentJoinperopleBinding = DataBindingUtil.bind(mView)
+    }
+
+    companion object {
+        @BindingAdapter("loadIcon")
+        @JvmStatic
+        fun setIcon(view: ImageView, uri: Uri){
+            Glide.with(view).load(uri).into(view)
+        }
     }
 }

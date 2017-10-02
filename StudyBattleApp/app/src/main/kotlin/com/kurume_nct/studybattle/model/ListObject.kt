@@ -20,22 +20,15 @@ data class EveryAns(var id: Int = 0, var collect : Boolean = false, var name: St
 
 data class Direction(var num : String = "6")
 
-data class People(var uri: Uri, var name: String = "hunachi", var id: Int = 0, var selected: Boolean = false)
+//data class People(var uri: Uri, var name: String = "hunachi", var id: Int = 0, var selected: Boolean = false)
 
-class JoinPeople(val context: Context): BaseObservable(){
+class JoinPeople: BaseObservable(){
 
-    var iUri : Uri = ResIDToUriClass().convertUrlFromDrawableResId(context, R.drawable.glad)!!
-
-    companion object {
-        @BindingAdapter("loadIcon")
-        @JvmStatic
-        fun setIcon(view: ImageView, uri: Uri){
-            Glide.with(view).load(uri).into(view)
-        }
-    }
+    var id: Int = 0
+    var selected: Boolean = false
 
     @Bindable
-    var iconUri = iUri
+    var iconUri : Uri? = null
         get
         set(value) {
             field = value
@@ -43,7 +36,7 @@ class JoinPeople(val context: Context): BaseObservable(){
         }
 
     @Bindable
-    var name = ""
+    var name = "すし"
         get
         set(value) {
             field = value

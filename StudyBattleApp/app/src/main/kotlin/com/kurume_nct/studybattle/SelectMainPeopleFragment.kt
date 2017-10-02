@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.kurume_nct.studybattle.databinding.FragmentSelectPeopleBinding
 import com.kurume_nct.studybattle.listFragment.GroupListFragment
-import com.kurume_nct.studybattle.model.People
+import com.kurume_nct.studybattle.model.JoinPeople
 
 /**
  * Created by hanah on 10/2/2017.
@@ -43,11 +44,14 @@ class SelectMainPeopleFragment : Fragment(), SelectPeopleFragment.Callback, Choo
         return binding.root
     }
 
-    override fun selectChenge(people: People){
+    override fun selectChange(people: JoinPeople){
+        Log.d(people.selected.toString(), people.name)
+        people.selected = false
         chooseFragment.onAddPeople(0,people)
     }
 
-    override fun chooseCange(people: People){
+    override fun chooseChange(people: JoinPeople){
+        people.selected = true
         selectFragment.onAddPeople(0,people)
     }
 }
