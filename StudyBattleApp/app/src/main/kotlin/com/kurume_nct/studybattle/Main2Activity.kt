@@ -8,8 +8,10 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 
 import com.kurume_nct.studybattle.adapter.MainPagerAdapter
+import com.kurume_nct.studybattle.view.CreateGroupActivity
 import com.kurume_nct.studybattle.model.Person_
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.view.*
@@ -34,7 +36,7 @@ class Main2Activity : AppCompatActivity() {
         userName = unitPer.userName
         Log.d(userName,unitPer.userName)
         onTabLayout()
-        onNavigationDrower()
+        onNavigationDrawer()
         onToolBar()
     }
 
@@ -52,6 +54,10 @@ class Main2Activity : AppCompatActivity() {
             when(item.itemId){
                 R.id.to_item -> startActivity(Intent(this, ItemInfoActivity::class.java))
                 R.id.to_ranking -> startActivity(Intent(this, RankingActivity::class.java))
+                R.id.to_change_member -> startActivity(Intent(this, GroupSetChangeActivity::class.java))
+                R.id.to_setting_group -> {
+                    Toast.makeText(this, "ググっGoogleさん！", Toast.LENGTH_SHORT).show()
+                }
             }
             false
         }
@@ -87,7 +93,7 @@ class Main2Activity : AppCompatActivity() {
         }
     }
 
-    fun onNavigationDrower(){
+    private fun onNavigationDrawer(){
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         val groupID : Int = intent.getIntExtra("groupID",0)
         val list : MutableList<Person_> = mutableListOf(Person_(id = 0))
@@ -101,7 +107,7 @@ class Main2Activity : AppCompatActivity() {
                         ProfileDrawerItem()
                                 .withName(userName)
                                 .withEmail("GroupID is " + groupID.toString())
-                                .withIcon(R.drawable.icon_gost)
+                                .withIcon(unitPer.userIcon)
                                 .withIdentifier(acountCount)
                 )
                 .withOnAccountHeaderListener(AccountHeader.OnAccountHeaderListener { view, profile, currentProfile -> false })
@@ -125,11 +131,8 @@ class Main2Activity : AppCompatActivity() {
                     view, position, drawerItem ->
                     var intent = Intent(this,Main2Activity::class.java)
                     if(position == list.size + 1){
-                        intent.putExtra("groupID",position)
-                        //intent.putExtra("userName",userName)
-                        intent = Intent(this,RegistrationActivity::class.java)
+                        intent = Intent(this, CreateGroupActivity::class.java)
                         startActivity(intent)
-                        finish()
                         //Still i have to update Main2Activity
                     }else{
                         intent.putExtra("groupID",position)

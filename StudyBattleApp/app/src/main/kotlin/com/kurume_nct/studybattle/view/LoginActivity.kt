@@ -4,6 +4,7 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.kurume_nct.studybattle.Main2Activity
 
 import com.kurume_nct.studybattle.R
@@ -18,6 +19,7 @@ class LoginActivity : AppCompatActivity(), LoginViewModel.Callback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("i'm ", javaClass.name)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_login)
         binding.userLogin = LoginViewModel(this,this)
         unitPer = application as UnitPersonal

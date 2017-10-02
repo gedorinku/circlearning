@@ -2,8 +2,11 @@ package com.kurume_nct.studybattle.view
 
 import android.content.Intent
 import android.databinding.DataBindingUtil
+import android.graphics.drawable.Icon
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.kurume_nct.studybattle.Main2Activity
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.model.UnitPersonal
@@ -20,14 +23,15 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        Log.d("i'm ", javaClass.name)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_registration)
         binding.userEntity = RegistrationViewModel(this, this)
 
         unitPer = application as UnitPersonal
 
+
         if (!unitPer.newUser) {
-            onLogin(unitPer.userName, "")
+            onLogin(unitPer.userName, "", unitPer.userIcon)
         }
 
     }
@@ -37,14 +41,14 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
         finish()
     }
 
-    override fun onLogin(name: String, password: String) {
+    override fun onLogin(name: String, password: String, icon: Uri) {
         if (unitPer.newUser) {
             unitPer.userName = name
+            unitPer.userIcon = icon
             unitPer.writeFile()
             //server
         }
         val intent = Intent(this, LoginActivity::class.java)
-        intent.putExtra("userName", name)
         startActivity(intent)
         finish()
     }

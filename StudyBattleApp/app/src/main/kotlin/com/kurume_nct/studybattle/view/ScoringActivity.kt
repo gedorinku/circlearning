@@ -6,6 +6,7 @@ import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.app.AppCompatCallback
+import android.util.Log
 
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.databinding.ActivityScoringBinding
@@ -20,6 +21,7 @@ class ScoringActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("i'm ", javaClass.name)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_scoring)
         unit = UnitPersonal()
         scoreSetting()
@@ -31,10 +33,10 @@ class ScoringActivity : AppCompatActivity() {
         binding.radioScoring.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.radio_correct -> {
-                    scoreBoolean = false
+                    scoreBoolean = true
                 }
                 R.id.radio_mistake -> {
-                    scoreBoolean = true
+                    scoreBoolean = false
                 }
             }
         }

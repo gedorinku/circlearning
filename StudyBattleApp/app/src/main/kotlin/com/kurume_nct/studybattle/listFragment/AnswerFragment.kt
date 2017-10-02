@@ -24,49 +24,81 @@ class AnswerFragment : Fragment() {
     private lateinit var mContext: Context
     private lateinit var listAdapter: AnswerRecyclerViewAdapter
     private var answerList: MutableList<EveryAns> = mutableListOf()
-    private var fin: Boolean
+    private var fin: Int
     lateinit var binding: FragmentAnswerListBinding
+    private val CHECK_ANS = 0
+    private val YET_ANS = 1
+    private val FIN_ANS = 2
+    private var ansCount = 20
 
     init {
-        fin = false
+        fin = 0
     }
 
-    fun newInstance(fin: Boolean): AnswerFragment {
+    fun newInstance(fin: Int): AnswerFragment {
         val fragment = AnswerFragment()
         val args = Bundle()
-        args.putBoolean("fin", fin)//true -> all finished problem
+        args.putInt("fin", fin)//true -> all finished problem
         fragment.arguments = args
         return fragment
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        Log.d("i'm ", javaClass.name)
         Log.d("oshushi", "oshushi")
-        fin = arguments.getBoolean("fin")
+        fin = arguments.getInt("fin")
         binding = FragmentAnswerListBinding.inflate(inflater, container, false)
-        (0..20).forEach {
-            answerList.add(EveryAns(id = it, collect = (it % 2 == 0)))
+        (0 until ansCount).forEach {
+            when (fin) {
+                CHECK_ANS -> {
+                    answerList.add(EveryAns(id = it, name = "hunachi" + "の解答"))
+                }
+                YET_ANS -> {
+                    answerList.add(EveryAns(id = it, name = "hunachi" + "の解答", fin = true))
+                }
+                FIN_ANS -> {
+                    answerList.add(EveryAns(id = it, name = "hunachi" + "の解答", fin = true))
+                }
+            }
         }
-        listAdapter = AnswerRecyclerViewAdapter(context, answerList,{
-            position: Int ->
-            val intent = Intent(context, ScoringActivity()::class.java)
-            intent.putExtra("position", position)
-            startActivityForResult(intent, position)
+        listAdapter = AnswerRecyclerViewAdapter(context, answerList, { position: Int ->
+            when (fin) {
+                CHECK_ANS -> {
+                    val intent = Intent(context, ScoringActivity()::class.java)
+                    intent.putExtra("position", position)
+                    startActivityForResult(intent, position)
+                }
+                YET_ANS -> {
+                    val intent = Intent(context, PersonalAnswerActivity()::class.java)
+                    intent.putExtra("position", position)
+                    intent.putExtra("fin", false)
+                    startActivity(intent)
+                }
+                FIN_ANS -> {
+                    val intent = Intent(context, PersonalAnswerActivity()::class.java)
+                    intent.putExtra("position", position)
+                    intent.putExtra("fin", true)
+                    startActivity(intent)
+                }
+            }
         })
         binding.answersList.adapter = listAdapter
         binding.answersList.layoutManager = GridLayoutManager(binding.answersList.context, mColumnCount)
         return binding.root
     }
 
-    private fun changeImage(position: Int, cor : Boolean){
+    private fun changeImage(position: Int, cor: Boolean) {
         answerList[position].collect = cor
+        answerList[position].fin = true
         listAdapter.notifyItemChanged(position)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when(resultCode){
-            5 ->{
+        if (data == null) return
+        when (resultCode) {
+            5 -> {
                 changeImage(requestCode, data.getBooleanExtra("Result", false))
             }
         }

@@ -100,7 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="48dp"
             android:layout_weight="0.83"
-            android:onClick="@{userEntity.onClickChengeIconImage}"
+            android:onClick="@{userEntity.onClickChangeIconImage}"
             android:text="@string/change_image_button_text"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginLeft="8dp"
