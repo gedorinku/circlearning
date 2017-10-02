@@ -26,6 +26,7 @@ import io.reactivex.schedulers.Schedulers
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileReader
+import java.net.URI
 import java.util.concurrent.CountDownLatch
 
 /**
@@ -37,6 +38,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
     var iconImageUri: Uri
     var iconId: Int
     var imageBitmap: Bitmap
+    val REQUEST_STRAGE = 1
 
     init {
         iconImageUri = convertUrlFromDrawableResId(context, R.drawable.icon_gost)!!
@@ -96,41 +98,31 @@ class RegistrationViewModel(private val context: Context, private val callback: 
     }
 
     fun onClickLoginButton(view: View) {
-        if (userName.isEmpty() || userPassword.isEmpty()) {
+        if (userName.isBlank() || userPassword.isBlank()) {
             Toast.makeText(context, context.getString(R.string.errorLoginStatus), Toast.LENGTH_LONG).show()
-        } else if (!userName.matches(Regex("[^a-zA-z0-9]"))) {
+        } else if (!userName.matches("^[a-zA-Z0-9_]{2,20}".toRegex())) {
             Toast.makeText(context, "ユーザー名に不適切な文字列が含まれています.", Toast.LENGTH_LONG).show()
             userName = ""
         } else {
+            callback.stopButton()
             //sever処理
-            val countDown: CountDownLatch = CountDownLatch(2)
-            var countSuccess = 0
-            ServerClient().register(displayName, userName, userPassword)
+            val client = ServerClient()
+            client
+                    .uploadImage(iconImageUri, context)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .flatMap {
+                        client
+                                .register(displayName, userName, userPassword, it.id)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                    }
                     .subscribe({
+                        callback.onLogin(userName,userPassword,iconImageUri)
                     }, {
-                        countSuccess++
-                        countDown.countDown()
-                    }, {
+                        it.printStackTrace()
                         Toast.makeText(context, context.getString(R.string.usedUserNameAlart), Toast.LENGTH_LONG).show()
-                        countDown.countDown()
                     })
-            ServerClient().uploadImage(imageUri, context)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
-                        iconId = it.id
-                        countDown.countDown()
-                        countSuccess++
-                    }, {
-                        Toast.makeText(context, context.getString(R.string.fail_image_upload), Toast.LENGTH_LONG)
-                        countDown.countDown()
-                    })
-            countDown.await()
-            if (countSuccess == 2) {
-                callback.onLogin(userName,userPassword,iconImageUri)
-            }
         }
     }
 
@@ -140,7 +132,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
         //TODO : resize icon here
         iconImageUri = data.data
         imageUri = iconImageUri
-        imageBitmap = ImageCustom().onUriToBitmap(context,iconImageUri)
+        //imageBitmap = ImageCustom().onUriToBitmap(context,iconImageUri)
     }
 
     fun onClickChangeIconImage(view: View) {
@@ -167,6 +159,8 @@ class RegistrationViewModel(private val context: Context, private val callback: 
     }
 
     interface Callback {
+
+        fun stopButton()
 
         fun toLoginActivity()
 

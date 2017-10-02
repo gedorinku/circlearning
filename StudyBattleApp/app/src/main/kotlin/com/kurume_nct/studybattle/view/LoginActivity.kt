@@ -20,12 +20,16 @@ class LoginActivity : AppCompatActivity(), LoginViewModel.Callback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("i'm ", javaClass.name)
+
         binding = DataBindingUtil.setContentView(this,R.layout.activity_login)
         binding.userLogin = LoginViewModel(this,this)
         unitPer = application as UnitPersonal
+
+        //skip
         if(!unitPer.newUser){
             toMain2Activity(unitPer.userName)
         }
+
     }
 
     fun toMain2Activity(name: String){
@@ -36,16 +40,16 @@ class LoginActivity : AppCompatActivity(), LoginViewModel.Callback {
             unitPer.writeFile()
             //server
         }
-        intent.putExtra("userName",name)
         startActivity(intent)
         finish()
     }
 
-    override fun onLogin(name: String, password: String) {
-        toMain2Activity(name)
+    override fun onLogin(displayName: String, authentication: String) {
+        unitPer.autheticationKey = authentication
+        toMain2Activity(displayName)
     }
 
-    override fun toRegusterActivity() {
+    override fun toRegisterActivity() {
         val intent = Intent(this,RegistrationActivity::class.java)
         startActivity(intent)
     }

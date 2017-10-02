@@ -29,7 +29,7 @@
             </item>
             <item
                 android:id="@+id/to_setting_group"
-                android:title="次回アップデート時,追加予定">
+                android:title="プロフィールの設定">
             </item>
         </menu>
     </item>

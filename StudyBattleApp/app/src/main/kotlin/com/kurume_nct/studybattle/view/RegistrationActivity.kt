@@ -24,12 +24,12 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("i'm ", javaClass.name)
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_registration)
         binding.userEntity = RegistrationViewModel(this, this)
-
         unitPer = application as UnitPersonal
 
-
+        //skip
         if (!unitPer.newUser) {
             onLogin(unitPer.userName, "", unitPer.userIcon)
         }
@@ -45,6 +45,7 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
         if (unitPer.newUser) {
             unitPer.userName = name
             unitPer.userIcon = icon
+            unitPer.newUser = false
             unitPer.writeFile()
             //server
         }
@@ -56,6 +57,11 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         binding.userEntity.onActivityResult(resultCode, resultCode, data)
+    }
+
+    override fun stopButton() {
+        binding.button3.isClickable = false
+        binding.button4.isClickable = false
     }
 
 }

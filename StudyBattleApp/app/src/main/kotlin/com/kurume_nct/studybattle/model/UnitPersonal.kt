@@ -26,6 +26,7 @@ class UnitPersonal : Application(){
     var itemCount : MutableList<Int>
     private lateinit var prefer: SharedPreferences
     var groupCount : Int
+    lateinit var autheticationKey: String
 
     init {
         userName = ""
@@ -50,7 +51,8 @@ class UnitPersonal : Application(){
     fun writeFile(){
         //add login_key too
         val edit = prefer.edit()
-        edit.putString("userName",userName).commit()
+        edit.putString("userName",userName)
+        edit.commit()
     }
 
     fun deleteFile(){

@@ -1,6 +1,7 @@
 package com.kurume_nct.studybattle
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
@@ -26,22 +27,27 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 class Main2Activity : AppCompatActivity() {
 
     private var userName = "Kotlin"
-    private lateinit var unitPer : UnitPersonal
+    private lateinit var unitPer: UnitPersonal
+    private lateinit var iconUri: Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
-        //userName = intent.getStringExtra("userName") ?: userName
+
         unitPer = application as UnitPersonal
         userName = unitPer.userName
-        Log.d(userName,unitPer.userName)
+        iconUri = unitPer.userIcon
+
+        Log.d(userName, unitPer.userName)
+
         onTabLayout()
         onNavigationDrawer()
         onToolBar()
+
     }
 
 
-    fun onToolBar(){
+    fun onToolBar() {
         val fab = findViewById(R.id.fab)
         fab.setOnClickListener {
             startActivity(Intent(this, CreateProblemActivity::class.java))
@@ -49,26 +55,31 @@ class Main2Activity : AppCompatActivity() {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         toolbar.title = userName
         toolbar.inflateMenu(R.menu.toolbar_menu)
-        toolbar.setOnMenuItemClickListener {
-            item ->
-            when(item.itemId){
-                R.id.to_item -> startActivity(Intent(this, ItemInfoActivity::class.java))
-                R.id.to_ranking -> startActivity(Intent(this, RankingActivity::class.java))
-                R.id.to_change_member -> startActivity(Intent(this, GroupSetChangeActivity::class.java))
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.to_item -> {
+                    startActivity(Intent(this, ItemInfoActivity::class.java))
+                }
+                R.id.to_ranking -> {
+                    startActivity(Intent(this, RankingActivity::class.java))
+                }
+                R.id.to_change_member -> {
+                    startActivity(Intent(this, GroupSetChangeActivity::class.java))
+                }
                 R.id.to_setting_group -> {
-                    Toast.makeText(this, "ググっGoogleさん！", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "未実装の機能です。", Toast.LENGTH_SHORT).show()
                 }
             }
             false
         }
     }
 
-    fun onTabLayout(){
+    fun onTabLayout() {
 
-        val viewPaper : ViewPager = findViewById(R.id.pager) as ViewPager
-        val tabLayout : TabLayout = findViewById(R.id.tabs) as TabLayout
+        val viewPaper: ViewPager = findViewById(R.id.pager) as ViewPager
+        val tabLayout: TabLayout = findViewById(R.id.tabs) as TabLayout
 
-        (0 until tabLayout.tabCount).forEach{
+        (0 until tabLayout.tabCount).forEach {
             tabLayout.addTab(tabLayout.newTab())
         }
 
@@ -80,26 +91,26 @@ class Main2Activity : AppCompatActivity() {
         //Create the Tabs
         (0 until tabLayout.tabCount).forEach {
             val tab = tabLayout.getTabAt(it)
-            when(it) {
+            when (it) {
                 0 -> tab?.customView =
-                        LayoutInflater.from(this).inflate(R.layout.tab_custom_0,null)
+                        LayoutInflater.from(this).inflate(R.layout.tab_custom_0, null)
                 1 -> tab?.customView =
-                        LayoutInflater.from(this).inflate(R.layout.tab_custom_1,null)
+                        LayoutInflater.from(this).inflate(R.layout.tab_custom_1, null)
                 2 -> tab?.customView =
-                        LayoutInflater.from(this).inflate(R.layout.tab_custom_2,null)
+                        LayoutInflater.from(this).inflate(R.layout.tab_custom_2, null)
                 3 -> tab?.customView =
-                        LayoutInflater.from(this).inflate(R.layout.tab_custom_3,null)
+                        LayoutInflater.from(this).inflate(R.layout.tab_custom_3, null)
             }
         }
     }
 
-    private fun onNavigationDrawer(){
+    private fun onNavigationDrawer() {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
-        val groupID : Int = intent.getIntExtra("groupID",0)
-        val list : MutableList<Person_> = mutableListOf(Person_(id = 0))
+        val groupID: Int = intent.getIntExtra("groupID", 0)
+        val list: MutableList<Person_> = mutableListOf(Person_(id = 0))
         list.add(Person_(id = list.size))
         // Create the AccountHeader
-        var acountCount : Long = 0
+        var acountCount: Long = 0
         val headerResult = AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.color.md_red_A700)
@@ -127,15 +138,14 @@ class Main2Activity : AppCompatActivity() {
                 .withAccountHeader(headerResult)
                 .withActivity(this)
                 .withToolbar(toolbar)
-                .withOnDrawerItemClickListener {
-                    view, position, drawerItem ->
-                    var intent = Intent(this,Main2Activity::class.java)
-                    if(position == list.size + 1){
+                .withOnDrawerItemClickListener { view, position, drawerItem ->
+                    var intent = Intent(this, Main2Activity::class.java)
+                    if (position == list.size + 1) {
                         intent = Intent(this, CreateGroupActivity::class.java)
                         startActivity(intent)
                         //Still i have to update Main2Activity
-                    }else{
-                        intent.putExtra("groupID",position)
+                    } else {
+                        intent.putExtra("groupID", position)
                         //intent.putExtra("userName",userName)
                         startActivity(intent)
                         finish()
@@ -144,10 +154,10 @@ class Main2Activity : AppCompatActivity() {
                 }
                 .build()
         //Create the Item of list
-        for(a in list){
+        for (a in list) {
             result.addItem(PrimaryDrawerItem().withIdentifier(a.id.toLong()).withName(a.name).withIcon(GoogleMaterial.Icon.gmd_people))
         }
-      //  for ((name, id) in list) result.addItem(PrimaryDrawerItem().withIdentifier(id.toLong()).withName(name).withIcon(GoogleMaterial.Icon.gmd_people))
+        //  for ((name, id) in list) result.addItem(PrimaryDrawerItem().withIdentifier(id.toLong()).withName(name).withIcon(GoogleMaterial.Icon.gmd_people))
         result.addItem(PrimaryDrawerItem().withIdentifier(list.size.toLong()).withName("新しくグループを作る").withIcon(GoogleMaterial.Icon.gmd_add))
     }
 
@@ -157,7 +167,7 @@ class Main2Activity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d("change","?")
+        Log.d("change", "?")
     }
 }
 

@@ -3,46 +3,71 @@ package com.kurume_nct.studybattle.viewModel
 import android.content.Context
 import android.databinding.BaseObservable
 import android.databinding.Bindable
+import android.net.Uri
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
+import com.kurume_nct.studybattle.client.ServerClient
+import com.kurume_nct.studybattle.model.UnitPersonal
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by hanah on 8/11/2017.
  */
-class LoginViewModel(private val context: Context, private val callback : Callback) : BaseObservable(){
+class LoginViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
+
+    lateinit var iconUri: Uri
+    var iconId: Int = 0
+    lateinit var displayName: String
+    lateinit var unitPersonal: UnitPersonal
+    private lateinit var authenticationKey: String
 
     @Bindable
     var name = ""
-    get
-    set(value) {
-        field = value
-        notifyPropertyChanged(BR.name)
-    }
+        get
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.name)
+        }
 
     @Bindable
     var password = ""
-    get
-    set(value) {
-        field = value
-        notifyPropertyChanged(BR.password)
-    }
+        get
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.password)
+        }
 
-    fun onClickLogin(view: View){
+
+    fun onClickLogin(view: View) {
         if (name.isEmpty() || password.isEmpty()) {
             Toast.makeText(context, context.getString(R.string.errorLoginStatus), Toast.LENGTH_LONG).show()
-        }else{
-            callback.onLogin(name,password)
+        } else {
+            val client = ServerClient()
+            client
+                    .login(name, password)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        authenticationKey = it.authenticationKey
+                        Log.d(authenticationKey, "key")
+                        //User
+                        //Icon
+                        callback.onLogin(displayName, authenticationKey)
+                    }
         }
     }
 
-    fun onClickToRegister(view : View){
-        callback.toRegusterActivity()
+    fun onClickToRegister(view: View) {
+        callback.toRegisterActivity()
     }
 
-    interface Callback{
-        fun onLogin(name : String, password : String)
-        fun toRegusterActivity()
+
+    interface Callback {
+        fun onLogin(displayName: String, authentication: String)
+        fun toRegisterActivity()
     }
 }

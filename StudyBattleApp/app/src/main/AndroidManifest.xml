@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".model.UnitPersonal"
@@ -44,7 +46,7 @@
         <activity android:name=".view.ScoringActivity" />
         <activity android:name=".view.MadeCollectYetActivity" />
         <activity android:name=".view.GroupSetChangeActivity" />
-        <activity android:name=".view.CreateGroupActivity"></activity>
+        <activity android:name=".view.CreateGroupActivity"/>
     </application>
 
 </manifest>
