@@ -1,10 +1,11 @@
-package com.kurume_nct.studybattle
+package com.kurume_nct.studybattle.view
 
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 
 import com.kurume_nct.studybattle.R
+import com.kurume_nct.studybattle.bug.SelectMainPeopleFragment
 import com.kurume_nct.studybattle.databinding.ActivityCreateGroupBinding
 
 class CreateGroupActivity : AppCompatActivity() {
@@ -17,5 +18,8 @@ class CreateGroupActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.select_people_conteiner, SelectMainPeopleFragment().newInstance(0))
                 .commit()
+        binding.button10.setOnClickListener {
+            finish()
+        }
     }
 }

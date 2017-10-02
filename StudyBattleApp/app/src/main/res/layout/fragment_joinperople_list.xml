@@ -10,6 +10,6 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context="com.kurume_nct.studybattle.SelectPeopleFragment"
+    tools:context="com.kurume_nct.studybattle.bug.SelectPeopleFragment"
     tools:listitem="@layout/fragment_joinperople" />
 </layout>

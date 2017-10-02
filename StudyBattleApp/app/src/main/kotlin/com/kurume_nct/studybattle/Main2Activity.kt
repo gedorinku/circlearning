@@ -11,6 +11,7 @@ import android.view.*
 import android.widget.Toast
 
 import com.kurume_nct.studybattle.adapter.MainPagerAdapter
+import com.kurume_nct.studybattle.view.CreateGroupActivity
 import com.kurume_nct.studybattle.model.Person_
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.view.*
@@ -130,9 +131,8 @@ class Main2Activity : AppCompatActivity() {
                     view, position, drawerItem ->
                     var intent = Intent(this,Main2Activity::class.java)
                     if(position == list.size + 1){
-                        intent = Intent(this,CreateGroupActivity::class.java)
+                        intent = Intent(this, CreateGroupActivity::class.java)
                         startActivity(intent)
-                        finish()
                         //Still i have to update Main2Activity
                     }else{
                         intent.putExtra("groupID",position)

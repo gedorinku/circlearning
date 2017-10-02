@@ -1,8 +1,9 @@
-package com.kurume_nct.studybattle
+package com.kurume_nct.studybattle.bug
 
 import android.content.Context
 import android.databinding.BaseObservable
 import android.databinding.Bindable
+import com.kurume_nct.studybattle.BR
 
 /**
  * Created by hanah on 10/1/2017.

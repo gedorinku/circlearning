@@ -2,13 +2,11 @@ package com.kurume_nct.studybattle.adapter
 
 import android.content.Context
 import android.databinding.DataBindingUtil
-import android.databinding.ViewDataBinding
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.kurume_nct.studybattle.BR
-import com.kurume_nct.studybattle.CreateGroupViewModel
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.databinding.GroupObjectBinding
 import com.kurume_nct.studybattle.model.Person_

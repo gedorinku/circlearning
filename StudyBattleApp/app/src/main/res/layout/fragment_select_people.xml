@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
             name="SelectPeopleUnit"
-            type="com.kurume_nct.studybattle.SelectMainPeopleViewModel"/>
+            type="com.kurume_nct.studybattle.bug.SelectMainPeopleViewModel"/>
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,7 +14,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageView
@@ -39,7 +39,7 @@
 
         <LinearLayout
             android:id="@+id/fragment_search_list"
-            android:layout_width="320dp"
+            android:layout_width="300dp"
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:orientation="vertical" />
@@ -53,7 +53,7 @@
 
         <LinearLayout
             android:id="@+id/fragment_select_list"
-            android:layout_width="322dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:orientation="vertical" />

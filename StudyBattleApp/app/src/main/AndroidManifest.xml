@@ -32,7 +32,7 @@
         <activity android:name=".view.ScoringActivity" />
         <activity android:name=".view.MadeCollectYetActivity" />
         <activity android:name=".view.GroupSetChangeActivity" />
-        <activity android:name=".CreateGroupActivity"></activity>
+        <activity android:name=".view.CreateGroupActivity"></activity>
     </application>
 
 </manifest>

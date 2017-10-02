@@ -1,15 +1,13 @@
-package com.kurume_nct.studybattle
+package com.kurume_nct.studybattle.bug
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.databinding.FragmentSelectPeopleBinding
-import com.kurume_nct.studybattle.listFragment.GroupListFragment
 import com.kurume_nct.studybattle.model.JoinPeople
 
 /**
@@ -21,7 +19,7 @@ class SelectMainPeopleFragment : Fragment(), SelectPeopleFragment.Callback, Choo
     private lateinit var chooseFragment : ChoosePeopleFragment
     private lateinit var selectFragment : SelectPeopleFragment
 
-    fun newInstance(callId: Int): SelectMainPeopleFragment{
+    fun newInstance(callId: Int): SelectMainPeopleFragment {
         val fragment = SelectMainPeopleFragment()
         val args = Bundle()
         fragment.arguments = args
