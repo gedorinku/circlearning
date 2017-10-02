@@ -100,6 +100,10 @@ class ServerClient(authenticationKey: String = "") {
         return uploadImage(contentResolver.openInputStream(uri), contentResolver.getType(uri))
     }
 
+    fun getImageById(id: Int) = server.getImageById(id)
+
+    fun getImageById(image: Image) = getImageById(image.id)
+
     fun createProblem(
             title: String, text: String, imageIds: List<Int>, startsAt: DateTime, duration: Duration, groupId: Int, assumedSolution: Solution
     ): Observable<Problem> {

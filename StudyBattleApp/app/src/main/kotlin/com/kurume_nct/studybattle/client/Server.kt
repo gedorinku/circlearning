@@ -69,6 +69,11 @@ interface Server {
             @Part() image: MultipartBody.Part
     ): Observable<Image>
 
+    @GET("/image_by_id/{id}")
+    fun getImageById(
+            @Path("id") id: Int
+    ): Observable<Image>
+
     @POST("/problem/create")
     @Headers(
             "Accept: application/JSON",

@@ -90,20 +90,36 @@ class ServerClientTest {
     fun uploadImageTest() {
         val fileName = "icon.png"
         val classLoader = javaClass.classLoader
-        val testSubscriber = client
-                .uploadImage(classLoader.getResourceAsStream(fileName), "image/png")
-                .test()
 
-        testSubscriber.awaitTerminalEvent()
-        val url = testSubscriber
-                .assertNoErrors()
-                .assertNoTimeout()
-                .values()[0]
-                .url
+        val image = {
+            val testSubscriber = client
+                    .uploadImage(classLoader.getResourceAsStream(fileName), "image/png")
+                    .test()
+
+            testSubscriber.awaitTerminalEvent()
+            testSubscriber
+                    .assertNoErrors()
+                    .assertNoTimeout()
+                    .values()[0]
+        }()
 
         val origin = hashContent(classLoader.getResourceAsStream(fileName))
-        val upload = hashContent(URL(url).openStream())
+        val upload = hashContent(URL(image.url).openStream())
         assertEquals(origin, upload)
+
+        val image2 = {
+            val testSubscriber = client
+                    .getImageById(image.id)
+                    .test()
+
+            testSubscriber.awaitTerminalEvent()
+            testSubscriber
+                    .assertNoErrors()
+                    .assertNoTimeout()
+                    .values()[0]
+        }()
+
+        assertEquals(image, image2)
     }
 
     @Test
