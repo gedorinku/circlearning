@@ -11,21 +11,25 @@ import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.bug.SelectMainPeopleFragment
 import com.kurume_nct.studybattle.databinding.ActivityGroupSetChangeBinding
 import com.kurume_nct.studybattle.listFragment.GroupListFragment
+import com.kurume_nct.studybattle.model.UnitPersonal
 
 class GroupSetChangeActivity : AppCompatActivity(), GroupSetChangeViewModel.Callback {
 
     private lateinit var binding: ActivityGroupSetChangeBinding
-    lateinit var fragment_choose: GroupListFragment
-    lateinit var fragment_select: GroupListFragment
+    lateinit var unitPersonal: UnitPersonal
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("i'm ", javaClass.name)
+
+        unitPersonal = application as UnitPersonal
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_group_set_change)
         binding.groupSetView = GroupSetChangeViewModel(this, this)
         supportFragmentManager.beginTransaction()
                 .add(R.id.fragment_search_list, SelectMainPeopleFragment().newInstance(3))
                 .commit()
+
     }
 
     override fun onChange() {
@@ -34,6 +38,7 @@ class GroupSetChangeActivity : AppCompatActivity(), GroupSetChangeViewModel.Call
 
     override fun onGoodbye() {
         //Dialog
+        unitPersonal.deleteFile()
         finish()
     }
 }
