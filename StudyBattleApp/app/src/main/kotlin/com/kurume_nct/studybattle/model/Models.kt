@@ -9,7 +9,7 @@ import org.joda.time.Duration
  */
 data class LoginResult(val authenticationKey: String = "")
 
-data class User(val id: Int = 0, val userName: String = "", val displayName: String = "")
+data class User(val id: Int = 0, val userName: String = "", val displayName: String = "", val icon: Image? = null)
 
 data class Group(val id: Int = 0, val name: String = "", val owner: User = User())
 
