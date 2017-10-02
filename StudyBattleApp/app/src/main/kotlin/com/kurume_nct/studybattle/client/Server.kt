@@ -49,6 +49,14 @@ interface Server {
     ): Observable<Unit>
 
     @FormUrlEncoded
+    @POST("/group/attach")
+    fun attachToGroup(
+            @Field("authenticationKey") authenticationKey: String,
+            @Field("groupId") groupId: Int,
+            @Field("userId") userId: Int
+    ): Observable<Unit>
+
+    @FormUrlEncoded
     @POST("/group/{id}")
     fun getGroup(
             @Path("id") groupId: Int,

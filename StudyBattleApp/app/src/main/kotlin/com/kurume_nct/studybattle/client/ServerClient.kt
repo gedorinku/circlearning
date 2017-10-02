@@ -5,10 +5,7 @@ import android.net.Uri
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.kurume_nct.studybattle.model.Group
-import com.kurume_nct.studybattle.model.Image
-import com.kurume_nct.studybattle.model.Problem
-import com.kurume_nct.studybattle.model.Solution
+import com.kurume_nct.studybattle.model.*
 import io.reactivex.Observable
 import okhttp3.*
 import org.joda.time.DateTime
@@ -64,6 +61,10 @@ class ServerClient(authenticationKey: String = "") {
     fun joinGroup(id: Int) = server.joinGroup(authenticationKey, id)
 
     fun joinGroup(group: Group) = joinGroup(group.id)
+
+    fun attachToGroup(groupId: Int, userId: Int) = server.attachToGroup(authenticationKey, groupId, userId)
+
+    fun attachToGroup(group: Group, user: User) = attachToGroup(group.id, user.id)
 
     fun getGroup(id: Int) = server.getGroup(id, authenticationKey)
 
