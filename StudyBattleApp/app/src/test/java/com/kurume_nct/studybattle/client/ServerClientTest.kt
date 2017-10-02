@@ -1,5 +1,6 @@
 package com.kurume_nct.studybattle.client
 
+import com.kurume_nct.studybattle.model.Solution
 import org.joda.time.DateTime
 import org.joda.time.Duration
 import org.junit.Assert.assertEquals
@@ -125,7 +126,7 @@ class ServerClientTest {
             val duration = Duration.standardHours(1)
 
             val testSubscriber = client
-                    .createProblem(problemTitle, problemText, emptyList(), startsAt, duration, groupId)
+                    .createProblem(problemTitle, problemText, emptyList(), startsAt, duration, groupId, Solution(text = "想定解だよだよ"))
                     .test()
 
             testSubscriber.awaitTerminalEvent()

@@ -15,6 +15,15 @@ interface Server {
     fun register(
             @Field("displayName") displayName: String,
             @Field("userName") userName: String,
+            @Field("password") password: String,
+            @Field("iconImageId") iconImageId: Int
+    ): Observable<Unit>
+
+    @FormUrlEncoded
+    @POST("/register")
+    fun register(
+            @Field("displayName") displayName: String,
+            @Field("userName") userName: String,
             @Field("password") password: String
     ): Observable<Unit>
 
@@ -40,6 +49,14 @@ interface Server {
     ): Observable<Unit>
 
     @FormUrlEncoded
+    @POST("/group/attach")
+    fun attachToGroup(
+            @Field("authenticationKey") authenticationKey: String,
+            @Field("groupId") groupId: Int,
+            @Field("userId") userId: Int
+    ): Observable<Unit>
+
+    @FormUrlEncoded
     @POST("/group/{id}")
     fun getGroup(
             @Path("id") groupId: Int,
@@ -49,20 +66,18 @@ interface Server {
     @Multipart
     @POST("/image/upload")
     fun uploadImage(
-            @Part() authenticationKey: MultipartBody.Part,
             @Part() image: MultipartBody.Part
     ): Observable<Image>
 
-    @FormUrlEncoded
     @POST("/problem/create")
+    @Headers(
+            "Accept: application/JSON",
+            "Content-type: application/JSON",
+            "Data-Type: JSON",
+            "Script-Charset: utf-8"
+    )
     fun createProblem(
-            @Field("authenticationKey") authenticationKey: String,
-            @Field("title") title: String,
-            @Field("text") text: String,
-            @Field("imageIds[]") imageIds: IntArray,
-            @Field("startsAt") startsAt: String,
-            @Field("durationMillis") durationMillis: Long,
-            @Field("groupId") groupId: Int
+            @Body body: String
     ): Observable<IDResponse>
 
     @FormUrlEncoded

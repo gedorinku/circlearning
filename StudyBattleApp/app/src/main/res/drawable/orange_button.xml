@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item >
+        <shape android:shape="rectangle">
+
+            //丸くする
+            <corners
+                android:radius="8sp"/>
+
+            //グラーデーション＆角度
+            <gradient
+                android:angle="90"
+                android:endColor="#ffc22d"
+                android:startColor="#ff7000"
+                android:type="linear"/>
+
+        </shape>
+    </item>
+
+
+</layer-list>

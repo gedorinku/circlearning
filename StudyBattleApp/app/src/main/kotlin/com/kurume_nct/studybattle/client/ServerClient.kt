@@ -3,11 +3,9 @@ package com.kurume_nct.studybattle.client
 import android.content.Context
 import android.net.Uri
 import com.google.gson.FieldNamingPolicy
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.kurume_nct.studybattle.model.Group
-import com.kurume_nct.studybattle.model.Image
-import com.kurume_nct.studybattle.model.Problem
-import com.kurume_nct.studybattle.model.Solution
+import com.kurume_nct.studybattle.model.*
 import io.reactivex.Observable
 import okhttp3.*
 import org.joda.time.DateTime
@@ -36,12 +34,16 @@ class ServerClient(authenticationKey: String = "") {
                 .create()
         val retrofit = Retrofit.Builder()
                 .baseUrl("http://studybattle.dip.jp:8080")
+                //.baseUrl("http://localhost:8080")
                 .addConverterFactory(StringConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
         server = retrofit.create(Server::class.java)
     }
+
+    fun register(displayName: String, userName: String, password: String, iconImageId: Int): Observable<Unit>
+            = server.register(displayName, userName, password, iconImageId)
 
     fun register(displayName: String, userName: String, password: String): Observable<Unit>
             = server.register(displayName, userName, password)
@@ -60,6 +62,10 @@ class ServerClient(authenticationKey: String = "") {
 
     fun joinGroup(group: Group) = joinGroup(group.id)
 
+    fun attachToGroup(groupId: Int, userId: Int) = server.attachToGroup(authenticationKey, groupId, userId)
+
+    fun attachToGroup(group: Group, user: User) = attachToGroup(group.id, user.id)
+
     fun getGroup(id: Int) = server.getGroup(id, authenticationKey)
 
     fun getGroup(group: Group) = getGroup(group.id)
@@ -77,13 +83,6 @@ class ServerClient(authenticationKey: String = "") {
             buffer.toByteArray()
         }
 
-        val authenticationKeyPart = MultipartBody.Part.create(
-                Headers.of(mapOf("Content-Disposition" to "form-data; name=\"authenticationKey\"")),
-                RequestBody.create(
-                        MediaType.parse(type),
-                        authenticationKey
-                )
-        )
         val fileExtension = type.substring("image/".length)
         val imagePart = MultipartBody.Part.create(
                 Headers.of(mapOf("Content-Disposition" to "form-data; name=\"image\"; filename=\"hoge.$fileExtension\"")),
@@ -93,7 +92,7 @@ class ServerClient(authenticationKey: String = "") {
                 )
         )
 
-        return server.uploadImage(authenticationKeyPart, imagePart)
+        return server.uploadImage(imagePart)
     }
 
     fun uploadImage(uri: Uri, context: Context): Observable<Image> {
@@ -102,21 +101,25 @@ class ServerClient(authenticationKey: String = "") {
     }
 
     fun createProblem(
-            title: String, text: String, imageIds: List<Int>, startsAt: DateTime, duration: Duration, groupId: Int
-    ): Observable<Problem> =
-            server
-                    .createProblem(
-                            authenticationKey,
-                            title,
-                            text,
-                            imageIds.toIntArray(),
-                            startsAt.toString(),
-                            duration.millis,
-                            groupId
-                    )
-                    .flatMap {
-                        getProblem(it.id)
-                    }
+            title: String, text: String, imageIds: List<Int>, startsAt: DateTime, duration: Duration, groupId: Int, assumedSolution: Solution
+    ): Observable<Problem> {
+        val gson = Gson()
+        val body = mapOf(
+                "authenticationKey" to authenticationKey,
+                "title" to title,
+                "text" to text,
+                "imageIds" to imageIds,
+                "startsAt" to startsAt.toString(),
+                "durationMillis" to duration.millis,
+                "groupId" to groupId,
+                "assumedSolution" to assumedSolution
+        )
+        val hoge = gson.toJson(body)
+        println(hoge)
+        return server
+                .createProblem(hoge)
+                .flatMap { server.getProblem(authenticationKey, it.id) }
+    }
 
     fun getProblem(id: Int): Observable<Problem> = server.getProblem(authenticationKey, id)
 
