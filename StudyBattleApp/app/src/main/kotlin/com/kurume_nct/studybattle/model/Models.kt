@@ -57,7 +57,7 @@ data class Solution(
         val problemId: Int = 0,
         val imageCount: Int = 0,
         val imageIds: List<Int> = emptyList(),
-        @SerializedName("judgingState") val rawJudgingState: String
+        @SerializedName("judgingState") val rawJudgingState: String = ""
 ) {
 
     val judgingState by lazy { JudgingState.valueOf(rawJudgingState) }
