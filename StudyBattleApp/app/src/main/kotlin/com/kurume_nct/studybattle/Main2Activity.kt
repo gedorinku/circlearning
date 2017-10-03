@@ -121,8 +121,7 @@ class Main2Activity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        Log.d("hoge","hoge2")
-        //if (data == null) return
+        if (data == null) return
 
         when (requestCode) {
             REQUEST_CREATE_GROUP -> {
