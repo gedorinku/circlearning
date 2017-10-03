@@ -113,26 +113,25 @@ class Main2Activity : AppCompatActivity() {
     }
 
     fun viewSetup() {
+
         onTabLayout()
         onNavigationDrawer()
         onToolBar()
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (data == null) {
 
-        } else {
-            when (requestCode) {
-                REQUEST_CREATE_GROUP -> {
-                    val groupId: Int = data.getIntExtra("create_group", -1)
-                    getMyGroup()
-                }
+        if (data == null) return
+
+        when (requestCode) {
+            REQUEST_CREATE_GROUP -> {
+                getMyGroup()
             }
         }
+
     }
-
-
 
 
     private fun onToolBar() {
@@ -208,8 +207,7 @@ class Main2Activity : AppCompatActivity() {
                                 .withIcon(unitPer.userIcon)
                                 .withIdentifier(acountCount)
                 )
-                .withOnAccountHeaderListener(AccountHeader.OnAccountHeaderListener {
-                    view, profile, currentProfile ->
+                .withOnAccountHeaderListener(AccountHeader.OnAccountHeaderListener { view, profile, currentProfile ->
                     Toast.makeText(this, "この機能は未実装です", Toast.LENGTH_SHORT).show()
                     false
                 })

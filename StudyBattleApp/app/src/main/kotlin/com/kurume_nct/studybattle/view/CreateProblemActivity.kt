@@ -26,7 +26,7 @@ import org.joda.time.Duration
 import java.util.jar.Manifest
 import android.Manifest.permission
 import android.support.v4.app.ActivityCompat
-
+import com.kurume_nct.studybattle.model.User
 
 
 class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callback, DatePickerDialog.OnDateSetListener {
@@ -111,12 +111,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
     }
 
     override fun alertDialog(pro: Int) {
-        binding.run {
-            problemImage.isClickable = false
-            answerImage.isClickable = false
-            button6.isClickable = false
-            button7.isClickable = false
-        }
+        onNotClickableButtons()
         prob = pro
         Log.d(prob.toString(), " dialogs.")
         dialogSetting()
@@ -180,7 +175,17 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
             button7.isClickable = true
             button6.isClickable = true
         }
+        Toast.makeText(this, "処理に失敗しました", Toast.LENGTH_SHORT).show()
         dialog.cancel()
+    }
+
+    override fun onNotClickableButtons() {
+        binding.run {
+            problemImage.isClickable = false
+            answerImage.isClickable = false
+            button7.isClickable = false
+            button6.isClickable = false
+        }
     }
 
     override fun getDuration(): Duration {
@@ -197,5 +202,9 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
     }
 
     override fun getGroupId() = unitPer.nowGroup.id
+
+    override fun userInformation() = unitPer.myInfomation
+
+    override fun getKey() = unitPer.authenticationKey
 
 }

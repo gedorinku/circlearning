@@ -40,11 +40,7 @@ class CreateGroupActivity : AppCompatActivity(), CreateGroupViewModel.Callback {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-
-                    unitPer.myGroupList.add(it)
-
                     val intent = Intent()
-                    intent.putExtra("groupId", it.id)
                     setResult(REQUEST_CREATE_GROUP,intent)
                 }, {
                     binding.button10.isClickable = true

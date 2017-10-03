@@ -15,7 +15,7 @@ import android.util.Log
 import android.widget.Toast
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.Solution
-import io.reactivex.Scheduler
+import com.kurume_nct.studybattle.model.User
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.joda.time.DateTime
@@ -167,48 +167,50 @@ class CreateProblemViewModel(private val context: Context, private val callback:
     }
 
     fun sendData() {
-        val client = ServerClient()
+
+        callback.onNotClickableButtons()
+
+        val client = ServerClient(callback.getKey())
         client
-                .login("hunachi278", "hunachi278")
+                .uploadImage(problemUri, context)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    val client_ = ServerClient(it.authenticationKey)
-                    client_
-                            .uploadImage(problemUri, context)
+                    problemImageId = it.id
+                    client
+                            .uploadImage(answerUri, context)
                             .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({
-                                problemImageId = it.id
-                                client_
-                                        .uploadImage(answerUri, context)
+                                answerImageId = it.id
+                                client
+                                        .createProblem(
+                                                problemName,
+                                                "ごめんなさい",
+                                                listOf(problemImageId),
+                                                dateTime(),
+                                                callback.getDuration(),
+                                                callback.getGroupId(),
+                                                Solution(
+                                                        text = "お寿司と焼き肉の戦い。",
+                                                        authorId = callback.userInformation().id,
+                                                        imageCount = 1,
+                                                        imageIds = listOf(answerImageId)
+                                                )
+                                        )
                                         .subscribeOn(Schedulers.io())
                                         .observeOn(AndroidSchedulers.mainThread())
                                         .subscribe({
-                                            answerImageId = it.id
-                                            client_
-                                                    .createProblem(
-                                                            problemName,
-                                                            "今のところはない！",
-                                                            listOf(problemImageId, answerImageId),
-                                                            dateTime(),
-                                                            callback.getDuration(),
-                                                            callback.getGroupId(),
-                                                            Solution()
-                                                    )
-                                                    .subscribeOn(Schedulers.io())
-                                                    .observeOn(AndroidSchedulers.mainThread())
-                                                    .subscribe({
-                                                        callback.getCreateData(problemName)
-                                                    }, {
-                                                        it.printStackTrace()
-                                                    })
+                                            callback.getCreateData(problemName)
                                         }, {
+                                            callback.onClickableButtons()
                                             it.printStackTrace()
                                         })
                             }, {
+                                callback.onClickableButtons()
                                 it.printStackTrace()
                             })
                 }, {
+                    callback.onClickableButtons()
                     it.printStackTrace()
                 })
     }
@@ -229,6 +231,10 @@ class CreateProblemViewModel(private val context: Context, private val callback:
 
     interface Callback {
 
+        fun userInformation(): User
+
+        fun getKey(): String
+
         fun checkNameEnable(enable: Boolean)
 
         fun startActivityForResult(intent: Intent, requestCode: Int)
@@ -244,5 +250,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
         fun getGroupId(): Int
 
         fun onClickableButtons()
+
+        fun onNotClickableButtons()
     }
 }
