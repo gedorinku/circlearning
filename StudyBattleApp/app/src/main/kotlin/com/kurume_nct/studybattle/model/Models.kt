@@ -45,11 +45,28 @@ data class ProblemRequestResponse(
         val problem: Problem = Problem()
 )
 
+enum class JudgingState {
+    Solved,
+    WaitingForJudge,
+    Accepted,
+    WrongAnswer
+}
+
 data class Solution(
         val id: Int = 0,
         val text: String = "sample",
         val authorId: Int = 0,
         val problemId: Int = 0,
         val imageCount: Int = 0,
-        val imageIds: List<Int> = emptyList()
-)
+        val imageIds: List<Int> = emptyList(),
+        @SerializedName("judgingState") val rawJudgingState: String = ""
+) {
+
+    val judgingState by lazy { JudgingState.valueOf(rawJudgingState) }
+    val judged by lazy {
+        judgingState == JudgingState.Accepted || judgingState == JudgingState.WrongAnswer
+    }
+    val accepted by lazy {
+        judgingState == JudgingState.Accepted
+    }
+}
