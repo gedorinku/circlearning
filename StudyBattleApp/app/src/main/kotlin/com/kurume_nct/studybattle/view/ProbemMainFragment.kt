@@ -28,7 +28,7 @@ class ProbemMainFragment : Fragment() {
         mContext.supportFragmentManager
                 .beginTransaction()
                 .add(R.id.fragment_list, MainListFragment()
-                        .newInstance(resources.getInteger(R.integer.HAVE_PRO)))
+                        .newInstance(resources.getInteger(R.integer.HAVE_PROBLEM)))
                 .commit()
         return binding.root
     }

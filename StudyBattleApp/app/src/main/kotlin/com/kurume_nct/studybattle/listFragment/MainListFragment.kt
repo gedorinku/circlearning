@@ -1,11 +1,11 @@
 package com.kurume_nct.studybattle.listFragment
 
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,17 +13,24 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.adapter.ProblemListAdapter
+import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.FragmentProblemListBinding
 import com.kurume_nct.studybattle.model.Problem
+import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.view.*
+import io.reactivex.Observable
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.toObservable
+import io.reactivex.schedulers.Schedulers
 
 class MainListFragment : Fragment() {
 
     lateinit var binding: FragmentProblemListBinding
     var tabId: Int = 0
-    lateinit var problemList: MutableList<Problem>
-    //lateinit var problems : Problems
+    private val problemList = mutableListOf<Problem>()
     lateinit var mContext: Context
+    private lateinit var client: ServerClient
 
     lateinit var listAdapter: ProblemListAdapter
     fun newInstance(id: Int): MainListFragment {
@@ -37,7 +44,55 @@ class MainListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         tabId = arguments.getInt("id")
+        val unitPersonal = activity.application as UnitPersonal
+        client = ServerClient(unitPersonal.autheticationKey)
 
+        when (tabId) {
+            resources.getInteger(R.integer.HAVE_PROBLEM) ->
+                client.getAssignedProblems(unitPersonal.nowGroup)
+                        .firstOrError()
+
+            resources.getInteger(R.integer.ANSWER_YET) ->
+                //TODO
+                Single.just(emptyList())
+
+            resources.getInteger(R.integer.ANSWER_FIN) ->
+                //TODO
+                Single.just(emptyList())
+
+            resources.getInteger(R.integer.MADE_COLLECT_YET) ->
+                //TODO
+                Single.just(emptyList())
+
+            resources.getInteger(R.integer.MADE_JUDGE_YET) ->
+                //TODO
+                Single.just(emptyList())
+
+            resources.getInteger(R.integer.MADE_FIN) ->
+                //TODO
+                Single.just(emptyList())
+
+            resources.getInteger(R.integer.SUGGEST_YET) ->
+                client.getUnjudgedMySolutions()
+                        .flatMap { it.toObservable() }
+                        .map { client.getProblem(it.problemId) }
+                        .firstOrError()
+                        .flatMap { it.toList() }
+
+            resources.getInteger(R.integer.SUGGEST_FIN) ->
+                client.getJudgedMySolutions()
+                        .flatMap { it.toObservable() }
+                        .map { client.getProblem(it.problemId) }
+                        .firstOrError()
+                        .flatMap { it.toList() }
+
+            else -> throw IllegalArgumentException(tabId.toString())
+        }.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { it ->
+                    problemList.addAll(0, it)
+                    listAdapter.notifyItemRangeInserted(0, it.size)
+                }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -45,12 +100,11 @@ class MainListFragment : Fragment() {
         Log.d("i'm ", javaClass.name)
         //binding = DataBindingUtil.inflate(inflater, R.layout.fragment_problem_list,container,false)
         binding = FragmentProblemListBinding.inflate(inflater, container, false)
-        problemList = mutableListOf(Problem(0, "hoge", 0, "hoge"))
         listAdapter = ProblemListAdapter(context, problemList,
                 { position: Int ->
                     val intent: Intent
                     when (tabId) {
-                        resources.getInteger(R.integer.HAVE_PRO) -> {
+                        resources.getInteger(R.integer.HAVE_PROBLEM) -> {
                             if (position == (listAdapter.itemCount - 1)) {
                                 //server
                                 //changeList()
@@ -123,7 +177,7 @@ class MainListFragment : Fragment() {
         listAdapter.notifyItemRangeRemoved(0, problemList.size)
         problemList.clear()
         when (tabId) {
-            resources.getInteger(R.integer.HAVE_PRO) -> {
+            resources.getInteger(R.integer.HAVE_PROBLEM) -> {
                 (1..3).forEach {
                     problemList.add(Problem(title = "自分が持っている" + it + "問目", text = "時間"))
                 }
