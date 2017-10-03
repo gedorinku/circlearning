@@ -56,6 +56,12 @@ class ServerClient(authenticationKey: String = "") {
                 it
             }!!
 
+    /**
+     * authentication keyを検証して、自身のユーザー情報を返します。
+     */
+    fun verifyAuthentication(authenticationKey: String = this.authenticationKey)
+            = server.verifyAuthentication(authenticationKey)
+
     fun createGroup(name: String) = server.createGroup(authenticationKey, name)
 
     fun joinGroup(id: Int) = server.joinGroup(authenticationKey, id)
@@ -99,6 +105,10 @@ class ServerClient(authenticationKey: String = "") {
         val contentResolver = context.contentResolver
         return uploadImage(contentResolver.openInputStream(uri), contentResolver.getType(uri))
     }
+
+    fun getImageById(id: Int) = server.getImageById(id)
+
+    fun getImageById(image: Image) = getImageById(image.id)
 
     fun createProblem(
             title: String, text: String, imageIds: List<Int>, startsAt: DateTime, duration: Duration, groupId: Int, assumedSolution: Solution
@@ -149,6 +159,14 @@ class ServerClient(authenticationKey: String = "") {
                     .flatMap {
                         server.getSolution(authenticationKey, it.id)
                     }
+
+    fun getSolution(solution: Solution) = getSolution(solution.id)
+
+    fun getSolution(solutionId: Int) = server.getSolution(authenticationKey, solutionId)
+
+    fun getJudgedMySolutions() = server.getJudgedMySolutions(authenticationKey)
+
+    fun getUnjudgedMySolutions() = server.getUnjudgedMySolutions(authenticationKey)
 }
 
 private class StringConverterFactory : Converter.Factory() {

@@ -35,6 +35,12 @@ interface Server {
     ): Observable<LoginResult>
 
     @FormUrlEncoded
+    @POST("/verify_authentication")
+    fun verifyAuthentication(
+            @Field("authenticationKey") authenticationKey: String
+    ): Observable<User>
+
+    @FormUrlEncoded
     @POST("/group/new")
     fun createGroup(
             @Field("authenticationKey") authenticationKey: String,
@@ -67,6 +73,11 @@ interface Server {
     @POST("/image/upload")
     fun uploadImage(
             @Part() image: MultipartBody.Part
+    ): Observable<Image>
+
+    @GET("/image_by_id/{id}")
+    fun getImageById(
+            @Path("id") id: Int
     ): Observable<Image>
 
     @POST("/problem/create")
@@ -116,4 +127,22 @@ interface Server {
             @Field("authenticationKey") authenticationKey: String,
             @Path("id") id: Int
     ): Observable<Solution>
+
+    @FormUrlEncoded
+    @POST("/solution/judge")
+    fun judgeSolution(
+            @Field("authenticationKey") authenticationKey: String,
+            @Field("id") id: Int,
+            @Field("isAccepted") isAccepted: Boolean
+    ): Observable<Unit>
+
+    @GET("/my_solution/judged")
+    fun getJudgedMySolutions(
+            @Query("authenticationKey") authenticationKey: String
+    ): Observable<List<Solution>>
+
+    @GET("/my_solution/unjudged")
+    fun getUnjudgedMySolutions(
+            @Query("authenticationKey") authenticationKey: String
+    ): Observable<List<Solution>>
 }
