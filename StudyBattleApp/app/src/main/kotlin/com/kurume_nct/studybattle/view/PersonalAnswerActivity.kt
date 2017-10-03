@@ -1,24 +1,20 @@
 package com.kurume_nct.studybattle.view
 
-import android.content.Context
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.KeyEvent
 import android.view.View
-import android.view.inputmethod.EditorInfo
 
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.databinding.ActivityPersonalAnswerBinding
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.viewModel.PersonalAnswerViewModel
-import java.security.Key
 
 class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Callback {
 
     private lateinit var binding: ActivityPersonalAnswerBinding
-    private lateinit var unit: UnitPersonal
+    private lateinit var unitPer: UnitPersonal
     private var writeNows = false
     private var writeNow = false
 
@@ -27,7 +23,7 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
         Log.d("i'm ", javaClass.name)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_personal_answer)
         binding.personalAnswer = PersonalAnswerViewModel(this, this)
-        unit = application as UnitPersonal
+        unitPer = application as UnitPersonal
         bindSetting()
     }
 
@@ -51,18 +47,20 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
 
     private fun addComment(text: String) {
         binding.personalAnswer.everyoneComment =
-                binding.personalAnswer.everyoneComment + ("\n" + text + "\n\t by " + unit.userName + "\n")
+                binding.personalAnswer.everyoneComment + ("\n" + text + "\n\t by " +
+                        unitPer.myInfomation.displayName + "(" + unitPer.myInfomation.displayName + ")" + "\n")
     }
 
     private fun addScoreComment(text: String) {
         binding.personalAnswer.scoreComment =
-                binding.personalAnswer.scoreComment + ("\n" + text + "\n\t by " + unit.userName + "\n")
+                binding.personalAnswer.scoreComment + ("\n" + text + "\n\t by " +
+                        unitPer.myInfomation.displayName + "(" + unitPer.myInfomation.displayName + ")" + "\n")
     }
 
     override fun onWriteComment() {
         writeNow = if (writeNow && binding.personalAnswer.yourComment.isNotBlank()) {
             binding.commentsText.let {
-                if(it.visibility == View.GONE){
+                if (it.visibility == View.GONE) {
                     it.visibility = View.VISIBLE
                 }
             }
@@ -79,7 +77,7 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
     override fun onWriteScores() {
         writeNows = if (writeNows && binding.personalAnswer.yourScoreCmment.isNotBlank()) {
             binding.scoreCommentText.let {
-                if(it.visibility == View.GONE){
+                if (it.visibility == View.GONE) {
                     it.visibility = View.VISIBLE
                 }
             }

@@ -4,7 +4,6 @@ import android.content.Context
 import android.databinding.BaseObservable
 import android.databinding.Bindable
 import android.net.Uri
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.kurume_nct.studybattle.BR
@@ -22,7 +21,7 @@ class LoginViewModel(private val context: Context, private val callback: Callbac
     lateinit var iconUri: Uri
     var iconId: Int = 0
     lateinit var displayName: String
-    lateinit var unitPersonal: UnitPersonal
+    lateinit var unitPer: UnitPersonal
     private lateinit var authenticationKey: String
 
     @Bindable
@@ -47,7 +46,7 @@ class LoginViewModel(private val context: Context, private val callback: Callbac
             Toast.makeText(context, context.getString(R.string.errorLoginStatus), Toast.LENGTH_LONG).show()
         } else {
             callback.stopButton()
-            val client = ServerClient()
+            val client = ServerClient(unitPer.authenticationKey)
             client
                     .login(name, password)
                     .subscribeOn(Schedulers.io())

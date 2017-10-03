@@ -14,22 +14,22 @@ import android.support.annotation.RawRes
  */
 class UnitPersonal : Application(){
 
-    var userName : String
+    //var userName : String
+    var myInfomation: User = User()
     var userIcon : Uri
-    var userIconId: Int
-    var nowGroup : Int
-    var itemCount : MutableList<Int>
+    var nowGroup : Group
+    var itemCount : Item
     private lateinit var prefer: SharedPreferences
-    var groupCount : Int
+    var myGroupCount: Int
+    var myGroupList: MutableList<Group>
     var authenticationKey: String = "0"
 
     init {
-        userName = ""
-        nowGroup = 0
-        groupCount = 6
-        itemCount = mutableListOf(0,0,0,0)
+        nowGroup = Group()
+        myGroupCount = 1
+        itemCount = Item()
         userIcon = getIconUri(R.drawable.group)
-        userIconId = 0
+        myGroupList = mutableListOf()
     }
 
     override fun onCreate() {

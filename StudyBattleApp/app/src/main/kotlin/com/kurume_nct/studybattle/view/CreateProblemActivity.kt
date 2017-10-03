@@ -51,7 +51,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         binding.createView = CreateProblemViewModel(this, this)
 
         unitPer = application as UnitPersonal
-        binding.createView.creatorName = "Made by " + unitPer.userName
+        binding.createView.creatorName = "Made by " + unitPer.myInfomation.displayName
 
         //dialogSetting()
 
@@ -196,6 +196,6 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         return Duration.standardDays(dayCount.toLong())
     }
 
-    override fun getGroupId() = unitPer.nowGroup
+    override fun getGroupId() = unitPer.nowGroup.id
 
 }

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="CreateGroupUnit"
+            type="com.kurume_nct.studybattle.viewModel.CreateGroupViewModel"/>
+    </data>
 
     <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -39,6 +44,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
+                    android:text="@{CreateGroupUnit.groupName}"
                     android:hint="グループ名を入力してください"
                     android:inputType="textPersonName" />
 
@@ -75,6 +81,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:ems="10"
+                        android:text="@{CreateGroupUnit.peopleCount}"
                         android:inputType="number"
                         android:textSize="14sp" />
 
@@ -92,6 +99,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:onClick="@{CreateGroupUnit.onClickMakeGroup}"
                     android:text="グループ作成" />
             </LinearLayout>
         </ScrollView>
