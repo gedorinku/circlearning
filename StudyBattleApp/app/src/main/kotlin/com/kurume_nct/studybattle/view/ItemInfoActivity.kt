@@ -22,9 +22,9 @@ class ItemInfoActivity : AppCompatActivity(), ItemInfoViewModel.Callback {
         binding.itemInfo = ItemInfoViewModel(this,this)
         //持っているItemの個数をserverから取得
         unitPer = application as UnitPersonal
-        binding.magicCountText.text = "×" + unitPer.itemCount.magicHand.toString()
-        binding.cardCountText.text = "×" + unitPer.itemCount.card.toString()
-        binding.bombCountText.text = "×" + unitPer.itemCount.bomb.toString()
-        binding.shieldCountText.text = "×" + unitPer.itemCount.shield.toString()
+        binding.itemInfo.magicCount = "×" + unitPer.itemCount.magicHand.toString()
+        binding.itemInfo.cardCount = "×" + unitPer.itemCount.card.toString()
+        binding.itemInfo.bombCount = "×" + unitPer.itemCount.bomb.toString()
+        binding.itemInfo.shieldCount = "×" + unitPer.itemCount.shield.toString()
     }
 }

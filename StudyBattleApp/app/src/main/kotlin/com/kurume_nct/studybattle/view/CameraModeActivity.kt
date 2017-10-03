@@ -31,7 +31,6 @@ import android.view.View
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.client.ServerClient
-import com.kurume_nct.studybattle.databinding.ActivityCameraModeBinding
 import com.kurume_nct.studybattle.databinding.DialogCameraStrageChooseBinding
 import com.kurume_nct.studybattle.databinding.DialogItemSelectBinding
 import com.kurume_nct.studybattle.model.Item
