@@ -19,6 +19,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_weight="1" />
+
                 <TextView
                     android:id="@+id/problem_name_text"
                     android:layout_width="match_parent"
@@ -43,8 +48,13 @@
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:text="この問題についての情報"
-                    android:textColor="@color/md_amber_800"
-                    android:textSize="18sp" />
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="24sp" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_weight="1" />
 
                 <TextView
                     android:id="@+id/textView51"
@@ -53,6 +63,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:text="・只今の問題の状態"
+                    android:textColor="@color/md_amber_800"
                     android:textSize="18sp" />
 
                 <TextView
@@ -62,7 +73,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:text="解答を回収中"
-                    android:textColor="@color/md_amber_800"
+                    android:textColor="@color/material_drawer_secondary_text"
                     android:textSize="18sp" />
 
                 <TextView
@@ -82,7 +93,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:text="0年0月0日"
-                    android:textColor="@color/md_amber_800"
+                    android:textColor="@color/material_drawer_secondary_text"
                     android:textSize="18sp" />
 
                 <TextView
@@ -121,7 +132,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:text="24時間"
-                    android:textColor="@color/md_amber_800"
+                    android:textColor="@color/material_drawer_secondary_text"
                     android:textSize="18sp" />
 
                 <TextView
@@ -142,6 +153,11 @@
                     android:layout_weight="1"
                     android:text="0年0月0日"
                     android:textSize="18sp" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_weight="1" />
 
             </LinearLayout>
         </ScrollView>

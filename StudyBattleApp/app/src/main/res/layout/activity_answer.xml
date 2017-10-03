@@ -60,7 +60,9 @@
                     android:id="@+id/textView28"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="想定解" />
+                    android:text="想定解"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="24sp" />
 
                 <ImageView
                     android:id="@+id/answer_image_at_answer"
@@ -73,7 +75,9 @@
                     android:id="@+id/textView29"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="全員の解答" />
+                    android:text="全員の解答"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="24sp" />
 
                 <LinearLayout
                     android:id="@+id/answers_fragment"
