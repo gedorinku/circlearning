@@ -12,7 +12,7 @@ import com.kurume_nct.studybattle.BR
 class CreateGroupViewModel(val context: Context, val callback: Callback): BaseObservable() {
 
     @Bindable
-    var groupName = ""
+    var groupName = "未実装の機能です。本選までお楽しみに！"
     set(value) {
         field = value
         notifyPropertyChanged(BR.groupName)

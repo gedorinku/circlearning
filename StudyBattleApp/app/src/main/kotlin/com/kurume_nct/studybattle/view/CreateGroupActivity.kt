@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.kurume_nct.studybattle.Main2Activity
 
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.bug.SelectMainPeopleFragment
@@ -41,8 +42,9 @@ class CreateGroupActivity : AppCompatActivity(), CreateGroupViewModel.Callback {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    val intent = Intent()
-                    setResult(REQUEST_CREATE_GROUP,intent)
+                    unitPer.myGroupList.add(it)
+                    val intent = Intent(this, Main2Activity::class.java)
+                    startActivity(intent)
                     finish()
                 }, {
                     it.printStackTrace()
@@ -59,5 +61,9 @@ class CreateGroupActivity : AppCompatActivity(), CreateGroupViewModel.Callback {
     override fun makeGroup() {
         binding.button10.isClickable = false
         createGroup()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
     }
 }

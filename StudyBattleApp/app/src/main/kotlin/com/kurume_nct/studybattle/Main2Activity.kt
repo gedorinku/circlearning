@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.*
 import android.widget.Toast
+import com.bumptech.glide.Glide
 
 import com.kurume_nct.studybattle.adapter.MainPagerAdapter
 import com.kurume_nct.studybattle.client.ServerClient
@@ -26,15 +27,16 @@ import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import retrofit2.http.Url
+import java.net.URL
 import java.util.concurrent.CountDownLatch
 
 
 class Main2Activity : AppCompatActivity() {
 
-    //private var userName = "Kotlin"
     private lateinit var unitPer: UnitPersonal
-    private lateinit var iconUri: Uri
     private val REQUEST_CREATE_GROUP = 9
+    private lateinit var iconUrl: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +44,6 @@ class Main2Activity : AppCompatActivity() {
 
         unitPer = application as UnitPersonal
         //userName = unitPer.myInfomation.userName
-        iconUri = unitPer.userIcon
 
         getUserInformation()
 
@@ -67,8 +68,8 @@ class Main2Activity : AppCompatActivity() {
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({
-                                unitPer.userIcon = Uri.parse(it.url)
-
+                                iconUrl = it.url
+                                unitPer.userIcon = Uri.parse(iconUrl)
                                 getMyGroup()
 
                             }, {
@@ -99,8 +100,7 @@ class Main2Activity : AppCompatActivity() {
                     Log.d(unitPer.myGroupCount.toString(), "個あります")
                     if (unitPer.myGroupCount == 0) {
                         //join or create group
-                        Log.d("i do u "," shi ma su")
-                        startActivityForResult(Intent(this, CreateGroupActivity::class.java), REQUEST_CREATE_GROUP)
+                        startActivity(Intent(this, CreateGroupActivity::class.java))
                     } else {
                         unitPer.nowGroup = unitPer.myGroupList[0]
                         viewSetup()
@@ -118,19 +118,19 @@ class Main2Activity : AppCompatActivity() {
 
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (data == null) return
+        //if (data == null) return
 
-        when (requestCode) {
+        when (resultCode) {
             REQUEST_CREATE_GROUP -> {
                 Log.d("hoge","hoge")
                 getMyGroup()
             }
         }
 
-    }
+    }*/
 
 
     private fun onToolBar() {
@@ -207,7 +207,6 @@ class Main2Activity : AppCompatActivity() {
                                 .withIdentifier(acountCount)
                 )
                 .withOnAccountHeaderListener(AccountHeader.OnAccountHeaderListener { view, profile, currentProfile ->
-                    Toast.makeText(this, "この機能は未実装です", Toast.LENGTH_SHORT).show()
                     false
                 })
                 .build()
@@ -219,28 +218,27 @@ class Main2Activity : AppCompatActivity() {
                 .withToolbar(toolbar)
                 .withOnDrawerItemClickListener { view, position, drawerItem ->
                     var intent = Intent(this, Main2Activity::class.java)
-                    if (position == unitPer.myGroupList.size + 1) {
+                    if (position == unitPer.myGroupList.size) {
                         intent = Intent(this, CreateGroupActivity::class.java)
                         startActivity(intent)
                     } else {
                         unitPer.nowGroup = unitPer.myGroupList[position]
-                        startActivity(intent)
-                        finish()
+                        onTabLayout()
                     }
                     false
                 }
                 .build()
         //Create the Item of list
-        for (a in unitPer.myGroupList) {
+        Log.d(unitPer.myGroupCount.toString(), "すし")
+        (0 until unitPer.myGroupCount).forEach {
             result
                     .addItem(PrimaryDrawerItem()
-                            .withIdentifier(a.id.toLong())
-                            .withName(a.name)
+                            .withIdentifier(unitPer.myGroupList[it].id.toLong())
+                            .withName(unitPer.myGroupList[it].name)
                             .withIcon(GoogleMaterial.Icon.gmd_people))
         }
         result
                 .addItem(PrimaryDrawerItem()
-                        .withIdentifier(-1)
                         .withName("新しくグループを作る")
                         .withIcon(GoogleMaterial.Icon.gmd_add))
     }
