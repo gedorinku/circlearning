@@ -45,7 +45,7 @@ class MainListFragment : Fragment() {
         super.onCreate(savedInstanceState)
         tabId = arguments.getInt("id")
         val unitPersonal = activity.application as UnitPersonal
-        client = ServerClient(unitPersonal.autheticationKey)
+        client = ServerClient(unitPersonal.authenticationKey)
 
         when (tabId) {
             resources.getInteger(R.integer.HAVE_PROBLEM) ->
@@ -76,22 +76,24 @@ class MainListFragment : Fragment() {
                 client.getUnjudgedMySolutions()
                         .flatMap { it.toObservable() }
                         .map { client.getProblem(it.problemId) }
-                        .firstOrError()
+                        .first(emptyList<Problem>().toObservable())
                         .flatMap { it.toList() }
 
             resources.getInteger(R.integer.SUGGEST_FIN) ->
                 client.getJudgedMySolutions()
                         .flatMap { it.toObservable() }
                         .map { client.getProblem(it.problemId) }
-                        .firstOrError()
+                        .first(emptyList<Problem>().toObservable())
                         .flatMap { it.toList() }
 
             else -> throw IllegalArgumentException(tabId.toString())
         }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { it ->
-                    problemList.addAll(0, it)
-                    listAdapter.notifyItemRangeInserted(0, it.size)
+                    if (it.isNotEmpty()) {
+                        problemList.addAll(0, it)
+                        listAdapter.notifyItemRangeInserted(0, it.size)
+                    }
                 }
     }
 
