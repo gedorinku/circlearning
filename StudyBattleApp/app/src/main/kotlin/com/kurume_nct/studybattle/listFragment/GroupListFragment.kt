@@ -65,7 +65,7 @@ class GroupListFragment : Fragment() {
     fun addListInstance(){
         grouplist.clear()
         when (activityId) {
-            0 -> (0..3).forEach { grouplist.add(Person_(score = it.toString() + "点")) }
+            0 -> (0..3).forEach { grouplist.add(Person_(score = ((5 - it) * 100 * 0.4).toString() + "点", name = "Person" + it.toString())) }
             3 -> (0..3).forEach { grouplist.add(Person_()) }
         }
         listAdapter.notifyItemRangeInserted(0,grouplist.size)

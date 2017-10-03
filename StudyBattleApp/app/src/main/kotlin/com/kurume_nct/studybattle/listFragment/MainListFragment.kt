@@ -86,7 +86,7 @@ class MainListFragment : Fragment() {
                         .first(emptyList<Problem>().toObservable())
                         .flatMap { it.toList() }
 
-            else -> throw IllegalArgumentException(tabId.toString())
+            else -> throw IllegalArgumentException(tabId.toString()) as Throwable
         }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { it ->
