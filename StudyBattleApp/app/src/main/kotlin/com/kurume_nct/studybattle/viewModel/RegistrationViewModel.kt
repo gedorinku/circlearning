@@ -59,15 +59,15 @@ class RegistrationViewModel(private val context: Context, private val callback: 
     }
 
     @Bindable
-    private var userName = ""
+    var userNameRegister = ""
         get
         set(value) {
             field = value
-            notifyPropertyChanged(BR.userName)
+            notifyPropertyChanged(BR.userNameRegister)
         }
 
     @Bindable
-    private var userPassword = ""
+    var userPassword = ""
         get
         set(value) {
             field = value
@@ -98,11 +98,11 @@ class RegistrationViewModel(private val context: Context, private val callback: 
     }
 
     fun onClickLoginButton(view: View) {
-        if (userName.isBlank() || userPassword.isBlank()) {
+        if (userNameRegister.isBlank() || userPassword.isBlank()) {
             Toast.makeText(context, context.getString(R.string.errorLoginStatus), Toast.LENGTH_LONG).show()
-        } else if (!userName.matches("^[a-zA-Z0-9_]{2,20}".toRegex())) {
+        } else if (!userNameRegister.matches("^[a-zA-Z0-9_]{2,20}".toRegex())) {
             Toast.makeText(context, "ユーザー名に不適切な文字列が含まれています.", Toast.LENGTH_LONG).show()
-            userName = ""
+            userNameRegister = ""
         } else {
             callback.stopButton()
             //sever処理
@@ -113,7 +113,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
                     .observeOn(AndroidSchedulers.mainThread())
                     .flatMap {
                         client
-                                .register(displayName, userName, userPassword, it.id)
+                                .register(displayName, userNameRegister, userPassword, it.id)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                     }

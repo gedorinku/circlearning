@@ -36,13 +36,16 @@ class CreateGroupActivity : AppCompatActivity(), CreateGroupViewModel.Callback {
 
     private fun createGroup() {
         val client = ServerClient(unitPer.authenticationKey)
-        client.createGroup(binding.createGroupUnit.groupName)
+        client
+                .createGroup(binding.createGroupUnit.groupName)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     val intent = Intent()
                     setResult(REQUEST_CREATE_GROUP,intent)
+                    finish()
                 }, {
+                    it.printStackTrace()
                     binding.button10.isClickable = true
                     Toast.makeText(this, "グループの作成に失敗", Toast.LENGTH_SHORT).show()
                     Log.d("グループの作成に失敗", "")

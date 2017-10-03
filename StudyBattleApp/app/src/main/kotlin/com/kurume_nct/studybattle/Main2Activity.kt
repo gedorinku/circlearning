@@ -1,5 +1,6 @@
 package com.kurume_nct.studybattle
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -15,7 +16,6 @@ import com.kurume_nct.studybattle.adapter.MainPagerAdapter
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.Group
 import com.kurume_nct.studybattle.view.CreateGroupActivity
-import com.kurume_nct.studybattle.model.Person_
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.view.*
 import com.mikepenz.google_material_typeface_library.GoogleMaterial
@@ -51,13 +51,17 @@ class Main2Activity : AppCompatActivity() {
     }
 
     private fun getUserInformation() {
+        Log.d("getUserInfo","")
         val client = ServerClient(unitPer.authenticationKey)
         client
                 .verifyAuthentication(unitPer.authenticationKey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
+                    Log.d("userの情報を取得","")
                     unitPer.myInfomation = it
+                    onToolBar()
+
                     client
                             .getImageById(unitPer.myInfomation.icon!!.id)
                             .subscribeOn(Schedulers.io())
@@ -77,56 +81,50 @@ class Main2Activity : AppCompatActivity() {
     }
 
     private fun getMyGroup() {
+        Log.d("getMyGroup","")
+
+        val groups = mutableListOf<Group>()
         val client = ServerClient(unitPer.authenticationKey)
-        //TODO get group
-
-        unitPer.myGroupList = getGroupInformation()
-        unitPer.myGroupCount = unitPer.myGroupList.size
-
-        if (unitPer.myGroupCount == 0) {
-            //join or create group
-            startActivityForResult(Intent(this, CreateGroupActivity::class.java), REQUEST_CREATE_GROUP)
-        } else {
-
-            viewSetup()
-
-        }
-    }
-
-    private fun getGroupInformation(): MutableList<Group> {
-        var groups = mutableListOf<Group>()
-        val counter = CountDownLatch(1)
-        val client = ServerClient(unitPer.authenticationKey)
-        /*client
-                .getGroup(groupId)
+        client
+                .getJoinedGroups()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    group = it
-                    counter.countDown()
+                    it.map {
+                        groups.add(it)
+                    }
+                    unitPer.myGroupList = groups
+                    unitPer.myGroupCount = unitPer.myGroupList.size
+                    if (unitPer.myGroupCount == 0) {
+                        //join or create group
+                        Log.d("i do u "," shi ma su")
+                        startActivityForResult(Intent(this, CreateGroupActivity::class.java), REQUEST_CREATE_GROUP)
+                    } else {
+                        unitPer.nowGroup = unitPer.myGroupList[0]
+                        viewSetup()
+                    }
                 }, {
                     Log.d("Groupの情報を取得するのに失敗", "")
-                    counter.countDown()
-                })*/
-        counter.await()
-        return groups
+                    Toast.makeText(this,"アプリを立ち上げなおしてください",Toast.LENGTH_SHORT).show()
+                })
     }
 
     fun viewSetup() {
 
         onTabLayout()
         onNavigationDrawer()
-        onToolBar()
 
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (data == null) return
+        Log.d("hoge","hoge2")
+        //if (data == null) return
 
         when (requestCode) {
             REQUEST_CREATE_GROUP -> {
+                Log.d("hoge","hoge")
                 getMyGroup()
             }
         }
@@ -154,7 +152,7 @@ class Main2Activity : AppCompatActivity() {
                     startActivity(Intent(this, GroupSetChangeActivity::class.java))
                 }
                 R.id.to_setting_group -> {
-                    Toast.makeText(this, "未実装の機能です。", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "未実装の機能です。本選までお楽しみに！", Toast.LENGTH_SHORT).show()
                 }
             }
             false

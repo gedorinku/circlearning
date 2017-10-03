@@ -63,4 +63,6 @@ class LoginActivity : AppCompatActivity(), LoginViewModel.Callback {
         }
     }
 
+    override fun getKey() = unitPer.authenticationKey
+
 }

@@ -40,7 +40,7 @@
             android:ems="10"
             android:hint="@string/hint_input_user_name"
             android:inputType="textPersonName"
-            android:text="@={userEntity.userName}"
+            android:text="@={userEntity.userNameRegister}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.13"

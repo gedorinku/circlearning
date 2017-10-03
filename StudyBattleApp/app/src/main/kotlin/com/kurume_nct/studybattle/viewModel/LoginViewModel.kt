@@ -21,7 +21,6 @@ class LoginViewModel(private val context: Context, private val callback: Callbac
     lateinit var iconUri: Uri
     var iconId: Int = 0
     lateinit var displayName: String
-    lateinit var unitPer: UnitPersonal
     private lateinit var authenticationKey: String
 
     @Bindable
@@ -46,7 +45,7 @@ class LoginViewModel(private val context: Context, private val callback: Callbac
             Toast.makeText(context, context.getString(R.string.errorLoginStatus), Toast.LENGTH_LONG).show()
         } else {
             callback.stopButton()
-            val client = ServerClient(unitPer.authenticationKey)
+            val client = ServerClient(callback.getKey())
             client
                     .login(name, password)
                     .subscribeOn(Schedulers.io())
@@ -65,6 +64,8 @@ class LoginViewModel(private val context: Context, private val callback: Callbac
 
 
     interface Callback {
+
+        fun getKey(): String
 
         fun stopButton()
 
