@@ -20,7 +20,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="10dp" />
+            android:layout_height="20dp" />
 
         <TextView
             android:id="@+id/lottery_name_text"
@@ -28,7 +28,6 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="アイテム抽選会"
-            android:textColor="@android:color/background_dark"
             android:textSize="24sp"
             tools:ignore="HardcodedText"
             tools:layout_editor_absoluteX="68dp"
