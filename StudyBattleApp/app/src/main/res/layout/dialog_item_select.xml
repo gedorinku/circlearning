@@ -59,12 +59,6 @@
                 android:layout_height="100dp"
                 android:background="@drawable/framecard_magichand" />
 
-            <Button
-                android:id="@+id/shield_button15"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/framecard_shield" />
-
         </LinearLayout>
 
         <Button

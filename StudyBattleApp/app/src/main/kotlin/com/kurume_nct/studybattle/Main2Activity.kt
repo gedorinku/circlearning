@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.adapter.MainPagerAdapter
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.Group
+import com.kurume_nct.studybattle.model.Item
 import com.kurume_nct.studybattle.view.CreateGroupActivity
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.view.*

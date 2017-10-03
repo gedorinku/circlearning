@@ -80,7 +80,6 @@ class CameraModeActivity : Activity() {
         instance = this
 
         unitPer = application as UnitPersonal
-        unitPer.itemCount = Item(1, 0, 1, 0)
         progress = ProgressDialogTool(this).makeDialog()
 
         setContentView(R.layout.activity_camera_mode)
@@ -231,7 +230,6 @@ class CameraModeActivity : Activity() {
         unitPer.itemCount.run {
             if (bomb <= 0) dialogView.bombButton17.visibility = View.INVISIBLE
             if (card <= 0) dialogView.cardButton16.visibility = View.INVISIBLE
-            if (shield <= 0) dialogView.shieldButton15.visibility = View.INVISIBLE
             if (magicHand <= 0) dialogView.handButton12.visibility = View.INVISIBLE
         }
 
@@ -247,13 +245,6 @@ class CameraModeActivity : Activity() {
                 Glide.with(this).load(R.drawable.framecard_card).into(submitItemImageButton)
             }
             putItemId = 1
-            dialog.cancel()
-        }
-        dialogView.shieldButton15.setOnClickListener {
-            if (putItemId != 2) {
-                Glide.with(this).load(R.drawable.framecard_shield).into(submitItemImageButton)
-            }
-            putItemId = 2
             dialog.cancel()
         }
         dialogView.handButton12.setOnClickListener {
@@ -281,7 +272,6 @@ class CameraModeActivity : Activity() {
             when (itemId) {
                 0 -> unitPer.itemCount.bomb -= 1
                 1 -> unitPer.itemCount.card -= 1
-                2 -> unitPer.itemCount.shield -= 1
                 3 -> unitPer.itemCount.magicHand -= 1
             }
         }
