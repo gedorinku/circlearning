@@ -24,6 +24,10 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
+
                 <TextView
                     android:id="@+id/textView15"
                     android:layout_width="match_parent"
@@ -31,6 +35,10 @@
                     android:gravity="center"
                     android:text="グループ設定画面"
                     android:textSize="24sp" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
 
                 <TextView
                     android:id="@+id/textView40"
@@ -45,6 +53,10 @@
                     android:gravity="center"
                     android:text="このグループに誰かを招待" />
 
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+
                 <LinearLayout
                     android:id="@+id/fragment_search_list"
                     android:layout_width="match_parent"
@@ -57,15 +69,25 @@
                     android:id="@+id/button8"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/green_button"
                     android:onClick="@{GroupSetView.onClickChangeInfo}"
-                    android:text="情報を更新" />
+                    android:text="情報を更新"
+                    android:textColor="@color/material_drawer_background"
+                    android:textSize="18sp" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
 
                 <Button
                     android:id="@+id/button9"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/blue_button"
                     android:onClick="@{GroupSetView.onClickGoodbyeInfo}"
-                    android:text="このグループから退出" />
+                    android:text="このグループから退出"
+                    android:textColor="@color/material_drawer_background"
+                    android:textSize="18sp" />
 
             </LinearLayout>
         </ScrollView>
