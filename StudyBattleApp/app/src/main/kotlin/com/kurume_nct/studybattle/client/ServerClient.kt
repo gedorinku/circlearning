@@ -159,6 +159,14 @@ class ServerClient(authenticationKey: String = "") {
                     .flatMap {
                         server.getSolution(authenticationKey, it.id)
                     }
+
+    fun getSolution(solution: Solution) = getSolution(solution.id)
+
+    fun getSolution(solutionId: Int) = server.getSolution(authenticationKey, solutionId)
+
+    fun getJudgedMySolutions() = server.getJudgedMySolutions(authenticationKey)
+
+    fun getUnjudgedMySolutions() = server.getUnjudgedMySolutions(authenticationKey)
 }
 
 private class StringConverterFactory : Converter.Factory() {

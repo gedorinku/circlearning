@@ -127,4 +127,22 @@ interface Server {
             @Field("authenticationKey") authenticationKey: String,
             @Path("id") id: Int
     ): Observable<Solution>
+
+    @FormUrlEncoded
+    @POST("/solution/judge")
+    fun judgeSolution(
+            @Field("authenticationKey") authenticationKey: String,
+            @Field("id") id: Int,
+            @Field("isAccepted") isAccepted: Boolean
+    ): Observable<Unit>
+
+    @GET("/my_solution/judged")
+    fun getJudgedMySolutions(
+            @Query("authenticationKey") authenticationKey: String
+    ): Observable<List<Solution>>
+
+    @GET("/my_solution/unjudged")
+    fun getUnjudgedMySolutions(
+            @Query("authenticationKey") authenticationKey: String
+    ): Observable<List<Solution>>
 }
