@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="CreateGroupUnit"
+            type="com.kurume_nct.studybattle.viewModel.CreateGroupViewModel"/>
+    </data>
 
     <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         tools:context="com.kurume_nct.studybattle.view.CreateGroupActivity">
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/textView43"
@@ -15,6 +25,11 @@
             android:text="グループ作成画面"
             android:textAlignment="center"
             android:textSize="24sp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_weight="1" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -31,7 +46,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="グループ名" />
+                    android:text="グループ名"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp" />
 
                 <EditText
                     android:id="@+id/editText8"
@@ -39,6 +56,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
+                    android:text="@={CreateGroupUnit.groupName}"
                     android:hint="グループ名を入力してください"
                     android:inputType="textPersonName" />
 
@@ -75,6 +93,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:ems="10"
+                        android:text="@={CreateGroupUnit.peopleCount}"
                         android:inputType="number"
                         android:textSize="14sp" />
 
@@ -92,7 +111,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="グループ作成" />
+                    android:background="@drawable/green_button"
+                    android:text="グループ作成"
+                    android:textColor="@color/material_drawer_background"
+                    android:textSize="18sp" />
             </LinearLayout>
         </ScrollView>
 

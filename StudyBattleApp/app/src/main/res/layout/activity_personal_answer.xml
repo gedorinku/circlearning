@@ -86,11 +86,18 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@drawable/orange_button"
                         android:onClick="@{PersonalAnswer.onClickScoreComment}"
-                        android:text="+コメントを追加する" />
+                        android:text="+コメントを追加する"
+                        android:textColor="@color/material_drawer_dark_primary_text" />
 
                 </LinearLayout>
 
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:layout_weight="1" />
 
                 <TextView
                     android:id="@+id/textView41"
@@ -121,8 +128,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@drawable/orange_button"
                     android:onClick="@{PersonalAnswer.onClickComment}"
-                    android:text="+コメントを追加する" />
+                    android:text="+コメントを追加する"
+                    android:textColor="@color/material_drawer_dark_header_selection_text" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_weight="1" />
 
             </LinearLayout>
         </ScrollView>

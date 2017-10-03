@@ -69,14 +69,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
-                    android:orientation="vertical"></LinearLayout>
+                    android:orientation="vertical"/>
 
 
-                <LinearLayout
+                <Space
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"></LinearLayout>
+                    android:layout_weight="1" />
 
             </LinearLayout>
         </ScrollView>

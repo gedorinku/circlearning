@@ -2,12 +2,9 @@ package com.kurume_nct.studybattle.view
 
 import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.graphics.drawable.Icon
-import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.kurume_nct.studybattle.Main2Activity
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.databinding.ActivityRegistrationBinding
@@ -19,7 +16,7 @@ import com.kurume_nct.studybattle.viewModel.RegistrationViewModel
 class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback {
 
     lateinit var binding: ActivityRegistrationBinding
-    lateinit var unitPer : UnitPersonal
+    lateinit var unitPer: UnitPersonal
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,8 +27,8 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
         unitPer = application as UnitPersonal
 
         //skip
-        if (!unitPer.newUser) {
-            onLogin(unitPer.userName, "", unitPer.userIcon)
+        if (unitPer.authenticationKey != "0") {
+            onLogin()
         }
 
     }
@@ -41,14 +38,7 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
         finish()
     }
 
-    override fun onLogin(name: String, password: String, icon: Uri) {
-        if (unitPer.newUser) {
-            unitPer.userName = name
-            unitPer.userIcon = icon
-            unitPer.newUser = false
-            unitPer.writeFile()
-            //server
-        }
+    override fun onLogin() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
@@ -62,6 +52,11 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
     override fun stopButton() {
         binding.button3.isClickable = false
         binding.button4.isClickable = false
+    }
+
+    override fun ableButton(){
+        binding.button3.isClickable = true
+        binding.button4.isClickable = true
     }
 
 }
