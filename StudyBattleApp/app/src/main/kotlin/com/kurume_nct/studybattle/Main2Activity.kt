@@ -90,11 +90,13 @@ class Main2Activity : AppCompatActivity() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    it.map {
-                        groups.add(it)
+                    for(i in it){
+                        groups.add(i)
+                        Log.d("list", "group追加")
                     }
                     unitPer.myGroupList = groups
                     unitPer.myGroupCount = unitPer.myGroupList.size
+                    Log.d(unitPer.myGroupCount.toString(), "個あります")
                     if (unitPer.myGroupCount == 0) {
                         //join or create group
                         Log.d("i do u "," shi ma su")
