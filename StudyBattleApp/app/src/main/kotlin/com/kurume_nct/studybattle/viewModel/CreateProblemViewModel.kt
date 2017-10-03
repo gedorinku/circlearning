@@ -1,8 +1,6 @@
 package com.kurume_nct.studybattle.viewModel
 
-import android.content.ContentResolver
-import android.content.Context
-import android.content.Intent
+import android.content.*
 import android.databinding.BaseObservable
 import android.databinding.Bindable
 import android.databinding.BindingAdapter
@@ -13,8 +11,15 @@ import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import android.provider.MediaStore
-import android.content.ContentValues
+import android.util.Log
 import android.widget.Toast
+import com.kurume_nct.studybattle.client.ServerClient
+import com.kurume_nct.studybattle.model.Solution
+import com.kurume_nct.studybattle.model.User
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import org.joda.time.DateTime
+import org.joda.time.Duration
 
 
 /**
@@ -27,6 +32,8 @@ class CreateProblemViewModel(private val context: Context, private val callback:
     private var checkCount: Boolean
     private var termOne: Double
     private val termExtra = "時間(解答回収期間より)"
+    var problemImageId = 0
+    var answerImageId = 0
 
     init {
         checkCount = false
@@ -76,7 +83,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
             notifyPropertyChanged(BR.day)
         }
 
-    fun onClickDateChange(view: View){
+    fun onClickDateChange(view: View) {
         callback.onDateDialog()
     }
 
@@ -125,11 +132,13 @@ class CreateProblemViewModel(private val context: Context, private val callback:
 
     fun onClickProblemImage(view: View) {
         callback.alertDialog(1)
+        Log.d("click ", "problemImage....")
         //using alert screen ans to do to choice photo or image
     }
 
     fun onClickAnswerImage(view: View) {
         callback.alertDialog(0)
+        Log.d("click ", "answerImage....")
     }
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -138,22 +147,75 @@ class CreateProblemViewModel(private val context: Context, private val callback:
             1 -> {
                 pUri = data.data
                 problemUri = pUri
+                callback.onClickableButtons()
             }
             0 -> {
                 aUri = data.data
                 answerUri = aUri
+                callback.onClickableButtons()
             }
         }
     }
 
     fun onClickFinish(view: View) {
         val a = convertUrlFromDrawableResId(context, R.drawable.group)
-        if(problemUri == a || answerUri == a || problemName.isEmpty() || problemName.isBlank()) {
-            Toast.makeText(context, "入力に不備があります(`・ω・´)",Toast.LENGTH_SHORT).show()
-        }else{
-            callback.getCreateData(problemName, problemUri!!, answerUri!!)
+        if (problemUri == a || answerUri == a || problemName.isEmpty() || problemName.isBlank()) {
+            Toast.makeText(context, "入力に不備があります(`・ω・´)", Toast.LENGTH_SHORT).show()
+        } else {
+            sendData()
         }
     }
+
+    fun sendData() {
+
+        callback.onNotClickableButtons()
+
+        val client = ServerClient(callback.getKey())
+        client
+                .uploadImage(problemUri, context)
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    problemImageId = it.id
+                    client
+                            .uploadImage(answerUri, context)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                answerImageId = it.id
+                                client
+                                        .createProblem(
+                                                problemName,
+                                                "ごめんなさい",
+                                                listOf(problemImageId),
+                                                dateTime(),
+                                                callback.getDuration(),
+                                                callback.getGroupId(),
+                                                Solution(
+                                                        text = "お寿司と焼き肉の戦い。",
+                                                        authorId = callback.userInformation().id,
+                                                        imageCount = 1,
+                                                        imageIds = listOf(answerImageId)
+                                                )
+                                        )
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe({
+                                            callback.getCreateData(problemName)
+                                        }, {
+                                            callback.onClickableButtons()
+                                            it.printStackTrace()
+                                        })
+                            }, {
+                                callback.onClickableButtons()
+                                it.printStackTrace()
+                            })
+                }, {
+                    callback.onClickableButtons()
+                    it.printStackTrace()
+                })
+    }
+
+    private fun dateTime(): DateTime = DateTime.now()
 
     fun convertUrlFromDrawableResId(context: Context, drawableResId: Int): Uri {
         val sb = StringBuilder()
@@ -168,10 +230,27 @@ class CreateProblemViewModel(private val context: Context, private val callback:
     }
 
     interface Callback {
+
+        fun userInformation(): User
+
+        fun getKey(): String
+
         fun checkNameEnable(enable: Boolean)
+
         fun startActivityForResult(intent: Intent, requestCode: Int)
-        fun getCreateData(title: String, problemUri: Uri, answerUri: Uri)
+
+        fun getCreateData(title: String)
+
         fun alertDialog(pro: Int)
+
         fun onDateDialog()
+
+        fun getDuration(): Duration
+
+        fun getGroupId(): Int
+
+        fun onClickableButtons()
+
+        fun onNotClickableButtons()
     }
 }

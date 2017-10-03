@@ -47,7 +47,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
     }
 
     companion object {
-        @BindingAdapter("loadImage")
+        @BindingAdapter("loadImageFirstIcon")
         @JvmStatic
         fun setIconImage(view: ImageView, uri: Uri?) {
             if (uri == null) {
@@ -59,11 +59,11 @@ class RegistrationViewModel(private val context: Context, private val callback: 
     }
 
     @Bindable
-    var userName = ""
+    var userNameRegister = ""
         get
         set(value) {
             field = value
-            notifyPropertyChanged(BR.userName)
+            notifyPropertyChanged(BR.userNameRegister)
         }
 
     @Bindable
@@ -98,30 +98,31 @@ class RegistrationViewModel(private val context: Context, private val callback: 
     }
 
     fun onClickLoginButton(view: View) {
-        if (userName.isBlank() || userPassword.isBlank()) {
+        if (userNameRegister.isBlank() || userPassword.isBlank()) {
             Toast.makeText(context, context.getString(R.string.errorLoginStatus), Toast.LENGTH_LONG).show()
-        } else if (!userName.matches("^[a-zA-Z0-9_]{2,20}".toRegex())) {
+        } else if (!userNameRegister.matches("^[a-zA-Z0-9_]{2,20}".toRegex())) {
             Toast.makeText(context, "ユーザー名に不適切な文字列が含まれています.", Toast.LENGTH_LONG).show()
-            userName = ""
+            userNameRegister = ""
         } else {
             callback.stopButton()
             //sever処理
             val client = ServerClient()
             client
-                    .uploadImage(iconImageUri, context)
+                    .uploadImage(imageUri, context)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .flatMap {
                         client
-                                .register(displayName, userName, userPassword, it.id)
+                                .register(displayName, userNameRegister, userPassword, it.id)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                     }
                     .subscribe({
-                        callback.onLogin(userName,userPassword,iconImageUri)
+                        callback.onLogin()
                     }, {
                         it.printStackTrace()
                         Toast.makeText(context, context.getString(R.string.usedUserNameAlart), Toast.LENGTH_LONG).show()
+                        callback.ableButton()
                     })
         }
     }
@@ -160,11 +161,13 @@ class RegistrationViewModel(private val context: Context, private val callback: 
 
     interface Callback {
 
+        fun ableButton()
+
         fun stopButton()
 
         fun toLoginActivity()
 
-        fun onLogin(name : String, password : String, icon: Uri)
+        fun onLogin()
 
         fun startActivityForResult(intent: Intent, requestCode: Int)
 

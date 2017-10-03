@@ -53,7 +53,7 @@
                 <ImageButton
                     android:id="@+id/problemImage"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="250dp"
                     android:layout_weight="1"
                     android:background="@drawable/no_image"
                     android:onClick="@{CreateView.onClickProblemImage}"
@@ -160,7 +160,7 @@
                 <ImageButton
                     android:id="@+id/answerImage"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="250dp"
                     android:layout_weight="1"
                     android:background="@drawable/no_image"
                     android:onClick="@{CreateView.onClickAnswerImage}"

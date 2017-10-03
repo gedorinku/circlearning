@@ -17,13 +17,13 @@ class ScoringActivity : AppCompatActivity() {
     //bindすることが少なかったのでMV
     lateinit var binding: ActivityScoringBinding
     private var scoreBoolean = true
-    lateinit var unit : UnitPersonal
+    lateinit var unitPer : UnitPersonal
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("i'm ", javaClass.name)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_scoring)
-        unit = UnitPersonal()
+        unitPer = UnitPersonal()
         scoreSetting()
         bindSetting()
     }
@@ -43,7 +43,7 @@ class ScoringActivity : AppCompatActivity() {
     }
 
     private fun bindSetting() {
-        binding.creatorNameAtScore.text = "Answer by " + unit.userName
+        binding.creatorNameAtScore.text = "Answer by " + unitPer.myInfomation.displayName+ "(" + unitPer.myInfomation.displayName + ")"
         //binding.problemImageAtScore.setImageURI()
         binding.finButton.setOnClickListener {
             //send score

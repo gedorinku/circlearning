@@ -1,15 +1,9 @@
 package com.kurume_nct.studybattle.model
 
-import android.content.Context
 import android.databinding.BaseObservable
 import android.databinding.Bindable
-import android.databinding.BindingAdapter
 import android.net.Uri
-import android.widget.ImageView
-import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
-import com.kurume_nct.studybattle.R
-import com.kurume_nct.studybattle.tools.ResIDToUriClass
 
 /**
  * Created by hanah on 9/22/2017.

@@ -32,12 +32,12 @@ class SelectMainPeopleFragment : Fragment(), SelectPeopleFragment.Callback, Choo
 
         chooseFragment = ChoosePeopleFragment.newInstance(this)
         selectFragment = SelectPeopleFragment.newInstance(this)
-        activity.supportFragmentManager.beginTransaction()
+        /*activity.supportFragmentManager.beginTransaction()
                 .add(R.id.fragment_search_list,chooseFragment)
                 .commit()
         activity.supportFragmentManager.beginTransaction()
                 .add(R.id.fragment_select_list, selectFragment)
-                .commit()
+                .commit()*/
 
         return binding.root
     }

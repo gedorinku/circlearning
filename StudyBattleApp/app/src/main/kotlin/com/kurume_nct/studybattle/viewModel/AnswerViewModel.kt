@@ -7,8 +7,8 @@ import android.databinding.BindingAdapter
 import android.net.Uri
 import android.view.View
 import android.widget.ImageView
-import com.android.databinding.library.baseAdapters.BR
 import com.bumptech.glide.Glide
+import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 
 /**
@@ -36,12 +36,24 @@ class AnswerViewModel(private val context: Context, private val callback : Callb
 
     @Bindable
     var problemNameAns = "problem name🐰"
+    set(value) {
+        field = value
+        notifyPropertyChanged(BR.problemNameAns)
+    }
 
     @Bindable
     var masterNameAns = "(made by Nana)"
+    set(value) {
+        field = value
+        notifyPropertyChanged(BR.masterNameAns)
+    }
 
     @Bindable
     var problemScoreAns = "0点"
+    set(value) {
+        field = value
+        notifyPropertyChanged(BR.problemScoreAns)
+    }
 
     //@Bindable
     var problemUriAns = pUri
