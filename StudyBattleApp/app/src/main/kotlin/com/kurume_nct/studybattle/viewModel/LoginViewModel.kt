@@ -46,18 +46,17 @@ class LoginViewModel(private val context: Context, private val callback: Callbac
         if (name.isEmpty() || password.isEmpty()) {
             Toast.makeText(context, context.getString(R.string.errorLoginStatus), Toast.LENGTH_LONG).show()
         } else {
+            callback.stopButton()
             val client = ServerClient()
             client
                     .login(name, password)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        authenticationKey = it.authenticationKey
-                        Log.d(authenticationKey, "key")
-                        //User
-                        //Icon
-                        callback.onLogin(displayName, authenticationKey)
-                    }
+                    .subscribe ({
+                        callback.onLogin(it.authenticationKey)
+                    }, {
+                        callback.clickableButton()
+                    })
         }
     }
 
@@ -67,7 +66,13 @@ class LoginViewModel(private val context: Context, private val callback: Callbac
 
 
     interface Callback {
-        fun onLogin(displayName: String, authentication: String)
+
+        fun stopButton()
+
+        fun clickableButton()
+
+        fun onLogin(authentication: String)
+
         fun toRegisterActivity()
     }
 }

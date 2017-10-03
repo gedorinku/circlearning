@@ -169,7 +169,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
     fun sendData() {
         val client = ServerClient()
         client
-                .login("hunachi278","hunachi278")
+                .login("hunachi278", "hunachi278")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -177,13 +177,13 @@ class CreateProblemViewModel(private val context: Context, private val callback:
                     client_
                             .uploadImage(problemUri, context)
                             .subscribeOn(Schedulers.io())
-                            .subscribe ({
+                            .subscribe({
                                 problemImageId = it.id
                                 client_
                                         .uploadImage(answerUri, context)
                                         .subscribeOn(Schedulers.io())
                                         .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe ({
+                                        .subscribe({
                                             answerImageId = it.id
                                             client_
                                                     .createProblem(
@@ -199,16 +199,16 @@ class CreateProblemViewModel(private val context: Context, private val callback:
                                                     .observeOn(AndroidSchedulers.mainThread())
                                                     .subscribe({
                                                         callback.getCreateData(problemName)
-                                                    },{
+                                                    }, {
                                                         it.printStackTrace()
                                                     })
-                                        },{
+                                        }, {
                                             it.printStackTrace()
                                         })
-                            },{
+                            }, {
                                 it.printStackTrace()
                             })
-                },{
+                }, {
                     it.printStackTrace()
                 })
     }
@@ -228,13 +228,21 @@ class CreateProblemViewModel(private val context: Context, private val callback:
     }
 
     interface Callback {
+
         fun checkNameEnable(enable: Boolean)
+
         fun startActivityForResult(intent: Intent, requestCode: Int)
+
         fun getCreateData(title: String)
+
         fun alertDialog(pro: Int)
+
         fun onDateDialog()
+
         fun getDuration(): Duration
+
         fun getGroupId(): Int
+
         fun onClickableButtons()
     }
 }

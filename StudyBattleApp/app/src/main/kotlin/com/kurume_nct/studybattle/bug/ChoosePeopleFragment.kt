@@ -11,7 +11,7 @@ import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.adapter.JoinPeopleAdapter
 import com.kurume_nct.studybattle.databinding.FragmentChoosePeoplelistBinding
 import com.kurume_nct.studybattle.model.JoinPeople
-import com.kurume_nct.studybattle.tools.ResIDToUriClass
+import com.kurume_nct.studybattle.tools.ToolClass
 
 /**
  * Created by hanah on 10/2/2017.
@@ -46,7 +46,7 @@ class ChoosePeopleFragment(val callback: Callback): Fragment(){
     }
 
     private fun onListReset(){
-        val uri = ResIDToUriClass().convertUrlFromDrawableResId(context, R.drawable.glad)!!
+        val uri = ToolClass().convertUrlFromDrawableResId(context, R.drawable.glad)!!
         val joinPeople = JoinPeople()
         joinPeople.iconUri = uri
         list = mutableListOf(joinPeople)

@@ -51,8 +51,12 @@ class Main2Activity : AppCompatActivity() {
 
     }
 
+    fun getUserInfomation(){
+
+    }
+
     fun createGroup(){
-        val client = ServerClient(unitPer.autheticationKey)
+        val client = ServerClient(unitPer.authenticationKey)
                 client.createGroup("てすと")
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -127,7 +131,7 @@ class Main2Activity : AppCompatActivity() {
         val list: MutableList<Person_> = mutableListOf(Person_(id = 0))
         list.add(Person_(id = list.size))
         // Create the AccountHeader
-        var acountCount: Long = 0
+        val acountCount: Long = 0
         val headerResult = AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.color.md_red_A700)
@@ -140,15 +144,6 @@ class Main2Activity : AppCompatActivity() {
                 )
                 .withOnAccountHeaderListener(AccountHeader.OnAccountHeaderListener { view, profile, currentProfile -> false })
                 .build()
-        //Add the Account
-        acountCount++
-        headerResult.addProfiles(
-                ProfileDrawerItem()
-                        .withName("hunachi-bata")
-                        .withEmail("GroupID is " + groupID.toString())
-                        .withIcon(R.drawable.icon)
-                        .withIdentifier(acountCount)
-        )
 
         //Create the List
         val result = DrawerBuilder()

@@ -50,7 +50,7 @@ class MainListFragment : Fragment() {
                 { position: Int ->
                     val intent: Intent
                     when (tabId) {
-                        resources.getInteger(R.integer.HAVE_PRO) -> {
+                        resources.getInteger(R.integer.HAVE_PROBLEM) -> {
                             if (position == (listAdapter.itemCount - 1)) {
                                 //server
                                 //changeList()
@@ -123,7 +123,7 @@ class MainListFragment : Fragment() {
         listAdapter.notifyItemRangeRemoved(0, problemList.size)
         problemList.clear()
         when (tabId) {
-            resources.getInteger(R.integer.HAVE_PRO) -> {
+            resources.getInteger(R.integer.HAVE_PROBLEM) -> {
                 (1..3).forEach {
                     problemList.add(Problem(title = "自分が持っている" + it + "問目", text = "時間"))
                 }

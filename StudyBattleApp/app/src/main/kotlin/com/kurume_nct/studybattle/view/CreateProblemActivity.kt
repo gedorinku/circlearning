@@ -4,11 +4,14 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.databinding.DataBindingUtil
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.*
@@ -20,6 +23,11 @@ import com.kurume_nct.studybattle.databinding.DialogCameraStrageChooseBinding
 import com.kurume_nct.studybattle.listFragment.DurationFragment
 import com.kurume_nct.studybattle.viewModel.CreateProblemViewModel
 import org.joda.time.Duration
+import java.util.jar.Manifest
+import android.Manifest.permission
+import android.support.v4.app.ActivityCompat
+
+
 
 class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callback, DatePickerDialog.OnDateSetListener {
 
@@ -29,6 +37,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
     private var prob: Int
     private lateinit var decideDate: MutableList<Int>
     private lateinit var dialog: AlertDialog
+    private val PERMISSION_CAMERA_CODE = 1
 
     init {
         nameEnable = false
@@ -68,6 +77,11 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        if(data == null){
+            dialog.cancel()
+            onClickableButtons()
+            return
+        }
         binding.createView.onActivityResult(requestCode, resultCode, data)
     }
 
@@ -114,7 +128,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         )
         dialogView.run {
             cameraButton.setOnClickListener {
-                binding.createView.onGetImage(1, prob)
+                cameraBeforeCheck()
             }
             strageButton.setOnClickListener {
                 binding.createView.onGetImage(0, prob)
@@ -125,6 +139,38 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
                 .create()
 
         dialog.show()
+    }
+
+    private fun cameraBeforeCheck(){
+        val permission = ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.CAMERA
+        )
+        when (permission) {
+            PackageManager.PERMISSION_GRANTED -> {
+                binding.createView.onGetImage(1, prob)
+            }
+            PackageManager.PERMISSION_DENIED -> {
+                ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(android.Manifest.permission.CAMERA),
+                        PERMISSION_CAMERA_CODE
+                )
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when(requestCode){
+            PERMISSION_CAMERA_CODE -> {
+                if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    binding.createView.onGetImage(1, prob)
+                }else{
+                    cameraBeforeCheck()
+                }
+            }
+        }
     }
 
     override fun onClickableButtons() {

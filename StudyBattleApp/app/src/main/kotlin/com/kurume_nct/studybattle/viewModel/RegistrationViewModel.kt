@@ -47,7 +47,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
     }
 
     companion object {
-        @BindingAdapter("loadImage")
+        @BindingAdapter("loadImageFirstIcon")
         @JvmStatic
         fun setIconImage(view: ImageView, uri: Uri?) {
             if (uri == null) {
@@ -59,7 +59,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
     }
 
     @Bindable
-    var userName = ""
+    private var userName = ""
         get
         set(value) {
             field = value
@@ -67,7 +67,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
         }
 
     @Bindable
-    var userPassword = ""
+    private var userPassword = ""
         get
         set(value) {
             field = value
@@ -108,7 +108,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
             //sever処理
             val client = ServerClient()
             client
-                    .uploadImage(iconImageUri, context)
+                    .uploadImage(imageUri, context)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .flatMap {
@@ -118,10 +118,11 @@ class RegistrationViewModel(private val context: Context, private val callback: 
                                 .observeOn(AndroidSchedulers.mainThread())
                     }
                     .subscribe({
-                        callback.onLogin(userName,userPassword,iconImageUri)
+                        callback.onLogin()
                     }, {
                         it.printStackTrace()
                         Toast.makeText(context, context.getString(R.string.usedUserNameAlart), Toast.LENGTH_LONG).show()
+                        callback.ableButton()
                     })
         }
     }
@@ -160,11 +161,13 @@ class RegistrationViewModel(private val context: Context, private val callback: 
 
     interface Callback {
 
+        fun ableButton()
+
         fun stopButton()
 
         fun toLoginActivity()
 
-        fun onLogin(name : String, password : String, icon: Uri)
+        fun onLogin()
 
         fun startActivityForResult(intent: Intent, requestCode: Int)
 
