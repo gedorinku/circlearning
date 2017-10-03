@@ -48,13 +48,13 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
     private fun addComment(text: String) {
         binding.personalAnswer.everyoneComment =
                 binding.personalAnswer.everyoneComment + ("\n" + text + "\n\t by " +
-                        unitPer.myInfomation.displayName + "(" + unitPer.myInfomation.displayName + ")" + "\n")
+                        unitPer.myInfomation.displayName + "(" + unitPer.myInfomation.userName + ")" + "\n")
     }
 
     private fun addScoreComment(text: String) {
         binding.personalAnswer.scoreComment =
                 binding.personalAnswer.scoreComment + ("\n" + text + "\n\t by " +
-                        unitPer.myInfomation.displayName + "(" + unitPer.myInfomation.displayName + ")" + "\n")
+                        unitPer.myInfomation.displayName + "(" + unitPer.myInfomation.userName + ")" + "\n")
     }
 
     override fun onWriteComment() {

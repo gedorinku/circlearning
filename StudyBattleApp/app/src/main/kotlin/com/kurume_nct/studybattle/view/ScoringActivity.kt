@@ -43,7 +43,7 @@ class ScoringActivity : AppCompatActivity() {
     }
 
     private fun bindSetting() {
-        binding.creatorNameAtScore.text = "Answer by " + unitPer.myInfomation.displayName+ "(" + unitPer.myInfomation.displayName + ")"
+        binding.creatorNameAtScore.text = "Answer by " + unitPer.myInfomation.displayName+ "(" + unitPer.myInfomation.userName + ")"
         //binding.problemImageAtScore.setImageURI()
         binding.finButton.setOnClickListener {
             //send score
