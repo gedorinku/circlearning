@@ -69,6 +69,10 @@ interface Server {
             @Field("authenticationKey") authenticationKey: String
     ): Observable<Group>
 
+    @GET("/group/joined")
+    fun getJoinedGroups(@Query("authenticationKey") authenticationKey: String)
+            : Observable<List<Group>>
+
     @Multipart
     @POST("/image/upload")
     fun uploadImage(
