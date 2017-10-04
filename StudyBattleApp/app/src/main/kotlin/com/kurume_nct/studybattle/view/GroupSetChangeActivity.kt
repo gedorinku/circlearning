@@ -12,6 +12,7 @@ import com.kurume_nct.studybattle.bug.SelectMainPeopleFragment
 import com.kurume_nct.studybattle.databinding.ActivityGroupSetChangeBinding
 import com.kurume_nct.studybattle.listFragment.GroupListFragment
 import com.kurume_nct.studybattle.model.UnitPersonal
+import java.sql.ResultSet
 
 class GroupSetChangeActivity : AppCompatActivity(), GroupSetChangeViewModel.Callback {
 
@@ -38,7 +39,13 @@ class GroupSetChangeActivity : AppCompatActivity(), GroupSetChangeViewModel.Call
 
     override fun onGoodbye() {
         //Dialog
-        unitPersonal.deleteFile()
+        unitPersonal.myGroupList = unitPersonal.myGroupList.filter { it != unitPersonal.nowGroup }.toMutableList()
+        if(unitPersonal.myGroupCount != 0){
+            unitPersonal.nowGroup = unitPersonal.myGroupList[0]
+        }else{
+            unitPersonal.deleteFile()
+        }
+        setResult(0)
         finish()
     }
 }
