@@ -52,6 +52,7 @@ class LoginViewModel(private val context: Context, private val callback: Callbac
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe ({
                         callback.onLogin(it.authenticationKey)
+                        callback.clickableButton()
                     }, {
                         callback.clickableButton()
                     })

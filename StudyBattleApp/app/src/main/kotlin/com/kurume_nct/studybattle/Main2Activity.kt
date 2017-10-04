@@ -82,6 +82,7 @@ class Main2Activity : AppCompatActivity() {
                 })
     }
 
+
     private fun getMyGroup() {
         Log.d("getMyGroup","")
 
