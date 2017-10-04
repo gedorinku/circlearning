@@ -114,7 +114,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="1"
-                    android:background="@color/md_cyan_900"
+                    android:background="@color/md_cyan_800"
                     android:onClick="@{CreateGroupUnit.onClickMakeGroup}"
                     android:text="グループ作成"
                     android:textColor="@color/material_drawer_background"

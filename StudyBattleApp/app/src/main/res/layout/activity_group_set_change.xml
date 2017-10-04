@@ -13,6 +13,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/backgroud"
         tools:context="com.kurume_nct.studybattle.view.GroupSetChangeActivity">
 
         <ScrollView
@@ -67,9 +68,10 @@
 
                 <Button
                     android:id="@+id/button8"
-                    android:layout_width="match_parent"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/green_button"
+                    android:layout_gravity="center"
+                    android:background="@color/md_light_green_600"
                     android:onClick="@{GroupSetView.onClickChangeInfo}"
                     android:text="情報を更新"
                     android:textColor="@color/material_drawer_background"
@@ -81,9 +83,10 @@
 
                 <Button
                     android:id="@+id/button9"
-                    android:layout_width="match_parent"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/blue_button"
+                    android:layout_gravity="center"
+                    android:background="@color/material_drawer_dark_selected_text"
                     android:onClick="@{GroupSetView.onClickGoodbyeInfo}"
                     android:text="このグループから退出"
                     android:textColor="@color/material_drawer_background"

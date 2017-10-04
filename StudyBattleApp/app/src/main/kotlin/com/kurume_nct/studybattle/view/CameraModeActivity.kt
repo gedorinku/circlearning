@@ -88,7 +88,7 @@ class CameraModeActivity : Activity() {
         comment = findViewById(R.id.comment) as TextView
         submitImageButton = findViewById(R.id.submit_image_button) as ImageButton
         submitItemImageButton = findViewById(R.id.submit_item_image_button) as ImageButton
-        libraryButton = findViewById(R.id.library_button) as Button
+        //libraryButton = findViewById(R.id.library_button) as Button
         experiment = findViewById(R.id.experiment) as TextView
         submissionButton = findViewById(R.id.submission_button) as Button
         passButton = findViewById(R.id.pass_button) as Button

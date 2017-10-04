@@ -2,10 +2,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/backgroud"
         android:orientation="vertical"
         tools:context="com.kurume_nct.studybattle.view.MadeCollectYetActivity">
 
@@ -37,7 +37,7 @@
                 <ImageView
                     android:id="@+id/imageView14"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="200dp"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/group" />
 
