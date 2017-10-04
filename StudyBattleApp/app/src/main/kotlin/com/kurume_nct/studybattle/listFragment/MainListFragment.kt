@@ -185,6 +185,8 @@ class MainListFragment : Fragment() {
                 },{
                     //Toast.makeText(activity, "もらうことのできる新しい問題がありませんでした", Toast.LENGTH_SHORT).show()
                     Log.d("error", "requestNewProblem")
+                    problemList.add(0,Problem(title = "英語の問題"))
+                    listAdapter.notifyItemInserted(0)
                 })
     }
 
@@ -198,9 +200,9 @@ class MainListFragment : Fragment() {
         //problemList.clear()
         when (tabId) {
             resources.getInteger(R.integer.HAVE_PROBLEM) -> {
-                (1..3).forEach {
+                /*(1..3).forEach {
                     problemList.add(Problem(title = "自分が持っている" + it + "問目", text = "時間"))
-                }
+                }*/
                 if (1 < 3) {
                     problemList.add(Problem(title = "　＋　新しい問題を追加で取得する"))
                 }
