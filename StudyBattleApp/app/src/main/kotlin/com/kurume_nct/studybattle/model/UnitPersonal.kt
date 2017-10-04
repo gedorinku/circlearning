@@ -48,7 +48,7 @@ class UnitPersonal : Application(){
 
     fun deleteFile(){
         prefer = getSharedPreferences(packageName + ".txt", Context.MODE_PRIVATE)
-        prefer.edit().clear()
+        prefer.edit().clear().commit()
     }
 
     override fun onTerminate() {

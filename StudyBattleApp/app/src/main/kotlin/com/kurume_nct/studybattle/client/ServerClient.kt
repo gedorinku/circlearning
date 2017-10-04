@@ -33,7 +33,7 @@ class ServerClient(authenticationKey: String = "") {
                 .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
                 .create()
         val retrofit = Retrofit.Builder()
-                .baseUrl("http://studybattle.dip.jp:8080")
+                .baseUrl("http://studybattle.dip.jp:3939")
                 //.baseUrl("http://localhost:8080")
                 .addConverterFactory(StringConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
