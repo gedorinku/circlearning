@@ -112,14 +112,12 @@ class MainListFragment : Fragment() {
                     val intent: Intent
                     when (tabId) {
                         resources.getInteger(R.integer.HAVE_PROBLEM) -> {
-                            if (position == (listAdapter.itemCount  - 1)) {
+                            if (position == (listAdapter.itemCount - 1)) {
                                 Toast.makeText(mContext, "新しい問題を取得中...📚", Toast.LENGTH_LONG).show()
                                 assignedProblem()
                             } else {
                                 intent = Intent(context, CameraModeActivity::class.java)
                                 intent.putExtra("id", problemList[position].id)
-                                problemList.clear()
-                                listAdapter.notifyItemRangeRemoved(0,1)
                                 startActivity(intent)
                             }
                         }
@@ -182,8 +180,8 @@ class MainListFragment : Fragment() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    //problemList.add(it.problem)
-                    //listAdapter.notifyItemRangeInserted(problemList.size - 1, 1)
+                    problemList.add(it.problem)
+                    listAdapter.notifyItemRangeInserted(problemList.size - 1, 1)
                 },{
                     //Toast.makeText(activity, "もらうことのできる新しい問題がありませんでした", Toast.LENGTH_SHORT).show()
                     Log.d("error", "requestNewProblem")
@@ -200,11 +198,10 @@ class MainListFragment : Fragment() {
         //problemList.clear()
         when (tabId) {
             resources.getInteger(R.integer.HAVE_PROBLEM) -> {
-                /*(1..3).forEach {
+                (1..3).forEach {
                     problemList.add(Problem(title = "自分が持っている" + it + "問目", text = "時間"))
-                }*/
+                }
                 if (1 < 3) {
-                    problemList.add(Problem(title = "英語の問題"))
                     problemList.add(Problem(title = "　＋　新しい問題を追加で取得する"))
                 }
             }

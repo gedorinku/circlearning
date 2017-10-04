@@ -94,7 +94,7 @@ class CameraModeActivity : Activity() {
         passButton = findViewById(R.id.pass_button) as Button
         val image = findViewById(R.id.imageButton2) as ImageButton
 
-        image.setImageResource(R.drawable.mondaimondai)
+        Glide.with(this).load(R.drawable.mondaimondai).into(image)
 
         //(uriについての実験機能)
         if (savedInstanceState != null) {
