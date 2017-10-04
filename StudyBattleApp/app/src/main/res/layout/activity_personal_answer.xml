@@ -55,7 +55,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="この問題の正誤ミスについてのコメント"
-                        android:textColor="@color/colorAccent" />
+                        android:textColor="@color/colorAccent"
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/remaining_time_text"
@@ -86,7 +87,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/orange_button"
+                        android:background="@color/md_teal_A700"
                         android:onClick="@{PersonalAnswer.onClickScoreComment}"
                         android:text="+コメントを追加する"
                         android:textColor="@color/material_drawer_dark_primary_text" />
@@ -105,7 +106,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="みんなのコメント"
-                    android:textColor="@color/md_amber_800" />
+                    android:textColor="@color/md_amber_800"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/comments_text"
@@ -128,7 +130,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/orange_button"
+                    android:background="@color/md_teal_A700"
                     android:onClick="@{PersonalAnswer.onClickComment}"
                     android:text="+コメントを追加する"
                     android:textColor="@color/material_drawer_dark_header_selection_text" />
