@@ -1,7 +1,8 @@
 package com.kurume_nct.studybattle
 
-import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.TabLayout
@@ -9,28 +10,23 @@ import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
 import android.widget.Toast
-import com.bumptech.glide.Glide
-
 import com.kurume_nct.studybattle.adapter.MainPagerAdapter
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.Group
-import com.kurume_nct.studybattle.model.Item
-import com.kurume_nct.studybattle.view.CreateGroupActivity
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.view.*
 import com.mikepenz.google_material_typeface_library.GoogleMaterial
-import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.AccountHeader
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
+import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import retrofit2.http.Url
 import java.net.URL
-import java.util.concurrent.CountDownLatch
 
 
 class Main2Activity : AppCompatActivity() {
@@ -53,14 +49,14 @@ class Main2Activity : AppCompatActivity() {
     }
 
     private fun getUserInformation() {
-        Log.d("getUserInfo","")
+        Log.d("getUserInfo", "")
         val client = ServerClient(unitPer.authenticationKey)
         client
                 .verifyAuthentication(unitPer.authenticationKey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    Log.d("userの情報を取得","")
+                    Log.d("userの情報を取得", "")
                     unitPer.myInfomation = it
                     onToolBar()
 
@@ -84,7 +80,7 @@ class Main2Activity : AppCompatActivity() {
 
 
     private fun getMyGroup() {
-        Log.d("getMyGroup","")
+        Log.d("getMyGroup", "")
 
         val groups = mutableListOf<Group>()
         val client = ServerClient(unitPer.authenticationKey)
@@ -93,7 +89,7 @@ class Main2Activity : AppCompatActivity() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    for(i in it){
+                    for (i in it) {
                         groups.add(i)
                         Log.d("list", "group追加")
                     }
@@ -105,18 +101,23 @@ class Main2Activity : AppCompatActivity() {
                         startActivity(Intent(this, CreateGroupActivity::class.java))
                     } else {
                         unitPer.nowGroup = unitPer.myGroupList[0]
-                        viewSetup()
+                        getIconBitmap()
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe { it ->
+                            viewSetup(it)
+                        }
                     }
                 }, {
                     Log.d("Groupの情報を取得するのに失敗", "")
-                    Toast.makeText(this,"アプリを立ち上げなおしてください",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "アプリを立ち上げなおしてください", Toast.LENGTH_SHORT).show()
                 })
     }
 
-    fun viewSetup() {
+    fun viewSetup(userIcon: Bitmap) {
 
         onTabLayout()
-        onNavigationDrawer()
+        onNavigationDrawer(userIcon)
         Log.d(unitPer.myInfomation.id.toString(), "ユーザーID")
 
     }
@@ -135,6 +136,9 @@ class Main2Activity : AppCompatActivity() {
 
     }*/
 
+    private fun getIconBitmap(): Single<Bitmap> = Single.fromCallable {
+        BitmapFactory.decodeStream(URL(unitPer.userIcon.toString()).openStream())
+    }
 
     private fun onToolBar() {
         val fab = findViewById(R.id.fab)
@@ -193,7 +197,7 @@ class Main2Activity : AppCompatActivity() {
         }
     }
 
-    private fun onNavigationDrawer() {
+    private fun onNavigationDrawer(userIcon: Bitmap) {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
 
         unitPer.myGroupList.add(Group())
@@ -206,7 +210,7 @@ class Main2Activity : AppCompatActivity() {
                         ProfileDrawerItem()
                                 .withName(unitPer.myInfomation.displayName)
                                 .withEmail(unitPer.myInfomation.userName)
-                                .withIcon(unitPer.userIcon)
+                                .withIcon(userIcon)
                                 .withIdentifier(acountCount)
                 )
                 .withOnAccountHeaderListener(AccountHeader.OnAccountHeaderListener { view, profile, currentProfile ->
