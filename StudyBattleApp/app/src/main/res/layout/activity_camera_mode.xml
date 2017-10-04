@@ -132,10 +132,9 @@
 
         <ImageButton
             android:id="@+id/submit_item_image_button"
-            android:layout_width="match_parent"
+            android:layout_width="197dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
-            android:layout_weight="1"
             android:background="@drawable/no_image"
             android:src="@drawable/hatena"
             tools:ignore="ContentDescription,InefficientWeight" />
