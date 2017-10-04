@@ -73,22 +73,6 @@
             android:layout_height="35dp"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/library_button"
-                android:layout_width="75dp"
-                android:layout_height="48dp"
-                android:background="@android:color/transparent"
-                android:drawableTop="@android:drawable/ic_menu_gallery"
-                tools:ignore="ButtonStyle" />
-
-            <Button
-                android:id="@+id/camera_button"
-                android:layout_width="88dp"
-                android:layout_height="48dp"
-                android:layout_weight="0.33"
-                android:background="@android:color/transparent"
-                android:drawableTop="@android:drawable/ic_menu_camera"
-                tools:ignore="ButtonStyle,InefficientWeight" />
         </LinearLayout>
 
         <ImageButton

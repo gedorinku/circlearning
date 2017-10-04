@@ -95,10 +95,10 @@ class MainListFragment : Fragment() {
                     if (it.isNotEmpty()) {
                         problemList.addAll(0, it)
                         listAdapter.notifyItemRangeInserted(0, it.size)
-                        Log.d(it.size.toString(),"isNotEmpty" + unitPersonal.nowGroup.id.toString())
+                        Log.d(it.size.toString(), "isNotEmpty" + unitPersonal.nowGroup.id.toString())
                     }
                     changeList()
-                    Log.d("it","空")
+                    Log.d("it", "空")
                 }
     }
 
@@ -173,17 +173,17 @@ class MainListFragment : Fragment() {
         return binding.root
     }
 
-    fun assignedProblem(){
+    fun assignedProblem() {
         val client = ServerClient(unitPersonal.authenticationKey)
         client
                 .requestNewProblem(unitPersonal.nowGroup)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    problemList.add(it.problem)
-                    listAdapter.notifyItemRangeInserted(problemList.size - 1, 1)
-                },{
-                    Toast.makeText(activity, "もらうことのできる新しい問題がありませんでした", Toast.LENGTH_SHORT).show()
+                    problemList.add(problemList.size,it.problem)
+                    listAdapter.notifyItemRangeInserted(problemList.size, 1)
+                }, {
+                    Toast.makeText(activity, "もらうことのできる\n新しい問題がありませんでした", Toast.LENGTH_SHORT).show()
                     Log.d("error", "requestNewProblem")
                 })
     }
@@ -201,45 +201,45 @@ class MainListFragment : Fragment() {
                 /*(1..3).forEach {
                     problemList.add(Problem(title = "自分が持っている" + it + "問目", text = "時間"))
                 }*/
-                if (1 < 3) {
+                if (true) {
                     problemList.add(Problem(title = "　＋　新しい問題を追加で取得する"))
                 }
             }
-            /*resources.getInteger(R.integer.ANSWER_YET) -> {
-                (1..3).forEach {
-                    problemList.add(Problem(title = "全員が持っている" + it + "問目"))
-                }
+        /*resources.getInteger(R.integer.ANSWER_YET) -> {
+            (1..3).forEach {
+                problemList.add(Problem(title = "全員が持っている" + it + "問目"))
             }
-            resources.getInteger(R.integer.ANSWER_FIN) -> {
-                (1..3).forEach {
-                    problemList.add(Problem(title = "自分が持っている" + it + "問目"))
-                }
+        }
+        resources.getInteger(R.integer.ANSWER_FIN) -> {
+            (1..3).forEach {
+                problemList.add(Problem(title = "自分が持っている" + it + "問目"))
             }
-            resources.getInteger(R.integer.MADE_COLLECT_YET) -> {
-                (1..3).forEach {
-                    problemList.add(Problem(title = "自分が持っている" + it + "問目"))
-                }
+        }
+        resources.getInteger(R.integer.MADE_COLLECT_YET) -> {
+            (1..3).forEach {
+                problemList.add(Problem(title = "自分が持っている" + it + "問目"))
             }
-            resources.getInteger(R.integer.MADE_JUDGE_YET) -> {
-                (1..3).forEach {
-                    problemList.add(Problem(title = "自分が持っている" + it + "問目"))
-                }
+        }
+        resources.getInteger(R.integer.MADE_JUDGE_YET) -> {
+            (1..3).forEach {
+                problemList.add(Problem(title = "自分が持っている" + it + "問目"))
             }
-            resources.getInteger(R.integer.MADE_FIN) -> {
-                (1..3).forEach {
-                    problemList.add(Problem(title = "自分が持っている" + it + "問目"))
-                }
+        }
+        resources.getInteger(R.integer.MADE_FIN) -> {
+            (1..3).forEach {
+                problemList.add(Problem(title = "自分が持っている" + it + "問目"))
             }
-            resources.getInteger(R.integer.SUGGEST_YET) -> {
-                (1..3).forEach {
-                    problemList.add(Problem(title = "自分が持っている" + it + "問目"))
-                }
+        }
+        resources.getInteger(R.integer.SUGGEST_YET) -> {
+            (1..3).forEach {
+                problemList.add(Problem(title = "自分が持っている" + it + "問目"))
             }
-            resources.getInteger(R.integer.SUGGEST_FIN) -> {
-                (1..3).forEach {
-                    problemList.add(Problem(title = "自分が持っている" + it + "問目"))
-                }
-            }*/
+        }
+        resources.getInteger(R.integer.SUGGEST_FIN) -> {
+            (1..3).forEach {
+                problemList.add(Problem(title = "自分が持っている" + it + "問目"))
+            }
+        }*/
         }
         binding.list.adapter = listAdapter
         binding.list.layoutManager = LinearLayoutManager(binding.list.context)

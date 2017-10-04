@@ -33,7 +33,7 @@
                 android:ems="10"
                 android:hint="検索したい名前を入力して下さい"
                 android:inputType="textPersonName"
-                android:text="まだこの機能は実装されてません。" />
+                android:text="まだこの機能は実装されてません。個人でのグループ作成は可能です" />
 
         </LinearLayout>
 

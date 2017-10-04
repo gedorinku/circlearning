@@ -157,7 +157,8 @@ class Main2Activity : AppCompatActivity() {
                     startActivity(Intent(this, RankingActivity::class.java))
                 }
                 R.id.to_change_member -> {
-                    startActivity(Intent(this, GroupSetChangeActivity::class.java))
+                    val intent = Intent(this, GroupSetChangeActivity::class.java)
+                    startActivityForResult(intent, 0)
                 }
                 R.id.to_setting_group -> {
                     Toast.makeText(this, "未実装の機能です。本選までお楽しみに！", Toast.LENGTH_SHORT).show()
@@ -249,6 +250,15 @@ class Main2Activity : AppCompatActivity() {
                         .withName("新しくグループを作る")
                         .withIcon(GoogleMaterial.Icon.gmd_add))
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == 0){
+            getMyGroup()
+        }
+    }
+
+
 
     override fun onStart() {
         super.onStart()
