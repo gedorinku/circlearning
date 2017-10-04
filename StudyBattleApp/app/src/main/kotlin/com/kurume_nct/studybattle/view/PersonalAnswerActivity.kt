@@ -1,6 +1,7 @@
 package com.kurume_nct.studybattle.view
 
 import android.databinding.DataBindingUtil
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -31,11 +32,12 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
         binding = DataBindingUtil.setContentView(this, R.layout.activity_personal_answer)
         binding.personalAnswer = PersonalAnswerViewModel(this, this)
         unitPer = application as UnitPersonal
+        problemId = intent.getIntExtra("id", 0)
         getProblemInformation()
         bindSetting()
     }
 
-    fun getProblemInformation(){
+    fun getProblemInformation() {
         val client = ServerClient(unitPer.authenticationKey)
         client
                 .getProblem(problemId)
@@ -48,11 +50,11 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({
-                                binding.personalAnswer.
-                            },{
-
+                                binding.personalAnswer.personalAnswerUri = Uri.parse(it.url)
+                            }, {
+                                Toast.makeText(this, "", Toast.LENGTH_SHORT).show()
                             })
-                },{
+                }, {
                     Toast.makeText(this, "問題の情報を得られませんでした", Toast.LENGTH_SHORT).show()
                     finish()
                 })
