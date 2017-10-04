@@ -36,6 +36,14 @@
             android:layout_width="match_parent"
             android:layout_height="20dp" />
 
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/no_image"
+            android:src="@drawable/text_noimage"
+            tools:ignore="ContentDescription" />
+
         <TextView
             android:id="@+id/problem_name"
             android:layout_width="wrap_content"
@@ -82,12 +90,6 @@
             android:background="@drawable/no_image"
             android:src="@drawable/text_noimage"
             tools:ignore="ContentDescription" />
-
-        <TextView
-            android:id="@+id/experiment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
 
         <Space
             android:layout_width="match_parent"

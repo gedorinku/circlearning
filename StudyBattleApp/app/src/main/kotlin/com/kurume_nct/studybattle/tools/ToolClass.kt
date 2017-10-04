@@ -8,7 +8,7 @@ import android.net.Uri
  * Created by hanah on 9/30/2017.
  */
 class ToolClass {
-    fun convertUrlFromDrawableResId(context: Context, drawableResId: Int): Uri? {
+    fun convertUrlFromDrawableResId(context: Context, drawableResId: Int): Uri {
         val sb = StringBuilder()
         sb.append(ContentResolver.SCHEME_ANDROID_RESOURCE)
         sb.append("://")

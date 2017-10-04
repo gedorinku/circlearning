@@ -45,6 +45,7 @@ class GroupSetChangeActivity : AppCompatActivity(), GroupSetChangeViewModel.Call
         }else{
             unitPersonal.deleteFile()
         }
+        unitPersonal.deleteFile()
         setResult(0)
         finish()
     }

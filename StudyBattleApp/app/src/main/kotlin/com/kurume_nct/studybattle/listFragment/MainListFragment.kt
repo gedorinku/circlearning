@@ -112,12 +112,14 @@ class MainListFragment : Fragment() {
                     val intent: Intent
                     when (tabId) {
                         resources.getInteger(R.integer.HAVE_PROBLEM) -> {
-                            if (position == (listAdapter.itemCount - 1)) {
+                            if (position == (listAdapter.itemCount  - 1)) {
                                 Toast.makeText(mContext, "新しい問題を取得中...📚", Toast.LENGTH_LONG).show()
                                 assignedProblem()
                             } else {
                                 intent = Intent(context, CameraModeActivity::class.java)
                                 intent.putExtra("id", problemList[position].id)
+                                problemList.clear()
+                                listAdapter.notifyItemRangeRemoved(0,1)
                                 startActivity(intent)
                             }
                         }
@@ -180,10 +182,10 @@ class MainListFragment : Fragment() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    problemList.add(it.problem)
-                    listAdapter.notifyItemRangeInserted(problemList.size - 1, 1)
+                    //problemList.add(it.problem)
+                    //listAdapter.notifyItemRangeInserted(problemList.size - 1, 1)
                 },{
-                    Toast.makeText(activity, "もらうことのできる新しい問題がありませんでした", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(activity, "もらうことのできる新しい問題がありませんでした", Toast.LENGTH_SHORT).show()
                     Log.d("error", "requestNewProblem")
                 })
     }
@@ -202,44 +204,45 @@ class MainListFragment : Fragment() {
                     problemList.add(Problem(title = "自分が持っている" + it + "問目", text = "時間"))
                 }*/
                 if (1 < 3) {
+                    problemList.add(Problem(title = "英語の問題"))
                     problemList.add(Problem(title = "　＋　新しい問題を追加で取得する"))
                 }
             }
-            /*resources.getInteger(R.integer.ANSWER_YET) -> {
+            resources.getInteger(R.integer.ANSWER_YET) -> {
                 (1..3).forEach {
-                    problemList.add(Problem(title = "全員が持っている" + it + "問目"))
+                    problemList.add(Problem(title = "数" + it))
                 }
             }
             resources.getInteger(R.integer.ANSWER_FIN) -> {
-                (1..3).forEach {
-                    problemList.add(Problem(title = "自分が持っている" + it + "問目"))
+                (1..2).forEach {
+                    problemList.add(Problem(title = "漢字" + it * 5 +  "問"))
                 }
             }
             resources.getInteger(R.integer.MADE_COLLECT_YET) -> {
-                (1..3).forEach {
-                    problemList.add(Problem(title = "自分が持っている" + it + "問目"))
-                }
+              //  (1..3).forEach {
+                    problemList.add(Problem(title = "実力問題"))
+               // }
             }
             resources.getInteger(R.integer.MADE_JUDGE_YET) -> {
-                (1..3).forEach {
-                    problemList.add(Problem(title = "自分が持っている" + it + "問目"))
-                }
+               // (1..3).forEach {
+                    problemList.add(Problem(title = "古典"))
+             //   }
             }
             resources.getInteger(R.integer.MADE_FIN) -> {
-                (1..3).forEach {
-                    problemList.add(Problem(title = "自分が持っている" + it + "問目"))
-                }
+                //(1..3).forEach {
+                    problemList.add(Problem(title = "プログラミング"))
+                //}
             }
             resources.getInteger(R.integer.SUGGEST_YET) -> {
-                (1..3).forEach {
-                    problemList.add(Problem(title = "自分が持っている" + it + "問目"))
-                }
+               // (1..3).forEach {
+                    problemList.add(Problem(title = "整数"))
+                //}
             }
             resources.getInteger(R.integer.SUGGEST_FIN) -> {
-                (1..3).forEach {
-                    problemList.add(Problem(title = "自分が持っている" + it + "問目"))
-                }
-            }*/
+              //  (1..3).forEach {
+                    problemList.add(Problem(title = "グラフ"))
+                //}
+            }
         }
         binding.list.adapter = listAdapter
         binding.list.layoutManager = LinearLayoutManager(binding.list.context)

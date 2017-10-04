@@ -20,6 +20,7 @@ import com.bumptech.glide.load.resource.file.FileResource
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.client.ServerClient
+import com.kurume_nct.studybattle.tools.ToolClass
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -35,14 +36,14 @@ import java.util.concurrent.CountDownLatch
 class RegistrationViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
 
     val REQUEST_CODE = 114
-    var iconImageUri: Uri
     var iconId: Int
     var imageBitmap: Bitmap
     val REQUEST_STRAGE = 1
+    var flag = 0
+    val defaultIconUri = ToolClass().convertUrlFromDrawableResId(context, R.drawable.icon_gost)
 
     init {
-        iconImageUri = convertUrlFromDrawableResId(context, R.drawable.icon_gost)!!
-        imageBitmap = ImageCustom().onUriToBitmap(context, iconImageUri)
+        imageBitmap = ImageCustom().onUriToBitmap(context, defaultIconUri)
         iconId = 0
     }
 
@@ -86,7 +87,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
     var loginButtonText = "登録"
 
     @Bindable
-    var imageUri = iconImageUri
+    var imageUri = defaultIconUri
         get
         set(value) {
             field = value
@@ -107,8 +108,11 @@ class RegistrationViewModel(private val context: Context, private val callback: 
             callback.stopButton()
             //sever処理
             val client = ServerClient()
-            client
-                    .uploadImage(imageUri, context)
+            if (imageUri.toString() == defaultIconUri.toString()) {
+                client.uploadImage(imageUri, context, "image/png")
+            } else {
+                client.uploadImage(imageUri, context)
+            }
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .flatMap {
@@ -132,8 +136,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
         //if(requestCode != REQUEST_CODE || resultCode != Activity.RESULT_OK || data?.data == null)return
         if (data?.data == null) return
         //TODO : resize icon here
-        iconImageUri = data.data
-        imageUri = iconImageUri
+        imageUri = data.data
         //imageBitmap = ImageCustom().onUriToBitmap(context,iconImageUri)
     }
 

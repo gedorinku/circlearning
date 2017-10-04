@@ -89,10 +89,12 @@ class CameraModeActivity : Activity() {
         submitImageButton = findViewById(R.id.submit_image_button) as ImageButton
         submitItemImageButton = findViewById(R.id.submit_item_image_button) as ImageButton
         //libraryButton = findViewById(R.id.library_button) as Button
-        experiment = findViewById(R.id.experiment) as TextView
+        //experiment = findViewById(R.id.experiment) as TextView
         submissionButton = findViewById(R.id.submission_button) as Button
         passButton = findViewById(R.id.pass_button) as Button
+        val image = findViewById(R.id.imageButton2) as ImageButton
 
+        image.setImageResource(R.drawable.mondaimondai)
 
         //(uriについての実験機能)
         if (savedInstanceState != null) {
@@ -100,15 +102,15 @@ class CameraModeActivity : Activity() {
         }
 
 
-        libraryButton!!.setOnClickListener {
+       /* libraryButton!!.setOnClickListener {
             //ファイルを選択
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
             //開けるものだけ表示
             intent.addCategory(Intent.CATEGORY_OPENABLE)
             //イメージのみを表示するフィルタ
-            intent.type = "image*/"
+            intent.type = "image*//*"
             startActivityForResult(intent, RESULT_PICK_IMAGEFILE)
-        }
+        }*/
 
         submitImageButton.setOnClickListener {
             imageSetting()
@@ -132,50 +134,17 @@ class CameraModeActivity : Activity() {
                 finish()
             } else
                 comment!!.text = "解答を提出してください"*/
-            if (answerUri == null) {
+           /* if (answerUri == null) {
                 Toast.makeText(this, "写真を追加してください", Toast.LENGTH_SHORT).show()
             } else {
-                sendProblemServer()
-            }
+            */    //sendProblemServer()
+                decrementItem(putItemId)
+                startActivity(Intent(this, LotteryActivity::class.java))
+                finish()
+           // }
         }
 
-        //toClickableButton()
-        val dialogView: DialogItemSelectBinding = DataBindingUtil.inflate(
-                LayoutInflater.from(this), R.layout.dialog_item_select, null, false)
 
-        unitPer.itemCount.run {
-            if (bomb <= 0) dialogView.bombButton17.visibility = View.INVISIBLE
-            if (card <= 0) dialogView.cardButton16.visibility = View.INVISIBLE
-            if (magicHand <= 0) dialogView.handButton12.visibility = View.INVISIBLE
-        }
-
-        dialogView.bombButton17.setOnClickListener {
-            if (putItemId != 0) {
-                Glide.with(this).load(R.drawable.framecard_bomb).into(submitItemImageButton)
-            }
-            putItemId = 0
-            dialog.cancel()
-        }
-        dialogView.cardButton16.setOnClickListener {
-            if (putItemId != 1) {
-                Glide.with(this).load(R.drawable.framecard_card).into(submitItemImageButton)
-            }
-            putItemId = 1
-            dialog.cancel()
-        }
-        dialogView.handButton12.setOnClickListener {
-            if (putItemId != 3) {
-                Glide.with(this).load(R.drawable.framecard_magichand).into(submitItemImageButton)
-            }
-            putItemId = 3
-            dialog.cancel()
-        }
-        dialogView.removeItemButton19.setOnClickListener {
-            if (putItemId != -1) {
-                Glide.with(this).load(R.drawable.hatena).into(submitItemImageButton)
-                dialog.cancel()
-            }
-        }
 
     }
 
@@ -262,6 +231,44 @@ class CameraModeActivity : Activity() {
     }
 
     private fun itemSetting() {
+        //toClickableButton()
+        val dialogView: DialogItemSelectBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(this), R.layout.dialog_item_select, null, false)
+
+        unitPer.itemCount.run {
+            if (bomb <= 0) dialogView.bombButton17.visibility = View.INVISIBLE
+            if (card <= 0) dialogView.cardButton16.visibility = View.INVISIBLE
+            if (magicHand <= 0) dialogView.handButton12.visibility = View.INVISIBLE
+        }
+
+        dialogView.bombButton17.setOnClickListener {
+            if (putItemId != 0) {
+                Glide.with(this).load(R.drawable.framecard_bomb).into(submitItemImageButton)
+            }
+            putItemId = 0
+            dialog.cancel()
+        }
+        dialogView.cardButton16.setOnClickListener {
+            if (putItemId != 1) {
+                Glide.with(this).load(R.drawable.framecard_card).into(submitItemImageButton)
+            }
+            putItemId = 1
+            dialog.cancel()
+        }
+        dialogView.handButton12.setOnClickListener {
+            if (putItemId != 3) {
+                Glide.with(this).load(R.drawable.framecard_magichand).into(submitItemImageButton)
+            }
+            putItemId = 3
+            dialog.cancel()
+        }
+        dialogView.removeItemButton19.setOnClickListener {
+            if (putItemId != -1) {
+                Glide.with(this).load(R.drawable.hatena).into(submitItemImageButton)
+                dialog.cancel()
+            }
+        }
+
         dialog = AlertDialog.Builder(this)
                 .setView(dialogView.root)
                 .create()

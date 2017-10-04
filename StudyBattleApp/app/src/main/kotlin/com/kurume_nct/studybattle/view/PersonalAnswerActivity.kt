@@ -13,6 +13,7 @@ import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.ActivityPersonalAnswerBinding
 import com.kurume_nct.studybattle.model.Problem
 import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.tools.ToolClass
 import com.kurume_nct.studybattle.viewModel.PersonalAnswerViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -33,7 +34,8 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
         binding.personalAnswer = PersonalAnswerViewModel(this, this)
         unitPer = application as UnitPersonal
         problemId = intent.getIntExtra("id", 0)
-        getProblemInformation()
+        //getProblemInformation()
+        binding.personalAnswer.personalAnswerUri = ToolClass().convertUrlFromDrawableResId(this, R.drawable.no_image)
         bindSetting()
     }
 

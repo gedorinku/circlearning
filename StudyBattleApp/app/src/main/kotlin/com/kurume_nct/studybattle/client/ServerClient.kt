@@ -108,6 +108,11 @@ class ServerClient(authenticationKey: String = "") {
         return uploadImage(contentResolver.openInputStream(uri), contentResolver.getType(uri))
     }
 
+    fun uploadImage(uri: Uri, context: Context, type: String): Observable<Image> {
+        val contentResolver = context.contentResolver
+        return uploadImage(contentResolver.openInputStream(uri), type)
+    }
+
     fun getImageById(id: Int) = server.getImageById(id)
 
     fun getImageById(image: Image) = getImageById(image.id)

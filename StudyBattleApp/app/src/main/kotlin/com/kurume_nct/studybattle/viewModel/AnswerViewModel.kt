@@ -35,7 +35,7 @@ class AnswerViewModel(private val context: Context, private val callback : Callb
     }
 
     @Bindable
-    var problemNameAns = "problem name🐰"
+    var problemNameAns = "線形代数🐰"
     set(value) {
         field = value
         notifyPropertyChanged(BR.problemNameAns)
@@ -49,7 +49,7 @@ class AnswerViewModel(private val context: Context, private val callback : Callb
     }
 
     @Bindable
-    var problemScoreAns = "0点"
+    var problemScoreAns = "10点"
     set(value) {
         field = value
         notifyPropertyChanged(BR.problemScoreAns)
