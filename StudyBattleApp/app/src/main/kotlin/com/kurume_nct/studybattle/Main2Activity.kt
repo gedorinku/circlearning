@@ -117,6 +117,7 @@ class Main2Activity : AppCompatActivity() {
 
         onTabLayout()
         onNavigationDrawer()
+        Log.d(unitPer.myInfomation.id.toString(), "ユーザーID")
 
     }
 
@@ -243,6 +244,11 @@ class Main2Activity : AppCompatActivity() {
                 .addItem(PrimaryDrawerItem()
                         .withName("新しくグループを作る")
                         .withIcon(GoogleMaterial.Icon.gmd_add))
+    }
+
+    override fun onStart() {
+        super.onStart()
+        onTabLayout()
     }
 
     override fun onStop() {

@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
-            android:text="@{Item.text}"
+            android:text=""
             android:textAppearance="?attr/textAppearanceListItem"
             android:textColor="@android:color/darker_gray"
             android:textSize="10sp" />

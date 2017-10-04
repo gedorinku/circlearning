@@ -168,6 +168,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
     }
 
     fun sendData() {
+        Toast.makeText(context, "問題をサーバーに送っています", Toast.LENGTH_LONG).show()
         val dialogClass = ProgressDialogTool(context)
         val dialog = dialogClass.makeDialog()
         dialog.show()

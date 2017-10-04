@@ -3,13 +3,31 @@ package com.kurume_nct.studybattle.viewModel
 import android.content.Context
 import android.databinding.BaseObservable
 import android.databinding.Bindable
+import android.databinding.BindingAdapter
+import android.net.Uri
 import android.view.View
+import android.widget.ImageView
+import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
+import com.kurume_nct.studybattle.R
 
 /**
  * Created by hanah on 9/30/2017.
  */
 class PersonalAnswerViewModel(val context: Context, val callback: Callback) : BaseObservable() {
+
+
+    companion object {
+        @BindingAdapter("loadImagePersonalAnswer")
+        @JvmStatic
+        fun setIconImage(view: ImageView, uri: Uri?) {
+            if (uri == null) {
+                Glide.with(view).load(R.drawable.icon_gost).into(view)//loadの中にresourceを入れたらtestできる
+            } else {
+                Glide.with(view).load(uri).into(view)
+            }
+        }
+    }
 
     @Bindable
     var ansCreatorName = ""

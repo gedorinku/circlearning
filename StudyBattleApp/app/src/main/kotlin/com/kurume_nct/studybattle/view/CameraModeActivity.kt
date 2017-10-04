@@ -67,6 +67,7 @@ class CameraModeActivity : Activity() {
     private lateinit var submissionButton: Button
     private lateinit var passButton: Button
     lateinit var progress: ProgressDialog
+    lateinit var dialogView: DialogItemSelectBinding
 
 
     //ギャラリーpath取得関数
@@ -137,6 +138,45 @@ class CameraModeActivity : Activity() {
                 sendProblemServer()
             }
         }
+
+        //toClickableButton()
+        val dialogView: DialogItemSelectBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(this), R.layout.dialog_item_select, null, false)
+
+        unitPer.itemCount.run {
+            if (bomb <= 0) dialogView.bombButton17.visibility = View.INVISIBLE
+            if (card <= 0) dialogView.cardButton16.visibility = View.INVISIBLE
+            if (magicHand <= 0) dialogView.handButton12.visibility = View.INVISIBLE
+        }
+
+        dialogView.bombButton17.setOnClickListener {
+            if (putItemId != 0) {
+                Glide.with(this).load(R.drawable.framecard_bomb).into(submitItemImageButton)
+            }
+            putItemId = 0
+            dialog.cancel()
+        }
+        dialogView.cardButton16.setOnClickListener {
+            if (putItemId != 1) {
+                Glide.with(this).load(R.drawable.framecard_card).into(submitItemImageButton)
+            }
+            putItemId = 1
+            dialog.cancel()
+        }
+        dialogView.handButton12.setOnClickListener {
+            if (putItemId != 3) {
+                Glide.with(this).load(R.drawable.framecard_magichand).into(submitItemImageButton)
+            }
+            putItemId = 3
+            dialog.cancel()
+        }
+        dialogView.removeItemButton19.setOnClickListener {
+            if (putItemId != -1) {
+                Glide.with(this).load(R.drawable.hatena).into(submitItemImageButton)
+                dialog.cancel()
+            }
+        }
+
     }
 
     private fun sendProblemServer() {
@@ -222,43 +262,6 @@ class CameraModeActivity : Activity() {
     }
 
     private fun itemSetting() {
-        //toClickableButton()
-        val dialogView: DialogItemSelectBinding = DataBindingUtil.inflate(
-                LayoutInflater.from(this), R.layout.dialog_item_select, null, false)
-
-        unitPer.itemCount.run {
-            if (bomb <= 0) dialogView.bombButton17.visibility = View.INVISIBLE
-            if (card <= 0) dialogView.cardButton16.visibility = View.INVISIBLE
-            if (magicHand <= 0) dialogView.handButton12.visibility = View.INVISIBLE
-        }
-
-        dialogView.bombButton17.setOnClickListener {
-            if (putItemId != 0) {
-                Glide.with(this).load(R.drawable.framecard_bomb).into(submitItemImageButton)
-            }
-            putItemId = 0
-            dialog.cancel()
-        }
-        dialogView.cardButton16.setOnClickListener {
-            if (putItemId != 1) {
-                Glide.with(this).load(R.drawable.framecard_card).into(submitItemImageButton)
-            }
-            putItemId = 1
-            dialog.cancel()
-        }
-        dialogView.handButton12.setOnClickListener {
-            if (putItemId != 3) {
-                Glide.with(this).load(R.drawable.framecard_magichand).into(submitItemImageButton)
-            }
-            putItemId = 3
-            dialog.cancel()
-        }
-        dialogView.removeItemButton19.setOnClickListener {
-            if (putItemId != -1) {
-                Glide.with(this).load(R.drawable.hatena).into(submitItemImageButton)
-                dialog.cancel()
-            }
-        }
         dialog = AlertDialog.Builder(this)
                 .setView(dialogView.root)
                 .create()
