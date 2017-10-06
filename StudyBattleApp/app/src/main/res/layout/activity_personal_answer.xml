@@ -42,8 +42,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_weight="1"
-                    app:loadImagePersonalAnswer="@{PersonalAnswer.personalAnswerUri}"
-                    app:srcCompat="@drawable/group" />
+                    android:background="@drawable/group"
+                    app:loadImagePersonalAnswer="@{PersonalAnswer.personalAnswerUri}" />
 
                 <LinearLayout
                     android:id="@+id/score_comment_layout_text"

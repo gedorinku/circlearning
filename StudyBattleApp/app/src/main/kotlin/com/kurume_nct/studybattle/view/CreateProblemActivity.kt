@@ -127,6 +127,9 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         dialog = AlertDialog.Builder(this)
                 .setView(dialogView.root)
                 .create()
+        dialog.setOnDismissListener {
+            onClickableButtons()
+        }
 
         dialog.show()
     }
