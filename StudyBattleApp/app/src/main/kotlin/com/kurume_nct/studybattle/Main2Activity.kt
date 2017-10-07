@@ -36,7 +36,6 @@ class Main2Activity : AppCompatActivity() {
     private lateinit var unitPer: UnitPersonal
     private val REQUEST_CREATE_GROUP = 9
     private lateinit var iconUrl: String
-    private var first = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +83,6 @@ class Main2Activity : AppCompatActivity() {
 
     private fun getMyGroup() {
         Log.d("getMyGroup", "")
-        first = false
 
         val groups = mutableListOf<Group>()
         val client = ServerClient(unitPer.authenticationKey)
@@ -265,7 +263,7 @@ class Main2Activity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if(!first){
+        if(unitPer.myGroupCount > 0){
             onTabLayout()
         }
     }
