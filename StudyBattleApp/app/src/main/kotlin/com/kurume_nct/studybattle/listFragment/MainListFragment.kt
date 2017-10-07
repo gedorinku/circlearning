@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
@@ -47,6 +48,10 @@ class MainListFragment : Fragment() {
         super.onCreate(savedInstanceState)
         tabId = arguments.getInt("id")
         unitPersonal = activity.application as UnitPersonal
+        onRefershList()
+    }
+
+    fun onRefershList(){
         client = ServerClient(unitPersonal.authenticationKey)
 
         when (tabId) {
@@ -107,6 +112,9 @@ class MainListFragment : Fragment() {
         Log.d("i'm ", javaClass.name)
         //binding = DataBindingUtil.inflate(inflater, R.layout.fragment_problem_list,container,false)
         binding = FragmentProblemListBinding.inflate(inflater, container, false)
+        binding.swipeRefreshProblemList.setOnRefreshListener {
+            onRefershList()
+        }
         listAdapter = ProblemListAdapter(context, problemList,
                 { position: Int ->
                     val intent: Intent
