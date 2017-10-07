@@ -112,9 +112,6 @@ class MainListFragment : Fragment() {
         Log.d("i'm ", javaClass.name)
         //binding = DataBindingUtil.inflate(inflater, R.layout.fragment_problem_list,container,false)
         binding = FragmentProblemListBinding.inflate(inflater, container, false)
-        binding.swipeRefreshProblemList.setOnRefreshListener {
-            onRefershList()
-        }
         listAdapter = ProblemListAdapter(context, problemList,
                 { position: Int ->
                     val intent: Intent

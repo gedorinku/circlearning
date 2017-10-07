@@ -36,6 +36,7 @@ class Main2Activity : AppCompatActivity() {
     private lateinit var unitPer: UnitPersonal
     private val REQUEST_CREATE_GROUP = 9
     private lateinit var iconUrl: String
+    private var first = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,6 +84,7 @@ class Main2Activity : AppCompatActivity() {
 
     private fun getMyGroup() {
         Log.d("getMyGroup", "")
+        first = false
 
         val groups = mutableListOf<Group>()
         val client = ServerClient(unitPer.authenticationKey)
@@ -148,7 +150,7 @@ class Main2Activity : AppCompatActivity() {
             startActivity(Intent(this, CreateProblemActivity::class.java))
         }
         val toolbar = findViewById(R.id.toolbar) as Toolbar
-        toolbar.title = unitPer.myInfomation.userName
+        toolbar.title = unitPer.myInfomation.displayName
         toolbar.inflateMenu(R.menu.toolbar_menu)
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
@@ -199,7 +201,6 @@ class Main2Activity : AppCompatActivity() {
             }
         }
     }
-
     private fun onNavigationDrawer(userIcon: Bitmap) {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
 
@@ -233,7 +234,7 @@ class Main2Activity : AppCompatActivity() {
                         startActivity(intent)
                     } else {
                         unitPer.nowGroup = unitPer.myGroupList[position]
-                        onTabLayout()
+                        //onTabLayout()
                     }
                     false
                 }
@@ -264,7 +265,9 @@ class Main2Activity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        onTabLayout()
+        if(!first){
+            onTabLayout()
+        }
     }
 
     override fun onStop() {
