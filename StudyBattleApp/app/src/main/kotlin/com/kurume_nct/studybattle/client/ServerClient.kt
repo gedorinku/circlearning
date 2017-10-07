@@ -135,6 +135,12 @@ class ServerClient(authenticationKey: String = "") {
 
     fun getProblem(id: Int): Observable<Problem> = server.getProblem(authenticationKey, id)
 
+    fun getMyJudgedProblems(groupId: Int) = server.getMyJudgedProblems(authenticationKey, groupId)
+
+    fun getMyJudgingProblems(groupId: Int) = server.myJudgingProblems(authenticationKey, groupId)
+
+    fun myCollectingProblems(groupId: Int) = server.myCollectingProblems(authenticationKey, groupId)
+
     fun getAssignedProblems(group: Group) = getAssignedProblems(group.id)
 
     fun getAssignedProblems(groupId: Int) = server.getAssignedProblems(authenticationKey, groupId)

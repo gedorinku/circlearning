@@ -102,6 +102,24 @@ interface Server {
             @Path("id") id: Int
     ): Observable<Problem>
 
+    @GET("/problem/judged")
+    fun getMyJudgedProblems(
+            @Query("authenticationKey") authenticationKey: String,
+            @Query("groupId") groupId: Int
+    ): Observable<List<Problem>>
+
+    @GET("/problem/judging")
+    fun myJudgingProblems(
+            @Query("authenticationKey") authenticationKey: String,
+            @Query("groupId") groupId: Int
+    ): Observable<List<Problem>>
+
+    @GET("/problem/collecting")
+    fun myCollectingProblems(
+            @Query("authenticationKey") authenticationKey: String,
+            @Query("groupId") groupId: Int
+    ): Observable<List<Problem>>
+
     @FormUrlEncoded
     @POST("/problem/assigned")
     fun getAssignedProblems(
