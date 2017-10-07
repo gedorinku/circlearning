@@ -262,7 +262,6 @@ class Main2Activity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        onTabLayout()
     }
 
     override fun onStop() {
