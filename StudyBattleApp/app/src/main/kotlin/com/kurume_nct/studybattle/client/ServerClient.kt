@@ -166,9 +166,13 @@ class ServerClient(authenticationKey: String = "") {
 
     fun getSolution(solutionId: Int) = server.getSolution(authenticationKey, solutionId)
 
-    fun getJudgedMySolutions() = server.getJudgedMySolutions(authenticationKey)
+    fun getJudgedMySolutions(group: Group) = getJudgedMySolutions(group.id)
 
-    fun getUnjudgedMySolutions() = server.getUnjudgedMySolutions(authenticationKey)
+    fun getJudgedMySolutions(groupId: Int) = server.getJudgedMySolutions(authenticationKey, groupId)
+
+    fun getUnjudgedMySolutions(group: Group) = getUnjudgedMySolutions(group.id)
+
+    fun getUnjudgedMySolutions(groupId: Int) = server.getUnjudgedMySolutions(authenticationKey, groupId)
 }
 
 private class StringConverterFactory : Converter.Factory() {

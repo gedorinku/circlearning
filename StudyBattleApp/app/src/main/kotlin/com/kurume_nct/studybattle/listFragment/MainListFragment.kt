@@ -75,14 +75,14 @@ class MainListFragment : Fragment() {
                 Single.just(emptyList())
 
             resources.getInteger(R.integer.SUGGEST_YET) ->
-                client.getUnjudgedMySolutions()
+                client.getUnjudgedMySolutions(unitPersonal.nowGroup)
                         .flatMap { it.toObservable() }
                         .map { client.getProblem(it.problemId) }
                         .mergeAll()
                         .toList()
 
             resources.getInteger(R.integer.SUGGEST_FIN) ->
-                client.getJudgedMySolutions()
+                client.getJudgedMySolutions(unitPersonal.nowGroup)
                         .flatMap { it.toObservable() }
                         .map { client.getProblem(it.problemId) }
                         .mergeAll()
