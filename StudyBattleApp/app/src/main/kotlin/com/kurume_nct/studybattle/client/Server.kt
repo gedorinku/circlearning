@@ -142,11 +142,13 @@ interface Server {
 
     @GET("/my_solution/judged")
     fun getJudgedMySolutions(
-            @Query("authenticationKey") authenticationKey: String
+            @Query("authenticationKey") authenticationKey: String,
+            @Query("groupId") groupId: Int
     ): Observable<List<Solution>>
 
     @GET("/my_solution/unjudged")
     fun getUnjudgedMySolutions(
-            @Query("authenticationKey") authenticationKey: String
+            @Query("authenticationKey") authenticationKey: String,
+            @Query("groupId") groupId: Int
     ): Observable<List<Solution>>
 }
