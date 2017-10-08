@@ -104,8 +104,13 @@ class MainListFragment(val callback: Callback) : Fragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { it ->
                     if (it.isNotEmpty()) {
-                        listAdapter.notifyItemRangeRemoved(0, problemList.size)
+                        val listSize = problemList.size
+                        problemList.clear()
+                        listAdapter.notifyItemRangeRemoved(0, listSize)
                         problemList.addAll(0, it)
+                        if(tabId == 0){
+                            problemList.add(Problem(title = "　＋　新しい問題を追加で取得する"))
+                        }
                         listAdapter.notifyItemRangeInserted(0, it.size)
                         Log.d(it.size.toString(), "isNotEmpty" + unitPersonal.nowGroup.id.toString())
                         callback.onStopSwipeRefresh()
@@ -208,7 +213,7 @@ class MainListFragment(val callback: Callback) : Fragment() {
         mContext = context!!
     }
 
-    fun changeList() {
+    private fun changeList() {
         //listAdapter.notifyItemRangeRemoved(0, problemList.size)
         //problemList.clear()
         when (tabId) {
