@@ -2,13 +2,11 @@ package com.kurume_nct.studybattle.view
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.databinding.DataBindingUtil
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -23,10 +21,7 @@ import com.kurume_nct.studybattle.databinding.DialogCameraStrageChooseBinding
 import com.kurume_nct.studybattle.listFragment.DurationFragment
 import com.kurume_nct.studybattle.viewModel.CreateProblemViewModel
 import org.joda.time.Duration
-import java.util.jar.Manifest
-import android.Manifest.permission
 import android.support.v4.app.ActivityCompat
-import com.kurume_nct.studybattle.model.User
 
 
 class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callback, DatePickerDialog.OnDateSetListener {
@@ -77,7 +72,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(data == null){
+        if (data == null) {
             dialog.cancel()
             onClickableButtons()
             return
@@ -88,7 +83,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
     override fun getCreateData(title: String) {
         //send data📩
         val thxAlert = AlertDialog.Builder(this)
-        val thxView = this.layoutInflater.inflate(R.layout.thx_dialog, null)
+        val thxView = this.layoutInflater.inflate(R.layout.dialog_thx, null)
         thxAlert.setOnDismissListener {
             finish()
         }
@@ -136,7 +131,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         dialog.show()
     }
 
-    private fun cameraBeforeCheck(){
+    private fun cameraBeforeCheck() {
         val permission = ContextCompat.checkSelfPermission(
                 this,
                 android.Manifest.permission.CAMERA
@@ -157,11 +152,11 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when(requestCode){
+        when (requestCode) {
             PERMISSION_CAMERA_CODE -> {
-                if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     binding.createView.onGetImage(1, prob)
-                }else{
+                } else {
                     cameraBeforeCheck()
                 }
             }
@@ -175,7 +170,6 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
             button7.isClickable = true
             button6.isClickable = true
         }
-        Toast.makeText(this, "処理に失敗しました", Toast.LENGTH_SHORT).show()
         dialog.cancel()
     }
 

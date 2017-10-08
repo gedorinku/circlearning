@@ -27,7 +27,7 @@ class UnitPersonal : Application(){
     init {
         nowGroup = Group()
         myGroupCount = 1
-        itemCount = Item()
+        itemCount = Item(1,1,1,1)
         userIcon = getIconUri(R.drawable.group)
         myGroupList = mutableListOf()
     }
@@ -48,7 +48,7 @@ class UnitPersonal : Application(){
 
     fun deleteFile(){
         prefer = getSharedPreferences(packageName + ".txt", Context.MODE_PRIVATE)
-        prefer.edit().clear()
+        prefer.edit().clear().commit()
     }
 
     override fun onTerminate() {

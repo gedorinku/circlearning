@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.Observable
 import android.databinding.BaseObservable
 import android.databinding.Bindable
+import com.kurume_nct.studybattle.BR
 
 /**
  * Created by hanah on 9/25/2017.

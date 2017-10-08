@@ -43,8 +43,11 @@
             android:text="@={userEntity.userNameRegister}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.13"
-            tools:layout_editor_absoluteX="31dp" />
+            app:layout_constraintVertical_bias="0.129"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent" />
 
         <EditText
             android:id="@+id/editText5"
@@ -58,8 +61,11 @@
             android:text="@={userEntity.userPassword}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.24000001"
-            tools:layout_editor_absoluteX="32dp" />
+            app:layout_constraintVertical_bias="0.24"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent" />
 
         <EditText
             android:id="@+id/editText2"
@@ -73,7 +79,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.36"
-            tools:layout_editor_absoluteX="32dp" />
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -85,11 +94,11 @@
             android:layout_marginTop="8dp"
             android:layout_weight="0.02"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.083"
+            app:layout_constraintHorizontal_bias="0.08"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.545"
+            app:layout_constraintVertical_bias="0.55"
             app:loadImageFirstIcon="@{userEntity.imageUri}"
             app:srcCompat="@drawable/group" />
 
@@ -102,7 +111,7 @@
             android:layout_marginRight="48dp"
             android:layout_marginTop="8dp"
             android:layout_weight="0.83"
-            android:background="@color/md_teal_A700"
+            android:background="@color/md_green_500"
             android:onClick="@{userEntity.onClickChangeIconImage}"
             android:text="@string/change_image_button_text"
             android:textColor="@color/material_drawer_dark_header_selection_text"
@@ -122,10 +131,9 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
-            android:background="@color/md_teal_A700"
+            android:background="@color/md_green_300"
             android:onClick="@{userEntity.onClickLoginButton}"
             android:text="@{userEntity.loginButtonText}"
-            android:textColor="@color/material_drawer_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -140,7 +148,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
-            android:background="@color/md_teal_A700"
+            android:background="@color/md_green_500"
             android:onClick="@{userEntity.onClicktoLoginButton}"
             android:text="既にアカウントを持っている"
             android:textColor="@color/material_drawer_background"

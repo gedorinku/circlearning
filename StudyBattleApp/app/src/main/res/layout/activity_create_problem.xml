@@ -7,17 +7,18 @@
             name="CreateView"
             type="com.kurume_nct.studybattle.viewModel.CreateProblemViewModel"/>
     </data>
-    <android.support.constraint.ConstraintLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="com.kurume_nct.studybattle.view.CreateProblemActivity"
-        android:background="@drawable/backgroud">
+        android:layout_height="wrap_content"
+        android:background="@drawable/backgroud"
+        tools:context="com.kurume_nct.studybattle.view.CreateProblemActivity">
 
         <ScrollView
-            android:layout_width="368dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="33dp">
+            tools:layout_editor_absoluteY="208dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -53,12 +54,12 @@
                 <ImageButton
                     android:id="@+id/problemImage"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="250dp"
                     android:layout_weight="1"
                     android:background="@drawable/no_image"
                     android:onClick="@{CreateView.onClickProblemImage}"
                     app:loadProblem="@{CreateView.problemUri}"
-                    app:srcCompat="@drawable/group"
+                    app:srcCompat="@drawable/text_noimage"
                     tools:ignore="ContentDescription" />
 
                 <TextView
@@ -115,7 +116,7 @@
                         android:layout_width="20dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@color/md_teal_A700"
+                        android:background="@color/md_deep_orange_A200"
                         android:onClick="@{CreateView.onClickDateChange}"
                         android:text="変更"
                         android:textColor="#ffffff"
@@ -160,11 +161,12 @@
                 <ImageButton
                     android:id="@+id/answerImage"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="250dp"
                     android:layout_weight="1"
+                    android:background="@drawable/no_image"
                     android:onClick="@{CreateView.onClickAnswerImage}"
                     app:loadProblem="@{CreateView.answerUri}"
-                    app:srcCompat="@drawable/group" />
+                    app:srcCompat="@drawable/text_noimage" />
 
                 <Space
                     android:layout_width="match_parent"
@@ -173,11 +175,11 @@
 
                 <Button
                     android:id="@+id/button6"
-                    android:layout_width="match_parent"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@color/md_teal_A700"
+                    android:background="@color/md_orange_500"
                     android:onClick="@{CreateView.onClickFinish}"
                     android:text="✅問題を作成"
                     android:textColor="#ffffff"
@@ -190,5 +192,5 @@
 
             </LinearLayout>
         </ScrollView>
-    </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
 </layout>

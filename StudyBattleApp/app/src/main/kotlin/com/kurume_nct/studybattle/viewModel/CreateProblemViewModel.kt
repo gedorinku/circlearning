@@ -16,6 +16,7 @@ import android.widget.Toast
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.Solution
 import com.kurume_nct.studybattle.model.User
+import com.kurume_nct.studybattle.tools.ProgressDialogTool
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.joda.time.DateTime
@@ -167,7 +168,10 @@ class CreateProblemViewModel(private val context: Context, private val callback:
     }
 
     fun sendData() {
-
+        Toast.makeText(context, "問題をサーバーに送っています", Toast.LENGTH_LONG).show()
+        val dialogClass = ProgressDialogTool(context)
+        val dialog = dialogClass.makeDialog()
+        dialog.show()
         callback.onNotClickableButtons()
 
         val client = ServerClient(callback.getKey())
@@ -200,16 +204,20 @@ class CreateProblemViewModel(private val context: Context, private val callback:
                                         .subscribeOn(Schedulers.io())
                                         .observeOn(AndroidSchedulers.mainThread())
                                         .subscribe({
+                                            dialog.dismiss()
                                             callback.getCreateData(problemName)
                                         }, {
+                                            dialog.dismiss()
                                             callback.onClickableButtons()
                                             it.printStackTrace()
                                         })
                             }, {
+                                dialog.dismiss()
                                 callback.onClickableButtons()
                                 it.printStackTrace()
                             })
                 }, {
+                    dialog.dismiss()
                     callback.onClickableButtons()
                     it.printStackTrace()
                 })

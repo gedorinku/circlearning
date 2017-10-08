@@ -5,6 +5,7 @@ import com.kurume_nct.studybattle.R
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Context
 import android.content.pm.PackageManager
@@ -19,16 +20,24 @@ import android.widget.Button
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.util.Log
 import android.widget.TextView
-import android.os.Handler
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.Toast
+import com.bumptech.glide.Glide
+import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.DialogCameraStrageChooseBinding
 import com.kurume_nct.studybattle.databinding.DialogItemSelectBinding
+import com.kurume_nct.studybattle.model.Item
+import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.tools.ProgressDialogTool
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 import java.io.File
 import java.io.IOException
@@ -38,7 +47,8 @@ import java.util.Date
 
 class CameraModeActivity : Activity() {
 
-    private var imageview: ImageView? = null
+    private lateinit var submitImageButton: ImageButton
+    private lateinit var submitItemImageButton: ImageButton
     private var libraryButton: Button? = null
     private var comment: TextView? = null
     private var experiment: TextView? = null//これで実験試してる
@@ -49,6 +59,15 @@ class CameraModeActivity : Activity() {
     private var cameraUri: Uri? = null
     private var filePath: String? = null
     private lateinit var dialog: AlertDialog
+    private var putItemId = -1
+    private lateinit var unitPer: UnitPersonal
+    private var answerUri: Uri? = null
+    //getExtraか何かでもらう
+    private var problemId = 0
+    private lateinit var submissionButton: Button
+    private lateinit var passButton: Button
+    lateinit var progress: ProgressDialog
+    lateinit var dialogView: DialogItemSelectBinding
 
 
     //ギャラリーpath取得関数
@@ -57,26 +76,23 @@ class CameraModeActivity : Activity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         instance = this
+
+        unitPer = application as UnitPersonal
+        progress = ProgressDialogTool(this).makeDialog()
 
         setContentView(R.layout.activity_camera_mode)
         userName = intent.getStringExtra("userName")
         // 宣言
         comment = findViewById(R.id.comment) as TextView
-        imageview = findViewById(R.id.answer) as ImageView
-        libraryButton = findViewById(R.id.library_button) as Button
+        submitImageButton = findViewById(R.id.submit_image_button) as ImageButton
+        submitItemImageButton = findViewById(R.id.submit_item_image_button) as ImageButton
+        //libraryButton = findViewById(R.id.library_button) as Button
         experiment = findViewById(R.id.experiment) as TextView
-        val submissionButton = findViewById(R.id.submission_button) as Button
-        val passButton = findViewById(R.id.pass_button) as Button
+        submissionButton = findViewById(R.id.submission_button) as Button
+        passButton = findViewById(R.id.pass_button) as Button
 
-        //add.
-        val itemView = findViewById(R.id.item_image) as ImageButton
-
-        itemView.setOnClickListener {
-
-        }
 
         //(uriについての実験機能)
         if (savedInstanceState != null) {
@@ -90,43 +106,127 @@ class CameraModeActivity : Activity() {
             //開けるものだけ表示
             intent.addCategory(Intent.CATEGORY_OPENABLE)
             //イメージのみを表示するフィルタ
-            intent.type = "image/*"
+            intent.type = "image*/"
             startActivityForResult(intent, RESULT_PICK_IMAGEFILE)
         }
 
-        //カメラ撮影ボタン
-        val cameraButton = findViewById(R.id.camera_button) as Button
-        cameraButton.setOnClickListener {
-            // Android 6, API 23以上でパーミッシンの確認
-            if (Build.VERSION.SDK_INT >= 23) {
-                checkPermission()
-            } else {
-                cameraIntent()
-            }
+        submitImageButton.setOnClickListener {
+            imageSetting()
+        }
+
+        submitItemImageButton.setOnClickListener {
+            itemSetting()
         }
 
         //パスするボタン
         passButton.setOnClickListener {
-            //他の画面に遷移しないようにする
-            submissionButton.isEnabled = false
-            cameraButton.isEnabled = false
-            libraryButton!!.isEnabled = false
-
-
-            val handler = Handler()
-            handler.postDelayed({ finish() }, 2500)
+            sadDialog()
         }
 
         //提出するボタン
         submissionButton.setOnClickListener {
-            if (flag == 1) {
+            /*if (flag == 1) {
                 val intent1 = Intent(application, LotteryActivity::class.java)
                 intent1.putExtra("userName", userName)
                 startActivity(intent1)
                 finish()
             } else
-                comment!!.text = "解答を提出してください"
+                comment!!.text = "解答を提出してください"*/
+            if (answerUri == null) {
+                Toast.makeText(this, "写真を追加してください", Toast.LENGTH_SHORT).show()
+            } else {
+                sendProblemServer()
+            }
         }
+
+        //toClickableButton()
+        val dialogView: DialogItemSelectBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(this), R.layout.dialog_item_select, null, false)
+
+        unitPer.itemCount.run {
+            if (bomb <= 0) dialogView.bombButton17.visibility = View.INVISIBLE
+            if (card <= 0) dialogView.cardButton16.visibility = View.INVISIBLE
+            if (magicHand <= 0) dialogView.handButton12.visibility = View.INVISIBLE
+        }
+
+        dialogView.bombButton17.setOnClickListener {
+            if (putItemId != 0) {
+                Glide.with(this).load(R.drawable.framecard_bomb).into(submitItemImageButton)
+            }
+            putItemId = 0
+            dialog.cancel()
+        }
+        dialogView.cardButton16.setOnClickListener {
+            if (putItemId != 1) {
+                Glide.with(this).load(R.drawable.framecard_card).into(submitItemImageButton)
+            }
+            putItemId = 1
+            dialog.cancel()
+        }
+        dialogView.handButton12.setOnClickListener {
+            if (putItemId != 3) {
+                Glide.with(this).load(R.drawable.framecard_magichand).into(submitItemImageButton)
+            }
+            putItemId = 3
+            dialog.cancel()
+        }
+        dialogView.removeItemButton19.setOnClickListener {
+            if (putItemId != -1) {
+                Glide.with(this).load(R.drawable.hatena).into(submitItemImageButton)
+                dialog.cancel()
+            }
+        }
+
+    }
+
+    private fun sendProblemServer() {
+        val client = ServerClient(unitPer.authenticationKey)
+        val uri: Uri = answerUri!!
+
+        progress.show()
+        client
+                .uploadImage(uri, this)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    val imageId = it.id
+                    client
+                            .createSolution(
+                                    text = "事前提出むり。みんな鬱になっちゃう。",
+                                    problemId = problemId,
+                                    imageIds = listOf(imageId)
+                                    //item = putImageId
+                            )
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                progress.dismiss()
+                                decrementItem(putItemId)
+                                startActivity(Intent(this, LotteryActivity::class.java))
+                                finish()
+                            }, {
+                                progress.dismiss()
+                                it.printStackTrace()
+                                Toast.makeText(this, "解答提出に失敗しました。ネット環境を確認してください。", Toast.LENGTH_SHORT).show()
+                            })
+                }, {
+                    progress.dismiss()
+                    it.printStackTrace()
+                    Toast.makeText(this, "解答提出に失敗しました。画像データが大きすぎる可能性があります。", Toast.LENGTH_SHORT).show()
+                })
+    }
+
+    private fun sadDialog() {
+        //send data📩
+        val passAlert = AlertDialog.Builder(this)
+        val passView = this.layoutInflater.inflate(R.layout.dialog_pass_sad, null)
+        passAlert.setOnDismissListener {
+            finish()
+        }
+        passAlert.setView(passView)
+        val alert = passAlert.create()
+        alert.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alert.show()
     }
 
     private fun imageSetting() {
@@ -135,6 +235,7 @@ class CameraModeActivity : Activity() {
         )
         dialogView.run {
             cameraButton.setOnClickListener {
+                dialog.cancel()
                 // Android 6, API 23以上でパーミッシンの確認
                 if (Build.VERSION.SDK_INT >= 23) {
                     checkPermission()
@@ -143,6 +244,7 @@ class CameraModeActivity : Activity() {
                 }
             }
             strageButton.setOnClickListener {
+                dialog.cancel()
                 //ファイルを選択
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
                 //開けるものだけ表示
@@ -159,28 +261,22 @@ class CameraModeActivity : Activity() {
         dialog.show()
     }
 
-    fun itemSetting() {
-        val dialogView : DialogItemSelectBinding = DataBindingUtil.inflate(
-                LayoutInflater.from(this), R.layout.dialog_item_select, null, false)
-        dialogView.run {
-            bombButton17.setOnClickListener {
-
-            }
-            cardButton16.setOnClickListener {
-
-            }
-            shieldButton15.setOnClickListener {
-
-            }
-            handButton12.setOnClickListener {
-
-            }
-        }
+    private fun itemSetting() {
         dialog = AlertDialog.Builder(this)
                 .setView(dialogView.root)
                 .create()
 
         dialog.show()
+    }
+
+    fun decrementItem(itemId: Int) {
+        if (itemId != -1) {
+            when (itemId) {
+                0 -> unitPer.itemCount.bomb -= 1
+                1 -> unitPer.itemCount.card -= 1
+                3 -> unitPer.itemCount.magicHand -= 1
+            }
+        }
     }
 
 
@@ -194,7 +290,7 @@ class CameraModeActivity : Activity() {
         if (requestCode == RESULT_CAMERA) {
             //カメラ撮影の処理
             if (cameraUri != null) {
-                imageview!!.setImageURI(cameraUri)
+                submitImageButton.setImageURI(cameraUri)
                 registerDatabase(filePath)
 
             } else {
@@ -207,10 +303,11 @@ class CameraModeActivity : Activity() {
             if (data != null) {
                 uri = data.data
                 Log.i("", "Uri: " + uri!!.toString())
+                answerUri = uri
 
                 try {
                     bmp1 = getBitmapFromUri(uri)
-                    imageview!!.setImageBitmap(bmp1)
+                    submitImageButton.setImageBitmap(bmp1)
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }
@@ -291,7 +388,6 @@ class CameraModeActivity : Activity() {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 cameraIntent()
                 return
-
             } else {
                 // それでも拒否された時の対応
                 val toast = Toast.makeText(this, "これ以上なにもできません", Toast.LENGTH_SHORT)

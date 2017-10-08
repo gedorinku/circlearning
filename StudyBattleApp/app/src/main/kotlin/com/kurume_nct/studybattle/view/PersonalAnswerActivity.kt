@@ -1,15 +1,21 @@
 package com.kurume_nct.studybattle.view
 
 import android.databinding.DataBindingUtil
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 
 import com.kurume_nct.studybattle.R
+import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.ActivityPersonalAnswerBinding
+import com.kurume_nct.studybattle.model.Problem
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.viewModel.PersonalAnswerViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Callback {
 
@@ -17,6 +23,8 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
     private lateinit var unitPer: UnitPersonal
     private var writeNows = false
     private var writeNow = false
+    private var problemId = 0
+    private var problem: Problem = Problem()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +32,32 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
         binding = DataBindingUtil.setContentView(this, R.layout.activity_personal_answer)
         binding.personalAnswer = PersonalAnswerViewModel(this, this)
         unitPer = application as UnitPersonal
+        problemId = intent.getIntExtra("id", 0)
+        getProblemInformation()
         bindSetting()
+    }
+
+    fun getProblemInformation() {
+        val client = ServerClient(unitPer.authenticationKey)
+        client
+                .getProblem(problemId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    problem = it
+                    client
+                            .getImageById(it.imageIds[0])
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                binding.personalAnswer.personalAnswerUri = Uri.parse(it.url)
+                            }, {
+                                Toast.makeText(this, "", Toast.LENGTH_SHORT).show()
+                            })
+                }, {
+                    Toast.makeText(this, "問題の情報を得られませんでした", Toast.LENGTH_SHORT).show()
+                    finish()
+                })
     }
 
     private fun bindSetting() {
@@ -48,13 +81,13 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
     private fun addComment(text: String) {
         binding.personalAnswer.everyoneComment =
                 binding.personalAnswer.everyoneComment + ("\n" + text + "\n\t by " +
-                        unitPer.myInfomation.displayName + "(" + unitPer.myInfomation.displayName + ")" + "\n")
+                        unitPer.myInfomation.displayName + "(" + unitPer.myInfomation.userName + ")" + "\n")
     }
 
     private fun addScoreComment(text: String) {
         binding.personalAnswer.scoreComment =
                 binding.personalAnswer.scoreComment + ("\n" + text + "\n\t by " +
-                        unitPer.myInfomation.displayName + "(" + unitPer.myInfomation.displayName + ")" + "\n")
+                        unitPer.myInfomation.displayName + "(" + unitPer.myInfomation.userName + ")" + "\n")
     }
 
     override fun onWriteComment() {

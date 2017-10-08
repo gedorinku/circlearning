@@ -8,7 +8,8 @@
 
     <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/backgroud"
         android:orientation="vertical"
         tools:context="com.kurume_nct.studybattle.view.CreateGroupActivity">
 
@@ -20,11 +21,11 @@
         <TextView
             android:id="@+id/textView43"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="50dp"
             android:layout_weight="1"
-            android:text="グループ作成"
+            android:text="グループ作成画面"
             android:textAlignment="center"
-            android:textColor="@color/material_drawer_primary_text"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="24sp" />
 
         <Space
@@ -40,7 +41,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textView45"
@@ -48,8 +49,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="グループ名"
-                    android:textColor="@color/material_drawer_primary_text"
-                    android:textSize="21sp" />
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp" />
 
                 <EditText
                     android:id="@+id/editText8"
@@ -59,18 +60,14 @@
                     android:ems="10"
                     android:hint="グループ名を入力してください"
                     android:inputType="textPersonName"
-                    android:text="@={CreateGroupUnit.groupName}"
-                    android:textColor="@color/material_drawer_dark_hint_text"
-                    android:textSize="17sp" />
+                    android:text="@={CreateGroupUnit.groupName}" />
 
                 <TextView
                     android:id="@+id/textView44"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="招待する人"
-                    android:textColor="@color/material_drawer_primary_text"
-                    android:textSize="21sp" />
+                    android:text="招待する人" />
 
                 <LinearLayout
                     android:id="@+id/select_people_conteiner"
@@ -84,9 +81,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="1回に1人が持てる問題数"
-                    android:textColor="@color/material_drawer_primary_text"
-                    android:textSize="21sp" />
+                    android:text="1回に1人が持てる問題数" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -100,8 +95,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:ems="10"
-                        android:text="@={CreateGroupUnit.peopleCount}"
+                        android:gravity="center"
                         android:inputType="number"
+                        android:text="@={CreateGroupUnit.peopleCount}"
                         android:textSize="14sp" />
 
                     <TextView
@@ -109,20 +105,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="問"
-                        android:textSize="17sp" />
+                        android:text="問" />
 
                 </LinearLayout>
 
                 <Button
                     android:id="@+id/button10"
-                    android:layout_width="match_parent"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:layout_weight="1"
-                    android:background="@color/md_teal_A700"
+                    android:background="@color/md_cyan_800"
+                    android:onClick="@{CreateGroupUnit.onClickMakeGroup}"
                     android:text="グループ作成"
                     android:textColor="@color/material_drawer_background"
-                    android:textSize="15sp" />
+                    android:textSize="18sp" />
             </LinearLayout>
         </ScrollView>
 

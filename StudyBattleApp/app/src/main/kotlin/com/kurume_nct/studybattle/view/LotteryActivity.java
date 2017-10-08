@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.kurume_nct.studybattle.R;
-
+import com.kurume_nct.studybattle.model.UnitPersonal;
 
 
 public class LotteryActivity extends Activity{
@@ -28,6 +28,7 @@ public class LotteryActivity extends Activity{
     TextView text1;
     Bitmap bmp4;
     final int item_sum=5;
+    UnitPersonal unitPer;
 
 
     @Override
@@ -42,8 +43,7 @@ public class LotteryActivity extends Activity{
         text1=(TextView) findViewById(R.id.lottery_text) ;
         lotteried=(ImageView)findViewById(R.id.lotteried_item);
         lottery_text=(ImageView)findViewById(R.id.lottery_item_text);
-
-
+        unitPer = (UnitPersonal) getApplication();
 
         Bitmap bmp1= BitmapFactory.decodeResource(getResources(),R.drawable.lotterycard);
         card1.setImageBitmap(bmp1);
@@ -93,18 +93,22 @@ public class LotteryActivity extends Activity{
         item.setVisibility(View.VISIBLE);
         if(i==0) {
             text1.setText("爆弾GET！");
+            unitPer.getItemCount().setBomb(unitPer.getItemCount().getBomb() + 1);
             lotteried.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.bomb));
             lottery_text.setImageBitmap(bmp4);
         }else if(i==1) {
             text1.setText("2倍カードGET!");
+            unitPer.getItemCount().setCard(unitPer.getItemCount().getCard() + 1);
             lotteried.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.card));
             lottery_text.setImageBitmap(bmp4);
         }else if(i==2) {
             text1.setText("マジックハンドGET！");
+            unitPer.getItemCount().setMagicHand(unitPer.getItemCount().getMagicHand() + 1);
             lotteried.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.magichand));
             lottery_text.setImageBitmap(bmp4);
         }else if(i==3) {
             text1.setText("シールドGET!");
+            unitPer.getItemCount().setShield(unitPer.getItemCount().getShield() + 1);
             lotteried.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.shield));
             lottery_text.setImageBitmap(bmp4);
         }else {

@@ -119,6 +119,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
                     }
                     .subscribe({
                         callback.onLogin()
+                        callback.ableButton()
                     }, {
                         it.printStackTrace()
                         Toast.makeText(context, context.getString(R.string.usedUserNameAlart), Toast.LENGTH_LONG).show()
