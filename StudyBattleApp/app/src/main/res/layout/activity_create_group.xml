@@ -22,8 +22,9 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_weight="1"
-            android:text="グループ作成画面"
+            android:text="グループ作成"
             android:textAlignment="center"
+            android:textColor="@color/material_drawer_primary_text"
             android:textSize="24sp" />
 
         <Space
@@ -47,8 +48,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="グループ名"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="18sp" />
+                    android:textColor="@color/material_drawer_primary_text"
+                    android:textSize="21sp" />
 
                 <EditText
                     android:id="@+id/editText8"
@@ -56,16 +57,20 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:text="@={CreateGroupUnit.groupName}"
                     android:hint="グループ名を入力してください"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:text="@={CreateGroupUnit.groupName}"
+                    android:textColor="@color/material_drawer_dark_hint_text"
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/textView44"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="招待する人" />
+                    android:text="招待する人"
+                    android:textColor="@color/material_drawer_primary_text"
+                    android:textSize="21sp" />
 
                 <LinearLayout
                     android:id="@+id/select_people_conteiner"
@@ -79,7 +84,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="1回に1人が持てる問題数" />
+                    android:text="1回に1人が持てる問題数"
+                    android:textColor="@color/material_drawer_primary_text"
+                    android:textSize="21sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -102,7 +109,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="問" />
+                        android:text="問"
+                        android:textSize="17sp" />
 
                 </LinearLayout>
 
@@ -114,7 +122,7 @@
                     android:background="@color/md_teal_A700"
                     android:text="グループ作成"
                     android:textColor="@color/material_drawer_background"
-                    android:textSize="18sp" />
+                    android:textSize="15sp" />
             </LinearLayout>
         </ScrollView>
 
