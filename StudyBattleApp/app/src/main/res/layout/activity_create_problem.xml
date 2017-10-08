@@ -56,7 +56,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:layout_weight="1"
-                    android:background="@drawable/group"
                     android:onClick="@{CreateView.onClickProblemImage}"
                     app:loadProblem="@{CreateView.problemUri}"
                     tools:ignore="ContentDescription" />
@@ -162,10 +161,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:layout_weight="1"
-                    android:background="@drawable/no_image"
                     android:onClick="@{CreateView.onClickAnswerImage}"
-                    app:loadProblem="@{CreateView.answerUri}"
-                    app:srcCompat="@drawable/text_noimage" />
+                    app:loadProblem="@{CreateView.answerUri}" />
 
                 <Space
                     android:layout_width="match_parent"

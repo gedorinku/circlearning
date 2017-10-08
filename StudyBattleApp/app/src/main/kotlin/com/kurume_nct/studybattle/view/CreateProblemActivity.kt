@@ -87,6 +87,10 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         thxAlert.setOnDismissListener {
             finish()
         }
+        thxAlert.setOnKeyListener { dialog, keyCode, event ->
+            finish()
+            false
+        }
         thxAlert.setView(thxView)
         val alert = thxAlert.create()
         alert.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

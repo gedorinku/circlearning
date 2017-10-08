@@ -102,7 +102,6 @@ class MainListFragment : Fragment() {
                         listAdapter.notifyItemRangeInserted(0, it.size)
                         Log.d(it.size.toString(), "isNotEmpty" + unitPersonal.nowGroup.id.toString())
                     }
-                    changeList()
                     Log.d("it", "空")
                 }
     }
@@ -175,6 +174,7 @@ class MainListFragment : Fragment() {
                 })
         binding.list.adapter = listAdapter
         binding.list.layoutManager = LinearLayoutManager(binding.list.context)
+        changeList()
         return binding.root
     }
 
@@ -208,6 +208,7 @@ class MainListFragment : Fragment() {
                 }*/
                 if (true) {
                     problemList.add(Problem(title = "　＋　新しい問題を追加で取得する"))
+                    listAdapter.notifyItemInserted(problemList.size - 1)
                 }
             }
         /*resources.getInteger(R.integer.ANSWER_YET) -> {

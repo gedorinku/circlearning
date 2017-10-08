@@ -54,6 +54,7 @@ class LoginViewModel(private val context: Context, private val callback: Callbac
                         callback.onLogin(it.authenticationKey)
                         callback.clickableButton()
                     }, {
+                        Toast.makeText(context, "ログインに失敗しましたユーザー名とパスワードを確認してください.", Toast.LENGTH_SHORT).show()
                         callback.clickableButton()
                     })
         }

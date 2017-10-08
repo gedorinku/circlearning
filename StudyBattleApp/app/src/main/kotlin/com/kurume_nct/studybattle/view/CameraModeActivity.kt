@@ -95,6 +95,8 @@ class CameraModeActivity : Activity() {
         //Glide.with(this).load(R.drawable.hatena).into(submitItemImageButton)
 
 
+        Glide.with(this).load(R.drawable.hatena).into(submitItemImageButton)
+
         //(uriについての実験機能)
         if (savedInstanceState != null) {
             cameraUri = savedInstanceState.getParcelable("CaptureUri")
