@@ -109,13 +109,13 @@ interface Server {
     ): Observable<List<Problem>>
 
     @GET("/problem/judging")
-    fun myJudgingProblems(
+    fun getMyJudgingProblems(
             @Query("authenticationKey") authenticationKey: String,
             @Query("groupId") groupId: Int
     ): Observable<List<Problem>>
 
     @GET("/problem/collecting")
-    fun myCollectingProblems(
+    fun getMyCollectingProblems(
             @Query("authenticationKey") authenticationKey: String,
             @Query("groupId") groupId: Int
     ): Observable<List<Problem>>

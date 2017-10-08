@@ -1,6 +1,5 @@
 package com.kurume_nct.studybattle.listFragment
 
-import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -18,7 +17,6 @@ import com.kurume_nct.studybattle.databinding.FragmentProblemListBinding
 import com.kurume_nct.studybattle.model.Problem
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.view.*
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.mergeAll
@@ -48,10 +46,11 @@ class MainListFragment : Fragment() {
         tabId = arguments.getInt("id")
         unitPersonal = activity.application as UnitPersonal
         client = ServerClient(unitPersonal.authenticationKey)
+        val groupId = unitPersonal.nowGroup.id
 
         when (tabId) {
             resources.getInteger(R.integer.HAVE_PROBLEM) ->
-                client.getAssignedProblems(unitPersonal.nowGroup)
+                client.getAssignedProblems(groupId)
                         .firstOrError()
 
             resources.getInteger(R.integer.ANSWER_YET) ->
@@ -63,26 +62,26 @@ class MainListFragment : Fragment() {
                 Single.just(emptyList())
 
             resources.getInteger(R.integer.MADE_COLLECT_YET) ->
-                //TODO
-                Single.just(emptyList())
+                client.getMyCollectingProblems(groupId)
+                        .firstOrError()
 
             resources.getInteger(R.integer.MADE_JUDGE_YET) ->
-                //TODO
-                Single.just(emptyList())
+                client.getMyJudgingProblems(groupId)
+                        .firstOrError()
 
             resources.getInteger(R.integer.MADE_FIN) ->
-                //TODO
-                Single.just(emptyList())
+                client.getMyJudgedProblems(groupId)
+                        .firstOrError()
 
             resources.getInteger(R.integer.SUGGEST_YET) ->
-                client.getUnjudgedMySolutions(unitPersonal.nowGroup)
+                client.getUnjudgedMySolutions(groupId)
                         .flatMap { it.toObservable() }
                         .map { client.getProblem(it.problemId) }
                         .mergeAll()
                         .toList()
 
             resources.getInteger(R.integer.SUGGEST_FIN) ->
-                client.getJudgedMySolutions(unitPersonal.nowGroup)
+                client.getJudgedMySolutions(groupId)
                         .flatMap { it.toObservable() }
                         .map { client.getProblem(it.problemId) }
                         .mergeAll()
@@ -180,7 +179,7 @@ class MainListFragment : Fragment() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    problemList.add(problemList.size,it.problem)
+                    problemList.add(problemList.size, it.problem)
                     listAdapter.notifyItemRangeInserted(problemList.size, 1)
                 }, {
                     Toast.makeText(activity, "もらうことのできる\n新しい問題がありませんでした", Toast.LENGTH_SHORT).show()

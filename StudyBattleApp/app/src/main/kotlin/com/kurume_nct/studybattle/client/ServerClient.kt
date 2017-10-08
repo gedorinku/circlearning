@@ -16,6 +16,10 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.InputStream
 import java.lang.reflect.Type
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+
+
 
 
 /**
@@ -32,12 +36,18 @@ class ServerClient(authenticationKey: String = "") {
         val gson = GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
                 .create()
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BODY
+        val httpClient = OkHttpClient.Builder()
+        httpClient.addInterceptor(logging)
+
         val retrofit = Retrofit.Builder()
                 .baseUrl("http://studybattle.dip.jp:8080")
                 //.baseUrl("http://localhost:8080")
                 .addConverterFactory(StringConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(httpClient.build())
                 .build()
         server = retrofit.create(Server::class.java)
     }
@@ -137,9 +147,9 @@ class ServerClient(authenticationKey: String = "") {
 
     fun getMyJudgedProblems(groupId: Int) = server.getMyJudgedProblems(authenticationKey, groupId)
 
-    fun getMyJudgingProblems(groupId: Int) = server.myJudgingProblems(authenticationKey, groupId)
+    fun getMyJudgingProblems(groupId: Int) = server.getMyJudgingProblems(authenticationKey, groupId)
 
-    fun myCollectingProblems(groupId: Int) = server.myCollectingProblems(authenticationKey, groupId)
+    fun getMyCollectingProblems(groupId: Int) = server.getMyCollectingProblems(authenticationKey, groupId)
 
     fun getAssignedProblems(group: Group) = getAssignedProblems(group.id)
 
