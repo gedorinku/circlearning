@@ -232,7 +232,7 @@ class Main2Activity : AppCompatActivity() {
                         startActivity(intent)
                     } else {
                         unitPer.nowGroup = unitPer.myGroupList[position]
-                        //onTabLayout()
+                        onTabLayout()
                     }
                     false
                 }
@@ -263,9 +263,6 @@ class Main2Activity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if(unitPer.myGroupCount > 0){
-            onTabLayout()
-        }
     }
 
     override fun onStop() {
