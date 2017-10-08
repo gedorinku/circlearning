@@ -48,9 +48,9 @@ class MadeMainFragment : Fragment(), MainListFragment.Callback {
                 .commit()
 
         binding.swipeRefreshFragmentMade.setOnRefreshListener {
-            fragmentCollectYet.onRefershList()
-            fragmentJudgeYet.onRefershList()
-            fragmentFin.onRefershList()
+            fragmentCollectYet.onRefreshList()
+            fragmentJudgeYet.onRefreshList()
+            fragmentFin.onRefreshList()
         }
 
         binding.swipeRefreshFragmentMade.setColorSchemeResources(R.color.md_yellow_400, R.color.md_blue_A700, R.color.md_red_A700)

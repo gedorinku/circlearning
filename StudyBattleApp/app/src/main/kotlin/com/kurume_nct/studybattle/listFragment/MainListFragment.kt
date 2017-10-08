@@ -45,7 +45,7 @@ class MainListFragment(val callback: Callback) : Fragment() {
     }
 
 
-    interface Callback{
+    interface Callback {
         fun onStopSwipeRefresh()
     }
 
@@ -53,10 +53,10 @@ class MainListFragment(val callback: Callback) : Fragment() {
         super.onCreate(savedInstanceState)
         tabId = arguments.getInt("id")
         unitPersonal = activity.application as UnitPersonal
-        onRefershList()
+        onRefreshList()
     }
 
-    fun onRefershList(){
+    fun onRefreshList() {
         client = ServerClient(unitPersonal.authenticationKey)
         val groupId = unitPersonal.nowGroup.id
 
@@ -108,15 +108,15 @@ class MainListFragment(val callback: Callback) : Fragment() {
                         problemList.clear()
                         listAdapter.notifyItemRangeRemoved(0, listSize)
                         problemList.addAll(0, it)
-                        if(tabId == 0){
+                        if (tabId == 0) {
                             problemList.add(Problem(title = "　＋　新しい問題を追加で取得する"))
                         }
                         listAdapter.notifyItemRangeInserted(0, it.size)
                         Log.d(it.size.toString(), "isNotEmpty" + unitPersonal.nowGroup.id.toString())
                         callback.onStopSwipeRefresh()
-                    }else{
+                    } else {
                         callback.onStopSwipeRefresh()
-                        Log.d(it.toString(),"空")
+                        Log.d(it.toString(), "空")
                     }
                 }
     }

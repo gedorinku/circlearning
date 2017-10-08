@@ -135,19 +135,10 @@
                     android:text="・1回あたりに与えられる時間" />
 
                 <TextView
-                    android:id="@+id/textView25"
+                    android:id="@+id/term_hour_for_one"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@{CreateView.termForOne}" />
-
-                <CheckBox
-                    android:id="@+id/checkBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:checked="false"
-                    android:onClick="@{CreateView.onClickCheckbox}"
-                    android:text="作成者として名前を表示する" />
 
                 <TextView
                     android:id="@+id/textView27"

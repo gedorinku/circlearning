@@ -45,8 +45,8 @@ class SuggestMainFragment : Fragment(), MainListFragment.Callback {
                 .commit()
 
         binding.swipeRefreshFragmentSubmit.setOnRefreshListener {
-            fragmentYet.onRefershList()
-            fragmentFin.onRefershList()
+            fragmentYet.onRefreshList()
+            fragmentFin.onRefreshList()
         }
 
         binding.swipeRefreshFragmentSubmit.setColorSchemeResources(R.color.md_red_700, R.color.md_yellow_700)

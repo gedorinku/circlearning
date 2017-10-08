@@ -50,6 +50,8 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
 
         //dialogSetting()
 
+        binding.termHourForOne.isEnabled = false
+
         supportFragmentManager.beginTransaction()
                 .replace(R.id.directions_container, DurationFragment().newInstance())
                 .commit()
@@ -65,10 +67,10 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         }
     }
 
-
+/*
     override fun checkNameEnable(enable: Boolean) {
-        nameEnable = enable
-    }
+        //nameEnable = enable
+    }*/
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -102,8 +104,10 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         decideDate = mutableListOf(year, month, dayOfMonth)
+        binding.termHourForOne.isEnabled = true
         binding.createView.let {
             it.day = year.toString() + "年" + (month + 1).toString() + "月" + dayOfMonth.toString() + "日"
+            it.termForOne = getDuration().standardHours.toString() + it.termExtra
         }
         Log.d(binding.createView.day, "change")
     }
