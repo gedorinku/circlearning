@@ -59,7 +59,6 @@
                     android:background="@drawable/no_image"
                     android:onClick="@{CreateView.onClickProblemImage}"
                     app:loadProblem="@{CreateView.problemUri}"
-                    app:srcCompat="@drawable/text_noimage"
                     tools:ignore="ContentDescription" />
 
                 <TextView
@@ -165,8 +164,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/no_image"
                     android:onClick="@{CreateView.onClickAnswerImage}"
-                    app:loadProblem="@{CreateView.answerUri}"
-                    app:srcCompat="@drawable/text_noimage" />
+                    app:loadProblem="@{CreateView.answerUri}" />
 
                 <Space
                     android:layout_width="match_parent"

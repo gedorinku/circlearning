@@ -1,10 +1,12 @@
 package com.kurume_nct.studybattle.listFragment
 
 import android.app.Application
+import android.content.ComponentCallbacks
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
@@ -25,7 +27,7 @@ import io.reactivex.rxkotlin.mergeAll
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
 
-class MainListFragment : Fragment() {
+class MainListFragment(val callback: Callback) : Fragment() {
 
     lateinit var binding: FragmentProblemListBinding
     var tabId: Int = 0
@@ -35,18 +37,30 @@ class MainListFragment : Fragment() {
     private lateinit var unitPersonal: UnitPersonal
 
     lateinit var listAdapter: ProblemListAdapter
-    fun newInstance(id: Int): MainListFragment {
-        val fragment = MainListFragment()
-        val args = Bundle()
-        args.putInt("id", id)
-        fragment.arguments = args
-        return fragment
+
+    companion object {
+        fun newInstance(id: Int, callback: Callback): MainListFragment {
+            val fragment = MainListFragment(callback)
+            val args = Bundle()
+            args.putInt("id", id)
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
+
+    interface Callback{
+        fun onStopSwipeRefresh()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         tabId = arguments.getInt("id")
         unitPersonal = activity.application as UnitPersonal
+        onRefershList()
+    }
+
+    fun onRefershList(){
         client = ServerClient(unitPersonal.authenticationKey)
 
         when (tabId) {
@@ -93,12 +107,15 @@ class MainListFragment : Fragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { it ->
                     if (it.isNotEmpty()) {
+                        listAdapter.notifyItemRangeRemoved(0, problemList.size)
                         problemList.addAll(0, it)
                         listAdapter.notifyItemRangeInserted(0, it.size)
                         Log.d(it.size.toString(), "isNotEmpty" + unitPersonal.nowGroup.id.toString())
+                        callback.onStopSwipeRefresh()
+                    }else{
+                        callback.onStopSwipeRefresh()
+                        Log.d(it.toString(),"空")
                     }
-                    changeList()
-                    Log.d("it", "空")
                 }
     }
 
@@ -170,6 +187,7 @@ class MainListFragment : Fragment() {
                 })
         binding.list.adapter = listAdapter
         binding.list.layoutManager = LinearLayoutManager(binding.list.context)
+        changeList()
         return binding.root
     }
 
@@ -203,6 +221,7 @@ class MainListFragment : Fragment() {
                 }*/
                 if (true) {
                     problemList.add(Problem(title = "　＋　新しい問題を追加で取得する"))
+                    listAdapter.notifyItemInserted(problemList.size - 1)
                 }
             }
         /*resources.getInteger(R.integer.ANSWER_YET) -> {

@@ -92,7 +92,10 @@ class CameraModeActivity : Activity() {
         experiment = findViewById(R.id.experiment) as TextView
         submissionButton = findViewById(R.id.submission_button) as Button
         passButton = findViewById(R.id.pass_button) as Button
+        //Glide.with(this).load(R.drawable.hatena).into(submitItemImageButton)
 
+
+        Glide.with(this).load(R.drawable.hatena).into(submitItemImageButton)
 
         //(uriについての実験機能)
         if (savedInstanceState != null) {

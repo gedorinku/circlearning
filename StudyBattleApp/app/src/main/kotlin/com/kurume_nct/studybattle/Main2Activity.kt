@@ -3,10 +3,12 @@ package com.kurume_nct.studybattle
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.SweepGradient
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
@@ -146,7 +148,7 @@ class Main2Activity : AppCompatActivity() {
             startActivity(Intent(this, CreateProblemActivity::class.java))
         }
         val toolbar = findViewById(R.id.toolbar) as Toolbar
-        toolbar.title = unitPer.myInfomation.userName
+        toolbar.title = unitPer.myInfomation.displayName
         toolbar.inflateMenu(R.menu.toolbar_menu)
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
@@ -197,7 +199,6 @@ class Main2Activity : AppCompatActivity() {
             }
         }
     }
-
     private fun onNavigationDrawer(userIcon: Bitmap) {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
 
@@ -262,7 +263,6 @@ class Main2Activity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        onTabLayout()
     }
 
     override fun onStop() {

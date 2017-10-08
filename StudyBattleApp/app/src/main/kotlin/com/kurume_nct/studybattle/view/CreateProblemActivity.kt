@@ -87,6 +87,9 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         thxAlert.setOnDismissListener {
             finish()
         }
+        thxView.setOnClickListener {
+            finish()
+        }
         thxAlert.setView(thxView)
         val alert = thxAlert.create()
         alert.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -127,6 +130,9 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         dialog = AlertDialog.Builder(this)
                 .setView(dialogView.root)
                 .create()
+        dialog.setOnDismissListener {
+            onClickableButtons()
+        }
 
         dialog.show()
     }
