@@ -1,6 +1,5 @@
 package com.kurume_nct.studybattle.listFragment
 
-import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -18,14 +17,13 @@ import com.kurume_nct.studybattle.databinding.FragmentProblemListBinding
 import com.kurume_nct.studybattle.model.Problem
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.view.*
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.mergeAll
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
 
-class MainListFragment : Fragment() {
+class MainListFragment(val callback: Callback) : Fragment() {
 
     lateinit var binding: FragmentProblemListBinding
     var tabId: Int = 0
@@ -35,23 +33,36 @@ class MainListFragment : Fragment() {
     private lateinit var unitPersonal: UnitPersonal
 
     lateinit var listAdapter: ProblemListAdapter
-    fun newInstance(id: Int): MainListFragment {
-        val fragment = MainListFragment()
-        val args = Bundle()
-        args.putInt("id", id)
-        fragment.arguments = args
-        return fragment
+
+    companion object {
+        fun newInstance(id: Int, callback: Callback): MainListFragment {
+            val fragment = MainListFragment(callback)
+            val args = Bundle()
+            args.putInt("id", id)
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
+
+    interface Callback{
+        fun onStopSwipeRefresh()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         tabId = arguments.getInt("id")
         unitPersonal = activity.application as UnitPersonal
+        onRefershList()
+    }
+
+    fun onRefershList(){
         client = ServerClient(unitPersonal.authenticationKey)
+        val groupId = unitPersonal.nowGroup.id
 
         when (tabId) {
             resources.getInteger(R.integer.HAVE_PROBLEM) ->
-                client.getAssignedProblems(unitPersonal.nowGroup)
+                client.getAssignedProblems(groupId)
                         .firstOrError()
 
             resources.getInteger(R.integer.ANSWER_YET) ->
@@ -63,26 +74,26 @@ class MainListFragment : Fragment() {
                 Single.just(emptyList())
 
             resources.getInteger(R.integer.MADE_COLLECT_YET) ->
-                //TODO
-                Single.just(emptyList())
+                client.getMyCollectingProblems(groupId)
+                        .firstOrError()
 
             resources.getInteger(R.integer.MADE_JUDGE_YET) ->
-                //TODO
-                Single.just(emptyList())
+                client.getMyJudgingProblems(groupId)
+                        .firstOrError()
 
             resources.getInteger(R.integer.MADE_FIN) ->
-                //TODO
-                Single.just(emptyList())
+                client.getMyJudgedProblems(groupId)
+                        .firstOrError()
 
             resources.getInteger(R.integer.SUGGEST_YET) ->
-                client.getUnjudgedMySolutions(unitPersonal.nowGroup)
+                client.getUnjudgedMySolutions(groupId)
                         .flatMap { it.toObservable() }
                         .map { client.getProblem(it.problemId) }
                         .mergeAll()
                         .toList()
 
             resources.getInteger(R.integer.SUGGEST_FIN) ->
-                client.getJudgedMySolutions(unitPersonal.nowGroup)
+                client.getJudgedMySolutions(groupId)
                         .flatMap { it.toObservable() }
                         .map { client.getProblem(it.problemId) }
                         .mergeAll()
@@ -93,12 +104,15 @@ class MainListFragment : Fragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { it ->
                     if (it.isNotEmpty()) {
+                        listAdapter.notifyItemRangeRemoved(0, problemList.size)
                         problemList.addAll(0, it)
                         listAdapter.notifyItemRangeInserted(0, it.size)
                         Log.d(it.size.toString(), "isNotEmpty" + unitPersonal.nowGroup.id.toString())
+                        callback.onStopSwipeRefresh()
+                    }else{
+                        callback.onStopSwipeRefresh()
+                        Log.d(it.toString(),"空")
                     }
-                    changeList()
-                    Log.d("it", "空")
                 }
     }
 
@@ -170,6 +184,7 @@ class MainListFragment : Fragment() {
                 })
         binding.list.adapter = listAdapter
         binding.list.layoutManager = LinearLayoutManager(binding.list.context)
+        changeList()
         return binding.root
     }
 
@@ -180,7 +195,7 @@ class MainListFragment : Fragment() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    problemList.add(problemList.size,it.problem)
+                    problemList.add(problemList.size, it.problem)
                     listAdapter.notifyItemRangeInserted(problemList.size, 1)
                 }, {
                     Toast.makeText(activity, "もらうことのできる\n新しい問題がありませんでした", Toast.LENGTH_SHORT).show()
@@ -203,6 +218,7 @@ class MainListFragment : Fragment() {
                 }*/
                 if (true) {
                     problemList.add(Problem(title = "　＋　新しい問題を追加で取得する"))
+                    listAdapter.notifyItemInserted(problemList.size - 1)
                 }
             }
         /*resources.getInteger(R.integer.ANSWER_YET) -> {

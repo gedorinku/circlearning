@@ -39,7 +39,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/group" />
+                    android:background="@drawable/group" />
 
                 <TextView
                     android:id="@+id/editText50"

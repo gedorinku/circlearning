@@ -26,7 +26,7 @@ class UnitPersonal : Application(){
 
     init {
         nowGroup = Group()
-        myGroupCount = 1
+        myGroupCount = 0
         itemCount = Item(1,1,1,1)
         userIcon = getIconUri(R.drawable.group)
         myGroupList = mutableListOf()

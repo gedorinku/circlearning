@@ -13,24 +13,38 @@ import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.databinding.FragmentProbemMainBinding
 
 
-
-class ProbemMainFragment : Fragment() {
+class ProbemMainFragment : Fragment(), MainListFragment.Callback {
 
     private lateinit var mContext: Main2Activity
-    private lateinit var binding : FragmentProbemMainBinding
+    private lateinit var binding: FragmentProbemMainBinding
+    private lateinit var fragment: MainListFragment
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         Log.d("i'm ", javaClass.name)
 
-        binding = FragmentProbemMainBinding.inflate(inflater,container,false)
+        binding = FragmentProbemMainBinding.inflate(inflater, container, false)
+
+        fragment = MainListFragment
+                .newInstance(resources.getInteger(R.integer.HAVE_PROBLEM), this)
 
         mContext.supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragment_list, MainListFragment()
-                        .newInstance(resources.getInteger(R.integer.HAVE_PROBLEM)))
+                .add(R.id.fragment_list, fragment)
                 .commit()
+
+        binding.swipeRefreshFragmentHave.setOnRefreshListener {
+            fragment.onRefershList()
+        }
+
+        binding.swipeRefreshFragmentHave.setColorSchemeResources(R.color.md_red_A700)
+
         return binding.root
+    }
+
+    override fun onStopSwipeRefresh() {
+        if (binding.swipeRefreshFragmentHave.isRefreshing)
+            binding.swipeRefreshFragmentHave.isRefreshing = false
     }
 
 
