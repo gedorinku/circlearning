@@ -13,28 +13,53 @@ import com.kurume_nct.studybattle.Main2Activity
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.databinding.FragmentSuggestMainBinding
 
-class SuggestMainFragment : Fragment() {
+class SuggestMainFragment : Fragment(), MainListFragment.Callback {
 
     lateinit var mContext: Main2Activity
     lateinit var binding: FragmentSuggestMainBinding
+    var refreshCounter = 0
 
     fun newInstance() = SuggestMainFragment()
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         Log.d("i'm ", javaClass.name)
+
+        Log.d("ほげえええ", "ほげえええ")
+
+        val fragmentFin = MainListFragment
+                .newInstance(resources.getInteger(R.integer.SUGGEST_FIN), this)
+
+        val fragmentYet = MainListFragment
+                .newInstance(resources.getInteger(R.integer.SUGGEST_YET), this)
+
         binding = FragmentSuggestMainBinding.inflate(inflater, container, false)
+
         mContext.supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragment_list_suggested, MainListFragment()
-                        .newInstance(resources.getInteger(R.integer.SUGGEST_FIN)))
+                .add(R.id.fragment_list_suggested, fragmentFin)
                 .commit()
         mContext.supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragment_list_suggested_yet, MainListFragment()
-                        .newInstance(resources.getInteger(R.integer.SUGGEST_YET)))
+                .add(R.id.fragment_list_suggested_yet, fragmentYet)
                 .commit()
-        return inflater!!.inflate(R.layout.fragment_suggest_main, container, false)
+
+        binding.swipeRefreshFragmentSubmit.setOnRefreshListener {
+            fragmentYet.onRefershList()
+            fragmentFin.onRefershList()
+        }
+
+        binding.swipeRefreshFragmentSubmit.setColorSchemeResources(R.color.md_red_700, R.color.md_yellow_700)
+
+        return binding.root
+    }
+
+    override fun onStopSwipeRefresh() {
+        refreshCounter++
+        if (binding.swipeRefreshFragmentSubmit.isRefreshing && refreshCounter >= 2) {
+            binding.swipeRefreshFragmentSubmit.isRefreshing = false
+            refreshCounter = 0
+        }
     }
 
     override fun onAttach(context: Context?) {

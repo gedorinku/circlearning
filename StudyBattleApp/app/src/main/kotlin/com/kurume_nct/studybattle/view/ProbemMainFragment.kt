@@ -13,7 +13,7 @@ import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.databinding.FragmentProbemMainBinding
 
 
-class ProbemMainFragment : Fragment() {
+class ProbemMainFragment : Fragment(), MainListFragment.Callback {
 
     private lateinit var mContext: Main2Activity
     private lateinit var binding: FragmentProbemMainBinding
@@ -25,8 +25,8 @@ class ProbemMainFragment : Fragment() {
 
         binding = FragmentProbemMainBinding.inflate(inflater, container, false)
 
-        fragment = MainListFragment()
-                .newInstance(resources.getInteger(R.integer.HAVE_PROBLEM))
+        fragment = MainListFragment
+                .newInstance(resources.getInteger(R.integer.HAVE_PROBLEM), this)
 
         mContext.supportFragmentManager
                 .beginTransaction()
@@ -37,7 +37,14 @@ class ProbemMainFragment : Fragment() {
             fragment.onRefershList()
         }
 
+        binding.swipeRefreshFragmentHave.setColorSchemeResources(R.color.md_red_A700)
+
         return binding.root
+    }
+
+    override fun onStopSwipeRefresh() {
+        if (binding.swipeRefreshFragmentHave.isRefreshing)
+            binding.swipeRefreshFragmentHave.isRefreshing = false
     }
 
 

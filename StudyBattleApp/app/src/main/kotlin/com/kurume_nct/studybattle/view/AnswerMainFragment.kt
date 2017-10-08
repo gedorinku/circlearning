@@ -13,30 +13,51 @@ import com.kurume_nct.studybattle.Main2Activity
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.databinding.FragmentAnswerMainBinding
 
-class AnswerMainFragment : Fragment() {
+class AnswerMainFragment : Fragment(), MainListFragment.Callback {
 
-    lateinit var mContext : Main2Activity
-    lateinit var binding : FragmentAnswerMainBinding
+    lateinit var mContext: Main2Activity
+    lateinit var binding: FragmentAnswerMainBinding
+    var refreshCounter = 0
 
-    fun newInstance() : AnswerMainFragment = AnswerMainFragment()
+    fun newInstance(): AnswerMainFragment = AnswerMainFragment()
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         Log.d("i'm ", javaClass.name)
-        binding = FragmentAnswerMainBinding.inflate(inflater,container,false)
+        binding = FragmentAnswerMainBinding.inflate(inflater, container, false)
+
+        val fragmentYet = MainListFragment
+                .newInstance(resources.getInteger(R.integer.ANSWER_YET), this)
+
+        val fragmentFin = MainListFragment
+                .newInstance(resources.getInteger(R.integer.ANSWER_FIN), this)
 
         mContext.supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragment_list_ans_yet, MainListFragment()
-                        .newInstance(resources.getInteger(R.integer.ANSWER_YET)))
+                .add(R.id.fragment_list_ans_yet, fragmentYet)
                 .commit()
 
         mContext.supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragment_list_ans_fin, MainListFragment()
-                        .newInstance(resources.getInteger(R.integer.ANSWER_FIN)))
+                .add(R.id.fragment_list_ans_fin, fragmentFin)
                 .commit()
+
+        binding.swipeRefreshFragmentAnswer.setOnRefreshListener {
+            fragmentYet.onRefershList()
+            fragmentFin.onRefershList()
+        }
+
+        binding.swipeRefreshFragmentAnswer.setColorSchemeResources(R.color.md_yellow_A700, R.color.md_blue_900)
+
         return binding.root
+    }
+
+    override fun onStopSwipeRefresh() {
+        refreshCounter++
+        if (binding.swipeRefreshFragmentAnswer.isRefreshing && refreshCounter >= 2) {
+            binding.swipeRefreshFragmentAnswer.isRefreshing = false
+            refreshCounter = 0
+        }
     }
 
     override fun onAttach(context: Context?) {
