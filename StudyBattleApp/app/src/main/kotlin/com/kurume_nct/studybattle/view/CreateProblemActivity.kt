@@ -87,9 +87,8 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         thxAlert.setOnDismissListener {
             finish()
         }
-        thxAlert.setOnKeyListener { dialog, keyCode, event ->
+        thxView.setOnClickListener {
             finish()
-            false
         }
         thxAlert.setView(thxView)
         val alert = thxAlert.create()
