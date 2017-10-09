@@ -5,7 +5,4 @@
     //背景色
     <solid android:color="#6c8aa1"/>
 
-    //丸み
-    <corners android:radius="6dp"/>
-
 </shape>
