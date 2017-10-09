@@ -1,5 +1,6 @@
 package com.kurume_nct.studybattle.bug
 
+import android.inputmethodservice.Keyboard
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -32,12 +33,19 @@ class SelectMainPeopleFragment : Fragment(), SelectPeopleFragment.Callback, Choo
 
         chooseFragment = ChoosePeopleFragment.newInstance(this)
         selectFragment = SelectPeopleFragment.newInstance(this)
-        /*activity.supportFragmentManager.beginTransaction()
+        activity.supportFragmentManager.beginTransaction()
                 .add(R.id.fragment_search_list,chooseFragment)
                 .commit()
-        activity.supportFragmentManager.beginTransaction()
+        /*activity.supportFragmentManager.beginTransaction()
                 .add(R.id.fragment_select_list, selectFragment)
                 .commit()*/
+
+        binding.editText7.setOnEditorActionListener { v, actionId, event ->
+            if(event != null && actionId == Keyboard.KEYCODE_DONE){
+                chooseFragment.onListReset(binding.selectPeopleUnit.searchText)
+            }
+            false
+        }
 
         return binding.root
     }
