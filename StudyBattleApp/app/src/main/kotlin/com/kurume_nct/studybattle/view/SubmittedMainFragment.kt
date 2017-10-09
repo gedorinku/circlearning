@@ -11,15 +11,16 @@ import android.view.ViewGroup
 import com.kurume_nct.studybattle.listFragment.MainListFragment
 import com.kurume_nct.studybattle.Main2Activity
 import com.kurume_nct.studybattle.R
-import com.kurume_nct.studybattle.databinding.FragmentSuggestMainBinding
+import com.kurume_nct.studybattle.databinding.FragmentProbemMainBinding
+import com.kurume_nct.studybattle.databinding.FragmentSubmittedMainBinding
 
-class SuggestMainFragment : Fragment(), MainListFragment.Callback {
+class SubmittedMainFragment : Fragment(), MainListFragment.Callback {
 
     lateinit var mContext: Main2Activity
-    lateinit var binding: FragmentSuggestMainBinding
+    lateinit var binding: FragmentSubmittedMainBinding
     var refreshCounter = 0
 
-    fun newInstance() = SuggestMainFragment()
+    fun newInstance() = SubmittedMainFragment()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -33,7 +34,7 @@ class SuggestMainFragment : Fragment(), MainListFragment.Callback {
         val fragmentYet = MainListFragment
                 .newInstance(resources.getInteger(R.integer.SUGGEST_YET), this)
 
-        binding = FragmentSuggestMainBinding.inflate(inflater, container, false)
+        binding = FragmentSubmittedMainBinding.inflate(inflater, container, false)
 
         mContext.supportFragmentManager
                 .beginTransaction()

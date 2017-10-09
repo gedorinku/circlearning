@@ -8,7 +8,7 @@ import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.view.AnswerMainFragment
 import com.kurume_nct.studybattle.view.MadeMainFragment
 import com.kurume_nct.studybattle.view.ProbemMainFragment
-import com.kurume_nct.studybattle.view.SuggestMainFragment
+import com.kurume_nct.studybattle.view.SubmittedMainFragment
 
 /**
  * Created by hanah on 9/18/2017.
@@ -21,7 +21,7 @@ class MainPagerAdapter(private val mf: FragmentManager) : FragmentPagerAdapter(m
         mFragment.add(ProbemMainFragment.newInstance())
         mFragment.add(AnswerMainFragment().newInstance())
         mFragment.add(MadeMainFragment().newInstance())
-        mFragment.add(SuggestMainFragment().newInstance())
+        mFragment.add(SubmittedMainFragment().newInstance())
     }
 
     override fun getItem(position: Int): Fragment {
