@@ -57,6 +57,12 @@ interface Server {
             @Field("groupId") groupId: Int
     ): Observable<Unit>
 
+    @GET("/group/leave")
+    fun leaveGroup(
+            @Query("authenticationKey") authenticationKey: String,
+            @Query("groupId") groupId: Int
+    ): Observable<Unit>
+
     @FormUrlEncoded
     @POST("/group/attach")
     fun attachToGroup(

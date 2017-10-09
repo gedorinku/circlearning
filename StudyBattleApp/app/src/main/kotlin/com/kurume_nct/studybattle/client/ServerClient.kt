@@ -83,6 +83,8 @@ class ServerClient(authenticationKey: String = "") {
 
     fun joinGroup(group: Group) = joinGroup(group.id)
 
+    fun leaveGroup(groupId: Int) = server.leaveGroup(authenticationKey, groupId)
+
     fun attachToGroup(groupId: Int, userId: Int) = server.attachToGroup(authenticationKey, groupId, userId)
 
     fun attachToGroup(group: Group, user: User) = attachToGroup(group.id, user.id)
