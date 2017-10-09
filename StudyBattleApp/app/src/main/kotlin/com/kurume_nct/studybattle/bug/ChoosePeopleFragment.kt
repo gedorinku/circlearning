@@ -22,7 +22,7 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by hanah on 10/2/2017.
  */
-class ChoosePeopleFragment(val callback: Callback): Fragment(){
+class ChoosePeopleFragment(val callback: Callback) : Fragment() {
     private lateinit var binding: FragmentChoosePeoplelistBinding
     private lateinit var list: MutableList<JoinPeople>
     private lateinit var listAdapter: JoinPeopleAdapter
@@ -43,14 +43,14 @@ class ChoosePeopleFragment(val callback: Callback): Fragment(){
 
         unitPer = activity.application as UnitPersonal
 
-        binding = FragmentChoosePeoplelistBinding.inflate(inflater,container,false)
+        binding = FragmentChoosePeoplelistBinding.inflate(inflater, container, false)
         //onListReset()
 
         list = mutableListOf()
 
-        listAdapter = JoinPeopleAdapter(list,{
-            position -> onDeletePeople(position)
-            Log.d("Clickc",position.toString())
+        listAdapter = JoinPeopleAdapter(list, { position ->
+            onDeletePeople(position)
+            Log.d("Clickc", position.toString())
             callback.chooseChange(list[position])
         })
         binding.list.adapter = listAdapter
@@ -59,26 +59,26 @@ class ChoosePeopleFragment(val callback: Callback): Fragment(){
         return binding.root
     }
 
-    fun onListReset(str: String){
-        if(searching)return
+    fun onListReset(str: String) {
+        if (searching) return
+        Log.d("edit", "入力")
         searching = true
-        val uri = ToolClass().convertUrlFromDrawableResId(context, R.drawable.glad)!!
-        /*val joinPeople = JoinPeople()
-        joinPeople.iconUri = uri
-        list = mutableListOf(joinPeople)
-        (0..5).forEach { list.add(joinPeople) }*/
-        val client = ServerClient(unitPer.authenticationKey)
-        if(str.isNotBlank()) {
+        if (str.isNotBlank()) {
             val size = list.size
             list = mutableListOf()
             listAdapter.notifyItemRangeRemoved(0, size)
+            Log.d("hoge","list")
+            val client = ServerClient(unitPer.authenticationKey)
             client
                     .searchUsers(str)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
                         val userList = it
+                        Log.d("userの数は", userList.size.toString())
+                        if(userList.isEmpty())searching = false
                         (0 until it.size).forEach {
+                            //もしかしたらiconの処理は消すかもしれない（時間がかかるかもなので）
                             val num: Int = it
                             val joinperson = JoinPeople()
                             joinperson.name = userList[num].displayName + "(" + userList[num].userName + ")"
@@ -90,33 +90,35 @@ class ChoosePeopleFragment(val callback: Callback): Fragment(){
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe {
                                         joinperson.iconUri = Uri.parse(it.url)
-                                        list.add(joinperson)
+                                        list.add(0, joinperson)
                                         listAdapter.notifyItemInserted(0)
-                                        if(userList.size - 1 == num){
+                                        if (userList.size - 1 == num) {
                                             searching = false
                                         }
                                     }
                         }
-                    },{
-                        Log.d("User探しに失敗","")
+                    }, {
+                        Log.d("User探しに失敗", "")
                     })
+        }else{
+            searching = false
         }
     }
 
-    fun onAddPeople(position: Int, peaple: JoinPeople){
-        Log.d("onAddPeople",position.toString())
+    fun onAddPeople(position: Int, peaple: JoinPeople) {
+        Log.d("onAddPeople", position.toString())
         list.add(peaple)
         listAdapter.notifyItemRangeInserted(list.size - 1, 1)
     }
 
-    private fun onDeletePeople(position: Int){
-        Log.d("onDeletePeople",position.toString())
+    private fun onDeletePeople(position: Int) {
+        Log.d("onDeletePeople", position.toString())
         list.removeAt(position)
         listAdapter.notifyItemRangeRemoved(position, 1)
     }
 
 
-    interface Callback{
+    interface Callback {
         fun chooseChange(people: JoinPeople)
     }
 

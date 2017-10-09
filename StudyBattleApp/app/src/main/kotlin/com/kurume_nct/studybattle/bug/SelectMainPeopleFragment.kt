@@ -3,13 +3,20 @@ package com.kurume_nct.studybattle.bug
 import android.inputmethodservice.Keyboard
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.databinding.FragmentSelectPeopleBinding
 import com.kurume_nct.studybattle.model.JoinPeople
+import android.text.Editable
+import com.kurume_nct.studybattle.R.id.editText
+
+
 
 /**
  * Created by hanah on 10/2/2017.
@@ -40,12 +47,25 @@ class SelectMainPeopleFragment : Fragment(), SelectPeopleFragment.Callback, Choo
                 .add(R.id.fragment_select_list, selectFragment)
                 .commit()*/
 
-        binding.editText7.setOnEditorActionListener { v, actionId, event ->
-            if(event != null && actionId == Keyboard.KEYCODE_DONE){
+        /*binding.editText7.setOnEditorActionListener { v, actionId, event ->
+            var action = false
+            if(event != null && actionId == EditorInfo.IME_ACTION_DONE){
+                chooseFragment.onListReset(binding.selectPeopleUnit.searchText)
+                action = true
+            }
+            action
+        }*/
+        binding.editText7.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                //chooseFragment.onListReset(binding.selectPeopleUnit.searchText)
+            }
+            override fun afterTextChanged(s: Editable?) {
                 chooseFragment.onListReset(binding.selectPeopleUnit.searchText)
             }
-            false
-        }
+        })
 
         return binding.root
     }
