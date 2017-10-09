@@ -24,6 +24,10 @@
                 android:background="@drawable/backgroud"
                 android:orientation="vertical">
 
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp" />
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -61,7 +65,12 @@
                     android:id="@+id/problem_image_at_answer"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    app:srcCompat="@drawable/group" />
+                    android:background="@drawable/no_image"
+                    app:srcCompat="@drawable/text_noimage" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
 
                 <TextView
                     android:id="@+id/textView28"
@@ -69,14 +78,19 @@
                     android:layout_height="wrap_content"
                     android:text="想定解"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="24sp" />
+                    android:textSize="21sp" />
 
                 <ImageView
                     android:id="@+id/answer_image_at_answer"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    app:srcCompat="@drawable/group" />
+                    android:background="@drawable/no_image"
+                    app:srcCompat="@drawable/text_noimage" />
 
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
 
                 <TextView
                     android:id="@+id/textView29"
@@ -84,7 +98,7 @@
                     android:layout_height="wrap_content"
                     android:text="全員の解答"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="24sp" />
+                    android:textSize="21sp" />
 
                 <LinearLayout
                     android:id="@+id/answers_fragment"

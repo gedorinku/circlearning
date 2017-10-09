@@ -14,10 +14,10 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="magic_hand_explain">提出する時に使うことができて\n自分が問題に正解したら、\nその問題を間違えた人から\nスコアを奪い取ることができるよ。</string>
-    <string name="bomb_explain">問題の解答を提出する時に\n使うことができて、自分の\n次にその問題を受け取った\n人のスコアを-10点するよ</string>
-    <string name="secound_card_explain">問題の解答を提出する時に\n使うことができて、使うとその時\n提出した解答が正解であれば\nそのスコアが2倍になるよ</string>
-    <string name="sheild_explain">もし自分のところで爆弾が\n爆発してもこの盾を持っていれば\n自分のスコアを守ることができるよ</string>
+    <string name="magic_hand_explain">提出する時に使うことができ\n自分が問題に正解したら、\nその問題を間違えた人から\nスコアを奪うことができるよ。</string>
+    <string name="bomb_explain">問題の解答を提出する時に\n使うことができ、自分の\n次にその問題を受け取った\n人のスコアを-10点するよ</string>
+    <string name="secound_card_explain">問題の解答を提出する時に\n使うことができ、使うとその時\n提出した解答が正解であれば\nそのスコアが2倍になるよ</string>
+    <string name="sheild_explain">もし自分のところで爆弾が\n爆発しても、自分のスコアを\n守ることができるよ</string>
     <string name="errorLoginStatus">ユーザー名とパスワードを入力してください</string>
     <string name="hint_input_user_name">ユーザー名（半角英数のみ2~20文字）</string>
     <string name="hint_input_user_password">パスワード</string>
