@@ -11,12 +11,13 @@ import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.adapter.JoinPeopleAdapter
 import com.kurume_nct.studybattle.databinding.FragmentJoinperopleListBinding
 import com.kurume_nct.studybattle.model.JoinPeople
+import com.kurume_nct.studybattle.model.User
 import com.kurume_nct.studybattle.tools.ToolClass
 
 class SelectPeopleFragment(val callback: Callback) : Fragment() {
 
     private lateinit var binding: FragmentJoinperopleListBinding
-    private lateinit var list: MutableList<JoinPeople>
+    private lateinit var list: MutableList<User>
     private lateinit var listAdapter: JoinPeopleAdapter
 
     companion object {
@@ -34,7 +35,7 @@ class SelectPeopleFragment(val callback: Callback) : Fragment() {
         binding = FragmentJoinperopleListBinding.inflate(inflater, container, false)
         //onListReset()
         list = mutableListOf()
-        listAdapter = JoinPeopleAdapter(list, { position ->
+        listAdapter = JoinPeopleAdapter(activity, list, { position ->
             onDeletePeople(position)
             Log.d("Click", position.toString())
             //callback.selectChange(list[position - 1])
@@ -53,7 +54,7 @@ class SelectPeopleFragment(val callback: Callback) : Fragment() {
         (0..5).forEach { list.add(joinPeople) }*//*
     }*/
 
-    fun onAddPeople(position: Int, people: JoinPeople) {
+    fun onAddPeople(position: Int, people: User) {
         Log.d("onAddPeople", position.toString())
         list.add(0, people)
         listAdapter.notifyItemInserted(0)
@@ -66,7 +67,7 @@ class SelectPeopleFragment(val callback: Callback) : Fragment() {
     }
 
     interface Callback {
-        fun selectChange(people: JoinPeople)
+        fun selectChange(people: User)
     }
 
 }

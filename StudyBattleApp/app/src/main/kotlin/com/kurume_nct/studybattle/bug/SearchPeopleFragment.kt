@@ -1,30 +1,29 @@
 package com.kurume_nct.studybattle.bug
 
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.util.AndroidException
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.adapter.JoinPeopleAdapter
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.FragmentChoosePeoplelistBinding
 import com.kurume_nct.studybattle.model.JoinPeople
 import com.kurume_nct.studybattle.model.UnitPersonal
-import com.kurume_nct.studybattle.tools.ToolClass
+import com.kurume_nct.studybattle.model.User
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.CountDownLatch
 
 /**
  * Created by hanah on 10/2/2017.
  */
 class SearchPeopleFragment(val callback: Callback) : Fragment() {
     private lateinit var binding: FragmentChoosePeoplelistBinding
-    private lateinit var list: MutableList<JoinPeople>
+    private lateinit var list: MutableList<User>
     private lateinit var listAdapter: JoinPeopleAdapter
     private lateinit var unitPer: UnitPersonal
     private var searching = false
@@ -38,7 +37,7 @@ class SearchPeopleFragment(val callback: Callback) : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
         unitPer = activity.application as UnitPersonal
@@ -48,11 +47,12 @@ class SearchPeopleFragment(val callback: Callback) : Fragment() {
 
         list = mutableListOf()
 
-        listAdapter = JoinPeopleAdapter(list, { position ->
+        listAdapter = JoinPeopleAdapter(activity, list, { position ->
             onDeletePeople(position)
             Log.d("Clickc", position.toString())
             callback.chooseChange(list[position])
         })
+
         binding.list.adapter = listAdapter
         binding.list.layoutManager = LinearLayoutManager(binding.list.context)
 
@@ -67,51 +67,39 @@ class SearchPeopleFragment(val callback: Callback) : Fragment() {
             val size = list.size
             list = mutableListOf()
             listAdapter.notifyItemRangeRemoved(0, size)
-            Log.d("hoge","list")
+            Log.d("hoge", "list")
             val client = ServerClient(unitPer.authenticationKey)
             client
                     .searchUsers(str)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
-                        val userList = it
-                        Log.d("userの数は" + userList.size.toString(), str)
-                        if(userList.isEmpty()){
-                            searching = false
-                        }
-                        it.map {
-                            //もしかしたらiconの処理は消すかもしれない（時間がかかるかもなので）
-                            val joinPerson = JoinPeople()
-                            joinPerson.name = it.displayName + "(" + it.userName + ")"
-                            joinPerson.selected = false
-                            joinPerson.id = it.id
-                            list.add(joinPerson)
-                            listAdapter.notifyItemRangeInserted(userList.size - 1, 1)
-
-                            /*client
-                                    .getImageById(userList[num].icon!!.id)
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe {
-                                        joinPerson.iconUri = Uri.parse(it.url)
-                                        if (userList.size - 1 == num) {
-                                            searching = false
-                                        }
-                                    }*/
-                        }
-                    }, {
-                        Log.d("User探しに失敗", "")
-                    })
-        }else{
+                    .subscribe{
+                        Log.d("userの数は" + it.size.toString(), str)
+                        val size = list.size
+                        list.clear()
+                        listAdapter.notifyItemRangeRemoved(0, size)
+                        list.addAll(it)
+                        listAdapter.notifyItemRangeInserted(0, list.size)
+                        searching = false
+                    }
+        } else {
             searching = false
         }
     }
 
-    fun onAddPeople(position: Int, peaple: JoinPeople) {
-        Log.d("onAddPeople", position.toString())
-        list.add(peaple)
-        listAdapter.notifyItemRangeInserted(list.size - 1, 1)
-    }
+    /*fun parsePeople(user: User): JoinPeople {
+        val joinPerson = JoinPeople()
+        joinPerson.id = user.id
+        joinPerson.selected = false
+        joinPerson.name = user.displayName + "(" + user.userName + ")"
+        return joinPerson
+    }*/
+
+    /*fun onAddPeople(user: MutableList<User>) {
+        val people = mutableListOf<JoinPeople>()
+        people.addAll(user.map { parsePeople(it) })
+
+    }*/
 
     private fun onDeletePeople(position: Int) {
         Log.d("onDeletePeople", position.toString())
@@ -121,7 +109,7 @@ class SearchPeopleFragment(val callback: Callback) : Fragment() {
 
 
     interface Callback {
-        fun chooseChange(people: JoinPeople)
+        fun chooseChange(people: User)
     }
 
 }

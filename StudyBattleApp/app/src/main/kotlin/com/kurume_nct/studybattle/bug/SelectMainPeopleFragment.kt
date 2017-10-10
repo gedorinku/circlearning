@@ -15,6 +15,7 @@ import com.kurume_nct.studybattle.databinding.FragmentSelectPeopleBinding
 import com.kurume_nct.studybattle.model.JoinPeople
 import android.text.Editable
 import com.kurume_nct.studybattle.R.id.editText
+import com.kurume_nct.studybattle.model.User
 
 
 /**
@@ -64,14 +65,11 @@ class SelectMainPeopleFragment : Fragment(), SelectPeopleFragment.Callback, Sear
         return binding.root
     }
 
-    override fun selectChange(people: JoinPeople) {
-        Log.d(people.selected.toString(), people.name)
-        people.selected = false
+    override fun selectChange(people: User) {
         selectFragment.onAddPeople(0, people)
     }
 
-    override fun chooseChange(people: JoinPeople) {
-        people.selected = true
+    override fun chooseChange(people: User) {
         selectFragment.onAddPeople(0, people)
     }
 }
