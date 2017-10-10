@@ -1,5 +1,6 @@
 package com.kurume_nct.studybattle
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -18,6 +19,7 @@ import com.kurume_nct.studybattle.adapter.MainPagerAdapter
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.Group
 import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.tools.ProgressDialogTool
 import com.kurume_nct.studybattle.view.*
 import com.mikepenz.google_material_typeface_library.GoogleMaterial
 import com.mikepenz.materialdrawer.AccountHeader
@@ -36,10 +38,14 @@ class Main2Activity : AppCompatActivity() {
     private lateinit var unitPer: UnitPersonal
     private val REQUEST_CREATE_GROUP = 9
     private lateinit var iconUrl: String
+    private lateinit var progressDialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
+
+        progressDialog = ProgressDialogTool(this).makeDialog()
+        progressDialog.show()
 
         unitPer = application as UnitPersonal
         //userName = unitPer.myInfomation.userName
@@ -121,6 +127,7 @@ class Main2Activity : AppCompatActivity() {
         onTabLayout()
         onNavigationDrawer(userIcon)
         Log.d(unitPer.myInfomation.id.toString(), "ユーザーID")
+        progressDialog.dismiss()
 
     }
 
