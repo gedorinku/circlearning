@@ -21,7 +21,7 @@
     <string name="errorLoginStatus">ユーザー名とパスワードを入力してください</string>
     <string name="hint_input_user_name">ユーザー名（半角英数のみ2~20文字）</string>
     <string name="hint_input_user_password">パスワード</string>
-    <string name="change_image_button_text">プロフィール画像を\nフォルダから選ぶ</string>
+    <string name="change_image_button_text">フォルダから選ぶ</string>
     <string name="account_registe">アカウント登録</string>
     <string name="displayNameHint">表示する名前（2~20文字）</string>
     <string name="usedUserNameAlart">すでに使われているUserNameです.</string>

@@ -20,7 +20,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="12dp" />
+            android:layout_height="24dp" />
 
         <TextView
             android:id="@+id/lottery_name_text"
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="☆好きなカードを一枚選んでね☆"
-            android:textSize="18sp"
+            android:textSize="17sp"
             tools:ignore="HardcodedText"
             tools:layout_conversion_absoluteHeight="23dp"
             tools:layout_conversion_absoluteWidth="411dp"

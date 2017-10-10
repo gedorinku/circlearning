@@ -21,7 +21,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="12dp" />
+            android:layout_height="24dp" />
 
         <TextView
             android:id="@+id/textView2"
@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="『掃き出し法』 "
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/material_drawer_primary_text"
             android:textSize="21sp"
             tools:ignore="HardcodedText" />
 
@@ -100,9 +100,10 @@
 
         <Button
             android:id="@+id/pass_button"
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="match_parent"
-            android:layout_gravity="right|end"
+            android:layout_gravity="center"
+            android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_weight="1"
@@ -126,9 +127,9 @@
 
         <Button
             android:id="@+id/submission_button"
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|start"
+            android:layout_gravity="center"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:background="@color/md_red_400"

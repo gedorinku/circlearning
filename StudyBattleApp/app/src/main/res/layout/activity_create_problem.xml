@@ -59,6 +59,7 @@
                     android:hint="問題の題名"
                     android:inputType="textPersonName"
                     android:text="@={CreateView.problemName}"
+                    android:textColor="@color/material_drawer_primary_text"
                     android:textSize="17sp" />
 
                 <ImageButton
@@ -130,19 +131,15 @@
 
                     <Button
                         android:id="@+id/button7"
-                        android:layout_width="20dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
                         android:layout_weight="1"
                         android:background="@color/md_amber_700"
                         android:onClick="@{CreateView.onClickDateChange}"
                         android:text="変更"
                         android:textColor="#ffffff"
                         android:textSize="18dp" />
-
-                    <Space
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.29" />
 
                 </LinearLayout>
 
@@ -178,7 +175,7 @@
                     android:paddingBottom="4dp"
                     android:paddingTop="20dp"
                     android:text="想定解"
-                    android:textColor="@color/material_drawer_dark_background"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="18sp" />
 
                 <ImageButton

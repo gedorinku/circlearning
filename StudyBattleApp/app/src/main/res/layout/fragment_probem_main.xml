@@ -32,7 +32,7 @@
                         android:layout_weight="1"
                         android:text="✎今持っている問題✎"
                         android:textColor="@color/colorAccent"
-                        android:textSize="18sp"
+                        android:textSize="21sp"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="8dp" />
 

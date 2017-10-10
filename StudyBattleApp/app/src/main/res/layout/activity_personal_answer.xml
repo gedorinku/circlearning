@@ -41,9 +41,13 @@
                     android:id="@+id/imageView13"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/group"
-                    app:loadImagePersonalAnswer="@{PersonalAnswer.personalAnswerUri}" />
+                    android:background="@drawable/no_image"
+                    app:loadImagePersonalAnswer="@{PersonalAnswer.personalAnswerUri}"
+                    app:srcCompat="@drawable/text_noimage" />
 
                 <LinearLayout
                     android:id="@+id/score_comment_layout_text"
@@ -56,14 +60,18 @@
                         android:id="@+id/textView38"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
                         android:layout_weight="1"
                         android:text="この問題の正誤ミスについてのコメント"
-                        android:textColor="@color/colorAccent" />
+                        android:textColor="@color/primary_dark"
+                        android:textSize="17sp" />
 
                     <TextView
                         android:id="@+id/remaining_time_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
                         android:layout_weight="1"
                         android:text="@{PersonalAnswer.remainigAnsTime}"
                         android:textColor="@color/colorAccent" />
@@ -72,6 +80,8 @@
                         android:id="@+id/score_comment_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
                         android:layout_weight="1"
                         android:text="@{PersonalAnswer.scoreComment}"
                         android:textColor="@color/material_drawer_dark_selected" />
@@ -80,6 +90,8 @@
                         android:id="@+id/your_score_comment_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
                         android:layout_weight="1"
                         android:ems="10"
                         android:inputType="textPersonName"
@@ -90,11 +102,13 @@
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginBottom="20dp"
                         android:layout_weight="1"
                         android:background="@color/md_amber_700"
                         android:onClick="@{PersonalAnswer.onClickScoreComment}"
                         android:text="+コメントを追加する"
-                        android:textColor="@color/material_drawer_dark_primary_text" />
+                        android:textColor="@color/material_drawer_dark_primary_text"
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 
@@ -108,14 +122,18 @@
                     android:id="@+id/textView41"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
                     android:layout_weight="1"
                     android:text="みんなのコメント"
-                    android:textColor="@color/md_amber_800" />
+                    android:textColor="@color/primary_dark"
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/comments_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
                     android:layout_weight="1"
                     android:text="@{PersonalAnswer.everyoneComment}"
                     android:textColor="@color/material_drawer_dark_selected" />
@@ -124,6 +142,8 @@
                     android:id="@+id/your_comment_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
                     android:layout_weight="1"
                     android:ems="10"
                     android:inputType="textPersonName"
@@ -138,7 +158,8 @@
                     android:background="@color/md_amber_700"
                     android:onClick="@{PersonalAnswer.onClickComment}"
                     android:text="+コメントを追加する"
-                    android:textColor="@color/material_drawer_dark_header_selection_text" />
+                    android:textColor="@color/material_drawer_dark_header_selection_text"
+                    android:textSize="15sp" />
 
                 <Space
                     android:layout_width="match_parent"
