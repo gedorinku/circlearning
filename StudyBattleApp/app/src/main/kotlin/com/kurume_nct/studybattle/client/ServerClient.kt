@@ -72,11 +72,18 @@ class ServerClient(authenticationKey: String = "") {
     fun verifyAuthentication(authenticationKey: String = this.authenticationKey)
             = server.verifyAuthentication(authenticationKey)
 
+    /**
+     * <code>query</code>を<code>userName</code>の部分文字列の一つに含むユーザーを列挙します。
+     */
+    fun searchUsers(query: String) = server.searchUsers(query)
+
     fun createGroup(name: String) = server.createGroup(authenticationKey, name)
 
     fun joinGroup(id: Int) = server.joinGroup(authenticationKey, id)
 
     fun joinGroup(group: Group) = joinGroup(group.id)
+
+    fun leaveGroup(groupId: Int) = server.leaveGroup(authenticationKey, groupId)
 
     fun attachToGroup(groupId: Int, userId: Int) = server.attachToGroup(authenticationKey, groupId, userId)
 

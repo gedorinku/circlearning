@@ -40,6 +40,9 @@ interface Server {
             @Field("authenticationKey") authenticationKey: String
     ): Observable<User>
 
+    @GET("/user/search")
+    fun searchUsers(@Query("query") query: String): Observable<List<User>>
+
     @FormUrlEncoded
     @POST("/group/new")
     fun createGroup(
@@ -52,6 +55,12 @@ interface Server {
     fun joinGroup(
             @Field("authenticationKey") authenticationKey: String,
             @Field("groupId") groupId: Int
+    ): Observable<Unit>
+
+    @GET("/group/leave")
+    fun leaveGroup(
+            @Query("authenticationKey") authenticationKey: String,
+            @Query("groupId") groupId: Int
     ): Observable<Unit>
 
     @FormUrlEncoded

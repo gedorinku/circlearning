@@ -105,15 +105,31 @@ class ServerClientTest {
             group
         }()
 
-        val testSubscriber = client
-                .getJoinedGroups()
-                .test()
-        testSubscriber.awaitTerminalEvent()
-        testSubscriber.assertNoErrors()
-        testSubscriber.assertNoTimeout()
+        val getJoinedGroups = {
+            val testSubscriber = client
+                    .getJoinedGroups()
+                    .test()
+            testSubscriber.awaitTerminalEvent()
+            testSubscriber.assertNoErrors()
+            testSubscriber.assertNoTimeout()
 
-        val groups = testSubscriber.values()[0]
-        assert(groups.any { it == group })
+            testSubscriber.values()[0]
+        }
+
+        val joinedGroups = getJoinedGroups()
+        assert(joinedGroups.any { it == group })
+
+        val leaveGroup: (Int) -> Unit = { groupId ->
+            val testSubscriber = client
+                    .leaveGroup(groupId)
+                    .test()
+            testSubscriber.awaitTerminalEvent()
+            testSubscriber.assertNoErrors()
+            testSubscriber.assertNoTimeout()
+        }
+
+        joinedGroups.map { leaveGroup(it.id) }
+        assert(getJoinedGroups().isEmpty())
     }
 
     @Test
