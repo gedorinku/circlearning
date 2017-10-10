@@ -33,6 +33,7 @@ class SelectPeopleFragment(val callback: Callback) : Fragment() {
 
         binding = FragmentJoinperopleListBinding.inflate(inflater, container, false)
         //onListReset()
+        list = mutableListOf()
         listAdapter = JoinPeopleAdapter(list, { position ->
             onDeletePeople(position)
             Log.d("Click", position.toString())

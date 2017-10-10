@@ -22,7 +22,7 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by hanah on 10/2/2017.
  */
-class ChoosePeopleFragment(val callback: Callback) : Fragment() {
+class SearchPeopleFragment(val callback: Callback) : Fragment() {
     private lateinit var binding: FragmentChoosePeoplelistBinding
     private lateinit var list: MutableList<JoinPeople>
     private lateinit var listAdapter: JoinPeopleAdapter
@@ -30,8 +30,8 @@ class ChoosePeopleFragment(val callback: Callback) : Fragment() {
     private var searching = false
 
     companion object {
-        fun newInstance(callback: Callback): ChoosePeopleFragment {
-            val fragment = ChoosePeopleFragment(callback)
+        fun newInstance(callback: Callback): SearchPeopleFragment {
+            val fragment = SearchPeopleFragment(callback)
             val args = Bundle()
             fragment.arguments = args
             return fragment
@@ -75,27 +75,29 @@ class ChoosePeopleFragment(val callback: Callback) : Fragment() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
                         val userList = it
-                        Log.d("userの数は", userList.size.toString())
-                        if(userList.isEmpty())searching = false
-                        (0 until it.size).forEach {
+                        Log.d("userの数は" + userList.size.toString(), str)
+                        if(userList.isEmpty()){
+                            searching = false
+                        }
+                        it.map {
                             //もしかしたらiconの処理は消すかもしれない（時間がかかるかもなので）
-                            val num: Int = it
-                            val joinperson = JoinPeople()
-                            joinperson.name = userList[num].displayName + "(" + userList[num].userName + ")"
-                            joinperson.selected = false
-                            joinperson.id = userList[num].id
-                            client
+                            val joinPerson = JoinPeople()
+                            joinPerson.name = it.displayName + "(" + it.userName + ")"
+                            joinPerson.selected = false
+                            joinPerson.id = it.id
+                            list.add(joinPerson)
+                            listAdapter.notifyItemRangeInserted(userList.size - 1, 1)
+
+                            /*client
                                     .getImageById(userList[num].icon!!.id)
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe {
-                                        joinperson.iconUri = Uri.parse(it.url)
-                                        list.add(0, joinperson)
-                                        listAdapter.notifyItemInserted(0)
+                                        joinPerson.iconUri = Uri.parse(it.url)
                                         if (userList.size - 1 == num) {
                                             searching = false
                                         }
-                                    }
+                                    }*/
                         }
                     }, {
                         Log.d("User探しに失敗", "")
