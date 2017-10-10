@@ -1,17 +1,25 @@
 package com.kurume_nct.studybattle.view
 
+import android.content.DialogInterface
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
+import android.util.AndroidException
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.kurume_nct.studybattle.viewModel.GroupSetChangeViewModel
 
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.bug.SelectMainPeopleFragment
+import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.ActivityGroupSetChangeBinding
 import com.kurume_nct.studybattle.listFragment.GroupListFragment
 import com.kurume_nct.studybattle.model.UnitPersonal
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import java.sql.ResultSet
 
 class GroupSetChangeActivity : AppCompatActivity(), GroupSetChangeViewModel.Callback {
@@ -38,14 +46,30 @@ class GroupSetChangeActivity : AppCompatActivity(), GroupSetChangeViewModel.Call
     }
 
     override fun onGoodbye() {
-        //Dialog
-        unitPersonal.myGroupList = unitPersonal.myGroupList.filter { it != unitPersonal.nowGroup }.toMutableList()
-        if(unitPersonal.myGroupCount != 0){
-            unitPersonal.nowGroup = unitPersonal.myGroupList[0]
-        }else{
-            unitPersonal.deleteFile()
-        }
-        setResult(0)
-        finish()
+        confirmDialog()
     }
+
+    fun getOutGroup(){
+        Toast.makeText(this, "Groupから退出中・・・", Toast.LENGTH_SHORT).show()
+        ServerClient(unitPersonal.authenticationKey)
+                .leaveGroup(unitPersonal.nowGroup.id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    setResult(0)
+                    finish()
+                }
+    }
+
+    fun confirmDialog(){
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("本当に今のグループから抜けてもいいですか？")
+        builder.setMessage("このグループ内でのデータが完全に消える可能性があります")
+        builder.setNegativeButton("いいえ", null)
+        builder.setPositiveButton("はい", DialogInterface.OnClickListener {
+            dialog, which -> getOutGroup()
+        })
+        builder.create().show()
+    }
+
 }
