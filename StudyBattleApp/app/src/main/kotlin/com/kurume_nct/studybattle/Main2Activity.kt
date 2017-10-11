@@ -1,5 +1,6 @@
 package com.kurume_nct.studybattle
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -18,6 +19,8 @@ import com.kurume_nct.studybattle.adapter.MainPagerAdapter
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.Group
 import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.tools.ProgressDialogTool
+import com.kurume_nct.studybattle.tools.ToolClass
 import com.kurume_nct.studybattle.view.*
 import com.mikepenz.google_material_typeface_library.GoogleMaterial
 import com.mikepenz.materialdrawer.AccountHeader
@@ -35,13 +38,14 @@ class Main2Activity : AppCompatActivity() {
 
     private lateinit var unitPer: UnitPersonal
     private val REQUEST_CREATE_GROUP = 9
+    private lateinit var progressDialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
 
         unitPer = application as UnitPersonal
-        //userName = unitPer.myInfomation.userName
+        progressDialog = ProgressDialogTool(this).makeDialog()
 
         getUserInformation()
 
@@ -50,6 +54,7 @@ class Main2Activity : AppCompatActivity() {
     }
 
     private fun getUserInformation() {
+        progressDialog.show()
         Log.d("getUserInfo", "")
         val client = ServerClient(unitPer.authenticationKey)
         client
@@ -63,14 +68,11 @@ class Main2Activity : AppCompatActivity() {
                     unitPer.userIcon = Uri.parse(it.icon!!.url)
                     getMyGroup()
                 }, {
+                    progressDialog.dismiss()
+                    //TODO　アプリ再起動
                     Toast.makeText(this, "Userの情報取得に失敗しました\nアプリを再起動します", Toast.LENGTH_SHORT).show()
                 })
     }
-
-    override fun onRestart(){
-
-    }
-
 
     private fun getMyGroup() {
         Log.d("getMyGroup", "")
@@ -98,8 +100,8 @@ class Main2Activity : AppCompatActivity() {
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe { it ->
-                            viewSetup(it)
-                        }
+                                    viewSetup(it)
+                                }
                     }
                 }, {
                     Log.d("Groupの情報を取得するのに失敗", "")
@@ -108,7 +110,7 @@ class Main2Activity : AppCompatActivity() {
     }
 
     fun viewSetup(userIcon: Bitmap) {
-
+        progressDialog.dismiss()
         onTabLayout()
         onNavigationDrawer(userIcon)
         Log.d(unitPer.myInfomation.id.toString(), "ユーザーID")
@@ -176,6 +178,7 @@ class Main2Activity : AppCompatActivity() {
             }
         }
     }
+
     private fun onNavigationDrawer(userIcon: Bitmap) {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
 
@@ -193,6 +196,7 @@ class Main2Activity : AppCompatActivity() {
                                 .withIdentifier(acountCount)
                 )
                 .withOnAccountHeaderListener(AccountHeader.OnAccountHeaderListener { view, profile, currentProfile ->
+                    //TODO プロフィール設定画面に飛ぶ
                     false
                 })
                 .build()
@@ -203,7 +207,8 @@ class Main2Activity : AppCompatActivity() {
                 .withActivity(this)
                 .withToolbar(toolbar)
                 .withOnDrawerItemClickListener { view, position, drawerItem ->
-                    var intent = Intent(this, Main2Activity::class.java)
+                    val intent: Intent
+                    //positionが1indexなので注意。
                     if (position == unitPer.myGroupList.size) {
                         intent = Intent(this, CreateGroupActivity::class.java)
                         startActivity(intent)
@@ -231,11 +236,10 @@ class Main2Activity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == 0){
+        if (requestCode == 0) {
             getMyGroup()
         }
     }
-
 
 
     override fun onStart() {
