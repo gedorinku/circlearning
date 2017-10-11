@@ -31,35 +31,17 @@
             app:layout_constraintVertical_bias="0.0">
 
             <TextView
-                android:id="@+id/textView14"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:gravity="center_horizontal"
-                android:text="先月の結果"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.015" />
-
-            <TextView
                 android:id="@+id/textView11"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginEnd="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="24dp"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="週間ランキング"
                 android:textAlignment="center"
                 android:textColor="@color/md_amber_700"
@@ -93,7 +75,7 @@
             android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="20dp"
             android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
@@ -120,7 +102,7 @@
                     android:text="今週の自分のスコア"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
-                    android:textSize="18sp" />
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/textView17"
@@ -152,7 +134,7 @@
                     android:text="先週の自分のスコア"
                     android:textAlignment="center"
                     android:textColor="@color/md_green_500"
-                    android:textSize="18sp" />
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/textView22"
@@ -176,11 +158,11 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.825"
+            app:layout_constraintHorizontal_bias="0.811"
             app:layout_constraintLeft_toRightOf="@+id/imageView12"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.060000002"
+            app:layout_constraintVertical_bias="0.026"
             app:srcCompat="@drawable/ranking" />
 
         <ImageView
@@ -194,11 +176,11 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.18"
+            app:layout_constraintHorizontal_bias="0.214"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.060000002"
+            app:layout_constraintVertical_bias="0.028"
             app:srcCompat="@drawable/ranking" />
 
     </android.support.constraint.ConstraintLayout>

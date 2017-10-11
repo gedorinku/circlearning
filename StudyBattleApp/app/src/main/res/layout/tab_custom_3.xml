@@ -18,5 +18,5 @@
         android:layout_gravity="center"
         android:gravity="top|center_horizontal"
         android:text="提出した解答"
-        android:textSize="10sp" />
+        android:textSize="13sp" />
 </LinearLayout>

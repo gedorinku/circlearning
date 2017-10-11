@@ -49,7 +49,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_weight="1"
                         android:text="提出した解答(未採点)"
-                        android:textColor="@color/md_amber_800"
+                        android:textColor="@color/md_green_500"
                         android:textSize="18sp"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="8dp" />
