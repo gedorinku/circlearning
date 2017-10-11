@@ -136,49 +136,49 @@ class MainListFragment(val callback: Callback) : Fragment() {
                                 assignedProblem()
                             } else {
                                 intent = Intent(context, CameraModeActivity::class.java)
-                                intent.putExtra("id", problemList[position].id)
+                                intent.putExtra("problemId", problemList[position].id)
                                 startActivity(intent)
                             }
                         }
                         resources.getInteger(R.integer.ANSWER_YET) -> {
                             intent = Intent(context, AnswerActivity::class.java)
-                            intent.putExtra("id", problemList[position].id)
+                            intent.putExtra("problemId", problemList[position].id)
                             intent.putExtra("fin", 1)
                             startActivity(intent)
                         }
                         resources.getInteger(R.integer.ANSWER_FIN) -> {
                             intent = Intent(context, AnswerActivity::class.java)
-                            intent.putExtra("id", problemList[position].id)
+                            intent.putExtra("problemId", problemList[position].id)
                             intent.putExtra("fin", 2)
                             startActivity(intent)
                         }
                         resources.getInteger(R.integer.MADE_COLLECT_YET) -> {
                             intent = Intent(context, MadeCollectYetActivity::class.java)
-                            intent.putExtra("id", problemList[position].id)
+                            intent.putExtra("problemId", problemList[position].id)
                             startActivity(intent)
                         }
                         resources.getInteger(R.integer.MADE_JUDGE_YET) -> {
                             intent = Intent(context, AnswerActivity::class.java)
                             intent.putExtra("fin", 0)
-                            intent.putExtra("id", problemList[position].id)
+                            intent.putExtra("problemId", problemList[position].id)
                             startActivity(intent)
                         }
                         resources.getInteger(R.integer.MADE_FIN) -> {
                             intent = Intent(context, AnswerActivity::class.java)
                             intent.putExtra("fin", 2)
-                            intent.putExtra("id", problemList[position].id)
+                            intent.putExtra("problemId", problemList[position].id)
                             startActivity(intent)
                         }
                         resources.getInteger(R.integer.SUGGEST_YET) -> {
                             intent = Intent(context, PersonalAnswerActivity::class.java)
                             intent.putExtra("fin", false)
-                            intent.putExtra("id", problemList[position].id)
+                            intent.putExtra("problemId", problemList[position].id)
                             startActivity(intent)
                         }
                         resources.getInteger(R.integer.SUGGEST_FIN) -> {
                             intent = Intent(context, PersonalAnswerActivity::class.java)
                             intent.putExtra("fin", true)
-                            intent.putExtra("id", problemList[position].id)
+                            intent.putExtra("problemId", problemList[position].id)
                             startActivity(intent)
                         }
                         else -> {

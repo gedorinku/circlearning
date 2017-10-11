@@ -16,24 +16,23 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.FileProvider
-import android.widget.Button
 import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.widget.ImageButton
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
+import android.provider.Settings
 import android.util.Log
-import android.widget.TextView
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
+import android.widget.*
 import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.DialogCameraStrageChooseBinding
 import com.kurume_nct.studybattle.databinding.DialogItemSelectBinding
 import com.kurume_nct.studybattle.model.Item
+import com.kurume_nct.studybattle.model.Solution
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -49,7 +48,6 @@ class CameraModeActivity : Activity() {
 
     private lateinit var submitImageButton: ImageButton
     private lateinit var submitItemImageButton: ImageButton
-    private var libraryButton: Button? = null
     private var comment: TextView? = null
     private var experiment: TextView? = null//これで実験試してる
     private var flag = 0
@@ -62,12 +60,14 @@ class CameraModeActivity : Activity() {
     private var putItemId = -1
     private lateinit var unitPer: UnitPersonal
     private var answerUri: Uri? = null
-    //getExtraか何かでもらう
     private var problemId = 0
     private lateinit var submissionButton: Button
     private lateinit var passButton: Button
     lateinit var progress: ProgressDialog
     lateinit var dialogView: DialogItemSelectBinding
+    private lateinit var problemImage: ImageView
+    private lateinit var problemName: TextView
+    private lateinit var writerName: TextView
 
 
     //ギャラリーpath取得関数
@@ -88,29 +88,25 @@ class CameraModeActivity : Activity() {
         comment = findViewById(R.id.comment) as TextView
         submitImageButton = findViewById(R.id.submit_image_button) as ImageButton
         submitItemImageButton = findViewById(R.id.submit_item_image_button) as ImageButton
-        //libraryButton = findViewById(R.id.library_button) as Button
         experiment = findViewById(R.id.experiment) as TextView
         submissionButton = findViewById(R.id.submission_button) as Button
         passButton = findViewById(R.id.pass_button) as Button
-        //Glide.with(this).load(R.drawable.hatena).into(submitItemImageButton)
+        problemImage = findViewById(R.id.problem_image_at_camera) as ImageView
+        problemName = findViewById(R.id.problem_name_at_camera) as TextView
+        writerName = findViewById(R.id.writer_name_at_camera) as TextView
 
+        problemId = intent.getIntExtra("problemId", 0)
+        if (problemId == 0) {
+            Toast.makeText(this, "やり直してください", Toast.LENGTH_SHORT).show()
+            finish()
+        }
 
         Glide.with(this).load(R.drawable.hatena).into(submitItemImageButton)
+        onGetProblemInfo()
 
         //(uriについての実験機能)
         if (savedInstanceState != null) {
             cameraUri = savedInstanceState.getParcelable("CaptureUri")
-        }
-
-
-        libraryButton!!.setOnClickListener {
-            //ファイルを選択
-            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-            //開けるものだけ表示
-            intent.addCategory(Intent.CATEGORY_OPENABLE)
-            //イメージのみを表示するフィルタ
-            intent.type = "image*/"
-            startActivityForResult(intent, RESULT_PICK_IMAGEFILE)
         }
 
         submitImageButton.setOnClickListener {
@@ -128,13 +124,6 @@ class CameraModeActivity : Activity() {
 
         //提出するボタン
         submissionButton.setOnClickListener {
-            /*if (flag == 1) {
-                val intent1 = Intent(application, LotteryActivity::class.java)
-                intent1.putExtra("userName", userName)
-                startActivity(intent1)
-                finish()
-            } else
-                comment!!.text = "解答を提出してください"*/
             if (answerUri == null) {
                 Toast.makeText(this, "写真を追加してください", Toast.LENGTH_SHORT).show()
             } else {
@@ -142,7 +131,6 @@ class CameraModeActivity : Activity() {
             }
         }
 
-        //toClickableButton()
         val dialogView: DialogItemSelectBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(this), R.layout.dialog_item_select, null, false)
 
@@ -179,7 +167,37 @@ class CameraModeActivity : Activity() {
                 dialog.cancel()
             }
         }
+    }
 
+    private fun onGetProblemInfo() {
+        val progressDialog = ProgressDialogTool(this).makeDialog()
+        progressDialog.show()
+        val client = ServerClient(unitPer.authenticationKey)
+        client
+                .getProblem(problemId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    problemName.text = it.title
+                    writerName.text = it.createdAt
+                    it.imageIds.run {
+                        client
+                                .getImageById(it.id)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe {
+                                    setUpPicture(Uri.parse(it.url))
+                                    progressDialog.dismiss()
+                                }
+                    }
+                }, {
+                    it.printStackTrace()
+                    progressDialog.dismiss()
+                })
+    }
+
+    fun setUpPicture(uri: Uri) {
+        Glide.with(this).load(uri).into(problemImage)
     }
 
     private fun sendProblemServer() {
@@ -295,7 +313,6 @@ class CameraModeActivity : Activity() {
             if (cameraUri != null) {
                 submitImageButton.setImageURI(cameraUri)
                 registerDatabase(filePath)
-
             } else {
                 Log.d("debug", "cameraUri == null")
             }

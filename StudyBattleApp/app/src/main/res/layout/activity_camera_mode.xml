@@ -37,7 +37,7 @@
             android:layout_height="20dp" />
 
         <TextView
-            android:id="@+id/problem_name"
+            android:id="@+id/problem_name_at_camera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="『掃き出し法』 "
@@ -55,7 +55,7 @@
                 android:layout_weight="0.04" />
 
             <TextView
-                android:id="@+id/writer_name"
+                android:id="@+id/writer_name_at_camera"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -67,6 +67,15 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="10dp" />
+
+        <ImageView
+            android:id="@+id/problem_image_at_camera"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_weight="1"
+            android:background="@drawable/no_image"
+            android:isScrollContainer="true"
+            app:srcCompat="@drawable/text_noimage" />
 
         <LinearLayout
             android:layout_width="wrap_content"
