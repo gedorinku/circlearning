@@ -37,7 +37,6 @@ class Main2Activity : AppCompatActivity() {
 
     private lateinit var unitPer: UnitPersonal
     private val REQUEST_CREATE_GROUP = 9
-    private lateinit var iconUrl: String
     private lateinit var progressDialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +47,6 @@ class Main2Activity : AppCompatActivity() {
         progressDialog.show()
 
         unitPer = application as UnitPersonal
-        //userName = unitPer.myInfomation.userName
 
         getUserInformation()
 
@@ -68,20 +66,23 @@ class Main2Activity : AppCompatActivity() {
                     unitPer.myInfomation = it
                     onToolBar()
 
-                    client
-                            .getImageById(unitPer.myInfomation.icon!!.id)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe({
-                                iconUrl = it.url
-                                unitPer.userIcon = Uri.parse(iconUrl)
-                                getMyGroup()
+                    if(it.icon!!.url.isNotBlank()){
+                        unitPer.userIcon = Uri.parse(it.icon.url)
+                        getMyGroup()
+                    }else{
+                        /*client
+                                .getImageById(unitPer.myInfomation.icon!!.id)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe({
+                                    unitPer.userIcon = Uri.parse(it.url)
+                                    getMyGroup()
 
-                            }, {
-                                Toast.makeText(this, "Userの情報取得(画像)に失敗しました", Toast.LENGTH_SHORT).show()
-                                getMyGroup()
-                            })
-
+                                }, {
+                                    Toast.makeText(this, "Userの情報取得(画像)に失敗しました", Toast.LENGTH_SHORT).show()
+                                })*/
+                        getMyGroup()
+                    }
                 }, {
                     Toast.makeText(this, "Userの情報取得に失敗しました", Toast.LENGTH_SHORT).show()
                 })
@@ -129,21 +130,6 @@ class Main2Activity : AppCompatActivity() {
         Log.d(unitPer.myInfomation.id.toString(), "ユーザーID")
         progressDialog.dismiss()
     }
-
-    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        //if (data == null) return
-
-        when (resultCode) {
-            REQUEST_CREATE_GROUP -> {
-                Log.d("hoge","hoge")
-                getMyGroup()
-            }
-        }
-
-
-    }*/
 
     private fun getIconBitmap(): Single<Bitmap> = Single.fromCallable {
         BitmapFactory.decodeStream(URL(unitPer.userIcon.toString()).openStream())
@@ -213,6 +199,7 @@ class Main2Activity : AppCompatActivity() {
         unitPer.myGroupList.add(Group())
         // Create the AccountHeader
         val acountCount: Long = 0
+        Log.d("navigation", "now")
         val headerResult = AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.color.md_red_A700)
@@ -239,7 +226,7 @@ class Main2Activity : AppCompatActivity() {
                         intent = Intent(this, CreateGroupActivity::class.java)
                         startActivity(intent)
                     } else {
-                        unitPer.nowGroup = unitPer.myGroupList[position]
+                        unitPer.nowGroup = unitPer.myGroupList[position - 1]
                         onTabLayout()
                     }
                     false

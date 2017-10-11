@@ -95,6 +95,8 @@ class CameraModeActivity : Activity() {
         //Glide.with(this).load(R.drawable.hatena).into(submitItemImageButton)
 
 
+        problemId = intent.getIntExtra("problemId", 0)
+
         Glide.with(this).load(R.drawable.hatena).into(submitItemImageButton)
 
         //(uriについての実験機能)
@@ -103,15 +105,15 @@ class CameraModeActivity : Activity() {
         }
 
 
-        libraryButton!!.setOnClickListener {
+       /* libraryButton!!.setOnClickListener {
             //ファイルを選択
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
             //開けるものだけ表示
             intent.addCategory(Intent.CATEGORY_OPENABLE)
             //イメージのみを表示するフィルタ
-            intent.type = "image*/"
+            intent.type = "image*//*"
             startActivityForResult(intent, RESULT_PICK_IMAGEFILE)
-        }
+        }*/
 
         submitImageButton.setOnClickListener {
             imageSetting()
@@ -143,7 +145,7 @@ class CameraModeActivity : Activity() {
         }
 
         //toClickableButton()
-        val dialogView: DialogItemSelectBinding = DataBindingUtil.inflate(
+        dialogView = DataBindingUtil.inflate(
                 LayoutInflater.from(this), R.layout.dialog_item_select, null, false)
 
         unitPer.itemCount.run {

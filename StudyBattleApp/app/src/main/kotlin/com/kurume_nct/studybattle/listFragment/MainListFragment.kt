@@ -61,9 +61,11 @@ class MainListFragment(val callback: Callback) : Fragment() {
         val groupId = unitPersonal.nowGroup.id
 
         when (tabId) {
-            resources.getInteger(R.integer.HAVE_PROBLEM) ->
+            resources.getInteger(R.integer.HAVE_PROBLEM) -> {
+                Log.d("have_list", "now")
                 client.getAssignedProblems(groupId)
                         .firstOrError()
+            }
 
             resources.getInteger(R.integer.ANSWER_YET) ->
                 //TODO
@@ -85,19 +87,23 @@ class MainListFragment(val callback: Callback) : Fragment() {
                 client.getMyJudgedProblems(groupId)
                         .firstOrError()
 
-            resources.getInteger(R.integer.SUGGEST_YET) ->
+            resources.getInteger(R.integer.SUGGEST_YET) -> {
+                Log.d("suggest_list","now")
                 client.getUnjudgedMySolutions(groupId)
                         .flatMap { it.toObservable() }
                         .map { client.getProblem(it.problemId) }
                         .mergeAll()
                         .toList()
+            }
 
-            resources.getInteger(R.integer.SUGGEST_FIN) ->
+            resources.getInteger(R.integer.SUGGEST_FIN) -> {
+                Log.d("suggest fin list","now")
                 client.getJudgedMySolutions(groupId)
                         .flatMap { it.toObservable() }
                         .map { client.getProblem(it.problemId) }
                         .mergeAll()
                         .toList()
+            }
 
             else -> throw IllegalArgumentException(tabId.toString()) as Throwable
         }.subscribeOn(Schedulers.io())
@@ -109,7 +115,7 @@ class MainListFragment(val callback: Callback) : Fragment() {
                         listAdapter.notifyItemRangeRemoved(0, listSize)
                         problemList.addAll(0, it)
                         if (tabId == 0) {
-                            problemList.add(Problem(title = "　＋　新しい問題を追加で取得する"))
+                            problemList.add(problemList.size, Problem(title = "　＋　新しい問題を追加で取得する"))
                         }
                         listAdapter.notifyItemRangeInserted(0, it.size)
                         Log.d(it.size.toString(), "isNotEmpty" + unitPersonal.nowGroup.id.toString())
@@ -136,7 +142,7 @@ class MainListFragment(val callback: Callback) : Fragment() {
                                 assignedProblem()
                             } else {
                                 intent = Intent(context, CameraModeActivity::class.java)
-                                intent.putExtra("id", problemList[position].id)
+                                intent.putExtra("problemId", problemList[position].id)
                                 startActivity(intent)
                             }
                         }

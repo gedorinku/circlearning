@@ -212,6 +212,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
                                             callback.getCreateData(problemName)
                                         }, {
                                             dialog.dismiss()
+                                            callback.getCreateData(problemName)
                                             callback.onClickableButtons()
                                             it.printStackTrace()
                                         })
