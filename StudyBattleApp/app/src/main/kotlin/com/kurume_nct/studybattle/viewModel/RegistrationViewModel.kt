@@ -20,6 +20,7 @@ import com.bumptech.glide.load.resource.file.FileResource
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.client.ServerClient
+import com.kurume_nct.studybattle.tools.ToolClass
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -41,7 +42,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
     val REQUEST_STRAGE = 1
 
     init {
-        iconImageUri = convertUrlFromDrawableResId(context, R.drawable.icon_gost)!!
+        iconImageUri = ToolClass().convertUrlFromDrawableResId(context, R.drawable.icon_gost)!!
         imageBitmap = ImageCustom().onUriToBitmap(context, iconImageUri)
         iconId = 0
     }
@@ -148,7 +149,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
         return Bitmap.createScaledBitmap(bitmap, 100, 100, false)
     }
 
-    private fun convertUrlFromDrawableResId(context: Context, drawableResId: Int): Uri? {
+    /*private fun convertUrlFromDrawableResId(context: Context, drawableResId: Int): Uri? {
         val sb = StringBuilder()
         sb.append(ContentResolver.SCHEME_ANDROID_RESOURCE)
         sb.append("://")
@@ -158,7 +159,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
         sb.append("/")
         sb.append(context.resources.getResourceEntryName(drawableResId))
         return Uri.parse(sb.toString())
-    }
+    }*/
 
     interface Callback {
 

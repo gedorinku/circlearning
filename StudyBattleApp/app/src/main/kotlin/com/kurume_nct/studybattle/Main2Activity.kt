@@ -79,6 +79,7 @@ class Main2Activity : AppCompatActivity() {
 
                             }, {
                                 Toast.makeText(this, "Userの情報取得(画像)に失敗しました", Toast.LENGTH_SHORT).show()
+                                getMyGroup()
                             })
 
                 }, {
@@ -113,8 +114,8 @@ class Main2Activity : AppCompatActivity() {
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe { it ->
-                            viewSetup(it)
-                        }
+                                    viewSetup(it)
+                                }
                     }
                 }, {
                     Log.d("Groupの情報を取得するのに失敗", "")
@@ -123,12 +124,10 @@ class Main2Activity : AppCompatActivity() {
     }
 
     fun viewSetup(userIcon: Bitmap) {
-
         onTabLayout()
         onNavigationDrawer(userIcon)
         Log.d(unitPer.myInfomation.id.toString(), "ユーザーID")
         progressDialog.dismiss()
-
     }
 
     /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -142,6 +141,7 @@ class Main2Activity : AppCompatActivity() {
                 getMyGroup()
             }
         }
+
 
     }*/
 
@@ -206,6 +206,7 @@ class Main2Activity : AppCompatActivity() {
             }
         }
     }
+
     private fun onNavigationDrawer(userIcon: Bitmap) {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
 
@@ -233,7 +234,7 @@ class Main2Activity : AppCompatActivity() {
                 .withActivity(this)
                 .withToolbar(toolbar)
                 .withOnDrawerItemClickListener { view, position, drawerItem ->
-                    var intent = Intent(this, Main2Activity::class.java)
+                    val intent: Intent
                     if (position == unitPer.myGroupList.size) {
                         intent = Intent(this, CreateGroupActivity::class.java)
                         startActivity(intent)
@@ -261,11 +262,10 @@ class Main2Activity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == 0){
+        if (requestCode == 0) {
             getMyGroup()
         }
     }
-
 
 
     override fun onStart() {

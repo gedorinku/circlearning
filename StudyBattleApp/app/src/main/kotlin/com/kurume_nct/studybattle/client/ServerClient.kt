@@ -18,8 +18,7 @@ import java.io.InputStream
 import java.lang.reflect.Type
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-
-
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -40,6 +39,7 @@ class ServerClient(authenticationKey: String = "") {
         logging.level = HttpLoggingInterceptor.Level.BODY
         val httpClient = OkHttpClient.Builder()
         httpClient.addInterceptor(logging)
+        httpClient.connectTimeout(30, TimeUnit.SECONDS)
 
         val retrofit = Retrofit.Builder()
                 .baseUrl("http://studybattle.dip.jp:8080")
