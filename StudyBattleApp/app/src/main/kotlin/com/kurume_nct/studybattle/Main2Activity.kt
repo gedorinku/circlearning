@@ -1,6 +1,7 @@
 package com.kurume_nct.studybattle
 
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -20,6 +21,7 @@ import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.Group
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
+import com.kurume_nct.studybattle.tools.ToolClass
 import com.kurume_nct.studybattle.view.*
 import com.mikepenz.google_material_typeface_library.GoogleMaterial
 import com.mikepenz.materialdrawer.AccountHeader
@@ -65,11 +67,13 @@ class Main2Activity : AppCompatActivity() {
                     Log.d("userの情報を取得", "")
                     unitPer.myInfomation = it
                     onToolBar()
-                    if(it.icon!!.url.isNotBlank()){
+                    if (it.icon!!.url.isNotBlank()) {
                         unitPer.userIcon = Uri.parse(it.icon.url)
+                        Log.d(unitPer.userIcon.toString(),"urlだよ")
                         getMyGroup()
                     }
                 }, {
+                    it.printStackTrace()
                     Toast.makeText(this, "Userの情報取得に失敗しました", Toast.LENGTH_SHORT).show()
                 })
     }
@@ -100,11 +104,18 @@ class Main2Activity : AppCompatActivity() {
                         getIconBitmap()
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe { it ->
+                                .subscribe({ it ->
                                     viewSetup(it)
-                                }
+                                }, {
+                                    it.printStackTrace()
+                                    Log.d("icon取得に失敗", "してます")
+                                    onTabLayout()
+                                    onToolBar()
+                                    progressDialog.dismiss()
+                                })
                     }
                 }, {
+                    progressDialog.dismiss()
                     Log.d("Groupの情報を取得するのに失敗", "")
                     Toast.makeText(this, "アプリを立ち上げなおしてください", Toast.LENGTH_SHORT).show()
                 })
@@ -118,6 +129,7 @@ class Main2Activity : AppCompatActivity() {
     }
 
     private fun getIconBitmap(): Single<Bitmap> = Single.fromCallable {
+        Log.d("getIconBItMap", "だよ")
         BitmapFactory.decodeStream(URL(unitPer.userIcon.toString()).openStream())
     }
 

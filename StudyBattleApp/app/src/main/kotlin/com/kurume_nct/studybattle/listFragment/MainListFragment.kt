@@ -108,7 +108,7 @@ class MainListFragment(val callback: Callback) : Fragment() {
             else -> throw IllegalArgumentException(tabId.toString()) as Throwable
         }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { it ->
+                .subscribe ({ it ->
                     if (it.isNotEmpty()) {
                         val listSize = problemList.size
                         problemList.clear()
@@ -124,7 +124,10 @@ class MainListFragment(val callback: Callback) : Fragment() {
                         callback.onStopSwipeRefresh()
                         Log.d(it.toString(), "空")
                     }
-                }
+                },{
+                    Log.d("Listの取得に失敗", "しました")
+                    it.printStackTrace()
+                })
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
