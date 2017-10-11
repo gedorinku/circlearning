@@ -1,13 +1,14 @@
 package com.kurume_nct.studybattle.tools
 
 import android.databinding.ObservableList
+import android.support.v7.widget.RecyclerView
 
 /**
  * Created by hanah on 10/11/2017.
  */
-class ObservableListClass<T, adapterT>(val adapterList: adapterT, override val size: Int): ObservableList<T> {
+class ObservableListClass<T>(override val size: Int): ObservableList<T> {
     override fun clear() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        
     }
 
     override fun removeOnListChangedCallback(callback: ObservableList.OnListChangedCallback<out ObservableList<T>>?) {

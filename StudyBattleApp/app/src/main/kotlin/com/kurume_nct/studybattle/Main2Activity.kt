@@ -65,22 +65,8 @@ class Main2Activity : AppCompatActivity() {
                     Log.d("userの情報を取得", "")
                     unitPer.myInfomation = it
                     onToolBar()
-
                     if(it.icon!!.url.isNotBlank()){
                         unitPer.userIcon = Uri.parse(it.icon.url)
-                        getMyGroup()
-                    }else{
-                        /*client
-                                .getImageById(unitPer.myInfomation.icon!!.id)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe({
-                                    unitPer.userIcon = Uri.parse(it.url)
-                                    getMyGroup()
-
-                                }, {
-                                    Toast.makeText(this, "Userの情報取得(画像)に失敗しました", Toast.LENGTH_SHORT).show()
-                                })*/
                         getMyGroup()
                     }
                 }, {
