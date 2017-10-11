@@ -32,7 +32,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
     private var aUri: Uri
     private var checkCount: Boolean
     private var termOne: Double
-    private val termExtra = "時間(解答回収期間より)"
+    val termExtra = "時間(解答回収期間より)"
     var problemImageId = 0
     var answerImageId = 0
 
@@ -66,7 +66,11 @@ class CreateProblemViewModel(private val context: Context, private val callback:
         }
 
     @Bindable
-    var termForOne = termOne.toString() + termExtra
+    var termForOne = ""
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.termForOne)
+        }
 
     @Bindable
     var problemUri = pUri
@@ -97,14 +101,14 @@ class CreateProblemViewModel(private val context: Context, private val callback:
         }
 
 
-    fun onClickCheckbox(view: View) {
+    /*fun onClickCheckbox(view: View) {
         if (!checkCount) {
             callback.checkNameEnable(true)
         } else {
             callback.checkNameEnable(false)
         }
         checkCount = !checkCount
-    }
+    }*/
 
 
     //permission dialogをだす。
@@ -160,7 +164,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
 
     fun onClickFinish(view: View) {
         val a = convertUrlFromDrawableResId(context, R.drawable.group)
-        if (problemUri == a || answerUri == a || problemName.isEmpty() || problemName.isBlank()) {
+        if (problemUri == a || answerUri == a || problemName.isEmpty() || problemName.isBlank() || termForOne.isBlank()) {
             Toast.makeText(context, "入力に不備があります(`・ω・´)", Toast.LENGTH_SHORT).show()
         } else {
             sendData()
@@ -208,6 +212,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
                                             callback.getCreateData(problemName)
                                         }, {
                                             dialog.dismiss()
+                                            callback.getCreateData(problemName)
                                             callback.onClickableButtons()
                                             it.printStackTrace()
                                         })
@@ -243,7 +248,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
 
         fun getKey(): String
 
-        fun checkNameEnable(enable: Boolean)
+        //fun checkNameEnable(enable: Boolean)
 
         fun startActivityForResult(intent: Intent, requestCode: Int)
 

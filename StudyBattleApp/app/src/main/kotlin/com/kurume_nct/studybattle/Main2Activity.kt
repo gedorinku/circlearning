@@ -1,5 +1,7 @@
 package com.kurume_nct.studybattle
 
+import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -18,6 +20,8 @@ import com.kurume_nct.studybattle.adapter.MainPagerAdapter
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.Group
 import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.tools.ProgressDialogTool
+import com.kurume_nct.studybattle.tools.ToolClass
 import com.kurume_nct.studybattle.view.*
 import com.mikepenz.google_material_typeface_library.GoogleMaterial
 import com.mikepenz.materialdrawer.AccountHeader
@@ -35,14 +39,16 @@ class Main2Activity : AppCompatActivity() {
 
     private lateinit var unitPer: UnitPersonal
     private val REQUEST_CREATE_GROUP = 9
-    private lateinit var iconUrl: String
+    private lateinit var progressDialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
 
+        progressDialog = ProgressDialogTool(this).makeDialog()
+        progressDialog.show()
+
         unitPer = application as UnitPersonal
-        //userName = unitPer.myInfomation.userName
 
         getUserInformation()
 
@@ -61,21 +67,13 @@ class Main2Activity : AppCompatActivity() {
                     Log.d("userの情報を取得", "")
                     unitPer.myInfomation = it
                     onToolBar()
-
-                    client
-                            .getImageById(unitPer.myInfomation.icon!!.id)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe({
-                                iconUrl = it.url
-                                unitPer.userIcon = Uri.parse(iconUrl)
-                                getMyGroup()
-
-                            }, {
-                                Toast.makeText(this, "Userの情報取得(画像)に失敗しました", Toast.LENGTH_SHORT).show()
-                            })
-
+                    if (it.icon!!.url.isNotBlank()) {
+                        unitPer.userIcon = Uri.parse(it.icon.url)
+                        Log.d(unitPer.userIcon.toString(),"urlだよ")
+                        getMyGroup()
+                    }
                 }, {
+                    it.printStackTrace()
                     Toast.makeText(this, "Userの情報取得に失敗しました", Toast.LENGTH_SHORT).show()
                 })
     }
@@ -106,39 +104,32 @@ class Main2Activity : AppCompatActivity() {
                         getIconBitmap()
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe { it ->
-                            viewSetup(it)
-                        }
+                                .subscribe({ it ->
+                                    viewSetup(it)
+                                }, {
+                                    it.printStackTrace()
+                                    Log.d("icon取得に失敗", "してます")
+                                    onTabLayout()
+                                    onToolBar()
+                                    progressDialog.dismiss()
+                                })
                     }
                 }, {
+                    progressDialog.dismiss()
                     Log.d("Groupの情報を取得するのに失敗", "")
                     Toast.makeText(this, "アプリを立ち上げなおしてください", Toast.LENGTH_SHORT).show()
                 })
     }
 
     fun viewSetup(userIcon: Bitmap) {
-
         onTabLayout()
         onNavigationDrawer(userIcon)
         Log.d(unitPer.myInfomation.id.toString(), "ユーザーID")
-
+        progressDialog.dismiss()
     }
 
-    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        //if (data == null) return
-
-        when (resultCode) {
-            REQUEST_CREATE_GROUP -> {
-                Log.d("hoge","hoge")
-                getMyGroup()
-            }
-        }
-
-    }*/
-
     private fun getIconBitmap(): Single<Bitmap> = Single.fromCallable {
+        Log.d("getIconBItMap", "だよ")
         BitmapFactory.decodeStream(URL(unitPer.userIcon.toString()).openStream())
     }
 
@@ -199,12 +190,14 @@ class Main2Activity : AppCompatActivity() {
             }
         }
     }
+
     private fun onNavigationDrawer(userIcon: Bitmap) {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
 
         unitPer.myGroupList.add(Group())
         // Create the AccountHeader
         val acountCount: Long = 0
+        Log.d("navigation", "now")
         val headerResult = AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.color.md_red_A700)
@@ -226,12 +219,12 @@ class Main2Activity : AppCompatActivity() {
                 .withActivity(this)
                 .withToolbar(toolbar)
                 .withOnDrawerItemClickListener { view, position, drawerItem ->
-                    var intent = Intent(this, Main2Activity::class.java)
+                    val intent: Intent
                     if (position == unitPer.myGroupList.size) {
                         intent = Intent(this, CreateGroupActivity::class.java)
                         startActivity(intent)
                     } else {
-                        unitPer.nowGroup = unitPer.myGroupList[position]
+                        unitPer.nowGroup = unitPer.myGroupList[position - 1]
                         onTabLayout()
                     }
                     false
@@ -254,11 +247,10 @@ class Main2Activity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == 0){
+        if (requestCode == 0) {
             getMyGroup()
         }
     }
-
 
 
     override fun onStart() {

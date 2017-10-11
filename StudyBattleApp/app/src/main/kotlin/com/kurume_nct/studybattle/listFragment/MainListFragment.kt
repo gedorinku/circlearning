@@ -45,7 +45,7 @@ class MainListFragment(val callback: Callback) : Fragment() {
     }
 
 
-    interface Callback{
+    interface Callback {
         fun onStopSwipeRefresh()
     }
 
@@ -53,17 +53,19 @@ class MainListFragment(val callback: Callback) : Fragment() {
         super.onCreate(savedInstanceState)
         tabId = arguments.getInt("id")
         unitPersonal = activity.application as UnitPersonal
-        onRefershList()
+        onRefreshList()
     }
 
-    fun onRefershList(){
+    fun onRefreshList() {
         client = ServerClient(unitPersonal.authenticationKey)
         val groupId = unitPersonal.nowGroup.id
 
         when (tabId) {
-            resources.getInteger(R.integer.HAVE_PROBLEM) ->
+            resources.getInteger(R.integer.HAVE_PROBLEM) -> {
+                Log.d("have_list", "now")
                 client.getAssignedProblems(groupId)
                         .firstOrError()
+            }
 
             resources.getInteger(R.integer.ANSWER_YET) ->
                 //TODO
@@ -85,40 +87,47 @@ class MainListFragment(val callback: Callback) : Fragment() {
                 client.getMyJudgedProblems(groupId)
                         .firstOrError()
 
-            resources.getInteger(R.integer.SUGGEST_YET) ->
+            resources.getInteger(R.integer.SUGGEST_YET) -> {
+                Log.d("suggest_list","now")
                 client.getUnjudgedMySolutions(groupId)
                         .flatMap { it.toObservable() }
                         .map { client.getProblem(it.problemId) }
                         .mergeAll()
                         .toList()
+            }
 
-            resources.getInteger(R.integer.SUGGEST_FIN) ->
+            resources.getInteger(R.integer.SUGGEST_FIN) -> {
+                Log.d("suggest fin list","now")
                 client.getJudgedMySolutions(groupId)
                         .flatMap { it.toObservable() }
                         .map { client.getProblem(it.problemId) }
                         .mergeAll()
                         .toList()
+            }
 
             else -> throw IllegalArgumentException(tabId.toString()) as Throwable
         }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { it ->
+                .subscribe ({ it ->
                     if (it.isNotEmpty()) {
                         val listSize = problemList.size
                         problemList.clear()
                         listAdapter.notifyItemRangeRemoved(0, listSize)
                         problemList.addAll(0, it)
-                        if(tabId == 0){
-                            problemList.add(Problem(title = "　＋　新しい問題を追加で取得する"))
+                        if (tabId == 0) {
+                            problemList.add(problemList.size, Problem(title = "　＋　新しい問題を追加で取得する"))
                         }
                         listAdapter.notifyItemRangeInserted(0, it.size)
                         Log.d(it.size.toString(), "isNotEmpty" + unitPersonal.nowGroup.id.toString())
                         callback.onStopSwipeRefresh()
-                    }else{
+                    } else {
                         callback.onStopSwipeRefresh()
-                        Log.d(it.toString(),"空")
+                        Log.d(it.toString(), "空")
                     }
-                }
+                },{
+                    Log.d("Listの取得に失敗", "しました")
+                    it.printStackTrace()
+                })
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -136,7 +145,7 @@ class MainListFragment(val callback: Callback) : Fragment() {
                                 assignedProblem()
                             } else {
                                 intent = Intent(context, CameraModeActivity::class.java)
-                                intent.putExtra("id", problemList[position].id)
+                                intent.putExtra("problemId", problemList[position].id)
                                 startActivity(intent)
                             }
                         }

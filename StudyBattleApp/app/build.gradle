@@ -33,6 +33,7 @@ android {
 
 repositories {
     mavenCentral() // jcenter() works as well because it pulls from Maven Central
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
@@ -69,6 +70,8 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0-RC1'
     kapt 'com.android.databinding:compiler:2.3.3'
     compile 'com.android.support:support-v4:25.3.1'
+
+    compile 'com.github.k-kagurazaka:filtered-observable-collection:1.0.0'
 }
 
 

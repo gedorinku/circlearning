@@ -11,12 +11,13 @@ import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.adapter.JoinPeopleAdapter
 import com.kurume_nct.studybattle.databinding.FragmentJoinperopleListBinding
 import com.kurume_nct.studybattle.model.JoinPeople
+import com.kurume_nct.studybattle.model.User
 import com.kurume_nct.studybattle.tools.ToolClass
 
 class SelectPeopleFragment(val callback: Callback) : Fragment() {
 
     private lateinit var binding: FragmentJoinperopleListBinding
-    private lateinit var list: MutableList<JoinPeople>
+    private lateinit var list: MutableList<User>
     private lateinit var listAdapter: JoinPeopleAdapter
 
     companion object {
@@ -31,11 +32,12 @@ class SelectPeopleFragment(val callback: Callback) : Fragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        binding = FragmentJoinperopleListBinding.inflate(inflater,container,false)
-        onListReset()
-        listAdapter = JoinPeopleAdapter(list,{
-            position -> onDeletePeople(position)
-            Log.d("Click",position.toString())
+        binding = FragmentJoinperopleListBinding.inflate(inflater, container, false)
+        //onListReset()
+        list = mutableListOf()
+        listAdapter = JoinPeopleAdapter(activity, list, { position ->
+            onDeletePeople(position)
+            Log.d("Click", position.toString())
             //callback.selectChange(list[position - 1])
         })
         binding.list.adapter = listAdapter
@@ -43,29 +45,29 @@ class SelectPeopleFragment(val callback: Callback) : Fragment() {
         return binding.root
     }
 
-    private fun onListReset(){
-        val uri = ToolClass().convertUrlFromDrawableResId(context, R.drawable.icon_cut)!!
-        val joinPeople = JoinPeople()
-        joinPeople.iconUri = uri
+    /*private fun onListReset() {
+        *//*val uri = ToolClass().convertUrlFromDrawableResId(context, R.drawable.icon_cut)!!
+        val joinPeople = JoinPeople()*//*
+        *//*joinPeople.iconUri = uri
         joinPeople.selected = true
         list = mutableListOf(joinPeople)
-        (0..5).forEach { list.add(joinPeople) }
+        (0..5).forEach { list.add(joinPeople) }*//*
+    }*/
+
+    fun onAddPeople(position: Int, people: User) {
+        Log.d("onAddPeople", position.toString())
+        list.add(0, people)
+        listAdapter.notifyItemInserted(0)
     }
 
-    fun onAddPeople(position: Int, people: JoinPeople){
-        Log.d("onAddPeople",position.toString())
-        list.add(people)
-        listAdapter.notifyItemRangeInserted(list.size - 1, 1)
-    }
-
-    private fun onDeletePeople(position: Int){
-        Log.d("onDeletePeople",position.toString())
+    private fun onDeletePeople(position: Int) {
+        Log.d("onDeletePeople", position.toString())
         list.removeAt(position)
-        listAdapter.notifyItemRangeRemoved(position - 1,1)
+        listAdapter.notifyItemRemoved(position)
     }
 
-    interface Callback{
-        fun selectChange(people: JoinPeople)
+    interface Callback {
+        fun selectChange(people: User)
     }
 
 }
