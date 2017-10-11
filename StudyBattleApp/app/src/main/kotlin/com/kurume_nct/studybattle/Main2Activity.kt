@@ -1,13 +1,17 @@
 package com.kurume_nct.studybattle
 
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.SweepGradient
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.TabLayout
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
@@ -15,6 +19,7 @@ import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Toast
+import com.bumptech.glide.module.ManifestParser
 import com.kurume_nct.studybattle.adapter.MainPagerAdapter
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.Group
@@ -32,12 +37,14 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.net.URL
+import java.util.jar.Manifest
 
 
 class Main2Activity : AppCompatActivity() {
 
     private lateinit var unitPer: UnitPersonal
     private val REQUEST_CREATE_GROUP = 9
+    private val REQUEST_PERMISSION_STRAGE = 1
     private lateinit var progressDialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +54,7 @@ class Main2Activity : AppCompatActivity() {
         unitPer = application as UnitPersonal
         progressDialog = ProgressDialogTool(this).makeDialog()
 
+        listenPermission()
         getUserInformation()
 
         Log.d(unitPer.nowGroup.name, unitPer.myInfomation.userName)
@@ -72,6 +80,30 @@ class Main2Activity : AppCompatActivity() {
                     //TODO　アプリ再起動
                     Toast.makeText(this, "Userの情報取得に失敗しました\nアプリを再起動します", Toast.LENGTH_SHORT).show()
                 })
+    }
+
+    private fun listenPermission() {
+        val permissionCheckWrite = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val permissionCheckRead = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+        if (permissionCheckRead != PackageManager.PERMISSION_GRANTED ||
+                permissionCheckWrite != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_PERMISSION_STRAGE)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            REQUEST_PERMISSION_STRAGE ->
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("Strageの","permissionをget")
+                }else{
+                    Toast.makeText(this, "Permissionをください", Toast.LENGTH_SHORT).show()
+                    listenPermission()
+                }
+        }
     }
 
     private fun getMyGroup() {
