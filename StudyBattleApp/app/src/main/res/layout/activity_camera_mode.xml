@@ -21,161 +21,126 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="20dp" />
+            android:layout_height="24dp" />
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="解答提出画面"
+            android:text="解答提出"
             android:textSize="24sp"
             tools:ignore="HardcodedText" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="20dp" />
+            android:layout_height="30dp" />
 
         <TextView
             android:id="@+id/problem_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="『掃き出し法』 "
-            android:textSize="18sp"
+            android:textColor="@color/material_drawer_primary_text"
+            android:textSize="21sp"
             tools:ignore="HardcodedText" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/writer_name"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <Space
-                android:layout_width="1dp"
-                android:layout_height="10dp"
-                android:layout_weight="0.04" />
-
-            <TextView
-                android:id="@+id/writer_name"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="by bayo"
-                android:textSize="12sp"
-                tools:ignore="HardcodedText" />
-        </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:orientation="horizontal">
-
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="4dp"
+            android:paddingLeft="8dp"
+            android:text="by bayo"
+            android:textSize="13sp"
+            tools:ignore="HardcodedText" />
 
         <ImageButton
             android:id="@+id/submit_image_button"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:background="@drawable/no_image"
             android:src="@drawable/text_noimage"
             tools:ignore="ContentDescription" />
 
-        <TextView
-            android:id="@+id/experiment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
-
         <Space
             android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:layout_height="20dp" />
 
         <TextView
             android:id="@+id/item_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:paddingLeft="8dp"
             android:text="解答につけるアイテム"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="24sp"
+            android:textSize="21sp"
             tools:ignore="HardcodedText" />
-
-        <TextView
-            android:id="@+id/comment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="解答の写真を撮影・選択してね"
-            android:textSize="18sp"
-            tools:ignore="HardcodedText" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
 
         <ImageButton
             android:id="@+id/submit_item_image_button"
-            android:layout_width="197dp"
+            android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
             android:background="@drawable/no_image"
+            android:foregroundGravity="center"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:scaleType="fitXY"
             android:src="@drawable/hatena"
             tools:ignore="ContentDescription,InefficientWeight" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:layout_height="20dp" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/pass_button"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:background="@color/md_blue_500"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="パス"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.283"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/submission_button"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="HardcodedText,MissingConstraints,RtlHardcoded"
+            tools:layout_conversion_absoluteHeight="60dp"
+            tools:layout_conversion_absoluteWidth="88dp"
+            tools:layout_conversion_absoluteX="0dp"
+            tools:layout_conversion_absoluteY="80dp" />
+
+        <Button
+            android:id="@+id/submission_button"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/pass_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right|end"
-                android:layout_weight="1"
-                android:background="@drawable/blue_button"
-                android:text="パス"
-                android:textColor="#ffffff"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.283"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/submission_button"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                tools:ignore="HardcodedText,MissingConstraints,RtlHardcoded"
-                tools:layout_conversion_absoluteHeight="60dp"
-                tools:layout_conversion_absoluteWidth="88dp"
-                tools:layout_conversion_absoluteX="0dp"
-                tools:layout_conversion_absoluteY="80dp" />
-
-            <Space
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/submission_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|start"
-                android:background="@drawable/red_button"
-                android:text="提出"
-                android:textColor="#ffffff"
-                android:textSize="20sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
-
-        </LinearLayout>
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/md_red_400"
+            android:text="提出"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            tools:ignore="HardcodedText,RtlHardcoded" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:layout_height="12dp" />
 
     </LinearLayout>
 

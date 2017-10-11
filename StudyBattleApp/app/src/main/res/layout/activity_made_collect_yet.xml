@@ -21,7 +21,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
+                    android:layout_height="24dp"
                     android:layout_weight="1" />
 
                 <TextView
@@ -30,16 +30,23 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="8dp"
                     android:text="問題名"
-                    android:textColor="@color/md_amber_800"
-                    android:textSize="18sp" />
+                    android:textColor="@color/material_drawer_primary_text"
+                    android:textSize="21sp" />
 
                 <ImageView
                     android:id="@+id/imageView14"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/group" />
+                    android:background="@drawable/no_image"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/text_noimage" />
 
                 <TextView
                     android:id="@+id/editText50"
@@ -47,13 +54,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
+                    android:paddingLeft="8dp"
                     android:text="この問題についての情報"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="24sp" />
+                    android:textSize="21sp" />
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
+                    android:layout_height="8dp"
                     android:layout_weight="1" />
 
                 <TextView
@@ -62,9 +70,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
+                    android:paddingLeft="8dp"
                     android:text="・只今の問題の状態"
-                    android:textColor="@color/md_amber_800"
-                    android:textSize="18sp" />
+                    android:textColor="@color/colorAccent"
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/pro_situation_text"
@@ -72,6 +81,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
+                    android:paddingLeft="8dp"
                     android:text="解答を回収中"
                     android:textColor="@color/material_drawer_secondary_text"
                     android:textSize="18sp" />
@@ -82,9 +92,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
+                    android:paddingLeft="8dp"
                     android:text="：解答回収日時"
-                    android:textColor="@color/md_amber_800"
-                    android:textSize="18sp" />
+                    android:textColor="@color/colorAccent"
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/pro_dire_text"
@@ -92,6 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
+                    android:paddingLeft="8dp"
                     android:text="0年0月0日"
                     android:textColor="@color/material_drawer_secondary_text"
                     android:textSize="18sp" />
@@ -102,9 +114,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
+                    android:paddingLeft="8dp"
                     android:text="・解答提出状況"
-                    android:textColor="@color/md_amber_800"
-                    android:textSize="18sp" />
+                    android:textColor="@color/colorAccent"
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/pro_situation_people_text"
@@ -112,6 +125,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
+                    android:paddingLeft="8dp"
                     android:text="今までにn人が解答を提出しています"
                     android:textSize="18sp" />
 
@@ -121,9 +135,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
+                    android:paddingLeft="8dp"
                     android:text="・一人あたりに与えられている解答時間"
-                    android:textColor="@color/md_amber_800"
-                    android:textSize="18sp" />
+                    android:textColor="@color/colorAccent"
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/dire_for_one_text"
@@ -131,6 +146,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
+                    android:paddingLeft="8dp"
                     android:text="24時間"
                     android:textColor="@color/material_drawer_secondary_text"
                     android:textSize="18sp" />
@@ -141,8 +157,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
+                    android:paddingLeft="8dp"
                     android:text="・問題作成日時"
-                    android:textColor="@color/md_amber_800"
+                    android:textColor="@color/colorAccent"
                     android:textSize="18sp" />
 
                 <TextView
@@ -151,6 +168,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
+                    android:paddingLeft="8dp"
                     android:text="0年0月0日"
                     android:textSize="18sp" />
 
