@@ -30,8 +30,8 @@
                         android:layout_marginTop="8dp"
                         android:layout_weight="1"
                         android:text="採点中の問題"
-                        android:textColor="@color/md_amber_800"
-                        android:textSize="18sp" />
+                        android:textColor="@color/colorAccent"
+                        android:textSize="21sp" />
 
                     <LinearLayout
                         android:id="@+id/fragment_list_ans_yet"
@@ -50,7 +50,7 @@
                         android:layout_weight="1"
                         android:text="過去の問題"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="18sp" />
+                        android:textSize="21sp" />
 
                     <LinearLayout
                         android:id="@+id/fragment_list_ans_fin"
