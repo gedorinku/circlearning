@@ -29,44 +29,61 @@
                     android:id="@+id/textView3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="12dp"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="問題作成"
                     android:textSize="24sp" />
 
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_weight="1" />
+
                 <TextView
                     android:id="@+id/creator_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{CreateView.creatorName}" />
+                    android:paddingLeft="8dp"
+                    android:text="なにこれ"
+                    android:textSize="13sp" />
 
                 <EditText
                     android:id="@+id/editText4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="問題の題名"
                     android:inputType="textPersonName"
-                    android:text="@={CreateView.problemName}" />
+                    android:text="@={CreateView.problemName}"
+                    android:textColor="@color/material_drawer_primary_text"
+                    android:textSize="17sp" />
 
                 <ImageButton
                     android:id="@+id/problemImage"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="200dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/no_image"
                     android:onClick="@{CreateView.onClickProblemImage}"
                     app:loadProblem="@{CreateView.problemUri}"
+                    app:srcCompat="@drawable/text_noimage"
                     tools:ignore="ContentDescription" />
 
                 <TextView
                     android:id="@+id/textView3__"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="20dp"
                     android:text="過去に作った問題"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="18sp" />
@@ -75,12 +92,14 @@
                     android:id="@+id/textView16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
                     android:text="解答回収日" />
 
                 <LinearLayout
                     android:id="@+id/directions_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
                     android:layout_weight="1"
                     android:orientation="horizontal">
 
@@ -112,19 +131,15 @@
 
                     <Button
                         android:id="@+id/button7"
-                        android:layout_width="20dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
                         android:layout_weight="1"
-                        android:background="@color/md_deep_orange_A200"
+                        android:background="@color/md_amber_700"
                         android:onClick="@{CreateView.onClickDateChange}"
                         android:text="変更"
                         android:textColor="#ffffff"
                         android:textSize="18dp" />
-
-                    <Space
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.29" />
 
                 </LinearLayout>
 
@@ -132,18 +147,21 @@
                     android:id="@+id/textView24"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
                     android:text="・1回あたりに与えられる時間" />
 
                 <TextView
                     android:id="@+id/textView25"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{CreateView.termForOne}" />
+                    android:layout_marginLeft="8dp"
+                    android:text="なにこれ" />
 
                 <CheckBox
                     android:id="@+id/checkBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
                     android:layout_weight="1"
                     android:checked="false"
                     android:onClick="@{CreateView.onClickCheckbox}"
@@ -153,18 +171,24 @@
                     android:id="@+id/textView27"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="20dp"
                     android:text="想定解"
-                    android:textColor="@color/material_drawer_dark_background"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="18sp" />
 
                 <ImageButton
                     android:id="@+id/answerImage"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="200dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/no_image"
                     android:onClick="@{CreateView.onClickAnswerImage}"
-                    app:loadProblem="@{CreateView.answerUri}" />
+                    app:loadProblem="@{CreateView.answerUri}"
+                    app:srcCompat="@drawable/text_noimage" />
 
                 <Space
                     android:layout_width="match_parent"
@@ -177,7 +201,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@color/md_orange_500"
+                    android:background="@color/md_red_400"
                     android:onClick="@{CreateView.onClickFinish}"
                     android:text="✅問題を作成"
                     android:textColor="#ffffff"
