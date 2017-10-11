@@ -35,7 +35,6 @@ class Main2Activity : AppCompatActivity() {
 
     private lateinit var unitPer: UnitPersonal
     private val REQUEST_CREATE_GROUP = 9
-    private lateinit var iconUrl: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,23 +60,15 @@ class Main2Activity : AppCompatActivity() {
                     Log.d("userの情報を取得", "")
                     unitPer.myInfomation = it
                     onToolBar()
-
-                    client
-                            .getImageById(unitPer.myInfomation.icon!!.id)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe({
-                                iconUrl = it.url
-                                unitPer.userIcon = Uri.parse(iconUrl)
-                                getMyGroup()
-
-                            }, {
-                                Toast.makeText(this, "Userの情報取得(画像)に失敗しました", Toast.LENGTH_SHORT).show()
-                            })
-
+                    unitPer.userIcon = Uri.parse(it.icon!!.url)
+                    getMyGroup()
                 }, {
-                    Toast.makeText(this, "Userの情報取得に失敗しました", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Userの情報取得に失敗しました\nアプリを再起動します", Toast.LENGTH_SHORT).show()
                 })
+    }
+
+    override fun onRestart(){
+
     }
 
 
@@ -123,20 +114,6 @@ class Main2Activity : AppCompatActivity() {
         Log.d(unitPer.myInfomation.id.toString(), "ユーザーID")
 
     }
-
-    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        //if (data == null) return
-
-        when (resultCode) {
-            REQUEST_CREATE_GROUP -> {
-                Log.d("hoge","hoge")
-                getMyGroup()
-            }
-        }
-
-    }*/
 
     private fun getIconBitmap(): Single<Bitmap> = Single.fromCallable {
         BitmapFactory.decodeStream(URL(unitPer.userIcon.toString()).openStream())
@@ -231,7 +208,7 @@ class Main2Activity : AppCompatActivity() {
                         intent = Intent(this, CreateGroupActivity::class.java)
                         startActivity(intent)
                     } else {
-                        unitPer.nowGroup = unitPer.myGroupList[position]
+                        unitPer.nowGroup = unitPer.myGroupList[position - 1]
                         onTabLayout()
                     }
                     false
