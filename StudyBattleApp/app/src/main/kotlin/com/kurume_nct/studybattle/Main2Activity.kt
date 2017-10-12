@@ -98,8 +98,8 @@ class Main2Activity : AppCompatActivity() {
         when (requestCode) {
             REQUEST_PERMISSION_STRAGE ->
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.d("Strageの","permissionをget")
-                }else{
+                    Log.d("Strageの", "permissionをget")
+                } else {
                     Toast.makeText(this, "Permissionをください", Toast.LENGTH_SHORT).show()
                     listenPermission()
                 }
@@ -132,7 +132,7 @@ class Main2Activity : AppCompatActivity() {
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe { it ->
-                                    viewSetup(it)
+                                    viewSetup(Bitmap.createScaledBitmap(it, 100, 100, false))
                                 }
                     }
                 }, {

@@ -85,10 +85,8 @@ class CameraModeActivity : Activity() {
         setContentView(R.layout.activity_camera_mode)
         userName = intent.getStringExtra("userName")
         // 宣言
-        comment = findViewById(R.id.comment) as TextView
         submitImageButton = findViewById(R.id.submit_image_button) as ImageButton
         submitItemImageButton = findViewById(R.id.submit_item_image_button) as ImageButton
-        experiment = findViewById(R.id.experiment) as TextView
         submissionButton = findViewById(R.id.submission_button) as Button
         passButton = findViewById(R.id.pass_button) as Button
         problemImage = findViewById(R.id.problem_image_at_camera) as ImageView
@@ -335,9 +333,6 @@ class CameraModeActivity : Activity() {
             }
 
         }
-        flag = 1
-        comment!!.text = "解答を提出してね"
-        // experiment.setText(filePath);
     }
 
     //カメラ撮影した際の画像を保存するフォルダ作成関数
