@@ -143,6 +143,12 @@ interface Server {
             @Field("groupId") groupId: Int
     ): Observable<ProblemRequestResponse>
 
+    @GET("/problem/pass")
+    fun passProblem(
+            @Query("authenticationKey") authenticationKey: String,
+            @Query("problemId") problemId: Int
+    ): Observable<Unit>
+
     @FormUrlEncoded
     @POST("/solution/create")
     fun createSolution(
