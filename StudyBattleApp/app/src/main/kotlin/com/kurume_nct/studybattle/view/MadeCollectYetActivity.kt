@@ -5,7 +5,6 @@ import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.DatePicker
 import android.widget.Toast
 import com.bumptech.glide.Glide
 
@@ -15,8 +14,6 @@ import com.kurume_nct.studybattle.databinding.ActivityMadeCollectYetBinding
 import com.kurume_nct.studybattle.model.UnitPersonal
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import org.joda.time.DateTime
-import java.util.*
 
 class MadeCollectYetActivity : AppCompatActivity() {
 
@@ -73,8 +70,8 @@ class MadeCollectYetActivity : AppCompatActivity() {
         return dateStr
     }
 
-    private fun calculatePerOneHour(min: Long): String{
-        var str = (min/(60 * 60 * 1000)).toString() + "時間"
+    private fun calculatePerOneHour(millis: Long): String{
+        val str = (millis /(60 * 60 * 1000)).toString() + "時間"
         return str
     }
 
