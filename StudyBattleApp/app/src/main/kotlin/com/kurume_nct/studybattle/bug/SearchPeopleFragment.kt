@@ -23,7 +23,7 @@ import java.util.concurrent.CountDownLatch
  */
 class SearchPeopleFragment(val callback: Callback) : Fragment() {
     private lateinit var binding: FragmentChoosePeoplelistBinding
-    private lateinit var list: MutableList<User>
+    private val list = mutableListOf<User>()
     private lateinit var listAdapter: JoinPeopleAdapter
     private lateinit var unitPer: UnitPersonal
     private var searching = false
@@ -45,8 +45,6 @@ class SearchPeopleFragment(val callback: Callback) : Fragment() {
         binding = FragmentChoosePeoplelistBinding.inflate(inflater, container, false)
         //onListReset()
 
-        list = mutableListOf()
-
         listAdapter = JoinPeopleAdapter(activity, list, { position ->
             onDeletePeople(position)
             Log.d("Clickc", position.toString())
@@ -65,7 +63,6 @@ class SearchPeopleFragment(val callback: Callback) : Fragment() {
         searching = true
         if (str.isNotBlank()) {
             val size = list.size
-            list = mutableListOf()
             listAdapter.notifyItemRangeRemoved(0, size)
             Log.d("hoge", "list")
             val client = ServerClient(unitPer.authenticationKey)
