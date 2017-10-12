@@ -43,8 +43,8 @@ class AnswerMainFragment : Fragment(), MainListFragment.Callback {
                 .commit()
 
         binding.swipeRefreshFragmentAnswer.setOnRefreshListener {
-            fragmentYet.onRefershList()
-            fragmentFin.onRefershList()
+            fragmentYet.onRefreshList()
+            fragmentFin.onRefreshList()
         }
 
         binding.swipeRefreshFragmentAnswer.setColorSchemeResources(R.color.md_yellow_A700, R.color.md_blue_900)

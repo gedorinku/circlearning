@@ -3,7 +3,7 @@
     <data>
         <variable
             name="SelectPeopleUnit"
-            type="com.kurume_nct.studybattle.bug.SelectMainPeopleViewModel"/>
+            type="com.kurume_nct.studybattle.listFragment.SelectMainPeopleViewModel"/>
     </data>
 
     <LinearLayout
@@ -31,9 +31,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
+                android:text="@={SelectPeopleUnit.searchText}"
                 android:hint="検索したい名前を入力して下さい"
-                android:inputType="textPersonName"
-                android:text="まだこの機能は実装されてません。個人でのグループ作成は可能です" />
+                android:inputType="textPersonName" />
 
         </LinearLayout>
 

@@ -32,7 +32,7 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
         binding = DataBindingUtil.setContentView(this, R.layout.activity_personal_answer)
         binding.personalAnswer = PersonalAnswerViewModel(this, this)
         unitPer = application as UnitPersonal
-        problemId = intent.getIntExtra("id", 0)
+        problemId = intent.getIntExtra("problemId", 0)
         getProblemInformation()
         bindSetting()
     }
