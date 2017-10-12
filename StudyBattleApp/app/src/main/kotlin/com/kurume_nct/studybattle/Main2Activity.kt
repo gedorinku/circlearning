@@ -275,7 +275,7 @@ class Main2Activity : AppCompatActivity() {
 
     override fun onRestart() {
         super.onRestart()
-        onTabLayout()
+        //onTabLayout()
     }
 
     override fun onStart() {

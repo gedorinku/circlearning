@@ -40,6 +40,8 @@ class SelectPeopleFragment(val callback: Callback) : Fragment() {
         return binding.root
     }
 
+    fun getPeopleList(): MutableList<User> = list
+
     fun onAddPeople(position: Int, people: User) {
         Log.d("onAddPeople", position.toString())
         list.add(0, people)

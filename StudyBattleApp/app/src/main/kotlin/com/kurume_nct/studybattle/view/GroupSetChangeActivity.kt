@@ -1,5 +1,6 @@
 package com.kurume_nct.studybattle.view
 
+import android.content.Context
 import android.content.DialogInterface
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
@@ -16,27 +17,44 @@ import com.kurume_nct.studybattle.databinding.ActivityGroupSetChangeBinding
 import com.kurume_nct.studybattle.model.UnitPersonal
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.CountDownLatch
 
 class GroupSetChangeActivity : AppCompatActivity(), GroupSetChangeViewModel.Callback {
 
     private lateinit var binding: ActivityGroupSetChangeBinding
     lateinit var unitPersonal: UnitPersonal
+    lateinit var fragment: SelectMainPeopleFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("i'm ", javaClass.name)
+
+        fragment = SelectMainPeopleFragment().newInstance(3)
 
         unitPersonal = application as UnitPersonal
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_group_set_change)
         binding.groupSetView = GroupSetChangeViewModel(this, this)
         supportFragmentManager.beginTransaction()
-                .add(R.id.fragment_search_list, SelectMainPeopleFragment().newInstance(3))
+                .add(R.id.fragment_search_list, fragment)
                 .commit()
-
     }
 
     override fun onChange() {
+        fragment.getPeopleList().forEach {
+            //val count = CountDownLatch(1)
+            ServerClient()
+                    .attachToGroup(unitPersonal.nowGroup, it)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+              //          count.countDown()
+                    }
+            Log.d(it.displayName,"追加された")
+            //count.await()
+        }
+
+        //TODO gtoup名の変更エンドポイント
         finish()
     }
 
