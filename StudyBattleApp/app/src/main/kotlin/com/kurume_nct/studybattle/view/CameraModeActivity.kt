@@ -129,7 +129,7 @@ class CameraModeActivity : Activity() {
             }
         }
 
-        val dialogView: DialogItemSelectBinding = DataBindingUtil.inflate(
+        dialogView = DataBindingUtil.inflate(
                 LayoutInflater.from(this), R.layout.dialog_item_select, null, false)
 
         unitPer.itemCount.run {
@@ -138,32 +138,37 @@ class CameraModeActivity : Activity() {
             if (magicHand <= 0) dialogView.handButton12.visibility = View.INVISIBLE
         }
 
+        dialog = AlertDialog.Builder(this)
+                .setView(dialogView.root)
+                .create()
+
         dialogView.bombButton17.setOnClickListener {
             if (putItemId != 0) {
                 Glide.with(this).load(R.drawable.framecard_bomb).into(submitItemImageButton)
             }
             putItemId = 0
-            dialog.cancel()
+            dialog.dismiss()
         }
         dialogView.cardButton16.setOnClickListener {
             if (putItemId != 1) {
                 Glide.with(this).load(R.drawable.framecard_card).into(submitItemImageButton)
             }
             putItemId = 1
-            dialog.cancel()
+            dialog.dismiss()
         }
         dialogView.handButton12.setOnClickListener {
             if (putItemId != 3) {
                 Glide.with(this).load(R.drawable.framecard_magichand).into(submitItemImageButton)
             }
             putItemId = 3
-            dialog.cancel()
+            dialog.dismiss()
         }
         dialogView.removeItemButton19.setOnClickListener {
             if (putItemId != -1) {
                 Glide.with(this).load(R.drawable.hatena).into(submitItemImageButton)
-                dialog.cancel()
             }
+            putItemId = -1
+            dialog.dismiss()
         }
     }
 
@@ -252,9 +257,12 @@ class CameraModeActivity : Activity() {
         val dialogView: DialogCameraStrageChooseBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(this), R.layout.dialog_camera_strage_choose, null, false
         )
+        var dialog_: AlertDialog = AlertDialog.Builder(this)
+                .setView(dialogView.root)
+                .create()
         dialogView.run {
             cameraButton.setOnClickListener {
-                dialog.cancel()
+                dialog_.cancel()
                 // Android 6, API 23以上でパーミッシンの確認
                 if (Build.VERSION.SDK_INT >= 23) {
                     checkPermission()
@@ -263,7 +271,7 @@ class CameraModeActivity : Activity() {
                 }
             }
             strageButton.setOnClickListener {
-                dialog.cancel()
+                dialog_.cancel()
                 //ファイルを選択
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
                 //開けるものだけ表示
@@ -273,22 +281,19 @@ class CameraModeActivity : Activity() {
                 startActivityForResult(intent, RESULT_PICK_IMAGEFILE)
             }
         }
-        dialog = AlertDialog.Builder(this)
+        dialog_ = AlertDialog.Builder(this)
                 .setView(dialogView.root)
                 .create()
 
-        dialog.show()
+        dialog_.show()
     }
 
     private fun itemSetting() {
-        dialog = AlertDialog.Builder(this)
-                .setView(dialogView.root)
-                .create()
 
         dialog.show()
     }
 
-    fun decrementItem(itemId: Int) {
+    private fun decrementItem(itemId: Int) {
         if (itemId != -1) {
             when (itemId) {
                 0 -> unitPer.itemCount.bomb -= 1
