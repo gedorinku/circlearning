@@ -50,10 +50,11 @@ class MadeCollectYetActivity : AppCompatActivity() {
                 .subscribe {
                     binding.run {
                         problemNameText.text = it.title
-                        proDireText.text = calculateDate()
-                        proSituationPeopleText.text = "今までに" + "エンドポイント" + "人が解答を提出しています"
-                        direForOneText.text = calculateOwnMin(it.durationMillis)
-                        problemDateText.text = it.rawStartsAt
+                        problemNowSituationText.text = "問題の状態の分かるエンドポイントありますか？"
+                        problemCollectedDateText.text = "収集日は計算する感じですかね・・・？"
+                        problemMadeDateText.text = it.createdAt
+                        durationPerOneText.text = calculatePerOneHour(it.durationMillis)
+                        problemSubmittedPeopleText.text = "今までに" + "エンドポイント" + "人が解答を提出しています"
                         client
                                 .getImageById(it.imageIds[0])
                                 .subscribeOn(Schedulers.io())
@@ -72,8 +73,8 @@ class MadeCollectYetActivity : AppCompatActivity() {
         return dateStr
     }
 
-    private fun calculateOwnMin(min: Long): String{
-        var str = (min/60).toString() + "時間"
+    private fun calculatePerOneHour(min: Long): String{
+        var str = (min/(60 * 60 * 1000)).toString() + "時間"
         return str
     }
 
@@ -81,14 +82,4 @@ class MadeCollectYetActivity : AppCompatActivity() {
         Glide.with(this).load(uri).into(binding.imageView14)
     }
 
-    private fun bindSetting() {
-        binding.run {
-            problemNameText.text = "問題名"
-            //imageView14.setImageURI()
-            proDireText.text = "~" + "10" + "月" + "1" + "日"
-            proSituationPeopleText.text = "今までに" + "n" + "人が解答を提出しています"
-            direForOneText.text = "n" + "時間"
-            problemDateText.text = "n" + "年" + "n" + "月" + "n" + "日"
-        }
-    }
 }
