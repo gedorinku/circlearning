@@ -9,7 +9,7 @@ import android.widget.Toast
 import com.kurume_nct.studybattle.Main2Activity
 
 import com.kurume_nct.studybattle.R
-import com.kurume_nct.studybattle.bug.SelectMainPeopleFragment
+import com.kurume_nct.studybattle.listFragment.SelectMainPeopleFragment
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.ActivityCreateGroupBinding
 import com.kurume_nct.studybattle.model.UnitPersonal

@@ -100,18 +100,6 @@ class CreateProblemViewModel(private val context: Context, private val callback:
             notifyPropertyChanged(BR.answerUri)
         }
 
-
-    /*fun onClickCheckbox(view: View) {
-        if (!checkCount) {
-            callback.checkNameEnable(true)
-        } else {
-            callback.checkNameEnable(false)
-        }
-        checkCount = !checkCount
-    }*/
-
-
-    //permission dialogをだす。
     fun onGetImage(camera: Int, pro: Int) {
         when (camera) {
             0 -> {
@@ -246,8 +234,6 @@ class CreateProblemViewModel(private val context: Context, private val callback:
         fun userInformation(): User
 
         fun getKey(): String
-
-        //fun checkNameEnable(enable: Boolean)
 
         fun startActivityForResult(intent: Intent, requestCode: Int)
 

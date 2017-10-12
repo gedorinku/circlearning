@@ -28,14 +28,13 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
 
     private lateinit var binding: ActivityCreateProblemBinding
     private lateinit var unitPer: UnitPersonal
-    private var nameEnable: Boolean
+    private var nameEnable: Boolean = false
     private var prob: Int
     private lateinit var decideDate: MutableList<Int>
     private lateinit var dialog: AlertDialog
     private val PERMISSION_CAMERA_CODE = 1
 
     init {
-        nameEnable = false
         prob = -1
     }
 
@@ -47,8 +46,6 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
 
         unitPer = application as UnitPersonal
         binding.createView.creatorName = "Made by " + unitPer.myInfomation.displayName
-
-        //dialogSetting()
 
         binding.termHourForOne.isEnabled = false
 
@@ -66,11 +63,6 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
             it.day = date[0].toString() + "年" + date[1].toString() + "月" + date[2].toString() + "日"
         }
     }
-
-/*
-    override fun checkNameEnable(enable: Boolean) {
-        //nameEnable = enable
-    }*/
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

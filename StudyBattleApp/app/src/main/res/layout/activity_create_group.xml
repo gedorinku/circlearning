@@ -52,7 +52,7 @@
                     android:layout_marginRight="8dp"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="グループ名（半角英数のみ2~20文字）"
+                    android:hint="グループ名を入力してください"
                     android:inputType="textPersonName"
                     android:text="@={CreateGroupUnit.groupName}"
                     android:textSize="17sp" />

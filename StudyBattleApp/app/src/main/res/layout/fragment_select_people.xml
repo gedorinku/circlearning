@@ -3,7 +3,7 @@
     <data>
         <variable
             name="SelectPeopleUnit"
-            type="com.kurume_nct.studybattle.bug.SelectMainPeopleViewModel"/>
+            type="com.kurume_nct.studybattle.listFragment.SelectMainPeopleViewModel"/>
     </data>
 
     <LinearLayout

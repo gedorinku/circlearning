@@ -5,22 +5,17 @@ import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
-import android.util.AndroidException
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import com.kurume_nct.studybattle.viewModel.GroupSetChangeViewModel
 
 import com.kurume_nct.studybattle.R
-import com.kurume_nct.studybattle.bug.SelectMainPeopleFragment
+import com.kurume_nct.studybattle.listFragment.SelectMainPeopleFragment
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.ActivityGroupSetChangeBinding
-import com.kurume_nct.studybattle.listFragment.GroupListFragment
 import com.kurume_nct.studybattle.model.UnitPersonal
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.sql.ResultSet
 
 class GroupSetChangeActivity : AppCompatActivity(), GroupSetChangeViewModel.Callback {
 

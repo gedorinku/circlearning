@@ -1,4 +1,4 @@
-package com.kurume_nct.studybattle.bug
+package com.kurume_nct.studybattle.view
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -11,12 +11,10 @@ import android.view.ViewGroup
 import com.kurume_nct.studybattle.adapter.JoinPeopleAdapter
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.FragmentChoosePeoplelistBinding
-import com.kurume_nct.studybattle.model.JoinPeople
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.model.User
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.CountDownLatch
 
 /**
  * Created by hanah on 10/2/2017.

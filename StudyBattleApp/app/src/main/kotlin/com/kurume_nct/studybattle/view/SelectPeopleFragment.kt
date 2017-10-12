@@ -1,4 +1,4 @@
-package com.kurume_nct.studybattle.bug
+package com.kurume_nct.studybattle.view
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -7,12 +7,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.adapter.JoinPeopleAdapter
 import com.kurume_nct.studybattle.databinding.FragmentJoinperopleListBinding
-import com.kurume_nct.studybattle.model.JoinPeople
 import com.kurume_nct.studybattle.model.User
-import com.kurume_nct.studybattle.tools.ToolClass
 
 class SelectPeopleFragment(val callback: Callback) : Fragment() {
 
