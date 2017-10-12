@@ -242,15 +242,24 @@ class CameraModeActivity : Activity() {
 
     private fun sadDialog() {
         //send data📩
-        val passAlert = AlertDialog.Builder(this)
-        val passView = this.layoutInflater.inflate(R.layout.dialog_pass_sad, null)
-        passAlert.setOnDismissListener {
-            finish()
-        }
-        passAlert.setView(passView)
-        val alert = passAlert.create()
-        alert.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        alert.show()
+        ServerClient(unitPer.authenticationKey)
+                .passProblem(problemId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    val passAlert = AlertDialog.Builder(this)
+                    val passView = this.layoutInflater.inflate(R.layout.dialog_pass_sad, null)
+                    passView.setOnClickListener {
+                        finish()
+                    }
+                    passAlert.setOnDismissListener {
+                        finish()
+                    }
+                    passAlert.setView(passView)
+                    val alert = passAlert.create()
+                    alert.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                    alert.show()
+                }
     }
 
     private fun imageSetting() {
