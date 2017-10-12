@@ -22,6 +22,7 @@ class CreateGroupActivity : AppCompatActivity(), CreateGroupViewModel.Callback {
     private lateinit var binding: ActivityCreateGroupBinding
     private lateinit var unitPer: UnitPersonal
     private val REQUEST_CREATE_GROUP = 9
+    private lateinit var fragment: SelectMainPeopleFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +30,10 @@ class CreateGroupActivity : AppCompatActivity(), CreateGroupViewModel.Callback {
         binding.createGroupUnit = CreateGroupViewModel(this, this)
         unitPer = application as UnitPersonal
 
+        fragment = SelectMainPeopleFragment().newInstance(0)
+
         supportFragmentManager.beginTransaction()
-                .replace(R.id.select_people_conteiner, SelectMainPeopleFragment().newInstance(0))
+                .replace(R.id.select_people_conteiner, fragment)
                 .commit()
 
     }
@@ -43,6 +46,13 @@ class CreateGroupActivity : AppCompatActivity(), CreateGroupViewModel.Callback {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     unitPer.myGroupList.add(it)
+                    for (user in fragment.getPeopleList()) {
+                        client
+                                .attachToGroup(it,user)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe {}
+                    }
                     val intent = Intent(this, Main2Activity::class.java)
                     startActivity(intent)
                     finish()
