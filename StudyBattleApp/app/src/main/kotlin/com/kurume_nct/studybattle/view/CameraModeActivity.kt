@@ -183,16 +183,14 @@ class CameraModeActivity : Activity() {
                 .subscribe({
                     problemName.text = it.title
                     writerName.text = it.createdAt
-                    it.imageIds.run {
-                        client
-                                .getImageById(it.id)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe {
-                                    setUpPicture(Uri.parse(it.url))
-                                    progressDialog.dismiss()
-                                }
-                    }
+                    client
+                            .getImageById(it.imageIds[0])
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe {
+                                setUpPicture(Uri.parse(it.url))
+                                progressDialog.dismiss()
+                            }
                 }, {
                     it.printStackTrace()
                     progressDialog.dismiss()
