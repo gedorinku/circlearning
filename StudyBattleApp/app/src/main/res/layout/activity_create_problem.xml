@@ -71,6 +71,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/no_image"
                     android:onClick="@{CreateView.onClickProblemImage}"
+                    android:scaleType="centerCrop"
                     app:loadProblem="@{CreateView.problemUri}"
                     app:srcCompat="@drawable/text_noimage"
                     tools:ignore="ContentDescription" />
@@ -187,6 +188,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/no_image"
                     android:onClick="@{CreateView.onClickAnswerImage}"
+                    android:scaleType="centerCrop"
                     app:loadProblem="@{CreateView.answerUri}"
                     app:srcCompat="@drawable/text_noimage" />
 

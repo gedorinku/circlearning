@@ -66,6 +66,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:background="@drawable/no_image"
+                    android:scaleType="centerCrop"
                     app:srcCompat="@drawable/text_noimage" />
 
                 <Space
@@ -86,6 +87,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:background="@drawable/no_image"
+                    android:scaleType="centerCrop"
                     app:srcCompat="@drawable/text_noimage" />
 
 
