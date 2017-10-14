@@ -42,19 +42,16 @@ class GroupSetChangeActivity : AppCompatActivity(), GroupSetChangeViewModel.Call
 
     override fun onChange() {
         fragment.getPeopleList().forEach {
-            //val count = CountDownLatch(1)
-            ServerClient()
+            ServerClient(unitPersonal.authenticationKey)
                     .attachToGroup(unitPersonal.nowGroup, it)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-              //          count.countDown()
-                    }
+                    .subscribe {}
             Log.d(it.displayName,"追加された")
-            //count.await()
         }
 
         //TODO gtoup名の変更エンドポイント
+        setResult(0)
         finish()
     }
 

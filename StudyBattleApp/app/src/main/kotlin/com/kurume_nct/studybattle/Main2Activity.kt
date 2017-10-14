@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.Toast
 import com.bumptech.glide.module.ManifestParser
 import com.kurume_nct.studybattle.adapter.MainPagerAdapter
@@ -46,13 +47,25 @@ class Main2Activity : AppCompatActivity() {
     private val REQUEST_CREATE_GROUP = 9
     private val REQUEST_PERMISSION_STRAGE = 1
     private lateinit var progressDialog: ProgressDialog
+    private lateinit var toolbar: Toolbar
+    private lateinit var fab: View
+    private lateinit var viewPaper: ViewPager
+    private lateinit var tabLayout: TabLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
 
+        fab = findViewById(R.id.fab)
+        toolbar = findViewById(R.id.toolbar) as Toolbar
+        viewPaper = findViewById(R.id.pager) as ViewPager
+        tabLayout = findViewById(R.id.tabs) as TabLayout
+
         unitPer = application as UnitPersonal
         progressDialog = ProgressDialogTool(this).makeDialog()
+
+
+        toolbar.inflateMenu(R.menu.toolbar_menu)
 
         listenPermission()
         getUserInformation()
@@ -72,7 +85,7 @@ class Main2Activity : AppCompatActivity() {
                 .subscribe({
                     Log.d("userの情報を取得", "")
                     unitPer.myInfomation = it
-                    onToolBar()
+                    //onToolBar()
                     unitPer.userIcon = Uri.parse(it.icon!!.url)
                     getMyGroup()
                 }, {
@@ -145,6 +158,7 @@ class Main2Activity : AppCompatActivity() {
         progressDialog.dismiss()
         onTabLayout()
         onNavigationDrawer(userIcon)
+        onToolBar()
         Log.d(unitPer.myInfomation.id.toString(), "ユーザーID")
 
     }
@@ -153,14 +167,15 @@ class Main2Activity : AppCompatActivity() {
         BitmapFactory.decodeStream(URL(unitPer.userIcon.toString()).openStream())
     }
 
+
     private fun onToolBar() {
-        val fab = findViewById(R.id.fab)
+
         fab.setOnClickListener {
             startActivity(Intent(this, CreateProblemActivity::class.java))
         }
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
-        toolbar.title = unitPer.myInfomation.displayName
-        toolbar.inflateMenu(R.menu.toolbar_menu)
+
+        toolbar.title = unitPer.nowGroup.name
+
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.to_item -> {
@@ -183,9 +198,6 @@ class Main2Activity : AppCompatActivity() {
 
     private fun onTabLayout() {
 
-        val viewPaper: ViewPager = findViewById(R.id.pager) as ViewPager
-        val tabLayout: TabLayout = findViewById(R.id.tabs) as TabLayout
-
         (0 until tabLayout.tabCount).forEach {
             tabLayout.addTab(tabLayout.newTab())
         }
@@ -194,6 +206,7 @@ class Main2Activity : AppCompatActivity() {
         viewPaper.adapter = pagerAdapter
         viewPaper.offscreenPageLimit = pagerAdapter.count
         tabLayout.setupWithViewPager(viewPaper)
+        Log.d(tabLayout.clipChildren.toString(), "")
 
         //Create the Tabs
         (0 until tabLayout.tabCount).forEach {
@@ -246,6 +259,7 @@ class Main2Activity : AppCompatActivity() {
                         startActivity(intent)
                     } else {
                         unitPer.nowGroup = unitPer.myGroupList[position - 1]
+                        onToolBar()
                         onTabLayout()
                     }
                     false
