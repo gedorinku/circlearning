@@ -17,7 +17,8 @@
         <ImageView
             android:id="@+id/imageView16"
             android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             app:srcCompat="@android:drawable/ic_menu_my_calendar" />
 
         <LinearLayout
@@ -42,6 +43,13 @@
 
         </LinearLayout>
 
+        <ImageButton
+            android:id="@+id/get_out_list_button"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
     </LinearLayout>
 </layout>

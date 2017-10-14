@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.kurume_nct.studybattle.adapter.JoinPeopleAdapter
+import com.kurume_nct.studybattle.adapter.SelectedPeopleAdapter
 import com.kurume_nct.studybattle.databinding.FragmentJoinperopleListBinding
 import com.kurume_nct.studybattle.model.User
 
@@ -15,7 +16,7 @@ class SelectPeopleFragment(val callback: Callback) : Fragment() {
 
     private lateinit var binding: FragmentJoinperopleListBinding
     private val list = mutableListOf<User>()
-    private lateinit var listAdapter: JoinPeopleAdapter
+    private lateinit var listAdapter: SelectedPeopleAdapter
 
     companion object {
         fun newInstance(callback: Callback): SelectPeopleFragment {
@@ -31,7 +32,7 @@ class SelectPeopleFragment(val callback: Callback) : Fragment() {
 
         binding = FragmentJoinperopleListBinding.inflate(inflater, container, false)
         //onListReset()
-        listAdapter = JoinPeopleAdapter(activity, list, { position ->
+        listAdapter = SelectedPeopleAdapter(activity, list, { position ->
             onDeletePeople(position)
             Log.d("Click", position.toString())
         })
