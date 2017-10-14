@@ -51,9 +51,10 @@ class CreateGroupActivity : AppCompatActivity(), CreateGroupViewModel.Callback {
                                 .attachToGroup(it,user)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe {}
+                                .subscribe {Log.d(user.displayName, it.toString())}
                     }
                     val intent = Intent(this, Main2Activity::class.java)
+                    Toast.makeText(this, "グループの作成に成功", Toast.LENGTH_SHORT).show()
                     startActivity(intent)
                     finish()
                 }, {
