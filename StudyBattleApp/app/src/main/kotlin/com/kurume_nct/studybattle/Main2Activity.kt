@@ -1,32 +1,27 @@
 package com.kurume_nct.studybattle
 
-import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.SweepGradient
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
-import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
-import com.bumptech.glide.module.ManifestParser
 import com.kurume_nct.studybattle.adapter.MainPagerAdapter
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.Group
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
-import com.kurume_nct.studybattle.tools.ToolClass
 import com.kurume_nct.studybattle.view.*
 import com.mikepenz.google_material_typeface_library.GoogleMaterial
 import com.mikepenz.materialdrawer.AccountHeader
@@ -38,7 +33,6 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.net.URL
-import java.util.jar.Manifest
 
 
 class Main2Activity : AppCompatActivity() {
@@ -51,6 +45,7 @@ class Main2Activity : AppCompatActivity() {
     private lateinit var fab: View
     private lateinit var viewPaper: ViewPager
     private lateinit var tabLayout: TabLayout
+    private lateinit var mainPagerAdapter: MainPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -156,7 +151,7 @@ class Main2Activity : AppCompatActivity() {
 
     fun viewSetup(userIcon: Bitmap) {
         progressDialog.dismiss()
-        onTabLayout()
+        initOnTabLayout()
         onNavigationDrawer(userIcon)
         onToolBar()
         Log.d(unitPer.myInfomation.id.toString(), "ユーザーID")
@@ -197,12 +192,16 @@ class Main2Activity : AppCompatActivity() {
     }
 
     private fun onTabLayout() {
+        mainPagerAdapter.onRefreshFragments()
+    }
 
+    private fun initOnTabLayout(){
         (0 until tabLayout.tabCount).forEach {
             tabLayout.addTab(tabLayout.newTab())
         }
+        mainPagerAdapter = MainPagerAdapter(supportFragmentManager)
 
-        val pagerAdapter = MainPagerAdapter(supportFragmentManager)
+        val pagerAdapter = mainPagerAdapter
         viewPaper.adapter = pagerAdapter
         viewPaper.offscreenPageLimit = pagerAdapter.count
         tabLayout.setupWithViewPager(viewPaper)
@@ -287,9 +286,9 @@ class Main2Activity : AppCompatActivity() {
         }
     }
 
-    override fun onRestart() {
-        super.onRestart()
-        //onTabLayout()
+    override fun onResume() {
+        super.onResume()
+       // onTabLayout()
     }
 
     override fun onStart() {
