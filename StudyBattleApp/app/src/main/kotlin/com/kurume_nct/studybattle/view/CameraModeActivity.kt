@@ -193,13 +193,14 @@ class CameraModeActivity : Activity() {
                             .getImageById(it.imageIds[0])
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                }.subscribe({
-            setUpPicture(Uri.parse(it.url))
-            progressDialog.dismiss()
-        }, {
-            it.printStackTrace()
-            progressDialog.dismiss()
-        })
+                }
+                .subscribe({
+                    setUpPicture(Uri.parse(it.url))
+                    progressDialog.dismiss()
+                }, {
+                    it.printStackTrace()
+                    progressDialog.dismiss()
+                })
     }
 
     fun setUpPicture(uri: Uri) {
