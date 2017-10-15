@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import com.kurume_nct.studybattle.listFragment.MainListFragment
 import com.kurume_nct.studybattle.Main2Activity
 import com.kurume_nct.studybattle.R
-import com.kurume_nct.studybattle.databinding.FragmentProbemMainBinding
 import com.kurume_nct.studybattle.databinding.FragmentSubmittedMainBinding
 
 class SubmittedMainFragment : Fragment(), MainListFragment.Callback {
@@ -31,10 +30,10 @@ class SubmittedMainFragment : Fragment(), MainListFragment.Callback {
         Log.d("ほげえええ", "ほげえええ")
 
         fragmentFin = MainListFragment
-                .newInstance(resources.getInteger(R.integer.SUGGEST_FIN), this)
+                .newInstance(resources.getInteger(R.integer.SUBMIT_FIN), this)
 
         fragmentYet = MainListFragment
-                .newInstance(resources.getInteger(R.integer.SUGGEST_YET), this)
+                .newInstance(resources.getInteger(R.integer.SUBMIT_YET), this)
 
         binding = FragmentSubmittedMainBinding.inflate(inflater, container, false)
 

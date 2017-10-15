@@ -42,13 +42,30 @@
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/textView3_po"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_weight="1"
+                        android:text="最終正誤判定がまだの問題"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="21sp" />
+
+                    <LinearLayout
+                        android:id="@+id/fragment_list_made_final_yet"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:orientation="vertical"/>
+
+                    <TextView
                         android:id="@+id/textView3_"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_weight="1"
-                        android:text="未正誤判定の問題"
-                        android:textColor="@color/colorAccent"
+                        android:text="最初の正誤判定がまだの問題"
+                        android:textColor="@color/md_yellow_900"
                         android:textSize="21sp" />
 
                     <LinearLayout
