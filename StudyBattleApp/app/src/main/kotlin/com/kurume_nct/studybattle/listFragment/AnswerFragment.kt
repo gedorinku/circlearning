@@ -46,7 +46,7 @@ class AnswerFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         Log.d("i'm ", javaClass.name)
-        Log.d("oshushi", "oshushi")
+        //Log.d("oshushi", "oshushi")
         fin = arguments.getInt("fin")
         binding = FragmentAnswerListBinding.inflate(inflater, container, false)
         (0 until ansCount).forEach {
