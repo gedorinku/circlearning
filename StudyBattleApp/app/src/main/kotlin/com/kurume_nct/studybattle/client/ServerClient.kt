@@ -72,6 +72,8 @@ class ServerClient(authenticationKey: String = "") {
     fun verifyAuthentication(authenticationKey: String = this.authenticationKey)
             = server.verifyAuthentication(authenticationKey)
 
+    fun getUser(id: Int) = server.getUser(id)
+
     /**
      * <code>query</code>を<code>userName</code>の部分文字列の一つに含むユーザーを列挙します。
      */

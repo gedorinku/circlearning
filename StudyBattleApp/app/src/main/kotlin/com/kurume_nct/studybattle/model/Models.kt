@@ -11,7 +11,7 @@ data class LoginResult(val authenticationKey: String = "")
 
 data class User(val id: Int = 0, val userName: String = "", val displayName: String = "", val icon: Image? = null)
 
-data class Group(val id: Int = 0, val name: String = "", val owner: User = User())
+data class Group(val id: Int = 0, val name: String = "", val owner: User = User(), val members: List<User> = emptyList())
 
 data class Item(var bomb: Int = 0, var card: Int = 0, var shield: Int = 0, var magicHand: Int = 0)
 
