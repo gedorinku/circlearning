@@ -10,3 +10,5 @@ object Air : Item(0)
 object Bomb : Item(1)
 
 object Shield : Item(2)
+
+data class ItemStack(val id: Int, val count: Int)

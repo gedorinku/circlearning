@@ -194,4 +194,10 @@ interface Server {
             @Query("authenticationKey") authenticationKey: String,
             @Query("groupId") groupId: Int
     ): Observable<List<Solution>>
+
+    @GET("/my_items")
+    fun getMyItems(
+            @Query("authenticationKey") authenticationKey: String,
+            @Query("groupId") groupId: Int
+    ): Observable<List<ItemStack>>
 }

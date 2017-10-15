@@ -208,6 +208,8 @@ class ServerClient(authenticationKey: String = "") {
     fun getUnjudgedMySolutions(group: Group) = getUnjudgedMySolutions(group.id)
 
     fun getUnjudgedMySolutions(groupId: Int) = server.getUnjudgedMySolutions(authenticationKey, groupId)
+
+    fun getMyItems(groupId: Int) = server.getMyItems(authenticationKey, groupId)
 }
 
 private class StringConverterFactory : Converter.Factory() {
