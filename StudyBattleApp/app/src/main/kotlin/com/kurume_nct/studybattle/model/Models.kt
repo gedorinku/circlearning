@@ -32,7 +32,8 @@ data class Problem(
         val createdAt: String = "",
         @SerializedName("startsAt") val rawStartsAt: String = "",
         val durationMillis: Long = 0L,
-        val point: Int = 0
+        val point: Int = 0,
+        val solutions: List<Solution> = emptyList()
 ) {
 
     val startsAtTime: DateTime by lazy { DateTime.parse(rawStartsAt) }
