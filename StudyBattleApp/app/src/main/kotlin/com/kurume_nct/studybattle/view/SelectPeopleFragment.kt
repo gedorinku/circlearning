@@ -1,4 +1,4 @@
-package com.kurume_nct.studybattle.bug
+package com.kurume_nct.studybattle.view
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -7,18 +7,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.adapter.JoinPeopleAdapter
+import com.kurume_nct.studybattle.adapter.SelectedPeopleAdapter
 import com.kurume_nct.studybattle.databinding.FragmentJoinperopleListBinding
-import com.kurume_nct.studybattle.model.JoinPeople
 import com.kurume_nct.studybattle.model.User
-import com.kurume_nct.studybattle.tools.ToolClass
 
 class SelectPeopleFragment(val callback: Callback) : Fragment() {
 
     private lateinit var binding: FragmentJoinperopleListBinding
-    private lateinit var list: MutableList<User>
-    private lateinit var listAdapter: JoinPeopleAdapter
+    private val list = mutableListOf<User>()
+    private lateinit var listAdapter: SelectedPeopleAdapter
 
     companion object {
         fun newInstance(callback: Callback): SelectPeopleFragment {
@@ -34,25 +32,16 @@ class SelectPeopleFragment(val callback: Callback) : Fragment() {
 
         binding = FragmentJoinperopleListBinding.inflate(inflater, container, false)
         //onListReset()
-        list = mutableListOf()
-        listAdapter = JoinPeopleAdapter(activity, list, { position ->
+        listAdapter = SelectedPeopleAdapter(activity, list, { position ->
             onDeletePeople(position)
             Log.d("Click", position.toString())
-            //callback.selectChange(list[position - 1])
         })
         binding.list.adapter = listAdapter
         binding.list.layoutManager = LinearLayoutManager(binding.list.context)
         return binding.root
     }
 
-    /*private fun onListReset() {
-        *//*val uri = ToolClass().convertUrlFromDrawableResId(context, R.drawable.icon_cut)!!
-        val joinPeople = JoinPeople()*//*
-        *//*joinPeople.iconUri = uri
-        joinPeople.selected = true
-        list = mutableListOf(joinPeople)
-        (0..5).forEach { list.add(joinPeople) }*//*
-    }*/
+    fun getPeopleList(): MutableList<User> = list
 
     fun onAddPeople(position: Int, people: User) {
         Log.d("onAddPeople", position.toString())

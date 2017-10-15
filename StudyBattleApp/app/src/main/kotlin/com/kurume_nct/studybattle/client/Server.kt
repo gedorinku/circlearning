@@ -40,6 +40,9 @@ interface Server {
             @Field("authenticationKey") authenticationKey: String
     ): Observable<User>
 
+    @GET("/user/by_id/{id}")
+    fun getUser(@Path("id") id: Int): Observable<User>
+
     @GET("/user/search")
     fun searchUsers(@Query("query") query: String): Observable<List<User>>
 
@@ -142,6 +145,12 @@ interface Server {
             @Field("authenticationKey") authenticationKey: String,
             @Field("groupId") groupId: Int
     ): Observable<ProblemRequestResponse>
+
+    @GET("/problem/pass")
+    fun passProblem(
+            @Query("authenticationKey") authenticationKey: String,
+            @Query("problemId") problemId: Int
+    ): Observable<Unit>
 
     @FormUrlEncoded
     @POST("/solution/create")

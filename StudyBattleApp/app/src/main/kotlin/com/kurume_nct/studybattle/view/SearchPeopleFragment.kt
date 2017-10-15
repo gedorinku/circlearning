@@ -1,4 +1,4 @@
-package com.kurume_nct.studybattle.bug
+package com.kurume_nct.studybattle.view
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -11,19 +11,17 @@ import android.view.ViewGroup
 import com.kurume_nct.studybattle.adapter.JoinPeopleAdapter
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.FragmentChoosePeoplelistBinding
-import com.kurume_nct.studybattle.model.JoinPeople
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.model.User
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.CountDownLatch
 
 /**
  * Created by hanah on 10/2/2017.
  */
 class SearchPeopleFragment(val callback: Callback) : Fragment() {
     private lateinit var binding: FragmentChoosePeoplelistBinding
-    private lateinit var list: MutableList<User>
+    private val list = mutableListOf<User>()
     private lateinit var listAdapter: JoinPeopleAdapter
     private lateinit var unitPer: UnitPersonal
     private var searching = false
@@ -45,16 +43,14 @@ class SearchPeopleFragment(val callback: Callback) : Fragment() {
         binding = FragmentChoosePeoplelistBinding.inflate(inflater, container, false)
         //onListReset()
 
-        list = mutableListOf()
-
         listAdapter = JoinPeopleAdapter(activity, list, { position ->
-            onDeletePeople(position)
-            Log.d("Clickc", position.toString())
+            Log.d(list[position].displayName, position.toString())
             callback.chooseChange(list[position])
+            onDeletePeople(position)
         })
 
         binding.list.adapter = listAdapter
-        binding.list.layoutManager = LinearLayoutManager(binding.list.context)
+        binding.list.layoutManager = LinearLayoutManager(binding.list.context) as RecyclerView.LayoutManager?
 
         return binding.root
     }
@@ -65,7 +61,6 @@ class SearchPeopleFragment(val callback: Callback) : Fragment() {
         searching = true
         if (str.isNotBlank()) {
             val size = list.size
-            list = mutableListOf()
             listAdapter.notifyItemRangeRemoved(0, size)
             Log.d("hoge", "list")
             val client = ServerClient(unitPer.authenticationKey)
@@ -86,20 +81,6 @@ class SearchPeopleFragment(val callback: Callback) : Fragment() {
             searching = false
         }
     }
-
-    /*fun parsePeople(user: User): JoinPeople {
-        val joinPerson = JoinPeople()
-        joinPerson.id = user.id
-        joinPerson.selected = false
-        joinPerson.name = user.displayName + "(" + user.userName + ")"
-        return joinPerson
-    }*/
-
-    /*fun onAddPeople(user: MutableList<User>) {
-        val people = mutableListOf<JoinPeople>()
-        people.addAll(user.map { parsePeople(it) })
-
-    }*/
 
     private fun onDeletePeople(position: Int) {
         Log.d("onDeletePeople", position.toString())

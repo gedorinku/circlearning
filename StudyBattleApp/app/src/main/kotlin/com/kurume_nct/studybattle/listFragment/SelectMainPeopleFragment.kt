@@ -1,21 +1,17 @@
-package com.kurume_nct.studybattle.bug
+package com.kurume_nct.studybattle.listFragment
 
-import android.inputmethodservice.Keyboard
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.databinding.FragmentSelectPeopleBinding
-import com.kurume_nct.studybattle.model.JoinPeople
 import android.text.Editable
-import com.kurume_nct.studybattle.R.id.editText
+import com.kurume_nct.studybattle.view.SelectPeopleFragment
 import com.kurume_nct.studybattle.model.User
+import com.kurume_nct.studybattle.view.SearchPeopleFragment
 
 
 /**
@@ -54,7 +50,6 @@ class SelectMainPeopleFragment : Fragment(), SelectPeopleFragment.Callback, Sear
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                //chooseFragment.onListReset(binding.selectPeopleUnit.searchText)
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -64,6 +59,8 @@ class SelectMainPeopleFragment : Fragment(), SelectPeopleFragment.Callback, Sear
 
         return binding.root
     }
+
+    fun getPeopleList(): MutableList<User> = selectFragment.getPeopleList()
 
     override fun selectChange(people: User) {
         selectFragment.onAddPeople(0, people)

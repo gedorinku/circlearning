@@ -27,7 +27,6 @@ class JoinPeopleAdapter(context: Context, private val list: MutableList<User>, v
                 .context)
                 .inflate(R.layout.fragment_joinperople, parent, false)
         val holder = ViewHolder(view)
-        view.tag = holder
         holder.itemView.setOnClickListener {
             callback(holder.adapterPosition)
         }

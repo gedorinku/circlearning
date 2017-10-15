@@ -85,10 +85,8 @@ class CameraModeActivity : Activity() {
         setContentView(R.layout.activity_camera_mode)
         userName = intent.getStringExtra("userName")
         // 宣言
-        comment = findViewById(R.id.comment) as TextView
         submitImageButton = findViewById(R.id.submit_image_button) as ImageButton
         submitItemImageButton = findViewById(R.id.submit_item_image_button) as ImageButton
-        experiment = findViewById(R.id.experiment) as TextView
         submissionButton = findViewById(R.id.submission_button) as Button
         passButton = findViewById(R.id.pass_button) as Button
         problemImage = findViewById(R.id.problem_image_at_camera) as ImageView
@@ -131,7 +129,7 @@ class CameraModeActivity : Activity() {
             }
         }
 
-        val dialogView: DialogItemSelectBinding = DataBindingUtil.inflate(
+        dialogView = DataBindingUtil.inflate(
                 LayoutInflater.from(this), R.layout.dialog_item_select, null, false)
 
         unitPer.itemCount.run {
@@ -140,32 +138,37 @@ class CameraModeActivity : Activity() {
             if (magicHand <= 0) dialogView.handButton12.visibility = View.INVISIBLE
         }
 
+        dialog = AlertDialog.Builder(this)
+                .setView(dialogView.root)
+                .create()
+
         dialogView.bombButton17.setOnClickListener {
             if (putItemId != 0) {
                 Glide.with(this).load(R.drawable.framecard_bomb).into(submitItemImageButton)
             }
             putItemId = 0
-            dialog.cancel()
+            dialog.dismiss()
         }
         dialogView.cardButton16.setOnClickListener {
             if (putItemId != 1) {
                 Glide.with(this).load(R.drawable.framecard_card).into(submitItemImageButton)
             }
             putItemId = 1
-            dialog.cancel()
+            dialog.dismiss()
         }
         dialogView.handButton12.setOnClickListener {
             if (putItemId != 3) {
                 Glide.with(this).load(R.drawable.framecard_magichand).into(submitItemImageButton)
             }
             putItemId = 3
-            dialog.cancel()
+            dialog.dismiss()
         }
         dialogView.removeItemButton19.setOnClickListener {
             if (putItemId != -1) {
                 Glide.with(this).load(R.drawable.hatena).into(submitItemImageButton)
-                dialog.cancel()
             }
+            putItemId = -1
+            dialog.dismiss()
         }
     }
 
@@ -177,23 +180,26 @@ class CameraModeActivity : Activity() {
                 .getProblem(problemId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
+                .flatMap {
                     problemName.text = it.title
-                    writerName.text = it.createdAt
-                    it.imageIds.run {
-                        client
-                                .getImageById(it.id)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe {
-                                    setUpPicture(Uri.parse(it.url))
-                                    progressDialog.dismiss()
-                                }
-                    }
-                }, {
-                    it.printStackTrace()
-                    progressDialog.dismiss()
-                })
+                    client
+                            .getUser(it.ownerId)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe {
+                                writerName.text = it.displayName
+                            }
+                    client
+                            .getImageById(it.imageIds[0])
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                }.subscribe({
+            setUpPicture(Uri.parse(it.url))
+            progressDialog.dismiss()
+        }, {
+            it.printStackTrace()
+            progressDialog.dismiss()
+        })
     }
 
     fun setUpPicture(uri: Uri) {
@@ -209,7 +215,7 @@ class CameraModeActivity : Activity() {
                 .uploadImage(uri, this)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
+                .flatMap {
                     val imageId = it.id
                     client
                             .createSolution(
@@ -220,43 +226,50 @@ class CameraModeActivity : Activity() {
                             )
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe({
-                                progress.dismiss()
-                                decrementItem(putItemId)
-                                startActivity(Intent(this, LotteryActivity::class.java))
-                                finish()
-                            }, {
-                                progress.dismiss()
-                                it.printStackTrace()
-                                Toast.makeText(this, "解答提出に失敗しました。ネット環境を確認してください。", Toast.LENGTH_SHORT).show()
-                            })
-                }, {
-                    progress.dismiss()
-                    it.printStackTrace()
-                    Toast.makeText(this, "解答提出に失敗しました。画像データが大きすぎる可能性があります。", Toast.LENGTH_SHORT).show()
-                })
+                }.subscribe({
+            progress.dismiss()
+            decrementItem(putItemId)
+            startActivity(Intent(this, LotteryActivity::class.java))
+            finish()
+        }, {
+            progress.dismiss()
+            it.printStackTrace()
+            Toast.makeText(this, "解答提出に失敗しました。ネット環境を確認してください。", Toast.LENGTH_SHORT).show()
+        })
     }
 
     private fun sadDialog() {
         //send data📩
-        val passAlert = AlertDialog.Builder(this)
-        val passView = this.layoutInflater.inflate(R.layout.dialog_pass_sad, null)
-        passAlert.setOnDismissListener {
-            finish()
-        }
-        passAlert.setView(passView)
-        val alert = passAlert.create()
-        alert.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        alert.show()
+        ServerClient(unitPer.authenticationKey)
+                .passProblem(problemId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    val passAlert = AlertDialog.Builder(this)
+                    val passView = this.layoutInflater.inflate(R.layout.dialog_pass_sad, null)
+                    passView.setOnClickListener {
+                        finish()
+                    }
+                    passAlert.setOnDismissListener {
+                        finish()
+                    }
+                    passAlert.setView(passView)
+                    val alert = passAlert.create()
+                    alert.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                    alert.show()
+                }
     }
 
     private fun imageSetting() {
         val dialogView: DialogCameraStrageChooseBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(this), R.layout.dialog_camera_strage_choose, null, false
         )
+        var dialog_: AlertDialog = AlertDialog.Builder(this)
+                .setView(dialogView.root)
+                .create()
         dialogView.run {
             cameraButton.setOnClickListener {
-                dialog.cancel()
+                dialog_.cancel()
                 // Android 6, API 23以上でパーミッシンの確認
                 if (Build.VERSION.SDK_INT >= 23) {
                     checkPermission()
@@ -265,7 +278,7 @@ class CameraModeActivity : Activity() {
                 }
             }
             strageButton.setOnClickListener {
-                dialog.cancel()
+                dialog_.cancel()
                 //ファイルを選択
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
                 //開けるものだけ表示
@@ -275,22 +288,19 @@ class CameraModeActivity : Activity() {
                 startActivityForResult(intent, RESULT_PICK_IMAGEFILE)
             }
         }
-        dialog = AlertDialog.Builder(this)
+        dialog_ = AlertDialog.Builder(this)
                 .setView(dialogView.root)
                 .create()
 
-        dialog.show()
+        dialog_.show()
     }
 
     private fun itemSetting() {
-        dialog = AlertDialog.Builder(this)
-                .setView(dialogView.root)
-                .create()
 
         dialog.show()
     }
 
-    fun decrementItem(itemId: Int) {
+    private fun decrementItem(itemId: Int) {
         if (itemId != -1) {
             when (itemId) {
                 0 -> unitPer.itemCount.bomb -= 1
@@ -335,9 +345,6 @@ class CameraModeActivity : Activity() {
             }
 
         }
-        flag = 1
-        comment!!.text = "解答を提出してね"
-        // experiment.setText(filePath);
     }
 
     //カメラ撮影した際の画像を保存するフォルダ作成関数

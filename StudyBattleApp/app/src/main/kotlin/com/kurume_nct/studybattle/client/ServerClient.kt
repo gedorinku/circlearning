@@ -72,6 +72,8 @@ class ServerClient(authenticationKey: String = "") {
     fun verifyAuthentication(authenticationKey: String = this.authenticationKey)
             = server.verifyAuthentication(authenticationKey)
 
+    fun getUser(id: Int) = server.getUser(id)
+
     /**
      * <code>query</code>を<code>userName</code>の部分文字列の一つに含むユーザーを列挙します。
      */
@@ -171,6 +173,11 @@ class ServerClient(authenticationKey: String = "") {
      * 新しい問題を自分に割り当てるよう要求します。
      */
     fun requestNewProblem(groupId: Int) = server.requestNewProblem(authenticationKey, groupId)
+
+    /**
+     * 割り当てられた問題をパスします。
+     */
+    fun passProblem(problemId: Int) = server.passProblem(authenticationKey, problemId)
 
     fun createSolution(
             text: String, problem: Problem, imageIds: List<Int>
