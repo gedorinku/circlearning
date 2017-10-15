@@ -11,6 +11,7 @@ import com.kurume_nct.studybattle.listFragment.MainListFragment
 import com.kurume_nct.studybattle.Main2Activity
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.databinding.FragmentMadeMainBinding
+import kotlin.concurrent.fixedRateTimer
 
 class MadeMainFragment : Fragment(), MainListFragment.Callback {
 
@@ -18,6 +19,7 @@ class MadeMainFragment : Fragment(), MainListFragment.Callback {
     lateinit var binding: FragmentMadeMainBinding
     var refreshCounter = 0
     lateinit var fragmentCollectYet: MainListFragment
+    lateinit var fragmentFinalJudgeYet: MainListFragment
     lateinit var fragmentJudgeYet: MainListFragment
     lateinit var fragmentFin: MainListFragment
 
@@ -31,23 +33,30 @@ class MadeMainFragment : Fragment(), MainListFragment.Callback {
         fragmentCollectYet = MainListFragment
                 .newInstance(resources.getInteger(R.integer.MADE_COLLECT_YET), this)
 
+        fragmentFinalJudgeYet = MainListFragment
+                .newInstance(resources.getInteger(R.integer.MADE_FINAL_JUDGE_YET), this)
+
         fragmentJudgeYet = MainListFragment
-                .newInstance(resources.getInteger(R.integer.MADE_JUDGE_YET), this)
+                .newInstance(resources.getInteger(R.integer.MADE_FIRST_JUDGE_YET), this)
 
         fragmentFin = MainListFragment
                 .newInstance(resources.getInteger(R.integer.MADE_FIN), this)
 
         mContent.supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragment_list_made_collect_yet, fragmentCollectYet)
+                .replace(R.id.fragment_list_made_collect_yet, fragmentCollectYet)
                 .commit()
         mContent.supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragment_list_made_yet, fragmentJudgeYet)
+                .add(R.id.fragment_list_made_final_yet, fragmentFinalJudgeYet)
                 .commit()
         mContent.supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragment_list_made_fin, fragmentFin)
+                .replace(R.id.fragment_list_made_yet, fragmentJudgeYet)
+                .commit()
+        mContent.supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragment_list_made_fin, fragmentFin)
                 .commit()
 
         binding.swipeRefreshFragmentMade.setOnRefreshListener {
@@ -63,6 +72,7 @@ class MadeMainFragment : Fragment(), MainListFragment.Callback {
         fragmentCollectYet.onRefreshList()
         fragmentJudgeYet.onRefreshList()
         fragmentFin.onRefreshList()
+        fragmentFinalJudgeYet.onRefreshList()
     }
 
     override fun onStopSwipeRefresh() {
