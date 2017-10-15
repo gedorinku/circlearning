@@ -21,6 +21,7 @@ import com.kurume_nct.studybattle.adapter.MainPagerAdapter
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.Group
 import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.tools.CustomViewActivity
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
 import com.kurume_nct.studybattle.view.*
 import com.mikepenz.google_material_typeface_library.GoogleMaterial
@@ -184,6 +185,7 @@ class Main2Activity : AppCompatActivity() {
                     startActivityForResult(intent, 0)
                 }
                 R.id.to_setting_group -> {
+                    startActivity(Intent(this, CustomViewActivity::class.java))
                     Toast.makeText(this, "未実装の機能です。本選までお楽しみに！", Toast.LENGTH_SHORT).show()
                 }
             }
