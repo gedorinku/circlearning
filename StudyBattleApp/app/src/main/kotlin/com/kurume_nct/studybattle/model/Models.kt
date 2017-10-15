@@ -70,3 +70,16 @@ data class Solution(
         judgingState == JudgingState.Accepted
     }
 }
+
+data class ProblemOpenResponse(
+        val happened: String = ""
+) {
+
+    val openAction: ProblemOpenAction by lazy { ProblemOpenAction.valueOf(happened) }
+}
+
+enum class ProblemOpenAction {
+    NONE,
+    EXPLODED,
+    DEFENDED
+}

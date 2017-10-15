@@ -179,6 +179,11 @@ class ServerClient(authenticationKey: String = "") {
      */
     fun passProblem(problemId: Int) = server.passProblem(authenticationKey, problemId)
 
+    /**
+     * 問題を開きます。
+     */
+    fun openProblem(problemId: Int) = server.openProblem(authenticationKey, problemId)
+
     fun createSolution(
             text: String, problem: Problem, imageIds: List<Int>, item: Item
     ): Observable<Solution> = createSolution(text, problem.id, imageIds, item)

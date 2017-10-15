@@ -152,6 +152,12 @@ interface Server {
             @Query("problemId") problemId: Int
     ): Observable<Unit>
 
+    @GET("/problem/open")
+    fun openProblem(
+            @Query("authenticationKey") authenticationKey: String,
+            @Query("problemId") problemId: Int
+    ): Observable<ProblemOpenResponse>
+
     @FormUrlEncoded
     @POST("/solution/create")
     fun createSolution(
