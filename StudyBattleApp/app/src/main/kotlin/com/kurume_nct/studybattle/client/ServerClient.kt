@@ -180,14 +180,14 @@ class ServerClient(authenticationKey: String = "") {
     fun passProblem(problemId: Int) = server.passProblem(authenticationKey, problemId)
 
     fun createSolution(
-            text: String, problem: Problem, imageIds: List<Int>
-    ): Observable<Solution> = createSolution(text, problem.id, imageIds)
+            text: String, problem: Problem, imageIds: List<Int>, item: Item
+    ): Observable<Solution> = createSolution(text, problem.id, imageIds, item)
 
     fun createSolution(
-            text: String, problemId: Int, imageIds: List<Int>
+            text: String, problemId: Int, imageIds: List<Int>, item: Item
     ): Observable<Solution> =
             server
-                    .createSolution(authenticationKey, text, problemId, imageIds.toIntArray())
+                    .createSolution(authenticationKey, text, problemId, imageIds.toIntArray(), item.id)
                     .flatMap {
                         server.getSolution(authenticationKey, it.id)
                     }

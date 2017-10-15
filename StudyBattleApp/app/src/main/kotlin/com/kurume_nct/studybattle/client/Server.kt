@@ -158,7 +158,8 @@ interface Server {
             @Field("authenticationKey") authenticationKey: String,
             @Field("text") text: String,
             @Field("problemId") problemId: Int,
-            @Field("imageIds[]") imageIds: IntArray
+            @Field("imageIds[]") imageIds: IntArray,
+            @Field("attachedItemId") attachedItemId: Int
     ): Observable<IDResponse>
 
     @FormUrlEncoded

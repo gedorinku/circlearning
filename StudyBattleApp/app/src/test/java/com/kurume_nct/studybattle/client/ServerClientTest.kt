@@ -1,5 +1,6 @@
 package com.kurume_nct.studybattle.client
 
+import com.kurume_nct.studybattle.model.Air
 import com.kurume_nct.studybattle.model.Solution
 import org.joda.time.DateTime
 import org.joda.time.Duration
@@ -209,7 +210,7 @@ class ServerClientTest {
                 "スポーツ研究会だ。"
 
         val testSubscriber = client
-                .createSolution(solutionText, problem, emptyList())
+                .createSolution(solutionText, problem, emptyList(), Air)
                 .test()
         testSubscriber.awaitTerminalEvent()
 
