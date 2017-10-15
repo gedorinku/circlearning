@@ -41,7 +41,7 @@ interface Server {
     ): Observable<User>
 
     @GET("/user/by_id/{id}")
-    fun getUser(@Query("id") id: Int): Observable<User>
+    fun getUser(@Path("id") id: Int): Observable<User>
 
     @GET("/user/search")
     fun searchUsers(@Query("query") query: String): Observable<List<User>>
