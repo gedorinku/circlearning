@@ -18,6 +18,8 @@ class AnswerMainFragment : Fragment(), MainListFragment.Callback {
     lateinit var mContext: Main2Activity
     lateinit var binding: FragmentAnswerMainBinding
     var refreshCounter = 0
+    lateinit var fragmentYet: MainListFragment
+    lateinit var fragmentFin: MainListFragment
 
     fun newInstance(): AnswerMainFragment = AnswerMainFragment()
 
@@ -26,10 +28,10 @@ class AnswerMainFragment : Fragment(), MainListFragment.Callback {
         Log.d("i'm ", javaClass.name)
         binding = FragmentAnswerMainBinding.inflate(inflater, container, false)
 
-        val fragmentYet = MainListFragment
+        fragmentYet = MainListFragment
                 .newInstance(resources.getInteger(R.integer.ANSWER_YET), this)
 
-        val fragmentFin = MainListFragment
+        fragmentFin = MainListFragment
                 .newInstance(resources.getInteger(R.integer.ANSWER_FIN), this)
 
         mContext.supportFragmentManager
@@ -43,13 +45,17 @@ class AnswerMainFragment : Fragment(), MainListFragment.Callback {
                 .commit()
 
         binding.swipeRefreshFragmentAnswer.setOnRefreshListener {
-            fragmentYet.onRefreshList()
-            fragmentFin.onRefreshList()
+            onRefresh()
         }
 
         binding.swipeRefreshFragmentAnswer.setColorSchemeResources(R.color.md_yellow_A700, R.color.md_blue_900)
 
         return binding.root
+    }
+
+    fun onRefresh(){
+        fragmentYet.onRefreshList()
+        fragmentFin.onRefreshList()
     }
 
     override fun onStopSwipeRefresh() {

@@ -77,22 +77,26 @@ class MainListFragment(val callback: Callback) : Fragment() {
                 client.getMyCollectingProblems(groupId)
                         .firstOrError()
 
-            resources.getInteger(R.integer.MADE_JUDGE_YET) ->
+            resources.getInteger(R.integer.MADE_FIRST_JUDGE_YET) ->
                 client.getMyJudgingProblems(groupId)
                         .firstOrError()
+
+            resources.getInteger(R.integer.MADE_FINAL_JUDGE_YET) ->
+                //TODO
+                Single.just(emptyList())
 
             resources.getInteger(R.integer.MADE_FIN) ->
                 client.getMyJudgedProblems(groupId)
                         .firstOrError()
 
-            resources.getInteger(R.integer.SUGGEST_YET) ->
+            resources.getInteger(R.integer.SUBMIT_YET) ->
                 client.getUnjudgedMySolutions(groupId)
                         .flatMap { it.toObservable() }
                         .map { client.getProblem(it.problemId) }
                         .mergeAll()
                         .toList()
 
-            resources.getInteger(R.integer.SUGGEST_FIN) ->
+            resources.getInteger(R.integer.SUBMIT_FIN) ->
                 client.getJudgedMySolutions(groupId)
                         .flatMap { it.toObservable() }
                         .map { client.getProblem(it.problemId) }
@@ -149,7 +153,7 @@ class MainListFragment(val callback: Callback) : Fragment() {
                         resources.getInteger(R.integer.ANSWER_FIN) -> {
                             intent = Intent(context, AnswerActivity::class.java)
                             intent.putExtra("problemId", problemList[position].id)
-                            intent.putExtra("fin", 2)
+                            intent.putExtra("fin", 3)
                             startActivity(intent)
                         }
                         resources.getInteger(R.integer.MADE_COLLECT_YET) -> {
@@ -157,25 +161,31 @@ class MainListFragment(val callback: Callback) : Fragment() {
                             intent.putExtra("problemId", problemList[position].id)
                             startActivity(intent)
                         }
-                        resources.getInteger(R.integer.MADE_JUDGE_YET) -> {
+                        resources.getInteger(R.integer.MADE_FIRST_JUDGE_YET) -> {
                             intent = Intent(context, AnswerActivity::class.java)
                             intent.putExtra("fin", 0)
                             intent.putExtra("problemId", problemList[position].id)
                             startActivity(intent)
                         }
-                        resources.getInteger(R.integer.MADE_FIN) -> {
-                            intent = Intent(context, AnswerActivity::class.java)
+                        resources.getInteger(R.integer.MADE_FINAL_JUDGE_YET) -> {
+                            intent = Intent(context,AnswerActivity::class.java)
                             intent.putExtra("fin", 2)
                             intent.putExtra("problemId", problemList[position].id)
                             startActivity(intent)
                         }
-                        resources.getInteger(R.integer.SUGGEST_YET) -> {
+                        resources.getInteger(R.integer.MADE_FIN) -> {
+                            intent = Intent(context, AnswerActivity::class.java)
+                            intent.putExtra("fin", 3)
+                            intent.putExtra("problemId", problemList[position].id)
+                            startActivity(intent)
+                        }
+                        resources.getInteger(R.integer.SUBMIT_YET) -> {
                             intent = Intent(context, PersonalAnswerActivity::class.java)
                             intent.putExtra("fin", false)
                             intent.putExtra("problemId", problemList[position].id)
                             startActivity(intent)
                         }
-                        resources.getInteger(R.integer.SUGGEST_FIN) -> {
+                        resources.getInteger(R.integer.SUBMIT_FIN) -> {
                             intent = Intent(context, PersonalAnswerActivity::class.java)
                             intent.putExtra("fin", true)
                             intent.putExtra("problemId", problemList[position].id)

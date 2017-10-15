@@ -50,7 +50,6 @@ class SelectMainPeopleFragment : Fragment(), SelectPeopleFragment.Callback, Sear
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                //chooseFragment.onListReset(binding.selectPeopleUnit.searchText)
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -60,6 +59,8 @@ class SelectMainPeopleFragment : Fragment(), SelectPeopleFragment.Callback, Sear
 
         return binding.root
     }
+
+    fun getPeopleList(): MutableList<User> = selectFragment.getPeopleList()
 
     override fun selectChange(people: User) {
         selectFragment.onAddPeople(0, people)

@@ -1,31 +1,28 @@
 package com.kurume_nct.studybattle
 
-import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.SweepGradient
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
-import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.Toast
-import com.bumptech.glide.module.ManifestParser
 import com.kurume_nct.studybattle.adapter.MainPagerAdapter
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.Group
 import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.tools.CustomViewActivity
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
-import com.kurume_nct.studybattle.tools.ToolClass
 import com.kurume_nct.studybattle.view.*
 import com.mikepenz.google_material_typeface_library.GoogleMaterial
 import com.mikepenz.materialdrawer.AccountHeader
@@ -37,7 +34,6 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.net.URL
-import java.util.jar.Manifest
 
 
 class Main2Activity : AppCompatActivity() {
@@ -46,13 +42,26 @@ class Main2Activity : AppCompatActivity() {
     private val REQUEST_CREATE_GROUP = 9
     private val REQUEST_PERMISSION_STRAGE = 1
     private lateinit var progressDialog: ProgressDialog
+    private lateinit var toolbar: Toolbar
+    private lateinit var fab: View
+    private lateinit var viewPaper: ViewPager
+    private lateinit var tabLayout: TabLayout
+    private lateinit var mainPagerAdapter: MainPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
 
+        fab = findViewById(R.id.fab)
+        toolbar = findViewById(R.id.toolbar) as Toolbar
+        viewPaper = findViewById(R.id.pager) as ViewPager
+        tabLayout = findViewById(R.id.tabs) as TabLayout
+
         unitPer = application as UnitPersonal
         progressDialog = ProgressDialogTool(this).makeDialog()
+
+
+        toolbar.inflateMenu(R.menu.toolbar_menu)
 
         listenPermission()
         getUserInformation()
@@ -72,7 +81,7 @@ class Main2Activity : AppCompatActivity() {
                 .subscribe({
                     Log.d("userの情報を取得", "")
                     unitPer.myInfomation = it
-                    onToolBar()
+                    //onToolBar()
                     unitPer.userIcon = Uri.parse(it.icon!!.url)
                     getMyGroup()
                 }, {
@@ -143,8 +152,9 @@ class Main2Activity : AppCompatActivity() {
 
     fun viewSetup(userIcon: Bitmap) {
         progressDialog.dismiss()
-        onTabLayout()
+        initOnTabLayout()
         onNavigationDrawer(userIcon)
+        onToolBar()
         Log.d(unitPer.myInfomation.id.toString(), "ユーザーID")
 
     }
@@ -153,14 +163,15 @@ class Main2Activity : AppCompatActivity() {
         BitmapFactory.decodeStream(URL(unitPer.userIcon.toString()).openStream())
     }
 
+
     private fun onToolBar() {
-        val fab = findViewById(R.id.fab)
+
         fab.setOnClickListener {
             startActivity(Intent(this, CreateProblemActivity::class.java))
         }
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
-        toolbar.title = unitPer.myInfomation.displayName
-        toolbar.inflateMenu(R.menu.toolbar_menu)
+
+        toolbar.title = unitPer.nowGroup.name
+
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.to_item -> {
@@ -174,6 +185,7 @@ class Main2Activity : AppCompatActivity() {
                     startActivityForResult(intent, 0)
                 }
                 R.id.to_setting_group -> {
+                    startActivity(Intent(this, CustomViewActivity::class.java))
                     Toast.makeText(this, "未実装の機能です。本選までお楽しみに！", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -182,18 +194,20 @@ class Main2Activity : AppCompatActivity() {
     }
 
     private fun onTabLayout() {
+        mainPagerAdapter.onRefreshFragments()
+    }
 
-        val viewPaper: ViewPager = findViewById(R.id.pager) as ViewPager
-        val tabLayout: TabLayout = findViewById(R.id.tabs) as TabLayout
-
+    private fun initOnTabLayout(){
         (0 until tabLayout.tabCount).forEach {
             tabLayout.addTab(tabLayout.newTab())
         }
+        mainPagerAdapter = MainPagerAdapter(supportFragmentManager)
 
-        val pagerAdapter = MainPagerAdapter(supportFragmentManager)
+        val pagerAdapter = mainPagerAdapter
         viewPaper.adapter = pagerAdapter
         viewPaper.offscreenPageLimit = pagerAdapter.count
         tabLayout.setupWithViewPager(viewPaper)
+        Log.d(tabLayout.clipChildren.toString(), "")
 
         //Create the Tabs
         (0 until tabLayout.tabCount).forEach {
@@ -246,6 +260,7 @@ class Main2Activity : AppCompatActivity() {
                         startActivity(intent)
                     } else {
                         unitPer.nowGroup = unitPer.myGroupList[position - 1]
+                        onToolBar()
                         onTabLayout()
                     }
                     false
@@ -271,19 +286,6 @@ class Main2Activity : AppCompatActivity() {
         if (requestCode == 0) {
             getMyGroup()
         }
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        onTabLayout()
-    }
-
-    override fun onStart() {
-        super.onStart()
-    }
-
-    override fun onStop() {
-        super.onStop()
     }
 
     override fun onDestroy() {

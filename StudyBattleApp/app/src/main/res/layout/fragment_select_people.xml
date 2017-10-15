@@ -14,7 +14,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
 
             <ImageView
@@ -31,15 +31,15 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:text="@={SelectPeopleUnit.searchText}"
                 android:hint="検索したい名前を入力して下さい"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:text="@={SelectPeopleUnit.searchText}" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/fragment_search_list"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:orientation="vertical" />
@@ -54,8 +54,8 @@
         <LinearLayout
             android:id="@+id/fragment_select_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:orientation="vertical" />
 
     </LinearLayout>
