@@ -153,7 +153,7 @@ class MainListFragment(val callback: Callback) : Fragment() {
                         resources.getInteger(R.integer.ANSWER_FIN) -> {
                             intent = Intent(context, AnswerActivity::class.java)
                             intent.putExtra("problemId", problemList[position].id)
-                            intent.putExtra("fin", 2)
+                            intent.putExtra("fin", 3)
                             startActivity(intent)
                         }
                         resources.getInteger(R.integer.MADE_COLLECT_YET) -> {
@@ -169,13 +169,13 @@ class MainListFragment(val callback: Callback) : Fragment() {
                         }
                         resources.getInteger(R.integer.MADE_FINAL_JUDGE_YET) -> {
                             intent = Intent(context,AnswerActivity::class.java)
-                            intent.putExtra("fin", 1)
+                            intent.putExtra("fin", 2)
                             intent.putExtra("problemId", problemList[position].id)
                             startActivity(intent)
                         }
                         resources.getInteger(R.integer.MADE_FIN) -> {
                             intent = Intent(context, AnswerActivity::class.java)
-                            intent.putExtra("fin", 2)
+                            intent.putExtra("fin", 3)
                             intent.putExtra("problemId", problemList[position].id)
                             startActivity(intent)
                         }

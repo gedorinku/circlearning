@@ -28,7 +28,8 @@ class AnswerFragment : Fragment() {
     lateinit var binding: FragmentAnswerListBinding
     private val CHECK_ANS = 0
     private val YET_ANS = 1
-    private val FIN_ANS = 2
+    private val YET_FINAL_ANS = 2
+    private val FIN_ANS = 3
     private var ansCount = 20
 
     init {
@@ -57,6 +58,9 @@ class AnswerFragment : Fragment() {
                 YET_ANS -> {
                     answerList.add(EveryAns(id = it, name = "hunachi" + "の解答", fin = true))
                 }
+                YET_FINAL_ANS -> {
+                    answerList.add(EveryAns(id = it, name = "hunachi" + "の解答", fin = true))
+                }
                 FIN_ANS -> {
                     answerList.add(EveryAns(id = it, name = "hunachi" + "の解答", fin = true))
                 }
@@ -72,13 +76,19 @@ class AnswerFragment : Fragment() {
                 YET_ANS -> {
                     val intent = Intent(context, PersonalAnswerActivity()::class.java)
                     intent.putExtra("position", position)
-                    intent.putExtra("fin", false)
+                    intent.putExtra("fin", 0)
+                    startActivity(intent)
+                }
+                YET_FINAL_ANS -> {
+                    val intent = Intent(context, PersonalAnswerActivity()::class.java)
+                    intent.putExtra("position", position)
+                    intent.putExtra("fin", 1)
                     startActivity(intent)
                 }
                 FIN_ANS -> {
                     val intent = Intent(context, PersonalAnswerActivity()::class.java)
                     intent.putExtra("position", position)
-                    intent.putExtra("fin", true)
+                    intent.putExtra("fin", 2)
                     startActivity(intent)
                 }
             }

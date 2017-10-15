@@ -29,7 +29,7 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.answers_fragment, AnswerFragment().newInstance(fin))
                 .commit()
-        if (fin == 0) {
+        if (fin != 3) {
             binding.problemScoreAnsText.visibility = View.GONE
         }
     }
