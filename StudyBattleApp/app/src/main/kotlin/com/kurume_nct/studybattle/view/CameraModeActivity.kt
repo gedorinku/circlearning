@@ -182,7 +182,13 @@ class CameraModeActivity : Activity() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap {
                     problemName.text = it.title
-                    writerName.text = it.text
+                    client
+                            .getUser(it.ownerId)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe {
+                                writerName.text = it.displayName
+                            }
                     client
                             .getImageById(it.imageIds[0])
                             .subscribeOn(Schedulers.io())
