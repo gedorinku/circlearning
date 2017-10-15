@@ -82,20 +82,6 @@ class SearchPeopleFragment(val callback: Callback) : Fragment() {
         }
     }
 
-    /*fun parsePeople(user: User): JoinPeople {
-        val joinPerson = JoinPeople()
-        joinPerson.id = user.id
-        joinPerson.selected = false
-        joinPerson.name = user.displayName + "(" + user.userName + ")"
-        return joinPerson
-    }*/
-
-    /*fun onAddPeople(user: MutableList<User>) {
-        val people = mutableListOf<JoinPeople>()
-        people.addAll(user.map { parsePeople(it) })
-
-    }*/
-
     private fun onDeletePeople(position: Int) {
         Log.d("onDeletePeople", position.toString())
         list.removeAt(position)

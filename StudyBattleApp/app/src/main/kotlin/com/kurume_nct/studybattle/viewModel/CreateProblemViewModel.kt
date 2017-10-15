@@ -200,6 +200,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
                                             callback.getCreateData(problemName)
                                         }, {
                                             dialog.dismiss()
+                                            Toast.makeText(context, "問題作成に失敗しなした。もう一度送りなおしてください。", Toast.LENGTH_SHORT).show()
                                             callback.onClickableButtons()
                                             it.printStackTrace()
                                         })
