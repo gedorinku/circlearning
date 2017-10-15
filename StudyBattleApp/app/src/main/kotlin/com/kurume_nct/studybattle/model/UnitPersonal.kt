@@ -18,7 +18,7 @@ class UnitPersonal : Application(){
     var myInfomation: User = User()
     var userIcon : Uri
     var nowGroup : Group
-    var itemCount : Item
+    var itemCount : HunachiItem
     private lateinit var prefer: SharedPreferences
     var myGroupCount: Int
     var myGroupList: MutableList<Group>
@@ -27,7 +27,7 @@ class UnitPersonal : Application(){
     init {
         nowGroup = Group()
         myGroupCount = 0
-        itemCount = Item(1,1,1,1)
+        itemCount = HunachiItem(1,1,1,1)
         userIcon = getIconUri(R.drawable.group)
         myGroupList = mutableListOf()
     }
