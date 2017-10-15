@@ -286,19 +286,6 @@ class Main2Activity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-       // onTabLayout()
-    }
-
-    override fun onStart() {
-        super.onStart()
-    }
-
-    override fun onStop() {
-        super.onStop()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         Log.d("change", unitPer.nowGroup.name)

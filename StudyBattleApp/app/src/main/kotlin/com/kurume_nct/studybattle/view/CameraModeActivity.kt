@@ -180,21 +180,20 @@ class CameraModeActivity : Activity() {
                 .getProblem(problemId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
+                .flatMap {
                     problemName.text = it.title
-                    writerName.text = it.createdAt
+                    writerName.text = it.text
                     client
                             .getImageById(it.imageIds[0])
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe {
-                                setUpPicture(Uri.parse(it.url))
-                                progressDialog.dismiss()
-                            }
-                }, {
-                    it.printStackTrace()
-                    progressDialog.dismiss()
-                })
+                }.subscribe({
+            setUpPicture(Uri.parse(it.url))
+            progressDialog.dismiss()
+        }, {
+            it.printStackTrace()
+            progressDialog.dismiss()
+        })
     }
 
     fun setUpPicture(uri: Uri) {
@@ -210,7 +209,7 @@ class CameraModeActivity : Activity() {
                 .uploadImage(uri, this)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
+                .flatMap {
                     val imageId = it.id
                     client
                             .createSolution(
@@ -221,21 +220,16 @@ class CameraModeActivity : Activity() {
                             )
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe({
-                                progress.dismiss()
-                                decrementItem(putItemId)
-                                startActivity(Intent(this, LotteryActivity::class.java))
-                                finish()
-                            }, {
-                                progress.dismiss()
-                                it.printStackTrace()
-                                Toast.makeText(this, "解答提出に失敗しました。ネット環境を確認してください。", Toast.LENGTH_SHORT).show()
-                            })
-                }, {
-                    progress.dismiss()
-                    it.printStackTrace()
-                    Toast.makeText(this, "解答提出に失敗しました。画像データが大きすぎる可能性があります。", Toast.LENGTH_SHORT).show()
-                })
+                }.subscribe({
+            progress.dismiss()
+            decrementItem(putItemId)
+            startActivity(Intent(this, LotteryActivity::class.java))
+            finish()
+        }, {
+            progress.dismiss()
+            it.printStackTrace()
+            Toast.makeText(this, "解答提出に失敗しました。ネット環境を確認してください。", Toast.LENGTH_SHORT).show()
+        })
     }
 
     private fun sadDialog() {
