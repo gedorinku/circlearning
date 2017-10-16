@@ -269,7 +269,7 @@ class Main2Activity : AppCompatActivity() {
                     false
                 }
                 .build()
-        //Create the Item of list
+        //Create the HunachiItem of list
         Log.d(unitPer.myGroupCount.toString(), "すし")
         (0 until unitPer.myGroupCount).forEach {
             result

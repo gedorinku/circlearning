@@ -152,13 +152,20 @@ interface Server {
             @Query("problemId") problemId: Int
     ): Observable<Unit>
 
+    @GET("/problem/open")
+    fun openProblem(
+            @Query("authenticationKey") authenticationKey: String,
+            @Query("problemId") problemId: Int
+    ): Observable<ProblemOpenResponse>
+
     @FormUrlEncoded
     @POST("/solution/create")
     fun createSolution(
             @Field("authenticationKey") authenticationKey: String,
             @Field("text") text: String,
             @Field("problemId") problemId: Int,
-            @Field("imageIds[]") imageIds: IntArray
+            @Field("imageIds[]") imageIds: IntArray,
+            @Field("attachedItemId") attachedItemId: Int
     ): Observable<IDResponse>
 
     @FormUrlEncoded
@@ -187,4 +194,10 @@ interface Server {
             @Query("authenticationKey") authenticationKey: String,
             @Query("groupId") groupId: Int
     ): Observable<List<Solution>>
+
+    @GET("/my_items")
+    fun getMyItems(
+            @Query("authenticationKey") authenticationKey: String,
+            @Query("groupId") groupId: Int
+    ): Observable<List<ItemStack>>
 }

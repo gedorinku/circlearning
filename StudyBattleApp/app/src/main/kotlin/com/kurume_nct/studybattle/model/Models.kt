@@ -13,7 +13,7 @@ data class User(val id: Int = 0, val userName: String = "", val displayName: Str
 
 data class Group(val id: Int = 0, val name: String = "", val owner: User = User(), val members: List<User> = emptyList())
 
-data class Item(var bomb: Int = 0, var card: Int = 0, var shield: Int = 0, var magicHand: Int = 0)
+data class HunachiItem(var bomb: Int = 0, var card: Int = 0, var shield: Int = 0, var magicHand: Int = 0)
 
 data class Image(
         val id: Int = 0,
@@ -70,4 +70,17 @@ data class Solution(
     val accepted by lazy {
         judgingState == JudgingState.Accepted
     }
+}
+
+data class ProblemOpenResponse(
+        val happened: String = ""
+) {
+
+    val openAction: ProblemOpenAction by lazy { ProblemOpenAction.valueOf(happened) }
+}
+
+enum class ProblemOpenAction {
+    NONE,
+    EXPLODED,
+    DEFENDED
 }
