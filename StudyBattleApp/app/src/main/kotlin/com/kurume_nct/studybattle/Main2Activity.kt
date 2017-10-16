@@ -141,7 +141,10 @@ class Main2Activity : AppCompatActivity() {
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe { it ->
-                                    viewSetup(Bitmap.createScaledBitmap(it, 100, 100, false))
+                                    val xSize = it.width
+                                    val ySize = it.height
+                                    if (xSize > 2000 && ySize > 2000)
+                                        viewSetup(Bitmap.createBitmap(it, (xSize - 2000) / 2, (ySize - 2000) / 2, 2000, 2000, null, false))
                                 }
                     }
                 }, {
@@ -197,7 +200,7 @@ class Main2Activity : AppCompatActivity() {
         mainPagerAdapter.onRefreshFragments()
     }
 
-    private fun initOnTabLayout(){
+    private fun initOnTabLayout() {
         (0 until tabLayout.tabCount).forEach {
             tabLayout.addTab(tabLayout.newTab())
         }
