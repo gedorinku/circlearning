@@ -40,6 +40,7 @@
     <string name="bomb">爆弾</string>
     <string name="twice_card">2倍カード</string>
     <string name="shield">盾</string>
+    <string name="not_good_word_username">ユーザー名に不適切な文字列が含まれています.</string>
     <array name="item">
         <item>@drawable/framecard_bomb</item>
         <item>@drawable/framecard_card</item>
