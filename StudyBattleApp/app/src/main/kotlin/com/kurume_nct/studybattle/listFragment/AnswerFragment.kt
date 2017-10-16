@@ -13,7 +13,7 @@ import com.kurume_nct.studybattle.adapter.AnswerRecyclerViewAdapter
 import com.kurume_nct.studybattle.client.Server
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.FragmentAnswerListBinding
-import com.kurume_nct.studybattle.model.EveryAns
+import com.kurume_nct.studybattle.model.ListSolution
 import com.kurume_nct.studybattle.model.Solution
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.view.AnswerActivity
@@ -29,8 +29,7 @@ class AnswerFragment : Fragment() {
     private var mColumnCount = 3
     private lateinit var mContext: Context
     private lateinit var listAdapter: AnswerRecyclerViewAdapter
-    private val solutionList: MutableList<Solution> = mutableListOf()
-    //private val answerList: MutableList<EveryAns> = mutableListOf()
+    private val solutionList: MutableList<ListSolution> = mutableListOf()
     private var fin: Int = 0
     lateinit var binding: FragmentAnswerListBinding
     lateinit var unitPer: UnitPersonal
@@ -66,25 +65,25 @@ class AnswerFragment : Fragment() {
             when (fin) {
                 CHECK_ANS -> {
                     val intent = Intent(context, ScoringActivity()::class.java)
-                    intent.putExtra("solutionId", solutionList[position].id)
+                    intent.putExtra("solutionId", solutionList[position].solution.id)
                     intent.putExtra("position", position)
                     startActivityForResult(intent, position)
                 }
                 YET_ANS -> {
                     val intent = Intent(context, PersonalAnswerActivity()::class.java)
-                    intent.putExtra("solutionId", solutionList[position].id)
+                    intent.putExtra("solutionId", solutionList[position].solution.id)
                     intent.putExtra("fin", 0)
                     startActivity(intent)
                 }
                 YET_FINAL_ANS -> {
                     val intent = Intent(context, PersonalAnswerActivity()::class.java)
-                    intent.putExtra("solutionId", solutionList[position].id)
+                    intent.putExtra("solutionId", solutionList[position].solution.id)
                     intent.putExtra("fin", 1)
                     startActivity(intent)
                 }
                 FIN_ANS -> {
                     val intent = Intent(context, PersonalAnswerActivity()::class.java)
-                    intent.putExtra("solutionId", solutionList[position].id)
+                    intent.putExtra("solutionId", solutionList[position].solution.id)
                     intent.putExtra("fin", 2)
                     startActivity(intent)
                 }
@@ -95,18 +94,27 @@ class AnswerFragment : Fragment() {
         return binding.root
     }
 
-    private fun getProblemData(){
+    private fun getProblemData() {
         client
                 .getProblem(problemId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    solutionList.addAll(it.solutions.toMutableList())
+                    it.solutions.forEach {
+                        solutionList.add(ListSolution(it, ""))
+                        client
+                                .getUser(it.authorId)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe {
+                                    solutionList[solutionList.size - 1].name = it.displayName
+                                }
+                    }
                 }
     }
 
     private fun changeImage(position: Int, cor: Boolean) {
-        //judgeChange
+        //TODO judgeChange
         listAdapter.notifyItemChanged(position)
     }
 
