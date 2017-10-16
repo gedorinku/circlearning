@@ -22,7 +22,6 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -31,8 +30,7 @@ import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.DialogCameraStrageChooseBinding
 import com.kurume_nct.studybattle.databinding.DialogItemSelectBinding
-import com.kurume_nct.studybattle.model.Item
-import com.kurume_nct.studybattle.model.Solution
+import com.kurume_nct.studybattle.model.Air
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -222,7 +220,8 @@ class CameraModeActivity : Activity() {
                             .createSolution(
                                     text = "事前提出むり。みんな鬱になっちゃう。",
                                     problemId = problemId,
-                                    imageIds = listOf(imageId)
+                                    imageIds = listOf(imageId),
+                                    item = Air
                                     //item = putImageId
                             )
                             .subscribeOn(Schedulers.io())
