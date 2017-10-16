@@ -64,7 +64,7 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        ableButton(false)
+        enableButton(false)
         binding.userEntity.onActivityResult(data)
     }
 
@@ -74,7 +74,7 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
         binding.button4.isClickable = false
     }
 
-    override fun ableButton(enable: Boolean) {
+    override fun enableButton(enable: Boolean) {
         if (enable) progress.dismiss()
         binding.button3.isClickable = true
         binding.button4.isClickable = true
@@ -172,7 +172,7 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
                     cameraStart()
                 } else {
                     //back to deselect
-                    ableButton(false)
+                    enableButton(false)
                     Toast.makeText(this, "カメラを起動するためには許可が必要です", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -181,7 +181,7 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
                     storageStart()
                 } else {
                     //back to deselect
-                    ableButton(false)
+                    enableButton(false)
                     Toast.makeText(this, "写真を参照するには許可が必要です", Toast.LENGTH_SHORT).show()
                 }
             }

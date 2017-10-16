@@ -111,11 +111,11 @@ class RegistrationViewModel(private val context: Context, private val callback: 
                     }
                     .subscribe({
                         callback.onLogin()
-                        callback.ableButton(true)
+                        callback.enableButton(true)
                     }, {
                         it.printStackTrace()
                         Toast.makeText(context, context.getString(R.string.usedUserNameAlart), Toast.LENGTH_LONG).show()
-                        callback.ableButton(true)
+                        callback.enableButton(true)
                     })
         }
     }
@@ -151,7 +151,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
 
     interface Callback {
 
-        fun ableButton(enable: Boolean)
+        fun enableButton(enable: Boolean)
 
         fun stopButton(enable: Boolean)
 
