@@ -39,6 +39,7 @@ class AnswerFragment : Fragment() {
     private val YET_ANS = 1
     private val YET_FINAL_ANS = 2
     private val FIN_ANS = 3
+    private val CHECK_ANS_FALSE = 5
 
     fun newInstance(fin: Int, problemId: Int): AnswerFragment {
         val fragment = AnswerFragment()
@@ -64,27 +65,24 @@ class AnswerFragment : Fragment() {
         listAdapter = AnswerRecyclerViewAdapter(context, solutionList, { position: Int ->
             when (fin) {
                 CHECK_ANS -> {
-                    val intent = Intent(context, ScoringActivity()::class.java)
+                    val intent = Intent(context, ScoringActivity::class.java)
                     intent.putExtra("solutionId", solutionList[position].solution.id)
                     intent.putExtra("position", position)
                     startActivityForResult(intent, position)
                 }
                 YET_ANS -> {
-                    val intent = Intent(context, PersonalAnswerActivity()::class.java)
+                    val intent = Intent(context, PersonalAnswerActivity::class.java)
                     intent.putExtra("solutionId", solutionList[position].solution.id)
-                    intent.putExtra("fin", 0)
+                    intent.putExtra("fin", false)
                     startActivity(intent)
                 }
                 YET_FINAL_ANS -> {
-                    val intent = Intent(context, PersonalAnswerActivity()::class.java)
-                    intent.putExtra("solutionId", solutionList[position].solution.id)
-                    intent.putExtra("fin", 1)
-                    startActivity(intent)
+                    //TODO
                 }
                 FIN_ANS -> {
-                    val intent = Intent(context, PersonalAnswerActivity()::class.java)
+                    val intent = Intent(context, PersonalAnswerActivity::class.java)
                     intent.putExtra("solutionId", solutionList[position].solution.id)
-                    intent.putExtra("fin", 2)
+                    intent.putExtra("fin", true)
                     startActivity(intent)
                 }
             }
@@ -122,7 +120,7 @@ class AnswerFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (data == null) return
         when (resultCode) {
-            5 -> {
+            CHECK_ANS_FALSE -> {
                 changeImage(requestCode, data.getBooleanExtra("Result", false))
             }
         }

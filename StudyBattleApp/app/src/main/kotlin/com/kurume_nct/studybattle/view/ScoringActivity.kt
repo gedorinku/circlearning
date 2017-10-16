@@ -19,7 +19,6 @@ import io.reactivex.schedulers.Schedulers
 
 class ScoringActivity : AppCompatActivity() {
 
-    //bindすることが少なかったのでMV
     lateinit var binding: ActivityScoringBinding
     private var scoreBoolean = true
     lateinit var unitPer : UnitPersonal
