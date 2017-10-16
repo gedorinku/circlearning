@@ -36,10 +36,11 @@ class AnswerFragment : Fragment() {
         fin = 0
     }
 
-    fun newInstance(fin: Int): AnswerFragment {
+    fun newInstance(fin: Int, problemId: Int): AnswerFragment {
         val fragment = AnswerFragment()
         val args = Bundle()
         args.putInt("fin", fin)//true -> all finished problem
+        args.putInt("problemId", problemId)
         fragment.arguments = args
         return fragment
     }

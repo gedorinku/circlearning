@@ -35,31 +35,40 @@ class AnswerViewModel(private val context: Context, private val callback : Callb
     }
 
     @Bindable
-    var problemNameAns = "problem name🐰"
+    var problemName = "problem name🐰"
     set(value) {
         field = value
-        notifyPropertyChanged(BR.problemNameAns)
+        notifyPropertyChanged(BR.problemName)
     }
 
     @Bindable
-    var masterNameAns = "(made by Nana)"
+    var masterName = "(made by Nana)"
     set(value) {
         field = value
-        notifyPropertyChanged(BR.masterNameAns)
+        notifyPropertyChanged(BR.masterName)
     }
 
     @Bindable
-    var problemScoreAns = "0点"
+    var problemScore = "0点"
     set(value) {
         field = value
-        notifyPropertyChanged(BR.problemScoreAns)
+        notifyPropertyChanged(BR.problemScore)
     }
 
-    //@Bindable
-    var problemUriAns = pUri
+    @Bindable
+    var problemUri = pUri
+    set(value) {
+        field = value
+        notifyPropertyChanged(BR.problemUri)
+    }
 
-    //@Bindable
-    var answerUriAns = aUri
+    @Bindable
+    var answerUri = aUri
+    set(value) {
+        field = value
+        notifyPropertyChanged(BR.answerUri)
+    }
+
 
     interface Callback{
 
