@@ -41,7 +41,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
     val REQUEST_STRAGE = 1
 
     init {
-        iconImageUri = convertUrlFromDrawableResId(context, R.drawable.icon_gost)!!
+        iconImageUri = convertUrlFromDrawableResId(context, R.drawable.group)!!
         imageBitmap = ImageCustom().onUriToBitmap(context, iconImageUri)
         iconId = 0
     }
@@ -51,7 +51,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
         @JvmStatic
         fun setIconImage(view: ImageView, uri: Uri?) {
             if (uri == null) {
-                Glide.with(view).load(R.drawable.icon_gost).into(view)//loadの中にresourceを入れたらtestできる
+                Glide.with(view).load(R.drawable.group).into(view)//loadの中にresourceを入れたらtestできる
             } else {
                 Glide.with(view).load(uri).into(view)
             }

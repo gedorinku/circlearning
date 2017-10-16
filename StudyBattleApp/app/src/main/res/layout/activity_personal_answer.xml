@@ -46,7 +46,6 @@
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/no_image"
-                    android:scaleType="centerCrop"
                     app:loadImagePersonalAnswer="@{PersonalAnswer.personalAnswerUri}" />
 
                 <LinearLayout

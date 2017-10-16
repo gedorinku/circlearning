@@ -11,15 +11,17 @@ import android.view.ViewGroup
 import com.kurume_nct.studybattle.listFragment.MainListFragment
 import com.kurume_nct.studybattle.Main2Activity
 import com.kurume_nct.studybattle.R
-import com.kurume_nct.studybattle.databinding.FragmentSuggestMainBinding
+import com.kurume_nct.studybattle.databinding.FragmentSubmittedMainBinding
 
-class SuggestMainFragment : Fragment(), MainListFragment.Callback {
+class SubmittedMainFragment : Fragment(), MainListFragment.Callback {
 
     lateinit var mContext: Main2Activity
-    lateinit var binding: FragmentSuggestMainBinding
+    lateinit var binding: FragmentSubmittedMainBinding
     var refreshCounter = 0
+    lateinit var fragmentYet: MainListFragment
+    lateinit var fragmentFin: MainListFragment
 
-    fun newInstance() = SuggestMainFragment()
+    fun newInstance() = SubmittedMainFragment()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -27,13 +29,13 @@ class SuggestMainFragment : Fragment(), MainListFragment.Callback {
 
         Log.d("ほげえええ", "ほげえええ")
 
-        val fragmentFin = MainListFragment
-                .newInstance(resources.getInteger(R.integer.SUGGEST_FIN), this)
+        fragmentFin = MainListFragment
+                .newInstance(resources.getInteger(R.integer.SUBMIT_FIN), this)
 
-        val fragmentYet = MainListFragment
-                .newInstance(resources.getInteger(R.integer.SUGGEST_YET), this)
+        fragmentYet = MainListFragment
+                .newInstance(resources.getInteger(R.integer.SUBMIT_YET), this)
 
-        binding = FragmentSuggestMainBinding.inflate(inflater, container, false)
+        binding = FragmentSubmittedMainBinding.inflate(inflater, container, false)
 
         mContext.supportFragmentManager
                 .beginTransaction()
@@ -45,13 +47,17 @@ class SuggestMainFragment : Fragment(), MainListFragment.Callback {
                 .commit()
 
         binding.swipeRefreshFragmentSubmit.setOnRefreshListener {
-            fragmentYet.onRefershList()
-            fragmentFin.onRefershList()
+            onRefresh()
         }
 
         binding.swipeRefreshFragmentSubmit.setColorSchemeResources(R.color.md_red_700, R.color.md_yellow_700)
 
         return binding.root
+    }
+
+    fun onRefresh(){
+        fragmentYet.onRefreshList()
+        fragmentFin.onRefreshList()
     }
 
     override fun onStopSwipeRefresh() {

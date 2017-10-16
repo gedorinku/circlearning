@@ -1,4 +1,4 @@
-package com.kurume_nct.studybattle.bug
+package com.kurume_nct.studybattle.listFragment
 
 import android.content.Context
 import android.databinding.BaseObservable

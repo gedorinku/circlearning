@@ -4,14 +4,14 @@
 
     <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@drawable/backgroud"
         android:orientation="vertical"
         tools:context="com.kurume_nct.studybattle.view.MadeCollectYetActivity">
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1">
 
             <LinearLayout
@@ -45,8 +45,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/no_image"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/text_noimage" />
+                    android:scaleType="fitCenter" />
 
                 <TextView
                     android:id="@+id/editText50"
@@ -76,7 +75,7 @@
                     android:textSize="17sp" />
 
                 <TextView
-                    android:id="@+id/pro_situation_text"
+                    android:id="@+id/problem_now_situation_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -98,7 +97,7 @@
                     android:textSize="17sp" />
 
                 <TextView
-                    android:id="@+id/pro_dire_text"
+                    android:id="@+id/problem_collected_date_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -120,7 +119,7 @@
                     android:textSize="17sp" />
 
                 <TextView
-                    android:id="@+id/pro_situation_people_text"
+                    android:id="@+id/problem_submitted_people_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -141,7 +140,7 @@
                     android:textSize="17sp" />
 
                 <TextView
-                    android:id="@+id/dire_for_one_text"
+                    android:id="@+id/duration_per_one_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -163,7 +162,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/problem_date_text"
+                    android:id="@+id/problem_made_date_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"

@@ -29,31 +29,22 @@
                     android:id="@+id/textView3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="問題作成"
                     android:textSize="24sp" />
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_weight="1" />
-
                 <TextView
                     android:id="@+id/creator_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="8dp"
-                    android:text="なにこれ"
-                    android:textSize="13sp" />
+                    android:text="@{CreateView.creatorName}" />
 
                 <EditText
                     android:id="@+id/editText4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="問題の題名"
@@ -71,9 +62,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/no_image"
                     android:onClick="@{CreateView.onClickProblemImage}"
-                    android:scaleType="centerCrop"
                     app:loadProblem="@{CreateView.problemUri}"
-                    app:srcCompat="@drawable/text_noimage"
                     tools:ignore="ContentDescription" />
 
                 <TextView
@@ -152,21 +141,10 @@
                     android:text="・1回あたりに与えられる時間" />
 
                 <TextView
-                    android:id="@+id/textView25"
+                    android:id="@+id/term_hour_for_one"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="なにこれ" />
-
-                <CheckBox
-                    android:id="@+id/checkBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_weight="1"
-                    android:checked="false"
-                    android:onClick="@{CreateView.onClickCheckbox}"
-                    android:text="作成者として名前を表示する" />
+                    android:text="@{CreateView.termForOne}" />
 
                 <TextView
                     android:id="@+id/textView27"
@@ -188,9 +166,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/no_image"
                     android:onClick="@{CreateView.onClickAnswerImage}"
-                    android:scaleType="centerCrop"
-                    app:loadProblem="@{CreateView.answerUri}"
-                    app:srcCompat="@drawable/text_noimage" />
+                    app:loadProblem="@{CreateView.answerUri}" />
 
                 <Space
                     android:layout_width="match_parent"
