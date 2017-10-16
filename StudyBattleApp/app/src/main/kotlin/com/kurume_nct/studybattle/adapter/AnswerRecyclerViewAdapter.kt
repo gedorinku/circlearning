@@ -10,9 +10,10 @@ import android.view.ViewGroup
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.model.EveryAns
+import com.kurume_nct.studybattle.model.Solution
 
 
-class AnswerRecyclerViewAdapter(private val context : Context, private var list : MutableList<EveryAns>, val callBack: (Int) -> Unit) :
+class AnswerRecyclerViewAdapter(private val context : Context, private var list : MutableList<Solution>, val callBack: (Int) -> Unit) :
         RecyclerView.Adapter<AnswerRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -27,7 +28,7 @@ class AnswerRecyclerViewAdapter(private val context : Context, private var list 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.setVariable(BR.eveAnswer,list[position])
+        holder.binding.setVariable(BR.eveAnswer, list[position])
     }
 
     override fun getItemCount(): Int = list.size

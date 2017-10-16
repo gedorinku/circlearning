@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@{eveAnswer.name}"
+            android:text="名前"
             android:textAlignment="center" />
 
         <ImageView
@@ -26,7 +26,7 @@
             android:layout_width="120dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            android:background="@{eveAnswer.collect ? @drawable/checkframe : (eveAnswer.fin ? @drawable/batuframe : @drawable/madaframe)}" />
+            android:background="@{eveAnswer.accept ? @drawable/checkframe : (eveAnswer.judged ? @drawable/batuframe : @drawable/madaframe)}" />
 
     </LinearLayout>
 </layout>

@@ -10,11 +10,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.kurume_nct.studybattle.adapter.AnswerRecyclerViewAdapter
+import com.kurume_nct.studybattle.client.Server
+import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.FragmentAnswerListBinding
 import com.kurume_nct.studybattle.model.EveryAns
+import com.kurume_nct.studybattle.model.Solution
+import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.view.AnswerActivity
 import com.kurume_nct.studybattle.view.PersonalAnswerActivity
 import com.kurume_nct.studybattle.view.ScoringActivity
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import java.text.FieldPosition
 
 
@@ -23,18 +29,17 @@ class AnswerFragment : Fragment() {
     private var mColumnCount = 3
     private lateinit var mContext: Context
     private lateinit var listAdapter: AnswerRecyclerViewAdapter
-    private var answerList: MutableList<EveryAns> = mutableListOf()
-    private var fin: Int
+    private val solutionList: MutableList<Solution> = mutableListOf()
+    //private val answerList: MutableList<EveryAns> = mutableListOf()
+    private var fin: Int = 0
     lateinit var binding: FragmentAnswerListBinding
+    lateinit var unitPer: UnitPersonal
+    lateinit var client: ServerClient
+    private var problemId = 0
     private val CHECK_ANS = 0
     private val YET_ANS = 1
     private val YET_FINAL_ANS = 2
     private val FIN_ANS = 3
-    private var ansCount = 20
-
-    init {
-        fin = 0
-    }
 
     fun newInstance(fin: Int, problemId: Int): AnswerFragment {
         val fragment = AnswerFragment()
@@ -48,47 +53,38 @@ class AnswerFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         Log.d("i'm ", javaClass.name)
-        //Log.d("oshushi", "oshushi")
+
+        client = ServerClient(unitPer.authenticationKey)
+        unitPer = activity.application as UnitPersonal
+        problemId = arguments.getInt("problemId")
         fin = arguments.getInt("fin")
+
+        getProblemData()
+
         binding = FragmentAnswerListBinding.inflate(inflater, container, false)
-        (0 until ansCount).forEach {
-            when (fin) {
-                CHECK_ANS -> {
-                    answerList.add(EveryAns(id = it, name = "hunachi" + "の解答"))
-                }
-                YET_ANS -> {
-                    answerList.add(EveryAns(id = it, name = "hunachi" + "の解答", fin = true))
-                }
-                YET_FINAL_ANS -> {
-                    answerList.add(EveryAns(id = it, name = "hunachi" + "の解答", fin = true))
-                }
-                FIN_ANS -> {
-                    answerList.add(EveryAns(id = it, name = "hunachi" + "の解答", fin = true))
-                }
-            }
-        }
-        listAdapter = AnswerRecyclerViewAdapter(context, answerList, { position: Int ->
+        listAdapter = AnswerRecyclerViewAdapter(context, solutionList, { position: Int ->
             when (fin) {
                 CHECK_ANS -> {
                     val intent = Intent(context, ScoringActivity()::class.java)
+                    intent.putExtra("solutionId", solutionList[position].id)
                     intent.putExtra("position", position)
                     startActivityForResult(intent, position)
                 }
                 YET_ANS -> {
                     val intent = Intent(context, PersonalAnswerActivity()::class.java)
-                    intent.putExtra("position", position)
+                    intent.putExtra("solutionId", solutionList[position].id)
                     intent.putExtra("fin", 0)
                     startActivity(intent)
                 }
                 YET_FINAL_ANS -> {
                     val intent = Intent(context, PersonalAnswerActivity()::class.java)
-                    intent.putExtra("position", position)
+                    intent.putExtra("solutionId", solutionList[position].id)
                     intent.putExtra("fin", 1)
                     startActivity(intent)
                 }
                 FIN_ANS -> {
                     val intent = Intent(context, PersonalAnswerActivity()::class.java)
-                    intent.putExtra("position", position)
+                    intent.putExtra("solutionId", solutionList[position].id)
                     intent.putExtra("fin", 2)
                     startActivity(intent)
                 }
@@ -99,9 +95,18 @@ class AnswerFragment : Fragment() {
         return binding.root
     }
 
+    private fun getProblemData(){
+        client
+                .getProblem(problemId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    solutionList.addAll(it.solutions.toMutableList())
+                }
+    }
+
     private fun changeImage(position: Int, cor: Boolean) {
-        answerList[position].collect = cor
-        answerList[position].fin = true
+        //judgeChange
         listAdapter.notifyItemChanged(position)
     }
 
@@ -114,7 +119,6 @@ class AnswerFragment : Fragment() {
             }
         }
     }
-
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
