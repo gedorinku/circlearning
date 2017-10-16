@@ -47,8 +47,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/no_image"
                     android:scaleType="centerCrop"
-                    app:loadImagePersonalAnswer="@{PersonalAnswer.personalAnswerUri}"
-                    app:srcCompat="@drawable/text_noimage" />
+                    app:loadImagePersonalAnswer="@{PersonalAnswer.personalAnswerUri}" />
 
                 <LinearLayout
                     android:id="@+id/score_comment_layout_text"

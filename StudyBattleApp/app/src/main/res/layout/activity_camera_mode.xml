@@ -100,6 +100,20 @@
             android:layout_height="20dp" />
 
         <Button
+            android:id="@+id/submission_button"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/md_red_400"
+            android:text="提出"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            tools:ignore="HardcodedText,RtlHardcoded" />
+
+        <Button
             android:id="@+id/pass_button"
             android:layout_width="200dp"
             android:layout_height="match_parent"
@@ -125,19 +139,6 @@
             tools:layout_conversion_absoluteWidth="88dp"
             tools:layout_conversion_absoluteX="0dp"
             tools:layout_conversion_absoluteY="80dp" />
-
-        <Button
-            android:id="@+id/submission_button"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@color/md_red_400"
-            android:text="提出"
-            android:textColor="#ffffff"
-            android:textSize="20sp"
-            tools:ignore="HardcodedText,RtlHardcoded" />
 
         <Space
             android:layout_width="match_parent"
