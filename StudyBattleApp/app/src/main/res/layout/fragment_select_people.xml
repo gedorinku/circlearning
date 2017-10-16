@@ -3,7 +3,7 @@
     <data>
         <variable
             name="SelectPeopleUnit"
-            type="com.kurume_nct.studybattle.bug.SelectMainPeopleViewModel"/>
+            type="com.kurume_nct.studybattle.listFragment.SelectMainPeopleViewModel"/>
     </data>
 
     <LinearLayout
@@ -14,7 +14,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
 
             <ImageView
@@ -33,13 +33,13 @@
                 android:ems="10"
                 android:hint="検索したい名前を入力して下さい"
                 android:inputType="textPersonName"
-                android:text="まだこの機能は実装されてません。個人でのグループ作成は可能です" />
+                android:text="@={SelectPeopleUnit.searchText}" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/fragment_search_list"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:orientation="vertical" />
@@ -54,8 +54,8 @@
         <LinearLayout
             android:id="@+id/fragment_select_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:orientation="vertical" />
 
     </LinearLayout>

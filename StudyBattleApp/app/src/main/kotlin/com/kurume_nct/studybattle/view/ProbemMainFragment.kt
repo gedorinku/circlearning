@@ -34,12 +34,16 @@ class ProbemMainFragment : Fragment(), MainListFragment.Callback {
                 .commit()
 
         binding.swipeRefreshFragmentHave.setOnRefreshListener {
-            fragment.onRefershList()
+            onRefresh()
         }
 
         binding.swipeRefreshFragmentHave.setColorSchemeResources(R.color.md_red_A700)
 
         return binding.root
+    }
+
+    fun onRefresh(){
+        fragment.onRefreshList()
     }
 
     override fun onStopSwipeRefresh() {

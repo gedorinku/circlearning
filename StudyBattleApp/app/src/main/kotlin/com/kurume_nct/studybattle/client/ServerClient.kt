@@ -72,6 +72,8 @@ class ServerClient(authenticationKey: String = "") {
     fun verifyAuthentication(authenticationKey: String = this.authenticationKey)
             = server.verifyAuthentication(authenticationKey)
 
+    fun getUser(id: Int) = server.getUser(id)
+
     /**
      * <code>query</code>を<code>userName</code>の部分文字列の一つに含むユーザーを列挙します。
      */
@@ -177,15 +179,20 @@ class ServerClient(authenticationKey: String = "") {
      */
     fun passProblem(problemId: Int) = server.passProblem(authenticationKey, problemId)
 
-    fun createSolution(
-            text: String, problem: Problem, imageIds: List<Int>
-    ): Observable<Solution> = createSolution(text, problem.id, imageIds)
+    /**
+     * 問題を開きます。
+     */
+    fun openProblem(problemId: Int) = server.openProblem(authenticationKey, problemId)
 
     fun createSolution(
-            text: String, problemId: Int, imageIds: List<Int>
+            text: String, problem: Problem, imageIds: List<Int>, item: Item
+    ): Observable<Solution> = createSolution(text, problem.id, imageIds, item)
+
+    fun createSolution(
+            text: String, problemId: Int, imageIds: List<Int>, item: Item
     ): Observable<Solution> =
             server
-                    .createSolution(authenticationKey, text, problemId, imageIds.toIntArray())
+                    .createSolution(authenticationKey, text, problemId, imageIds.toIntArray(), item.id)
                     .flatMap {
                         server.getSolution(authenticationKey, it.id)
                     }
@@ -201,6 +208,8 @@ class ServerClient(authenticationKey: String = "") {
     fun getUnjudgedMySolutions(group: Group) = getUnjudgedMySolutions(group.id)
 
     fun getUnjudgedMySolutions(groupId: Int) = server.getUnjudgedMySolutions(authenticationKey, groupId)
+
+    fun getMyItems(groupId: Int) = server.getMyItems(authenticationKey, groupId)
 }
 
 private class StringConverterFactory : Converter.Factory() {

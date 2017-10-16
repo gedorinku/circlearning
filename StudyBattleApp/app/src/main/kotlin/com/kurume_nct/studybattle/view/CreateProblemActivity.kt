@@ -28,14 +28,13 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
 
     private lateinit var binding: ActivityCreateProblemBinding
     private lateinit var unitPer: UnitPersonal
-    private var nameEnable: Boolean
+    private var nameEnable: Boolean = false
     private var prob: Int
     private lateinit var decideDate: MutableList<Int>
     private lateinit var dialog: AlertDialog
     private val PERMISSION_CAMERA_CODE = 1
 
     init {
-        nameEnable = false
         prob = -1
     }
 
@@ -48,7 +47,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         unitPer = application as UnitPersonal
         binding.createView.creatorName = "Made by " + unitPer.myInfomation.displayName
 
-        //dialogSetting()
+        binding.termHourForOne.isEnabled = false
 
         supportFragmentManager.beginTransaction()
                 .replace(R.id.directions_container, DurationFragment().newInstance())
@@ -63,11 +62,6 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         binding.createView.let {
             it.day = date[0].toString() + "年" + date[1].toString() + "月" + date[2].toString() + "日"
         }
-    }
-
-
-    override fun checkNameEnable(enable: Boolean) {
-        nameEnable = enable
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -102,8 +96,10 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         decideDate = mutableListOf(year, month, dayOfMonth)
+        binding.termHourForOne.isEnabled = true
         binding.createView.let {
             it.day = year.toString() + "年" + (month + 1).toString() + "月" + dayOfMonth.toString() + "日"
+            it.termForOne = getDuration().standardHours.toString() + it.termExtra
         }
         Log.d(binding.createView.day, "change")
     }

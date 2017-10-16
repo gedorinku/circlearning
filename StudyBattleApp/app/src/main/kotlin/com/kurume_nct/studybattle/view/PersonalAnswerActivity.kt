@@ -24,6 +24,7 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
     private var writeNows = false
     private var writeNow = false
     private var problemId = 0
+    private var situationId = 0
     private var problem: Problem = Problem()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +33,8 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
         binding = DataBindingUtil.setContentView(this, R.layout.activity_personal_answer)
         binding.personalAnswer = PersonalAnswerViewModel(this, this)
         unitPer = application as UnitPersonal
-        problemId = intent.getIntExtra("id", 0)
+        problemId = intent.getIntExtra("problemId", 0)
+        situationId = intent.getIntExtra("fin", 0)
         getProblemInformation()
         bindSetting()
     }
