@@ -12,7 +12,7 @@ class ProgressDialogTool(val context: Context) {
     fun makeDialog() : ProgressDialog{
         val progressDialog = ProgressDialog(context)
         progressDialog.setMessage("少々お待ちください！")
-        progressDialog.setTitle("サーバーにデータを送信中🐓")
+        progressDialog.setTitle("サーバーと通信中⏰")
         progressDialog.setCancelable(false)
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER)
         return progressDialog

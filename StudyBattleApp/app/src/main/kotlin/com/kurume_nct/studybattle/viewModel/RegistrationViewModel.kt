@@ -1,6 +1,5 @@
 package com.kurume_nct.studybattle.viewModel
 
-import android.app.Activity
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
@@ -10,35 +9,26 @@ import android.databinding.BindingAdapter
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.file.FileResource
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.client.ServerClient
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.io.BufferedInputStream
-import java.io.File
-import java.io.FileReader
-import java.net.URI
-import java.util.concurrent.CountDownLatch
 
 /**
  * Created by hanah on 7/30/2017.
  */
 class RegistrationViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
 
-    val REQUEST_CODE = 114
     var iconImageUri: Uri
     var iconId: Int
     var imageBitmap: Bitmap
-    val REQUEST_STRAGE = 1
 
     init {
         iconImageUri = convertUrlFromDrawableResId(context, R.drawable.group)!!
@@ -101,17 +91,19 @@ class RegistrationViewModel(private val context: Context, private val callback: 
         if (userNameRegister.isBlank() || userPassword.isBlank()) {
             Toast.makeText(context, context.getString(R.string.errorLoginStatus), Toast.LENGTH_LONG).show()
         } else if (!userNameRegister.matches("^[a-zA-Z0-9_]{2,20}".toRegex())) {
-            Toast.makeText(context, "ユーザー名に不適切な文字列が含まれています.", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "ユーザー名に不適切な文字が含まれています。", Toast.LENGTH_LONG).show()
             userNameRegister = ""
         } else {
-            callback.stopButton()
+            callback.stopButton(true)
             //sever処理
+            Log.d("開始","Register")
             val client = ServerClient()
             client
                     .uploadImage(imageUri, context)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .flatMap {
+                        Log.d("開始2","Register")
                         client
                                 .register(displayName, userNameRegister, userPassword, it.id)
                                 .subscribeOn(Schedulers.io())
@@ -119,27 +111,24 @@ class RegistrationViewModel(private val context: Context, private val callback: 
                     }
                     .subscribe({
                         callback.onLogin()
-                        callback.ableButton()
+                        callback.enableButton(true)
                     }, {
                         it.printStackTrace()
                         Toast.makeText(context, context.getString(R.string.usedUserNameAlart), Toast.LENGTH_LONG).show()
-                        callback.ableButton()
+                        callback.enableButton(true)
                     })
         }
     }
 
-    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        //if(requestCode != REQUEST_CODE || resultCode != Activity.RESULT_OK || data?.data == null)return
+    fun onActivityResult(data: Intent?) {
         if (data?.data == null) return
-        //TODO : resize icon here
         iconImageUri = data.data
         imageUri = iconImageUri
         //imageBitmap = ImageCustom().onUriToBitmap(context,iconImageUri)
     }
 
     fun onClickChangeIconImage(view: View) {
-        val intent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
-        callback.startActivityForResult(intent, REQUEST_CODE)
+        callback.alertDialog()
     }
 
     fun changeImageSize(uri: Uri): Bitmap {
@@ -162,15 +151,17 @@ class RegistrationViewModel(private val context: Context, private val callback: 
 
     interface Callback {
 
-        fun ableButton()
+        fun enableButton(enable: Boolean)
 
-        fun stopButton()
+        fun stopButton(enable: Boolean)
 
         fun toLoginActivity()
 
         fun onLogin()
 
         fun startActivityForResult(intent: Intent, requestCode: Int)
+
+        fun alertDialog()
 
     }
 
