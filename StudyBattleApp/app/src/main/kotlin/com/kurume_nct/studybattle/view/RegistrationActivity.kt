@@ -68,14 +68,14 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
         binding.userEntity.onActivityResult(data)
     }
 
-    override fun stopButton(boolean: Boolean) {
-        if (boolean) progress.show()
+    override fun stopButton(enable: Boolean) {
+        if (enable) progress.show()
         binding.button3.isClickable = false
         binding.button4.isClickable = false
     }
 
-    override fun ableButton(boolean: Boolean) {
-        if (boolean) progress.dismiss()
+    override fun ableButton(enable: Boolean) {
+        if (enable) progress.dismiss()
         binding.button3.isClickable = true
         binding.button4.isClickable = true
     }

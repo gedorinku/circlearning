@@ -91,7 +91,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
         if (userNameRegister.isBlank() || userPassword.isBlank()) {
             Toast.makeText(context, context.getString(R.string.errorLoginStatus), Toast.LENGTH_LONG).show()
         } else if (!userNameRegister.matches("^[a-zA-Z0-9_]{2,20}".toRegex())) {
-            Toast.makeText(context, context.getString(R.string.not_good_word_username), Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "ユーザー名に不適切な文字が含まれています。", Toast.LENGTH_LONG).show()
             userNameRegister = ""
         } else {
             callback.stopButton(true)
@@ -151,9 +151,9 @@ class RegistrationViewModel(private val context: Context, private val callback: 
 
     interface Callback {
 
-        fun ableButton(boolean: Boolean)
+        fun ableButton(enable: Boolean)
 
-        fun stopButton(boolean: Boolean)
+        fun stopButton(enable: Boolean)
 
         fun toLoginActivity()
 
