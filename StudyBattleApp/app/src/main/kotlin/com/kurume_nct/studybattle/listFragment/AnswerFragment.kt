@@ -17,6 +17,7 @@ import com.kurume_nct.studybattle.model.ListSolution
 import com.kurume_nct.studybattle.model.Solution
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.view.AnswerActivity
+import com.kurume_nct.studybattle.view.FinalScoringActivity
 import com.kurume_nct.studybattle.view.PersonalAnswerActivity
 import com.kurume_nct.studybattle.view.ScoringActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -77,7 +78,9 @@ class AnswerFragment : Fragment() {
                     startActivity(intent)
                 }
                 YET_FINAL_ANS -> {
-                    //TODO
+                    val intent = Intent(context, FinalScoringActivity::class.java)
+                    intent.putExtra("solutionId", solutionList[position].solution.id)
+                    startActivityForResult(intent, position)
                 }
                 FIN_ANS -> {
                     val intent = Intent(context, PersonalAnswerActivity::class.java)
