@@ -34,6 +34,7 @@ import com.kurume_nct.studybattle.databinding.DialogBombSecoundBinding
 import com.kurume_nct.studybattle.databinding.DialogCameraStrageChooseBinding
 import com.kurume_nct.studybattle.databinding.DialogItemSelectBinding
 import com.kurume_nct.studybattle.model.Air
+import com.kurume_nct.studybattle.model.Bomb
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
 import io.reactivex.Observable
@@ -137,6 +138,8 @@ class CameraModeActivity : Activity() {
         dialogView = DataBindingUtil.inflate(
                 LayoutInflater.from(this), R.layout.dialog_item_select, null, false)
 
+        getItemData()
+
         unitPer.itemCount.run {
             if (bomb <= 0) dialogView.bombButton17.visibility = View.INVISIBLE
             if (card <= 0) dialogView.cardButton16.visibility = View.INVISIBLE
@@ -228,14 +231,20 @@ class CameraModeActivity : Activity() {
                                     text = "事前提出むり。みんな鬱になっちゃう。",
                                     problemId = problemId,
                                     imageIds = listOf(imageId),
-                                    item = Air
-                                    //item = putImageId
+                                    item =
+                                    when (putItemId) {
+                                        0 ->{Bomb}
+                                        1 ->{Bomb/*Card*/}
+                                        2 ->{Air/*Magic*/}
+                                        else -> {
+                                            Air
+                                        }
+                                    }
                             )
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                 }.subscribe({
             progress.dismiss()
-            decrementItem(putItemId)
             startActivity(Intent(this, LotteryActivity::class.java))
             finish()
         }, {
@@ -243,6 +252,11 @@ class CameraModeActivity : Activity() {
             it.printStackTrace()
             Toast.makeText(this, "解答提出に失敗しました。ネット環境を確認してください。", Toast.LENGTH_SHORT).show()
         })
+    }
+
+    private fun getItemData(){
+        //TODO Itemの情報をもらう
+        //unitPer.itemCount.bomb = 1
     }
 
     private fun sadDialog() {
@@ -303,18 +317,7 @@ class CameraModeActivity : Activity() {
     }
 
     private fun itemSetting() {
-
         dialog.show()
-    }
-
-    private fun decrementItem(itemId: Int) {
-        if (itemId != -1) {
-            when (itemId) {
-                0 -> unitPer.itemCount.bomb -= 1
-                1 -> unitPer.itemCount.card -= 1
-                3 -> unitPer.itemCount.magicHand -= 1
-            }
-        }
     }
 
 
@@ -451,10 +454,10 @@ class CameraModeActivity : Activity() {
             dialog.cancel()
         }
 
-        val dialogViewNext: DialogBombSecoundBinding = if(happened == "爆弾"){
+        val dialogViewNext: DialogBombSecoundBinding = if (happened == "爆弾") {
             DataBindingUtil.inflate(
-                LayoutInflater.from(this), R.layout.dialog_bomb_secound, null, false)
-        }else{
+                    LayoutInflater.from(this), R.layout.dialog_bomb_secound, null, false)
+        } else {
             DataBindingUtil.inflate(
                     LayoutInflater.from(this), R.layout.dialog_bomb_secound, null, false)
         }
@@ -475,7 +478,7 @@ class CameraModeActivity : Activity() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     happened = it.happened
-                    when(happened) {
+                    when (happened) {
                         "爆弾" -> {
                             dialog.show()
                         }
