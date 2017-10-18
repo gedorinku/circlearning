@@ -3,6 +3,7 @@ package com.kurume_nct.studybattle.viewModel
 import android.content.Context
 import android.databinding.BaseObservable
 import android.databinding.Bindable
+import android.widget.Toast
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.UnitPersonal
@@ -55,6 +56,7 @@ class ItemInfoViewModel(private val context: Context, private val callback: Call
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
+                    Toast.makeText(context, "アイテムを取得しました", Toast.LENGTH_SHORT).show()
                     /*magicNumber = it[0].count
                     bombNumber = it[1].count
                     cardNumber = it[2].count

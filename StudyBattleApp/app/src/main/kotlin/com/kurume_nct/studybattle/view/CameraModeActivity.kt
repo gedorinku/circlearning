@@ -5,6 +5,7 @@ import com.kurume_nct.studybattle.R
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Context
@@ -28,11 +29,15 @@ import android.view.View
 import android.widget.*
 import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.client.ServerClient
+import com.kurume_nct.studybattle.databinding.DialogBombFirstBinding
+import com.kurume_nct.studybattle.databinding.DialogBombSecoundBinding
 import com.kurume_nct.studybattle.databinding.DialogCameraStrageChooseBinding
 import com.kurume_nct.studybattle.databinding.DialogItemSelectBinding
 import com.kurume_nct.studybattle.model.Air
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
+import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -44,6 +49,9 @@ import java.util.Date
 
 class CameraModeActivity : Activity() {
 
+    private val RESULT_CAMERA = 1001
+    private val RESULT_PICK_IMAGEFILE = 1000
+    private val REQUEST_PERMISSION = 1002
     private lateinit var submitImageButton: ImageButton
     private lateinit var submitItemImageButton: ImageButton
     private var comment: TextView? = null
@@ -75,13 +83,12 @@ class CameraModeActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        instance = this
 
         unitPer = application as UnitPersonal
         progress = ProgressDialogTool(this).makeDialog()
+        onBombDialog()
 
         setContentView(R.layout.activity_camera_mode)
-        userName = intent.getStringExtra("userName")
         // 宣言
         submitImageButton = findViewById(R.id.submit_image_button) as ImageButton
         submitItemImageButton = findViewById(R.id.submit_item_image_button) as ImageButton
@@ -414,10 +421,9 @@ class CameraModeActivity : Activity() {
             // 使用が許可された
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 cameraIntent()
-                return
             } else {
                 // それでも拒否された時の対応
-                val toast = Toast.makeText(this, "これ以上なにもできません", Toast.LENGTH_SHORT)
+                val toast = Toast.makeText(this, "カメラを使用するには許可が必要です", Toast.LENGTH_SHORT)
                 toast.show()
             }
         }
@@ -432,24 +438,53 @@ class CameraModeActivity : Activity() {
         contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
     }
 
-    companion object {
-        var instance: CameraModeActivity? = null
-            private set
+    private fun onBombDialog() {
 
-        private val RESULT_CAMERA = 1001
-        private val RESULT_PICK_IMAGEFILE = 1000
-        private val REQUEST_PERMISSION = 1002
+        var happened = ""
 
-        //uriからpath取得
-        fun getPath(context: Context, uri: Uri): String {
-            val contentResolver = context.contentResolver
-            val columns = arrayOf(MediaStore.Images.Media.DATA)
-            val cursor = contentResolver.query(uri, columns, null, null, null)
-            cursor!!.moveToFirst()
-            val path = cursor.getString(0)
-            cursor.close()
-            return path
+        val dialogView: DialogBombFirstBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(this), R.layout.dialog_bomb_first, null, false
+        )
+        val dialog = AlertDialog.Builder(this).setView(dialogView.root)
+                .create()
+        dialogView.imageView2.setOnClickListener {
+            dialog.cancel()
         }
+
+        val dialogViewNext: DialogBombSecoundBinding = if(happened == "爆弾"){
+            DataBindingUtil.inflate(
+                LayoutInflater.from(this), R.layout.dialog_bomb_secound, null, false)
+        }else{
+            DataBindingUtil.inflate(
+                    LayoutInflater.from(this), R.layout.dialog_bomb_secound, null, false)
+        }
+
+        val dialogNext = AlertDialog.Builder(this).setView(dialogViewNext.root)
+                .create()
+        dialogViewNext.imageView17.setOnClickListener {
+            dialogNext.cancel()
+        }
+
+        dialog.setOnCancelListener {
+            dialogNext.show()
+        }
+
+        ServerClient(unitPer.authenticationKey)
+                .openProblem(problemId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    happened = it.happened
+                    when(happened) {
+                        "爆弾" -> {
+                            dialog.show()
+                        }
+                        "盾" -> {
+                            dialog.show()
+                        }
+                    }
+
+                }
     }
 
 }
