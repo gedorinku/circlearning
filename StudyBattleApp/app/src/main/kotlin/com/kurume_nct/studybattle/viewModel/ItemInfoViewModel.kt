@@ -1,8 +1,6 @@
 package com.kurume_nct.studybattle.viewModel
 
-import android.content.ComponentCallbacks
 import android.content.Context
-import android.database.Observable
 import android.databinding.BaseObservable
 import android.databinding.Bindable
 import com.kurume_nct.studybattle.BR
@@ -17,30 +15,34 @@ import io.reactivex.schedulers.Schedulers
 class ItemInfoViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
 
     lateinit var unitPer: UnitPersonal
+    var magicNumber = 0
+    var cardNumber = 0
+    var shieldNumber = 0
+    var bombNumber = 0
 
     @Bindable
-    var magicCount = "×0"
+    var magicCount = "×" + magicNumber.toString()
         set(value) {
             field = value
             notifyPropertyChanged(BR.magicCount)
         }
 
     @Bindable
-    var bombCount = "×0"
+    var bombCount = "×" + bombNumber.toString()
         set(value) {
             field = value
             notifyPropertyChanged(BR.bombCount)
         }
 
     @Bindable
-    var cardCount = "×0"
+    var cardCount = "×" + cardNumber.toString()
         set(value) {
             field = value
             notifyPropertyChanged(BR.cardCount)
         }
 
     @Bindable
-    var shieldCount = "×0"
+    var shieldCount = "×" + shieldNumber.toString()
         set(value) {
             field = value
             notifyPropertyChanged(BR.shieldCount)
@@ -53,10 +55,10 @@ class ItemInfoViewModel(private val context: Context, private val callback: Call
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    magicCount = "×" + it[0].toString()
-                    bombCount = "×" +  it[1].toString()
-                    cardCount = "×" + it[3].toString()
-                    shieldCount = "×" + it[2].toString()
+                    /*magicNumber = it[0].count
+                    bombNumber = it[1].count
+                    cardNumber = it[2].count
+                    shieldNumber = it[3].count*/
                 }
     }
 
