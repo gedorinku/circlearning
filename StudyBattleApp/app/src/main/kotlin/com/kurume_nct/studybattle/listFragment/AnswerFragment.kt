@@ -21,6 +21,8 @@ import com.kurume_nct.studybattle.view.FinalScoringActivity
 import com.kurume_nct.studybattle.view.PersonalAnswerActivity
 import com.kurume_nct.studybattle.view.ScoringActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.mergeAll
+import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
 import java.text.FieldPosition
 
@@ -99,21 +101,19 @@ class AnswerFragment : Fragment() {
         val nameList = mutableListOf<String>()
         client
                 .getProblem(problemId)
+                .flatMap{
+                    it.solutions.toObservable()
+                }
+                .map {
+                    solutionList.add(ListSolution(it, ""))
+                    client.getUser(it.authorId)
+                }
+                .mergeAll()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    //shit code
-                    it.solutions.forEach {
-                        solutionList.add(ListSolution(it, ""))
-                        client
-                                .getUser(it.authorId)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe {
-                                    nameList.add(it.displayName)
-                                }
-                    }
-                }
+                .subscribe ({
+                    nameList.add(it.displayName)
+                })
         (0 until nameList.size).forEach {
             solutionList[it].name = nameList[it]
         }
