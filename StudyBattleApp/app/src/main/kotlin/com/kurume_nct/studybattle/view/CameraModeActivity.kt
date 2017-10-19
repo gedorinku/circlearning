@@ -35,6 +35,7 @@ import com.kurume_nct.studybattle.model.Bomb
 import com.kurume_nct.studybattle.model.ProblemOpenAction
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
+import com.kurume_nct.studybattle.tools.ToolClass
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -53,10 +54,6 @@ class CameraModeActivity : Activity() {
     private val REQUEST_PERMISSION = 1002
     private lateinit var submitImageButton: ImageButton
     private lateinit var submitItemImageButton: ImageButton
-    private var comment: TextView? = null
-    private var experiment: TextView? = null//これで実験試してる
-    private var flag = 0
-    private var userName: String? = null
     private var bmp1: Bitmap? = null
     private var cameraFile: File? = null
     private var cameraUri: Uri? = null
@@ -73,12 +70,6 @@ class CameraModeActivity : Activity() {
     private lateinit var problemImage: ImageView
     private lateinit var problemName: TextView
     private lateinit var writerName: TextView
-
-
-    //ギャラリーpath取得関数
-    private val galleryPath: String
-        get() = Environment.getExternalStorageDirectory().toString() + "/" + Environment.DIRECTORY_DCIM + "/"
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -261,8 +252,7 @@ class CameraModeActivity : Activity() {
     }
 
     private fun getItemData() {
-        //TODO Itemの情報をもらう
-        //unitPer.itemCount.bomb = 1
+        ToolClass(this).onRefreshItemData()
     }
 
     private fun sadDialog() {

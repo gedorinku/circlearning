@@ -7,6 +7,7 @@ import android.widget.Toast
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.tools.ToolClass
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -15,59 +16,38 @@ import io.reactivex.schedulers.Schedulers
  */
 class ItemInfoViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
 
-    lateinit var unitPer: UnitPersonal
-    var magicNumber = 0
-    var cardNumber = 0
-    var shieldNumber = 0
-    var bombNumber = 0
+    val unitPer: UnitPersonal = context.applicationContext as UnitPersonal
 
     @Bindable
-    var magicCount = "×" + magicNumber.toString()
+    var magicCount = "×" + unitPer.itemCount.magicHand.toString()
         set(value) {
             field = value
             notifyPropertyChanged(BR.magicCount)
         }
 
     @Bindable
-    var bombCount = "×" + bombNumber.toString()
+    var bombCount = "×" + unitPer.itemCount.bomb.toString()
         set(value) {
             field = value
             notifyPropertyChanged(BR.bombCount)
         }
 
     @Bindable
-    var cardCount = "×" + cardNumber.toString()
+    var cardCount = "×" + unitPer.itemCount.card.toString()
         set(value) {
             field = value
             notifyPropertyChanged(BR.cardCount)
         }
 
     @Bindable
-    var shieldCount = "×" + shieldNumber.toString()
+    var shieldCount = "×" + unitPer.itemCount.shield.toString()
         set(value) {
             field = value
             notifyPropertyChanged(BR.shieldCount)
         }
 
     fun onCreate(){
-        unitPer = context.applicationContext as UnitPersonal
-        ServerClient(unitPer.authenticationKey)
-                .getMyItems(unitPer.nowGroup.id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    Toast.makeText(context, "アイテムを取得しました", Toast.LENGTH_SHORT).show()
-                    it.forEach {
-                        when(it.id){
-                            1 -> bombNumber = it.count
-                            2 -> shieldNumber = it.count
-                        }
-                    }
-                    /*magicNumber = it[0].count
-                    bombNumber = it[1].count
-                    cardNumber = it[2].count
-                    shieldNumber = it[3].count*/
-                }
+        ToolClass(context).onRefreshItemData()
     }
 
     interface Callback {
