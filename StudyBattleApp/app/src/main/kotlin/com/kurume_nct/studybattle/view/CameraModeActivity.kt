@@ -29,10 +29,7 @@ import android.view.View
 import android.widget.*
 import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.client.ServerClient
-import com.kurume_nct.studybattle.databinding.DialogBombFirstBinding
-import com.kurume_nct.studybattle.databinding.DialogBombSecoundBinding
-import com.kurume_nct.studybattle.databinding.DialogCameraStrageChooseBinding
-import com.kurume_nct.studybattle.databinding.DialogItemSelectBinding
+import com.kurume_nct.studybattle.databinding.*
 import com.kurume_nct.studybattle.model.Air
 import com.kurume_nct.studybattle.model.Bomb
 import com.kurume_nct.studybattle.model.ProblemOpenAction
@@ -88,7 +85,6 @@ class CameraModeActivity : Activity() {
 
         unitPer = application as UnitPersonal
         progress = ProgressDialogTool(this).makeDialog()
-        onBombDialog()
 
         setContentView(R.layout.activity_camera_mode)
         // 宣言
@@ -100,11 +96,14 @@ class CameraModeActivity : Activity() {
         problemName = findViewById(R.id.problem_name_at_camera) as TextView
         writerName = findViewById(R.id.writer_name_at_camera) as TextView
 
-        problemId = intent.getIntExtra("problemId", 0)
+        //problemId = intent.getIntExtra("problemId", 0)
+        problemId = 13
         if (problemId == 0) {
             Toast.makeText(this, "やり直してください", Toast.LENGTH_SHORT).show()
             finish()
         }
+
+        openProblemServer()
 
         Glide.with(this).load(R.drawable.hatena).into(submitItemImageButton)
         onGetProblemInfo()
@@ -448,37 +447,78 @@ class CameraModeActivity : Activity() {
         contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
     }
 
+    private var actionSignal = ProblemOpenAction.NONE
     private fun onBombDialog() {
-
-        var actionSignal: ProblemOpenAction = ProblemOpenAction.NONE
-
-        val dialogView: DialogBombFirstBinding = DataBindingUtil.inflate(
-                LayoutInflater.from(this), R.layout.dialog_bomb_first, null, false
-        )
-        val dialog = AlertDialog.Builder(this).setView(dialogView.root)
-                .create()
-        dialogView.imageView2.setOnClickListener {
-            dialog.cancel()
+        val dialog1 = Dialog(this)
+        val image = ImageView(this)
+        image.run {
+            setImageResource(R.drawable.bomb)
+            scaleType = ImageView.ScaleType.FIT_CENTER
+            adjustViewBounds = true
+            setOnClickListener {
+                dialog1.cancel()
+            }
         }
 
-        val dialogViewNext: DialogBombSecoundBinding = if (actionSignal == ProblemOpenAction.EXPLODED) {
-            DataBindingUtil.inflate(
-                    LayoutInflater.from(this), R.layout.dialog_bomb_secound, null, false)
-        } else {
-            DataBindingUtil.inflate(
-                    LayoutInflater.from(this), R.layout.dialog_bomb_secound, null, false)
+        dialog1.run {
+            setContentView(image)
+            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            setOnDismissListener {
+                when(actionSignal){
+                    ProblemOpenAction.EXPLODED -> {
+                        onExpandDialog()
+                    }
+                    ProblemOpenAction.DEFENDED -> {
+                        onShieldDialog()
+                    }
+                    else -> {
+                        Log.ERROR
+                    }
+                }
+            }
+            show()
+        }
+    }
+
+    private fun onShieldDialog(){
+        val dialog1 = Dialog(this)
+        val image = ImageView(this)
+        image.run {
+            setImageResource(R.drawable.shield)
+            scaleType = ImageView.ScaleType.FIT_CENTER
+            adjustViewBounds = true
+            background
+            setOnClickListener {
+                dialog1.cancel()
+            }
+        }
+        dialog1.run {
+            setContentView(image)
+            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            show()
+        }
+    }
+
+    private fun onExpandDialog(){
+        val dialog1 = Dialog(this)
+        val image = ImageView(this)
+        image.run {
+            setImageResource(R.drawable.bomb_second)
+            scaleType = ImageView.ScaleType.FIT_CENTER
+            adjustViewBounds = true
+            setOnClickListener {
+                dialog1.cancel()
+            }
+        }
+        dialog1.run {
+            setContentView(image)
+            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            show()
         }
 
-        val dialogNext = AlertDialog.Builder(this).setView(dialogViewNext.root)
-                .create()
-        dialogViewNext.imageView17.setOnClickListener {
-            dialogNext.cancel()
-        }
+    }
 
-        dialog.setOnCancelListener {
-            dialogNext.show()
-        }
-
+    private fun openProblemServer(){
         ServerClient(unitPer.authenticationKey)
                 .openProblem(problemId)
                 .subscribeOn(Schedulers.io())
@@ -490,7 +530,7 @@ class CameraModeActivity : Activity() {
                             Toast.makeText(this, "爆弾はついてません", Toast.LENGTH_SHORT)
                         }
                         else -> {
-                            dialog.show()
+                            onBombDialog()
                         }
                     }
 
