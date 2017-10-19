@@ -57,6 +57,12 @@ class ItemInfoViewModel(private val context: Context, private val callback: Call
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     Toast.makeText(context, "アイテムを取得しました", Toast.LENGTH_SHORT).show()
+                    it.forEach {
+                        when(it.id){
+                            1 -> bombNumber = it.count
+                            2 -> shieldNumber = it.count
+                        }
+                    }
                     /*magicNumber = it[0].count
                     bombNumber = it[1].count
                     cardNumber = it[2].count
@@ -65,6 +71,6 @@ class ItemInfoViewModel(private val context: Context, private val callback: Call
     }
 
     interface Callback {
-
+        //none
     }
 }

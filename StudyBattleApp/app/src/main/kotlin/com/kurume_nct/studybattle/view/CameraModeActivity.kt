@@ -35,6 +35,7 @@ import com.kurume_nct.studybattle.databinding.DialogCameraStrageChooseBinding
 import com.kurume_nct.studybattle.databinding.DialogItemSelectBinding
 import com.kurume_nct.studybattle.model.Air
 import com.kurume_nct.studybattle.model.Bomb
+import com.kurume_nct.studybattle.model.ProblemOpenAction
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
 import io.reactivex.Observable
@@ -233,9 +234,15 @@ class CameraModeActivity : Activity() {
                                     imageIds = listOf(imageId),
                                     item =
                                     when (putItemId) {
-                                        0 ->{Bomb}
-                                        1 ->{Bomb/*Card*/}
-                                        2 ->{Air/*Magic*/}
+                                        0 -> {
+                                            Bomb
+                                        }
+                                        1 -> {
+                                            Bomb/*Card*/
+                                        }
+                                        2 -> {
+                                            Air/*Magic*/
+                                        }
                                         else -> {
                                             Air
                                         }
@@ -254,7 +261,7 @@ class CameraModeActivity : Activity() {
         })
     }
 
-    private fun getItemData(){
+    private fun getItemData() {
         //TODO Itemの情報をもらう
         //unitPer.itemCount.bomb = 1
     }
@@ -443,7 +450,7 @@ class CameraModeActivity : Activity() {
 
     private fun onBombDialog() {
 
-        var happened = ""
+        var actionSignal: ProblemOpenAction = ProblemOpenAction.NONE
 
         val dialogView: DialogBombFirstBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(this), R.layout.dialog_bomb_first, null, false
@@ -454,7 +461,7 @@ class CameraModeActivity : Activity() {
             dialog.cancel()
         }
 
-        val dialogViewNext: DialogBombSecoundBinding = if (happened == "爆弾") {
+        val dialogViewNext: DialogBombSecoundBinding = if (actionSignal == ProblemOpenAction.EXPLODED) {
             DataBindingUtil.inflate(
                     LayoutInflater.from(this), R.layout.dialog_bomb_secound, null, false)
         } else {
@@ -477,12 +484,12 @@ class CameraModeActivity : Activity() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    happened = it.happened
-                    when (happened) {
-                        "爆弾" -> {
-                            dialog.show()
+                    actionSignal = it.openAction
+                    when (actionSignal) {
+                        ProblemOpenAction.NONE -> {
+                            Toast.makeText(this, "爆弾はついてません", Toast.LENGTH_SHORT)
                         }
-                        "盾" -> {
+                        else -> {
                             dialog.show()
                         }
                     }
