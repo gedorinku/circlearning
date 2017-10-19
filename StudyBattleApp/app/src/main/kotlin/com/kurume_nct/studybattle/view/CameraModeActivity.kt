@@ -87,8 +87,7 @@ class CameraModeActivity : Activity() {
         problemName = findViewById(R.id.problem_name_at_camera) as TextView
         writerName = findViewById(R.id.writer_name_at_camera) as TextView
 
-        //problemId = intent.getIntExtra("problemId", 0)
-        problemId = 13
+        problemId = intent.getIntExtra("problemId", 0)
         if (problemId == 0) {
             Toast.makeText(this, "やり直してください", Toast.LENGTH_SHORT).show()
             finish()

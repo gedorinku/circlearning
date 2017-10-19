@@ -96,11 +96,13 @@ class AnswerFragment : Fragment() {
     }
 
     private fun getProblemData() {
+        val nameList = mutableListOf<String>()
         client
                 .getProblem(problemId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
+                    //shit code
                     it.solutions.forEach {
                         solutionList.add(ListSolution(it, ""))
                         client
@@ -108,10 +110,13 @@ class AnswerFragment : Fragment() {
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe {
-                                    solutionList[solutionList.size - 1].name = it.displayName
+                                    nameList.add(it.displayName)
                                 }
                     }
                 }
+        (0 until nameList.size).forEach {
+            solutionList[it].name = nameList[it]
+        }
     }
 
     private fun changeImage(position: Int, cor: Boolean) {
