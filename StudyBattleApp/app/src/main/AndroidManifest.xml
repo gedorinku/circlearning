@@ -28,16 +28,16 @@
 
         <activity android:name=".Main2Activity" />
         <activity android:name=".view.RegistrationActivity">
-        </activity>
-        <activity android:name=".view.LoginActivity" />
-        <activity android:name=".view.LotteryActivity" />
-        <activity android:name=".view.CameraModeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+        <activity android:name=".view.LoginActivity" />
+        <activity android:name=".view.LotteryActivity" />
+        <activity android:name=".view.CameraModeActivity" />
         <activity android:name=".view.ItemInfoActivity" />
         <activity android:name=".view.RankingActivity" />
         <activity android:name=".view.CreateProblemActivity" />
