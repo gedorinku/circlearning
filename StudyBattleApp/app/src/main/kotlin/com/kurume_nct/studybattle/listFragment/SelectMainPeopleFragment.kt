@@ -34,7 +34,7 @@ class SelectMainPeopleFragment : Fragment(), SelectPeopleFragment.Callback, Sear
         binding = FragmentSelectPeopleBinding.inflate(inflater, container, false)
         binding.selectPeopleUnit = SelectMainPeopleViewModel(context)
 
-        searchFragment = SearchPeopleFragment.newInstance(this)
+        searchFragment = SearchPeopleFragment.newInstance(this, this)
         selectFragment = SelectPeopleFragment.newInstance(this)
 
         activity.supportFragmentManager.beginTransaction()

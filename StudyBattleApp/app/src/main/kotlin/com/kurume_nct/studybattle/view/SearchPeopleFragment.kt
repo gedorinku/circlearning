@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import com.kurume_nct.studybattle.adapter.JoinPeopleAdapter
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.FragmentChoosePeoplelistBinding
+import com.kurume_nct.studybattle.listFragment.SelectMainPeopleFragment
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.model.User
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -19,7 +20,7 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by hanah on 10/2/2017.
  */
-class SearchPeopleFragment(val callback: Callback) : Fragment() {
+class SearchPeopleFragment(val callback: Callback, val context: SelectMainPeopleFragment) : Fragment() {
     private lateinit var binding: FragmentChoosePeoplelistBinding
     private val list = mutableListOf<User>()
     private lateinit var listAdapter: JoinPeopleAdapter
@@ -27,8 +28,8 @@ class SearchPeopleFragment(val callback: Callback) : Fragment() {
     private var searching = false
 
     companion object {
-        fun newInstance(callback: Callback): SearchPeopleFragment {
-            val fragment = SearchPeopleFragment(callback)
+        fun newInstance(callback: Callback, context: SelectMainPeopleFragment): SearchPeopleFragment {
+            val fragment = SearchPeopleFragment(callback, context)
             val args = Bundle()
             fragment.arguments = args
             return fragment
@@ -73,13 +74,21 @@ class SearchPeopleFragment(val callback: Callback) : Fragment() {
                         val size = list.size
                         list.clear()
                         listAdapter.notifyItemRangeRemoved(0, size)
-                        list.addAll(it)
+                        listFilter(it.toMutableList())
                         listAdapter.notifyItemRangeInserted(0, list.size)
                         searching = false
                     }
         } else {
             searching = false
         }
+    }
+
+    lateinit var filterSet: MutableSet<User>
+    private fun listFilter(newList: MutableList<User>){
+        filterSet = context.getPeopleList().toMutableSet()
+        val size = filterSet.size
+        filterSet.addAll(newList)
+        list.addAll(filterSet.toMutableList().subList(size, filterSet.size))
     }
 
     private fun onDeletePeople(position: Int) {
