@@ -200,4 +200,10 @@ interface Server {
             @Query("authenticationKey") authenticationKey: String,
             @Query("groupId") groupId: Int
     ): Observable<List<ItemStack>>
+
+    @GET("/ranking")
+    fun getRanking(
+            @Query("authenticationKey") authenticationKey: String,
+            @Query("groupId") groupId: Int
+    ): Observable<Ranking>
 }
