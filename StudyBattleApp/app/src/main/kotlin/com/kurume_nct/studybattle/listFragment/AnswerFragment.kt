@@ -99,6 +99,7 @@ class AnswerFragment : Fragment() {
 
     private fun getProblemData() {
         val nameList = mutableListOf<String>()
+        var count = 0
         client
                 .getProblem(problemId)
                 .flatMap{
@@ -112,11 +113,9 @@ class AnswerFragment : Fragment() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
-                    nameList.add(it.displayName)
+                    solutionList[count].name = it.displayName
+                    count++
                 })
-        (0 until nameList.size).forEach {
-            solutionList[it].name = nameList[it]
-        }
     }
 
     private fun changeImage(position: Int, cor: Boolean) {
