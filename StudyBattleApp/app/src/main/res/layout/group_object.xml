@@ -16,6 +16,7 @@
             android:id="@+id/imageView4"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:scaleType="centerCrop"
             app:srcCompat="@drawable/shock" />
 
         <Space
