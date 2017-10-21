@@ -21,6 +21,8 @@ import com.kurume_nct.studybattle.view.FinalScoringActivity
 import com.kurume_nct.studybattle.view.PersonalAnswerActivity
 import com.kurume_nct.studybattle.view.ScoringActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.mergeAll
+import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
 import java.text.FieldPosition
 
@@ -98,19 +100,19 @@ class AnswerFragment : Fragment() {
     private fun getProblemData() {
         client
                 .getProblem(problemId)
+                .flatMap {
+                    it.solutions.toObservable()
+                }
+                .map {
+                    solutionList.add(ListSolution(it, ""))
+                    client.getUser(it.authorId)
+                }
+                .mergeAll()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    it.solutions.forEach {
-                        solutionList.add(ListSolution(it, ""))
-                        client
-                                .getUser(it.authorId)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe {
-                                    solutionList[solutionList.size - 1].name = it.displayName
-                                }
-                    }
+                .toList()
+                .subscribe { it ->
+                    it.forEachIndexed { index, user -> solutionList[index].name = user.displayName }
                 }
     }
 

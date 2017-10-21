@@ -66,6 +66,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:background="@drawable/no_image"
+<<<<<<<<< Temporary merge branch 1
                     app:srcCompat="@drawable/text_noimage"
                     app:AnswerImageLoad="@{AnswerAct.problemUri}"
                     android:scaleType="centerCrop"/>
@@ -88,6 +89,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:background="@drawable/no_image"
+<<<<<<<<< Temporary merge branch 1
                     app:srcCompat="@drawable/text_noimage"
                     app:AnswerImageLoad="@{AnswerAct.answerUri}"
                     android:scaleType="centerCrop"/>
