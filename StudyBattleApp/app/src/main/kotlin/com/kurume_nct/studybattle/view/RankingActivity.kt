@@ -12,13 +12,14 @@ import com.kurume_nct.studybattle.viewModel.RankingViewModel
 
 class RankingActivity : AppCompatActivity(), RankingViewModel.Callback {
 
-    lateinit var binding : ActivityRankingBinding
+    lateinit var binding: ActivityRankingBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("i'm ", javaClass.name)
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_ranking)
-        binding.ranking = RankingViewModel(this,this)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_ranking)
+        binding.ranking = RankingViewModel(this, this)
+        binding.ranking.onGetScore()
         supportFragmentManager.beginTransaction()
                 .replace(R.id.ranking_list_content, RankingListFragment().newInstance(0))
                 .commit()
