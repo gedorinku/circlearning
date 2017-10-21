@@ -11,4 +11,8 @@ object Bomb : Item(1)
 
 object Shield : Item(2)
 
+object DoubleScoreCard : Item(3)
+
+object MagicHand : Item(4)
+
 data class ItemStack(val id: Int, val count: Int)
