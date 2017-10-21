@@ -43,23 +43,25 @@ class PictureListAdapter(val context: Context, val list: MutableList<RankingUser
         val binding: GroupObjectBinding = DataBindingUtil.bind(view)
     }
 
-    @BindingAdapter("loadMedal")
-    fun setMedal(view: ImageView, rank: Int) {
-        var resouce: Int? = null
-        when (rank) {
-            0 -> resouce = R.drawable.medal1
-            1 -> resouce = R.drawable.medal2
-            2 -> resouce = R.drawable.medal3
+    companion object {
+        @BindingAdapter("loadMedal")
+        @JvmStatic
+        fun setMedal(view: ImageView, rank: Int) {
+            var resouce: Int? = null
+            when (rank) {
+                0 -> resouce = R.drawable.medal1
+                1 -> resouce = R.drawable.medal2
+                2 -> resouce = R.drawable.medal3
+            }
+            Glide.with(view).load(resouce).into(view)
         }
-        Glide.with(context).load(resouce).into(view)
+
+        @BindingAdapter("loadIconRanking")
+        @JvmStatic
+        fun setIcon(view: ImageView, uri: Uri) {
+            Glide.with(view).load(uri).into(view)
+        }
     }
 
-    @BindingAdapter("loadIcon")
-    fun setIcon(view: ImageView, uri: Uri?) {
-        if (uri == null) {
-            Glide.with(context).load(GoogleMaterial.Icon.gmd_person).into(view)
-        } else {
-            Glide.with(context).load(uri).into(view)
-        }
-    }
+
 }

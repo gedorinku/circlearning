@@ -28,7 +28,7 @@
         <TextView
             android:id="@+id/textView25"
             android:layout_width="120dp"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
@@ -60,7 +60,7 @@
 
         <ImageView
             android:id="@+id/imageView4"
-            app:loadIcon="@{Ranking.icon}"
+            app:loadIconRanking="@{Ranking.icon}"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginBottom="8dp"
@@ -70,7 +70,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/imageView2"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.6" />
+            app:layout_constraintVertical_bias="0.5" />
 
         <ImageView
             android:id="@+id/imageView2"
@@ -84,7 +84,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.4" />
+            app:layout_constraintVertical_bias="0.5" />
 
         <TextView
             android:id="@+id/textView50"

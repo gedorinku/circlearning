@@ -19,5 +19,5 @@ data class RankingUser(
         var displayName: String = "",
         var userName: String = "",
         var medal: Int = 0,
-        var icon: Uri? = null
+        var icon: Uri
 )

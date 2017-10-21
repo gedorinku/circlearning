@@ -147,6 +147,7 @@ class Main2Activity : AppCompatActivity() {
                                 }
                     }
                 }, {
+                    progressDialog.dismiss()
                     Log.d("Groupの情報を取得するのに失敗", "")
                     Toast.makeText(this, "アプリを立ち上げなおしてください", Toast.LENGTH_SHORT).show()
                 })

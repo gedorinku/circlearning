@@ -11,11 +11,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.kurume_nct.studybattle.R
 
 import com.kurume_nct.studybattle.adapter.PictureListAdapter
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.GroupListBinding
 import com.kurume_nct.studybattle.model.*
+import com.kurume_nct.studybattle.tools.ToolClass
+import com.mikepenz.google_material_typeface_library.GoogleMaterial
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
@@ -69,7 +72,10 @@ class RankingListFragment : Fragment() {
                     }
                     listAdapter.notifyItemRangeInserted(0, grouplist.size)
                 },{
-                   grouplist.add(RankingUser(displayName = "まだランキングが存在しないよ"))
+                   grouplist.add(RankingUser(
+                           displayName = "まだランキングが存在しないよ",
+                           icon = ToolClass(context).convertUrlFromDrawableResId(R.drawable.no_image)!!
+                   ))
                     listAdapter.notifyItemRangeInserted(0, grouplist.size)
                 })
     }
