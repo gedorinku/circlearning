@@ -58,19 +58,17 @@ class SearchPeopleFragment(val callback: Callback, val context: SelectMainPeople
 
     fun onListReset(str: String) {
         if (searching) return
-        Log.d("edit", "入力")
         searching = true
         if (str.isNotBlank()) {
             val size = list.size
             listAdapter.notifyItemRangeRemoved(0, size)
-            Log.d("hoge", "list")
             val client = ServerClient(unitPer.authenticationKey)
             client
                     .searchUsers(str)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe{
-                        Log.d("userの数は" + it.size.toString(), str)
+                        Log.d("userの数" + it.size.toString(), str)
                         val size = list.size
                         list.clear()
                         listAdapter.notifyItemRangeRemoved(0, size)
@@ -83,9 +81,10 @@ class SearchPeopleFragment(val callback: Callback, val context: SelectMainPeople
         }
     }
 
-    lateinit var filterSet: MutableSet<User>
+    private lateinit var filterSet: MutableSet<User>
     private fun listFilter(newList: MutableList<User>){
         filterSet = context.getPeopleList().toMutableSet()
+        filterSet.addAll(unitPer.nowGroup.members.toMutableSet())
         val size = filterSet.size
         filterSet.addAll(newList)
         list.addAll(filterSet.toMutableList().subList(size, filterSet.size))

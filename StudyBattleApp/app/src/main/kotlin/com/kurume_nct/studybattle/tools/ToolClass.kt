@@ -14,11 +14,7 @@ import io.reactivex.schedulers.Schedulers
  */
 class ToolClass(val context: Context) {
 
-    val unitPer: UnitPersonal
-
-    init {
-        unitPer = context.applicationContext as UnitPersonal
-    }
+    val unitPer: UnitPersonal = context.applicationContext as UnitPersonal
 
     fun convertUrlFromDrawableResId(drawableResId: Int): Uri? {
         val sb = StringBuilder()
@@ -31,6 +27,7 @@ class ToolClass(val context: Context) {
         sb.append(context.resources.getResourceEntryName(drawableResId))
         return Uri.parse(sb.toString())
     }
+
     fun onRefreshItemData(){
         ServerClient(unitPer.authenticationKey)
                 .getMyItems(unitPer.nowGroup.id)
