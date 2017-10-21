@@ -20,8 +20,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
 
-
-
 /**
  * Created by hanah on 7/31/2017.
  */
@@ -200,6 +198,9 @@ class ServerClient(authenticationKey: String = "") {
     fun getSolution(solution: Solution) = getSolution(solution.id)
 
     fun getSolution(solutionId: Int) = server.getSolution(authenticationKey, solutionId)
+
+    fun judgeSolution(solutionId: Int, accepted: Boolean)
+            = server.judgeSolution(authenticationKey, solutionId, accepted)
 
     fun getJudgedMySolutions(group: Group) = getJudgedMySolutions(group.id)
 
