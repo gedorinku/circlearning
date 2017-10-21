@@ -67,7 +67,8 @@
                     android:layout_height="200dp"
                     android:background="@drawable/no_image"
                     app:srcCompat="@drawable/text_noimage"
-                    app:AnswerImageLoad="@{AnswerAct.problemUri}"/>
+                    app:AnswerImageLoad="@{AnswerAct.problemUri}"
+                    android:scaleType="centerCrop"/>
 
                 <Space
                     android:layout_width="match_parent"
@@ -88,7 +89,8 @@
                     android:layout_height="200dp"
                     android:background="@drawable/no_image"
                     app:srcCompat="@drawable/text_noimage"
-                    app:AnswerImageLoad="@{AnswerAct.answerUri}"/>
+                    app:AnswerImageLoad="@{AnswerAct.answerUri}"
+                    android:scaleType="centerCrop"/>
 
 
                 <Space
