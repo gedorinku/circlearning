@@ -1,40 +1,65 @@
 package com.kurume_nct.studybattle.adapter
 
 import android.content.Context
+import android.databinding.BindingAdapter
 import android.databinding.DataBindingUtil
+import android.net.Uri
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.databinding.GroupObjectBinding
 import com.kurume_nct.studybattle.model.Person_
+import com.kurume_nct.studybattle.model.Ranking
+import com.kurume_nct.studybattle.model.RankingUser
+import com.mikepenz.google_material_typeface_library.GoogleMaterial
+import retrofit2.http.Url
+import javax.microedition.khronos.opengles.GL
 
 /**
  * Created by hanah on 9/22/2017.
  */
-class PictureListAdapter(val context: Context, val list: MutableList<Person_>, val callbacks: (Int) -> Unit)
+class PictureListAdapter(val context: Context, val list: MutableList<RankingUser>)
     : RecyclerView.Adapter<PictureListAdapter.GroupListHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupListHolder {
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.group_object, parent, false)
         val holder = GroupListHolder(view)
-        holder.itemView.setOnClickListener {
-            val position = holder.adapterPosition
-            callbacks(position)
-        }
         return holder
     }
 
     override fun onBindViewHolder(holder: GroupListHolder, position: Int) {
-        holder.binding.setVariable(BR.Group, list[position])
+        holder.binding.setVariable(BR.Ranking, list[position])
     }
 
     override fun getItemCount(): Int = list.size
 
     inner class GroupListHolder(view: View) : RecyclerView.ViewHolder(view) {
         val binding: GroupObjectBinding = DataBindingUtil.bind(view)
+    }
+
+    @BindingAdapter("loadMedal")
+    fun setMedal(view: ImageView, rank: Int) {
+        var resouce: Int? = null
+        when (rank) {
+            0 -> resouce = R.drawable.medal1
+            1 -> resouce = R.drawable.medal2
+            2 -> resouce = R.drawable.medal3
+        }
+        Glide.with(context).load(resouce).into(view)
+    }
+
+    @BindingAdapter("loadIcon")
+    fun setIcon(view: ImageView, uri: Uri?) {
+        if (uri == null) {
+            Glide.with(context).load(GoogleMaterial.Icon.gmd_person).into(view)
+        } else {
+            Glide.with(context).load(uri).into(view)
+        }
     }
 }

@@ -14,24 +14,10 @@ data class ListSolution(var solution: Solution = Solution(), var name: String)
 
 data class Direction(var num : String = "6")
 
-class JoinPeople: BaseObservable(){
-
-    var id: Int = 0
-    var selected: Boolean = false
-
-    @Bindable
-    var iconUri : Uri? = null
-        get
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.iconUri)
-        }
-
-    @Bindable
-    var name = "すし"
-        get
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.name)
-        }
-}
+data class RankingUser(
+        var score: String = "",
+        var displayName: String = "",
+        var userName: String = "",
+        var medal: Int = 0,
+        var icon: Uri? = null
+)
