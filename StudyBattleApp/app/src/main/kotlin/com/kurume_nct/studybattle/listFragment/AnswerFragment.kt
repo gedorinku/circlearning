@@ -98,11 +98,9 @@ class AnswerFragment : Fragment() {
     }
 
     private fun getProblemData() {
-        val nameList = mutableListOf<String>()
-        var count = 0
         client
                 .getProblem(problemId)
-                .flatMap{
+                .flatMap {
                     it.solutions.toObservable()
                 }
                 .map {
@@ -112,10 +110,10 @@ class AnswerFragment : Fragment() {
                 .mergeAll()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe ({
-                    solutionList[count].name = it.displayName
-                    count++
-                })
+                .toList()
+                .subscribe { it ->
+                    it.forEachIndexed { index, user -> solutionList[index].name = user.displayName }
+                }
     }
 
     private fun changeImage(position: Int, cor: Boolean) {
