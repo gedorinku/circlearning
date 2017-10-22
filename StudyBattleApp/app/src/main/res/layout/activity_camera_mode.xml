@@ -69,7 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="10dp" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/problem_image_at_camera"
             android:layout_width="match_parent"
             android:layout_height="200dp"
