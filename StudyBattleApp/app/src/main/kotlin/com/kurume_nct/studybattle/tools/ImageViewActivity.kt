@@ -18,7 +18,7 @@ class ImageViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_image_view)
         val imageUrl = intent.getStringExtra("url")
-        if (imageUrl != null)
+        if (Uri.parse(imageUrl) != null)
             Glide.with(this).load(Uri.parse(imageUrl)).into(binding.imageView17)
     }
 }

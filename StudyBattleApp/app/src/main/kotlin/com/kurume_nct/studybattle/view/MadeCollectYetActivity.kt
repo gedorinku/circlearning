@@ -1,10 +1,12 @@
 package com.kurume_nct.studybattle.view
 
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.bumptech.glide.Glide
 
@@ -12,6 +14,7 @@ import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.ActivityMadeCollectYetBinding
 import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.tools.ImageViewActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -20,6 +23,7 @@ class MadeCollectYetActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMadeCollectYetBinding
     private var problemId = 0
     private lateinit var unitPer: UnitPersonal
+    private var url = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +33,14 @@ class MadeCollectYetActivity : AppCompatActivity() {
         checkProblem(problemId)
         unitPer = application as UnitPersonal
         getProblemInfo()
+        binding.imageView14.apply {
+            setOnClickListener {
+                val intent = Intent(context, ImageViewActivity::class.java)
+                intent.putExtra("url", url)
+                startActivity(intent)
+            }
+            isClickable = false
+        }
     }
 
     private fun checkProblem(id: Int) {
@@ -58,6 +70,8 @@ class MadeCollectYetActivity : AppCompatActivity() {
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe {
                                     setUpPicture(Uri.parse(it.url))
+                                    url = it.url
+                                    binding.imageView14.isClickable = true
                                 }
                     }
                 }
