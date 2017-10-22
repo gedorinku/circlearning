@@ -2,6 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.kurume_nct.studybattle.viewModel.ScoingViewModel" />
+    </data>
+
     <LinearLayout
 
         android:layout_width="match_parent"
@@ -29,6 +36,28 @@
                     android:textSize="24sp" />
 
                 <TextView
+                    android:id="@+id/problem_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:text="@{viewModel.writer}"
+                    android:textSize="13sp" />
+
+                <ImageButton
+                    android:id="@+id/problem_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/no_image"
+                    android:onClick="@{viewModel.onClickProblemImage}"
+                    android:scaleType="centerCrop"
+                    app:loadImage="@{viewModel.problemUrl}" />
+
+                <TextView
                     android:id="@+id/creator_name_at_score"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -37,6 +66,7 @@
                     android:layout_marginRight="8dp"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
+                    android:text="@{viewModel.solver}"
                     android:textSize="13sp" />
 
                 <ImageButton
@@ -45,7 +75,9 @@
                     android:layout_height="200dp"
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/no_image"
-                    android:scaleType="centerCrop" />
+                    android:onClick="@{viewModel.onClickAnswerImage}"
+                    android:scaleType="centerCrop"
+                    app:loadImage="@{viewModel.answerUrl}" />
 
 
                 <RadioGroup
@@ -55,6 +87,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
+                    android:checkedButton="@{viewModel.onClickRadioButton}"
                     android:orientation="horizontal">
 
                     <RadioButton
@@ -84,6 +117,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:background="@color/md_light_green_400"
+                    android:onClick="@{viewModel.onClickFinishButton}"
                     android:text="完了"
                     android:textColor="@color/material_drawer_dark_header_selection_text"
                     android:textSize="15sp" />
