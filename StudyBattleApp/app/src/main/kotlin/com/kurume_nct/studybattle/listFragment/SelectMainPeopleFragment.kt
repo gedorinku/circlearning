@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.databinding.FragmentSelectPeopleBinding
 import android.text.Editable
+import android.util.Log
 import com.kurume_nct.studybattle.view.SelectPeopleFragment
 import com.kurume_nct.studybattle.model.User
 import com.kurume_nct.studybattle.view.SearchPeopleFragment
@@ -34,7 +35,7 @@ class SelectMainPeopleFragment : Fragment(), SelectPeopleFragment.Callback, Sear
         binding = FragmentSelectPeopleBinding.inflate(inflater, container, false)
         binding.selectPeopleUnit = SelectMainPeopleViewModel(context)
 
-        searchFragment = SearchPeopleFragment.newInstance(this)
+        searchFragment = SearchPeopleFragment.newInstance(this, this)
         selectFragment = SelectPeopleFragment.newInstance(this)
 
         activity.supportFragmentManager.beginTransaction()
@@ -53,7 +54,8 @@ class SelectMainPeopleFragment : Fragment(), SelectPeopleFragment.Callback, Sear
             }
 
             override fun afterTextChanged(s: Editable?) {
-                searchFragment.onListReset(binding.selectPeopleUnit.searchText)
+                if(binding.selectPeopleUnit.searchText.matches("^[a-zA-Z0-9_]".toRegex()))
+                    searchFragment.onListReset(binding.selectPeopleUnit.searchText)
             }
         })
 

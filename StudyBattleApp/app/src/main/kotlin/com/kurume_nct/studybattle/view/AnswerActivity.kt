@@ -1,23 +1,28 @@
 package com.kurume_nct.studybattle.view
 
-import android.content.Context
 import android.databinding.DataBindingUtil
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.kurume_nct.studybattle.listFragment.AnswerFragment
 import com.kurume_nct.studybattle.viewModel.AnswerViewModel
 
 import com.kurume_nct.studybattle.R
+import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.ActivityAnswerBinding
 import com.kurume_nct.studybattle.model.UnitPersonal
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
 
     lateinit var binding: ActivityAnswerBinding
     private var fin: Int = 0
     lateinit var unit: UnitPersonal
+    private var problemId = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,16 +31,60 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_answer)
         binding.answerAct = AnswerViewModel(this, this)
         fin = intent.getIntExtra("fin", 0)
+        problemId = intent.getIntExtra("problemId", -1)
+
+        if (problemId == -1) failAction()
+
         supportFragmentManager.beginTransaction()
-                .replace(R.id.answers_fragment, AnswerFragment().newInstance(fin))
+                .replace(R.id.answers_fragment, AnswerFragment().newInstance(fin, problemId))
                 .commit()
         if (fin != 3) {
             binding.problemScoreAnsText.visibility = View.GONE
         }
+
+        onInitDataSet()
     }
 
-    fun bindSetting() {
-        //binding.problemImageAtAnswer.setImageURI()
-        //binding.answerImageAtAnswer.setImageURI()
+    private fun onInitDataSet() {
+        val client = ServerClient(unit.authenticationKey)
+        client
+                .getProblem(problemId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap {
+                    binding.answerAct.problemName = it.title
+
+                    client
+                            .getUser(it.ownerId)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe {
+                                binding.answerAct.problemName = it.displayName + "(" + it.userName + ")"
+                            }
+                    if (fin == 3) {
+                        //score
+                    }
+                    client
+                            .getImageById(it.imageIds[0])
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe {
+                                binding.answerAct.problemUri = Uri.parse(it.url)
+                            }
+                    client
+                            .getImageById(it.solutions[0].imageIds[0])
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                }
+                .subscribe({
+                    binding.answerAct.answerUri = Uri.parse(it.url)
+                }, {
+                    failAction()
+                })
+    }
+
+    private fun failAction(){
+        Toast.makeText(this, "問題の取得に失敗しました", Toast.LENGTH_SHORT).show()
+        finish()
     }
 }

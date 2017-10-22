@@ -5,6 +5,7 @@ import com.kurume_nct.studybattle.R
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Context
@@ -28,11 +29,15 @@ import android.view.View
 import android.widget.*
 import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.client.ServerClient
-import com.kurume_nct.studybattle.databinding.DialogCameraStrageChooseBinding
-import com.kurume_nct.studybattle.databinding.DialogItemSelectBinding
+import com.kurume_nct.studybattle.databinding.*
 import com.kurume_nct.studybattle.model.Air
+import com.kurume_nct.studybattle.model.Bomb
+import com.kurume_nct.studybattle.model.ProblemOpenAction
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
+import com.kurume_nct.studybattle.tools.ToolClass
+import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -44,12 +49,11 @@ import java.util.Date
 
 class CameraModeActivity : Activity() {
 
+    private val RESULT_CAMERA = 1001
+    private val RESULT_PICK_IMAGEFILE = 1000
+    private val REQUEST_PERMISSION = 1002
     private lateinit var submitImageButton: ImageButton
     private lateinit var submitItemImageButton: ImageButton
-    private var comment: TextView? = null
-    private var experiment: TextView? = null//これで実験試してる
-    private var flag = 0
-    private var userName: String? = null
     private var bmp1: Bitmap? = null
     private var cameraFile: File? = null
     private var cameraUri: Uri? = null
@@ -67,21 +71,13 @@ class CameraModeActivity : Activity() {
     private lateinit var problemName: TextView
     private lateinit var writerName: TextView
 
-
-    //ギャラリーpath取得関数
-    private val galleryPath: String
-        get() = Environment.getExternalStorageDirectory().toString() + "/" + Environment.DIRECTORY_DCIM + "/"
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        instance = this
 
         unitPer = application as UnitPersonal
         progress = ProgressDialogTool(this).makeDialog()
 
         setContentView(R.layout.activity_camera_mode)
-        userName = intent.getStringExtra("userName")
         // 宣言
         submitImageButton = findViewById(R.id.submit_image_button) as ImageButton
         submitItemImageButton = findViewById(R.id.submit_item_image_button) as ImageButton
@@ -96,6 +92,8 @@ class CameraModeActivity : Activity() {
             Toast.makeText(this, "やり直してください", Toast.LENGTH_SHORT).show()
             finish()
         }
+
+        openProblemServer()
 
         Glide.with(this).load(R.drawable.hatena).into(submitItemImageButton)
         onGetProblemInfo()
@@ -129,6 +127,8 @@ class CameraModeActivity : Activity() {
 
         dialogView = DataBindingUtil.inflate(
                 LayoutInflater.from(this), R.layout.dialog_item_select, null, false)
+
+        getItemData()
 
         unitPer.itemCount.run {
             if (bomb <= 0) dialogView.bombButton17.visibility = View.INVISIBLE
@@ -221,14 +221,26 @@ class CameraModeActivity : Activity() {
                                     text = "事前提出むり。みんな鬱になっちゃう。",
                                     problemId = problemId,
                                     imageIds = listOf(imageId),
-                                    item = Air
-                                    //item = putImageId
+                                    item =
+                                    when (putItemId) {
+                                        0 -> {
+                                            Bomb
+                                        }
+                                        1 -> {
+                                            Bomb/*Card*/
+                                        }
+                                        2 -> {
+                                            Air/*Magic*/
+                                        }
+                                        else -> {
+                                            Air
+                                        }
+                                    }
                             )
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                 }.subscribe({
             progress.dismiss()
-            decrementItem(putItemId)
             startActivity(Intent(this, LotteryActivity::class.java))
             finish()
         }, {
@@ -236,6 +248,10 @@ class CameraModeActivity : Activity() {
             it.printStackTrace()
             Toast.makeText(this, "解答提出に失敗しました。ネット環境を確認してください。", Toast.LENGTH_SHORT).show()
         })
+    }
+
+    private fun getItemData() {
+        ToolClass(this).onRefreshItemData()
     }
 
     private fun sadDialog() {
@@ -296,18 +312,7 @@ class CameraModeActivity : Activity() {
     }
 
     private fun itemSetting() {
-
         dialog.show()
-    }
-
-    private fun decrementItem(itemId: Int) {
-        if (itemId != -1) {
-            when (itemId) {
-                0 -> unitPer.itemCount.bomb -= 1
-                1 -> unitPer.itemCount.card -= 1
-                3 -> unitPer.itemCount.magicHand -= 1
-            }
-        }
     }
 
 
@@ -414,10 +419,9 @@ class CameraModeActivity : Activity() {
             // 使用が許可された
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 cameraIntent()
-                return
             } else {
                 // それでも拒否された時の対応
-                val toast = Toast.makeText(this, "これ以上なにもできません", Toast.LENGTH_SHORT)
+                val toast = Toast.makeText(this, "カメラを使用するには許可が必要です", Toast.LENGTH_SHORT)
                 toast.show()
             }
         }
@@ -432,24 +436,94 @@ class CameraModeActivity : Activity() {
         contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
     }
 
-    companion object {
-        var instance: CameraModeActivity? = null
-            private set
-
-        private val RESULT_CAMERA = 1001
-        private val RESULT_PICK_IMAGEFILE = 1000
-        private val REQUEST_PERMISSION = 1002
-
-        //uriからpath取得
-        fun getPath(context: Context, uri: Uri): String {
-            val contentResolver = context.contentResolver
-            val columns = arrayOf(MediaStore.Images.Media.DATA)
-            val cursor = contentResolver.query(uri, columns, null, null, null)
-            cursor!!.moveToFirst()
-            val path = cursor.getString(0)
-            cursor.close()
-            return path
+    private var actionSignal = ProblemOpenAction.NONE
+    private fun onBombDialog() {
+        val dialog1 = Dialog(this)
+        val image = ImageView(this)
+        image.run {
+            setImageResource(R.drawable.bomb)
+            scaleType = ImageView.ScaleType.FIT_CENTER
+            adjustViewBounds = true
+            setOnClickListener {
+                dialog1.cancel()
+            }
         }
+
+        dialog1.run {
+            setContentView(image)
+            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            setOnDismissListener {
+                when(actionSignal){
+                    ProblemOpenAction.EXPLODED -> {
+                        onExpandDialog()
+                    }
+                    ProblemOpenAction.DEFENDED -> {
+                        onShieldDialog()
+                    }
+                    else -> {
+                        Log.ERROR
+                    }
+                }
+            }
+            show()
+        }
+    }
+
+    private fun onShieldDialog(){
+        val dialog1 = Dialog(this)
+        val image = ImageView(this)
+        image.run {
+            setImageResource(R.drawable.shield)
+            scaleType = ImageView.ScaleType.FIT_CENTER
+            adjustViewBounds = true
+            background
+            setOnClickListener {
+                dialog1.cancel()
+            }
+        }
+        dialog1.run {
+            setContentView(image)
+            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            show()
+        }
+    }
+
+    private fun onExpandDialog(){
+        val dialog1 = Dialog(this)
+        val image = ImageView(this)
+        image.run {
+            setImageResource(R.drawable.bomb_second)
+            scaleType = ImageView.ScaleType.FIT_CENTER
+            adjustViewBounds = true
+            setOnClickListener {
+                dialog1.cancel()
+            }
+        }
+        dialog1.run {
+            setContentView(image)
+            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            show()
+        }
+
+    }
+
+    private fun openProblemServer(){
+        ServerClient(unitPer.authenticationKey)
+                .openProblem(problemId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    actionSignal = it.openAction
+                    when (actionSignal) {
+                        ProblemOpenAction.NONE -> {
+                            Toast.makeText(this, "爆弾はついてません", Toast.LENGTH_SHORT)
+                        }
+                        else -> {
+                            onBombDialog()
+                        }
+                    }
+
+                }
     }
 
 }
