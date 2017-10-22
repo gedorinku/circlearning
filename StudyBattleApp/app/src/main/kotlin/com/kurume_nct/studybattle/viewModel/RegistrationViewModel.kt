@@ -26,13 +26,9 @@ import java.io.BufferedInputStream
  */
 class RegistrationViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
 
-    var iconImageUri: Uri
     var iconId: Int
-    var imageBitmap: Bitmap
 
     init {
-        iconImageUri = convertUrlFromDrawableResId(context, R.drawable.group)!!
-        imageBitmap = ImageCustom().onUriToBitmap(context, iconImageUri)
         iconId = 0
     }
 
@@ -76,7 +72,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
     var loginButtonText = "登録"
 
     @Bindable
-    var imageUri = iconImageUri
+    var imageUri: Uri? = null
         get
         set(value) {
             field = value
@@ -98,23 +94,31 @@ class RegistrationViewModel(private val context: Context, private val callback: 
             //sever処理
             Log.d("開始","Register")
             val client = ServerClient()
+            if(imageUri == null){
+                imageUri = convertUrlFromDrawableResId(context, R.drawable.group)!!
+            }
             client
-                    .uploadImage(imageUri, context)
+                    .uploadImage(imageUri!!, context)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .flatMap {
+                    .subscribe ({
+                        //たまに落ちるので分けた。
                         Log.d("開始2","Register")
                         client
                                 .register(displayName, userNameRegister, userPassword, it.id)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
-                    }
-                    .subscribe({
-                        callback.onLogin()
-                        callback.enableButton(true)
-                    }, {
+                                .subscribe ({
+                                    callback.onLogin()
+                                    callback.enableButton(true)
+                                },{
+                                    it.printStackTrace()
+                                    Toast.makeText(context, context.getString(R.string.usedUserNameAlart), Toast.LENGTH_LONG).show()
+                                    callback.enableButton(true)
+                                })
+                    },{
                         it.printStackTrace()
-                        Toast.makeText(context, context.getString(R.string.usedUserNameAlart), Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, "もう一度やり直してください", Toast.LENGTH_LONG).show()
                         callback.enableButton(true)
                     })
         }
@@ -122,9 +126,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
 
     fun onActivityResult(data: Intent?) {
         if (data?.data == null) return
-        iconImageUri = data.data
-        imageUri = iconImageUri
-        //imageBitmap = ImageCustom().onUriToBitmap(context,iconImageUri)
+        imageUri = data.data
     }
 
     fun onClickChangeIconImage(view: View) {

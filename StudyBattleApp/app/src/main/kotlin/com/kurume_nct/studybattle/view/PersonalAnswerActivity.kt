@@ -24,7 +24,7 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
     private var writeNows = false
     private var writeNow = false
     private var problemId = 0
-    private var situationId = 0
+    private var situationId = false
     private var problem: Problem = Problem()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +34,7 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
         binding.personalAnswer = PersonalAnswerViewModel(this, this)
         unitPer = application as UnitPersonal
         problemId = intent.getIntExtra("problemId", 0)
-        situationId = intent.getIntExtra("fin", 0)
+        situationId = intent.getBooleanExtra("fin", false)
         getProblemInformation()
         bindSetting()
     }
@@ -64,7 +64,7 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
 
     private fun bindSetting() {
 
-        if (intent.getBooleanExtra("fin", false)) run {
+        if (situationId) run {
             binding.scoreCommentLayoutText.visibility = View.GONE
         } else {
             binding.currentPersonalText.visibility = View.GONE

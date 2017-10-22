@@ -47,8 +47,8 @@
         <activity android:name=".view.MadeCollectYetActivity" />
         <activity android:name=".view.GroupSetChangeActivity" />
         <activity android:name=".view.CreateGroupActivity" />
-        <activity android:name=".tools.CustomViewActivity" >
-        </activity>
+        <activity android:name=".tools.CustomViewActivity"></activity>
+        <activity android:name=".view.FinalScoringActivity"></activity>
     </application>
 
 </manifest>

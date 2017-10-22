@@ -196,6 +196,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
                                         .subscribeOn(Schedulers.io())
                                         .observeOn(AndroidSchedulers.mainThread())
                                         .subscribe({
+                                            Log.d("問題のID", it.id.toString())
                                             dialog.dismiss()
                                             callback.getCreateData(problemName)
                                         }, {
