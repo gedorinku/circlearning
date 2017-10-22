@@ -22,7 +22,7 @@ class ScoringActivity : AppCompatActivity() {
     lateinit var binding: ActivityScoringBinding
     private var scoreBoolean = true
     lateinit var unitPer : UnitPersonal
-    var problemId: Int = 0
+    var solutionId: Int = 0
     var problem: Problem = Problem()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,7 +30,7 @@ class ScoringActivity : AppCompatActivity() {
         Log.d("i'm ", javaClass.name)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_scoring)
         unitPer = UnitPersonal()
-        problemId = intent.getIntExtra("",0)
+        solutionId = intent.getIntExtra("",0)
         scoreSetting()
         bindSetting()
     }
@@ -59,5 +59,4 @@ class ScoringActivity : AppCompatActivity() {
             finish()
         }
     }
-
 }

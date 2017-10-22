@@ -39,7 +39,7 @@
                     android:paddingRight="8dp"
                     android:textSize="13sp" />
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/problem_image_at_score"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
