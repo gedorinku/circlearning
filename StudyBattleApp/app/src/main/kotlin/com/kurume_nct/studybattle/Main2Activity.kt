@@ -81,13 +81,12 @@ class Main2Activity : AppCompatActivity() {
                 .subscribe({
                     Log.d("userの情報を取得", "")
                     unitPer.myInfomation = it
-                    //onToolBar()
                     unitPer.userIcon = Uri.parse(it.icon!!.url)
                     getMyGroup()
                 }, {
                     progressDialog.dismiss()
                     //TODO　アプリ再起動
-                    Toast.makeText(this, "Userの情報取得に失敗しました\nアプリを再起動します", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Userの情報取得に失敗しました." + "アプリを再起動します", Toast.LENGTH_SHORT).show()
                 })
     }
 
@@ -148,6 +147,7 @@ class Main2Activity : AppCompatActivity() {
                                 }
                     }
                 }, {
+                    progressDialog.dismiss()
                     Log.d("Groupの情報を取得するのに失敗", "")
                     Toast.makeText(this, "アプリを立ち上げなおしてください", Toast.LENGTH_SHORT).show()
                 })

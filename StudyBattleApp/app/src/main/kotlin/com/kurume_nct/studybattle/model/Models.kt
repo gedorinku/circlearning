@@ -84,3 +84,8 @@ enum class ProblemOpenAction {
     EXPLODED,
     DEFENDED
 }
+
+data class Ranking(val myWeekScore: Int = 0,
+                   val myLastWeekScore: Int = 0,
+                   val myTotalScore: Int = 0,
+                   val ranking: List<Pair<User, Int>> = emptyList())

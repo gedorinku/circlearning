@@ -20,8 +20,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
 
-
-
 /**
  * Created by hanah on 7/31/2017.
  */
@@ -43,7 +41,6 @@ class ServerClient(authenticationKey: String = "") {
 
         val retrofit = Retrofit.Builder()
                 .baseUrl("http://studybattle.dip.jp:8080")
-                //.baseUrl("http://localhost:8080")
                 .addConverterFactory(StringConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -201,6 +198,9 @@ class ServerClient(authenticationKey: String = "") {
 
     fun getSolution(solutionId: Int) = server.getSolution(authenticationKey, solutionId)
 
+    fun judgeSolution(solutionId: Int, accepted: Boolean)
+            = server.judgeSolution(authenticationKey, solutionId, accepted)
+
     fun getJudgedMySolutions(group: Group) = getJudgedMySolutions(group.id)
 
     fun getJudgedMySolutions(groupId: Int) = server.getJudgedMySolutions(authenticationKey, groupId)
@@ -210,6 +210,8 @@ class ServerClient(authenticationKey: String = "") {
     fun getUnjudgedMySolutions(groupId: Int) = server.getUnjudgedMySolutions(authenticationKey, groupId)
 
     fun getMyItems(groupId: Int) = server.getMyItems(authenticationKey, groupId)
+
+    fun getRanking(groupId: Int) = server.getRanking(authenticationKey, groupId)
 }
 
 private class StringConverterFactory : Converter.Factory() {
