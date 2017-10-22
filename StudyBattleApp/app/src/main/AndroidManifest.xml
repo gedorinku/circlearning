@@ -11,9 +11,9 @@
     <application
         android:name=".model.UnitPersonal"
         android:allowBackup="true"
-        android:icon="@drawable/icon_cut"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/icon_cut"
+        android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:largeHeap="true">

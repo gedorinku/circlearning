@@ -5,14 +5,10 @@
         <shape android:shape="rectangle">
 
             //丸くする
-            <corners android:radius="8sp"/>
+            <corners android:radius="50sp"/>
 
-            //グラーデーション＆角度
-            <gradient
-                android:angle="90"
-                android:endColor="#ff4b4a"
-                android:startColor="#ff897f"
-                android:type="linear"/>
+           <solid android:color="@color/md_red_400"/>
+
 
         </shape>
     </item>
