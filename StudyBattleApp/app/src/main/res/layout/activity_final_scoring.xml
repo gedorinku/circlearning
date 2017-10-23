@@ -35,11 +35,32 @@
                     android:textSize="24sp" />
 
                 <TextView
+                    android:id="@+id/problem_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{FinalScoring.correctPersonal}" />
+
+                <TextView
                     android:id="@+id/textView37"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@{FinalScoring.ansCreatorName}" />
+
+                <ImageButton
+                    android:id="@+id/problem_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginBottom="32dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_weight="1"
+                    android:background="@color/md_blue_grey_200"
+                    android:clickable="@{FinalScoring.imageClickAble}"
+                    android:onClick="@{FinalScoring.onClickProblemView}"
+                    android:scaleType="centerCrop"
+                    app:loadImageFinalScoring="@{FinalScoring.personalProblemUri}" />
 
                 <TextView
                     android:id="@+id/current_personal_text"
@@ -99,6 +120,7 @@
                         android:layout_weight="1"
                         android:ems="10"
                         android:inputType="textPersonName"
+                        android:visibility="@{FinalScoring.scoreCommentEditText}"
                         android:text="@={FinalScoring.yourScoreCmment}" />
 
                     <Button
@@ -147,6 +169,7 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:inputType="textPersonName"
+                    android:visibility="@{FinalScoring.commentEditText}"
                     android:text="@={FinalScoring.yourComment}" />
 
                 <Button
@@ -178,7 +201,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:checked="false"
+                        android:checked="@={FinalScoring.radioCorrect}"
                         android:text="正解"
                         android:textAlignment="center"
                         android:textSize="15sp" />
@@ -188,6 +211,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"
+                        android:checked="@={!FinalScoring.radioCorrect}"
                         android:foregroundGravity="center"
                         android:text="間違え"
                         android:textSize="15sp" />
