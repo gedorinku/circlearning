@@ -36,7 +36,7 @@
                     android:textColor="@color/material_drawer_primary_text"
                     android:textSize="21sp" />
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/imageView14"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
@@ -45,7 +45,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/no_image"
-                    android:scaleType="fitCenter" />
+                    android:scaleType="centerCrop" />
 
                 <TextView
                     android:id="@+id/editText50"
