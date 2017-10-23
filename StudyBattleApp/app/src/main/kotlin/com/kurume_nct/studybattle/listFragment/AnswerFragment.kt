@@ -132,17 +132,12 @@ class AnswerFragment : Fragment() {
                 }
     }
 
-    private fun changeImage(position: Int, cor: Boolean) {
-        //TODO judgeChange
-        listAdapter.notifyItemChanged(position)
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (data == null) return
         when (resultCode) {
             CHECK_ANS_FALSE -> {
-                changeImage(requestCode, data.getBooleanExtra("Result", false))
+                //refresh list
             }
         }
     }

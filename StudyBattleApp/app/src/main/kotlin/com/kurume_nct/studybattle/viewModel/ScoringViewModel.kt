@@ -94,7 +94,7 @@ class ScoringViewModel(val context: Context, val callback: Callback) : BaseObser
 
     fun onClickFinishButton(view: View) {
         if (!radioCorrect && !radioMiss) callback.onFinish()
-        sendData(radioCorrect)
+        else sendData(radioCorrect)
     }
 
     fun setInit(): ServerClient {
@@ -123,7 +123,6 @@ class ScoringViewModel(val context: Context, val callback: Callback) : BaseObser
                             }
                     setInit()
                             .getUser(it.authorId)
-
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -134,7 +133,7 @@ class ScoringViewModel(val context: Context, val callback: Callback) : BaseObser
 
     fun sendData(correct: Boolean) {
         setInit()
-                .judgeSolution(solution, radioCorrect)
+                .judgeSolution(solution, correct)
                 .observeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
