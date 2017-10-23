@@ -13,7 +13,7 @@
         android:layout_height="50dp"
         tools:layout_editor_absoluteY="0dp"
         tools:layout_editor_absoluteX="8dp"
-        android:background="@color/colorLightBlue"/>
+        android:background="@color/md_cyan_300"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
