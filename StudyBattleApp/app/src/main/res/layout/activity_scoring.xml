@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.kurume_nct.studybattle.viewModel.ScoingViewModel" />
+            type="com.kurume_nct.studybattle.viewModel.ScoringViewModel" />
     </data>
 
     <LinearLayout
@@ -44,7 +44,7 @@
                     android:layout_marginRight="8dp"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:text="@{viewModel.writer}"
+                    android:text="@{viewModel.problemName}"
                     android:textSize="13sp" />
 
                 <ImageButton
@@ -87,7 +87,6 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:checkedButton="@{viewModel.onClickRadioButton}"
                     android:orientation="horizontal">
 
                     <RadioButton
@@ -95,7 +94,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:checked="false"
+                        android:checked="@={viewModel.radioCorrect}"
                         android:text="正解"
                         android:textAlignment="center"
                         android:textSize="15sp" />
@@ -106,6 +105,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"
                         android:foregroundGravity="center"
+                        android:checked="@={viewModel.radioMiss}"
                         android:text="間違え"
                         android:textSize="15sp" />
                 </RadioGroup>

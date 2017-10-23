@@ -5,16 +5,13 @@ import android.content.Intent
 import android.databinding.BaseObservable
 import android.databinding.Bindable
 import android.databinding.BindingAdapter
-import android.databinding.Observable
 import android.net.Uri
 import android.view.View
 import android.widget.ImageView
-import android.widget.RadioGroup
 import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.client.ServerClient
-import com.kurume_nct.studybattle.model.Image
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.tools.ImageViewActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -23,10 +20,9 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by hanah on 10/22/2017.
  */
-class ScoingViewModel(val context: Context, val callback: Callback) : BaseObservable() {
+class ScoringViewModel(val context: Context, val callback: Callback) : BaseObservable() {
 
-    private var radioClickedId = (R.id.radio_correct)
-    private var solutionId = 0
+    private var solution = 0
 
     companion object {
         @BindingAdapter("loadImage")
@@ -86,11 +82,14 @@ class ScoingViewModel(val context: Context, val callback: Callback) : BaseObserv
 
     fun onClickProblemImage(view: View) {
         val intent = Intent(context, ImageViewActivity::class.java)
-        intent
+        intent.putExtra("url", problemUrl)
+        context.startActivity(intent)
     }
 
     fun onClickAnswerImage(view: View) {
-
+        val intent = Intent(context, ImageViewActivity::class.java)
+        intent.putExtra("url", answerUrl)
+        context.startActivity(intent)
     }
 
     fun onClickFinishButton(view: View) {
@@ -104,13 +103,14 @@ class ScoingViewModel(val context: Context, val callback: Callback) : BaseObserv
     }
 
     fun onCreate() {
-
+        callback.getProblem().apply {
+            problemName = first
+            problemUrl = second
+        }
         setInit()
-                .getSolution(callback.getSolutionId())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    if(it.judged){
+                .getSolution(callback.getSolution())
+                .flatMap {
+                    if (it.judged) {
                         if (radioCorrect) radioCorrect = true
                         else radioMiss = true
                     }
@@ -123,31 +123,18 @@ class ScoingViewModel(val context: Context, val callback: Callback) : BaseObserv
                             }
                     setInit()
                             .getUser(it.authorId)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe {
-                                solver = it.displayName + "(" + it.userName + ")"
-                            }
-                    setInit()
-                            .getProblem(it.problemId)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe {
-                                problemName = it.title
-                                setInit()
-                                        .getImageById(it.imageIds[0])
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe {
-                                            problemUrl = it.url
-                                        }
-                            }
+
+                }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    solver = it.displayName + "(" + it.userName + ")"
                 }
     }
 
     fun sendData(correct: Boolean) {
         setInit()
-                .judgeSolution(solutionId, radioCorrect)
+                .judgeSolution(solution, radioCorrect)
                 .observeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
@@ -157,9 +144,9 @@ class ScoingViewModel(val context: Context, val callback: Callback) : BaseObserv
 
     interface Callback {
 
-        fun getProblem(): Pair<String, String>
+        fun getProblem(): Pair<String, String> //title url
 
-        fun getSolutionId(): Int
+        fun getSolution(): Int
 
         fun onFinish()
 

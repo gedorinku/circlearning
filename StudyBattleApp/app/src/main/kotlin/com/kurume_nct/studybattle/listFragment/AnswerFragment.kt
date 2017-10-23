@@ -44,11 +44,13 @@ class AnswerFragment : Fragment() {
     private val FIN_ANS = 3
     private val CHECK_ANS_FALSE = 5
 
-    fun newInstance(fin: Int, problemId: Int): AnswerFragment {
+    fun newInstance(fin: Int, problemId: Int, problemUrl: String, problemTitle: String): AnswerFragment {
         val fragment = AnswerFragment()
         val args = Bundle()
         args.putInt("fin", fin)//true -> all finished problem
         args.putInt("problemId", problemId)
+        args.putString("url", problemUrl)
+        args.putString("title", problemTitle)
         fragment.arguments = args
         return fragment
     }
@@ -60,7 +62,13 @@ class AnswerFragment : Fragment() {
         client = ServerClient(unitPer.authenticationKey)
         unitPer = activity.application as UnitPersonal
         problemId = arguments.getInt("problemId")
-        fin = arguments.getInt("fin")
+        var title: String = ""
+        var url: String = ""
+        arguments.apply {
+            fin = getInt("fin")
+            title = getString("title")
+            url = getString("url")
+        }
 
         getProblemData()
 
@@ -71,23 +79,31 @@ class AnswerFragment : Fragment() {
                     val intent = Intent(context, ScoringActivity::class.java)
                     intent.putExtra("solutionId", solutionList[position].solution.id)
                     intent.putExtra("position", position)
+                    intent.putExtra("url", url)
+                    intent.putExtra("title", title)
                     startActivityForResult(intent, position)
                 }
                 YET_ANS -> {
                     val intent = Intent(context, PersonalAnswerActivity::class.java)
                     intent.putExtra("solutionId", solutionList[position].solution.id)
                     intent.putExtra("fin", false)
+                    intent.putExtra("url", url)
+                    intent.putExtra("title", title)
                     startActivity(intent)
                 }
                 YET_FINAL_ANS -> {
                     val intent = Intent(context, FinalScoringActivity::class.java)
                     intent.putExtra("solutionId", solutionList[position].solution.id)
+                    intent.putExtra("url", url)
+                    intent.putExtra("title", title)
                     startActivityForResult(intent, position)
                 }
                 FIN_ANS -> {
                     val intent = Intent(context, PersonalAnswerActivity::class.java)
                     intent.putExtra("solutionId", solutionList[position].solution.id)
                     intent.putExtra("fin", true)
+                    intent.putExtra("url", url)
+                    intent.putExtra("title", title)
                     startActivity(intent)
                 }
             }

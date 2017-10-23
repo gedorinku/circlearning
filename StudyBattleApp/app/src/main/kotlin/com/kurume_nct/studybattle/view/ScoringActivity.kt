@@ -14,49 +14,36 @@ import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.ActivityScoringBinding
 import com.kurume_nct.studybattle.model.Problem
 import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.viewModel.FinalScoringViewModel
+import com.kurume_nct.studybattle.viewModel.ScoringViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class ScoringActivity : AppCompatActivity() {
+class ScoringActivity : AppCompatActivity(), ScoringViewModel.Callback {
 
     lateinit var binding: ActivityScoringBinding
-    private var scoreBoolean = true
-    lateinit var unitPer : UnitPersonal
-    var solutionId: Int = 0
-    var problem: Problem = Problem()
+    lateinit var unitPer: UnitPersonal
+    private var solutionId = 0
+    private var problemUrl = ""
+    private var problemTitle = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("i'm ", javaClass.name)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_scoring)
+        binding.viewModel = ScoringViewModel(this, this)
         unitPer = UnitPersonal()
-        solutionId = intent.getIntExtra("",0)
-        scoreSetting()
-        bindSetting()
+        solutionId = intent.getIntExtra("solutionId", 0)
+        problemTitle = intent.getStringExtra("title")
+        problemUrl = intent.getStringExtra("url")
     }
 
-    fun scoreSetting() {
-        binding.radioScoring.checkedRadioButtonId.compareTo(R.id.radio_correct)
-        binding.radioScoring.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                R.id.radio_correct -> {
-                    scoreBoolean = true
-                }
-                R.id.radio_mistake -> {
-                    scoreBoolean = false
-                }
-            }
-        }
-    }
+    override fun getProblem(): Pair<String, String> = Pair(problemTitle, problemUrl)
 
-    private fun bindSetting() {
-        binding.creatorNameAtScore.text = "Answer by " + unitPer.myInfomation.displayName+ "(" + unitPer.myInfomation.userName + ")"
-        //binding.problemImageAtScore.setImageURI()
-        binding.finButton.setOnClickListener {
-            //send score
-            intent.putExtra("Result", scoreBoolean)
-            setResult(5, intent)
-            finish()
-        }
+    override fun getSolution() = solutionId
+
+    override fun onFinish() {
+        setResult(5, intent)
+        finish()
     }
 }
