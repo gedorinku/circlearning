@@ -64,7 +64,10 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        enableButton(false)
+        if(data == null){
+            enableButton(false)
+            return
+        }
         binding.userEntity.onActivityResult(data)
     }
 

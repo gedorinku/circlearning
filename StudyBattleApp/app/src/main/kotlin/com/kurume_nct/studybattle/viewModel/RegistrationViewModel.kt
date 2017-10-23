@@ -125,8 +125,8 @@ class RegistrationViewModel(private val context: Context, private val callback: 
     }
 
     fun onActivityResult(data: Intent?) {
-        if (data?.data == null) return
-        imageUri = data.data
+        imageUri = data?.data
+        callback.enableButton(false)
     }
 
     fun onClickChangeIconImage(view: View) {
