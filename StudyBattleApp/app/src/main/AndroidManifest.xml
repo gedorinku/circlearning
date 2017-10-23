@@ -49,7 +49,7 @@
         <activity android:name=".view.CreateGroupActivity" />
         <activity android:name=".tools.CustomViewActivity" />
         <activity android:name=".view.FinalScoringActivity" />
-        <activity android:name=".tools.ImageViewActivity"></activity>
+        <activity android:name=".tools.ImageViewActivity" />
     </application>
 
 </manifest>

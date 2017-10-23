@@ -57,9 +57,9 @@
                     android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:background="@color/md_blue_grey_200"
-                    android:background="@drawable/no_image"
                     android:clickable="@{FinalScoring.imageClickAble}"
                     android:onClick="@{FinalScoring.onClickImageView}"
+                    android:scaleType="centerCrop"
                     app:loadImageFinalScoring="@{FinalScoring.personalAnswerUri}" />
 
                 <LinearLayout
