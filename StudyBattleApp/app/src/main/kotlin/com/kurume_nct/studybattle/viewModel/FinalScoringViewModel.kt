@@ -71,6 +71,10 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
 
     @Bindable
     var correctPersonal = "正解"
+    set(value) {
+        field = value
+        notifyPropertyChanged(BR.correctPersonal)
+    }
 
 
     @Bindable
@@ -237,6 +241,7 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
             }
             addScoreComment(yourScoreCmment)
             scoreCommentEditText = View.GONE
+            //TODO sent
             yourScoreCmment = ""
             scoreCommentButtonText = addText
             false
@@ -255,6 +260,7 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
             }
             addComment(yourComment)
             commentEditText = View.GONE
+            //TODO sent
             yourComment = ""
             commentButtonText = addText
             false
