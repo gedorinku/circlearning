@@ -6,7 +6,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/backgroud"
+        android:background="@drawable/normalback"
         android:orientation="vertical">
 
         <LinearLayout

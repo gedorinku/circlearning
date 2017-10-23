@@ -11,55 +11,53 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/loginsignup">
+        >
 
         <EditText
             android:id="@+id/editText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:ems="10"
+            android:foregroundGravity="center"
             android:hint="ユーザー名"
             android:inputType="textPersonName"
             android:text="@={userLogin.name}"
-            android:textColor="#b3ffffff"
-            android:textColorHint="#b3ffff"
+            android:textColor="@color/md_dark_primary_text"
             android:textSize="17sp"
+            app:layout_constraintBottom_toTopOf="@+id/editText3"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
-            app:layout_constraintHorizontal_bias="0.16"
-            app:layout_constraintBottom_toTopOf="@+id/editText3"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp" />
+            app:layout_constraintVertical_bias="0.981" />
 
         <EditText
             android:id="@+id/editText3"
             android:layout_width="wrap_content"
             android:layout_height="43dp"
             android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:ems="10"
+            android:foregroundGravity="center"
             android:hint="@string/hint_input_user_password"
             android:inputType="textPassword"
             android:text="@={userLogin.password}"
-            android:textColor="#b3ffffff"
-            android:textColorHint="#b3ffff"
+            android:textColor="@color/md_dark_primary_text"
             android:textSize="17sp"
+            app:layout_constraintBottom_toTopOf="@+id/button2"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.875"
-            app:layout_constraintHorizontal_bias="0.16"
-            app:layout_constraintBottom_toTopOf="@+id/button2"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp" />
+            app:layout_constraintVertical_bias="0.886" />
 
         <Button
             android:id="@+id/button2"
@@ -78,45 +76,45 @@
             android:textColor="#ffffff"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.548"
+            app:layout_constraintHorizontal_bias="0.456"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.801" />
+            app:layout_constraintVertical_bias="0.783" />
 
-        <Button
+        <CheckedTextView
             android:id="@+id/button5"
-            android:layout_width="150dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:background="@color/md_amber_700"
             android:onClick="@{userLogin.onClickToRegister}"
-            android:text="アカウント作成"
-            android:textColor="#ffffff"
+            android:text="アカウント作成はこちら"
+            android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintHorizontal_bias="0.542"
             app:layout_constraintTop_toBottomOf="@+id/button2"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp" />
+            app:layout_constraintVertical_bias="0.042" />
 
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="wrap_content"
-            android:layout_height="300dp"
-            android:layout_marginBottom="-49dp"
+            android:layout_height="250dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/md_cyan_200"
             app:layout_constraintBottom_toTopOf="@+id/editText"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:srcCompat="@drawable/logowhite"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="8dp" />
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/logowhite" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

@@ -10,7 +10,7 @@
     <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/backgroud"
+        android:background="@drawable/normalback"
         tools:context="com.kurume_nct.studybattle.view.PersonalAnswerActivity">
 
         <ScrollView
@@ -22,6 +22,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_weight="1"
+                    android:background="@color/md_cyan_500"
+                    android:gravity="center"
+                    android:text="正誤判定"
+                    android:textColor="@color/md_dark_primary_text"
+                    android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/textView37"
@@ -41,11 +52,11 @@
                     android:id="@+id/imageView13"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="32dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:layout_weight="1"
-                    android:background="@drawable/no_image"
+                    android:background="@color/md_blue_grey_200"
                     app:loadImageFinalScoring="@{FinalScoring.personalAnswerUri}" />
 
                 <LinearLayout
@@ -59,7 +70,8 @@
                         android:id="@+id/textView38"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
                         android:layout_weight="1"
                         android:text="この問題の正誤ミスについてのコメント"
                         android:textColor="@color/primary_dark"
@@ -69,8 +81,8 @@
                         android:id="@+id/score_comment_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
                         android:layout_weight="1"
                         android:text="@{FinalScoring.scoreComment}"
                         android:textColor="@color/material_drawer_dark_selected" />
@@ -79,8 +91,8 @@
                         android:id="@+id/your_score_comment_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
                         android:layout_weight="1"
                         android:ems="10"
                         android:inputType="textPersonName"
@@ -91,26 +103,23 @@
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="20dp"
+                        android:layout_marginBottom="32dp"
+                        android:layout_marginTop="8dp"
                         android:layout_weight="1"
                         android:background="@color/md_amber_700"
                         android:onClick="@{FinalScoring.onClickScoreComment}"
-                        android:text="+コメントを追加する"
+                        android:text="+コメントを追加"
                         android:textColor="@color/material_drawer_dark_primary_text"
                         android:textSize="15sp" />
 
                 </LinearLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:layout_weight="1" />
-
                 <TextView
                     android:id="@+id/textView41"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:text="みんなのコメント"
                     android:textColor="@color/primary_dark"
@@ -120,8 +129,8 @@
                     android:id="@+id/comments_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:text="@{FinalScoring.everyoneComment}"
                     android:textColor="@color/material_drawer_dark_selected" />
@@ -130,8 +139,8 @@
                     android:id="@+id/your_comment_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:ems="10"
                     android:inputType="textPersonName"
@@ -142,10 +151,11 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:background="@color/md_amber_700"
                     android:onClick="@{FinalScoring.onClickComment}"
-                    android:text="+コメントを追加する"
+                    android:text="+コメントを追加"
                     android:textColor="@color/material_drawer_dark_header_selection_text"
                     android:textSize="15sp" />
 
@@ -153,9 +163,10 @@
                     android:id="@+id/radio_scoring"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="32dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
                     android:layout_weight="1"
                     android:orientation="horizontal">
 
@@ -184,17 +195,13 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="32dp"
                     android:layout_weight="1"
                     android:background="@color/md_light_green_400"
-                    android:text="採点を変更する"
                     android:onClick="@{FinalScoring.onClickResetButton}"
+                    android:text="変更"
                     android:textColor="@color/material_drawer_dark_header_selection_text"
                     android:textSize="15sp" />
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_weight="1" />
 
             </LinearLayout>
         </ScrollView>
