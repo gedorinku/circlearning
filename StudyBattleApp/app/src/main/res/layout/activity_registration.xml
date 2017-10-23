@@ -13,24 +13,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@drawable/backgroud">
+        android:background="@drawable/normalback">
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="450dp"
             android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="24dp"
-            android:text="@string/account_registe"
-            android:textSize="21sp"
+            android:background="@color/md_cyan_300"
+            android:gravity="center"
+            android:textColor="@color/md_dark_primary_text"
+            android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintHorizontal_bias="0.497" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <EditText
             android:id="@+id/editText6"
@@ -44,12 +43,38 @@
             android:hint="@string/hint_input_user_name"
             android:inputType="textPersonName"
             android:text="@={userEntity.userNameRegister}"
+            android:textColor="@color/md_dark_primary_text"
             android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.68"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.129" />
+            app:layout_constraintVertical_bias="0.385"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp" />
+
+        <EditText
+            android:id="@+id/editText2"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="@string/displayNameHint"
+            android:text="@={userEntity.displayName}"
+            android:textColor="@color/md_dark_primary_text"
+            android:textSize="17sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.68"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintVertical_bias="0.061"
+            app:layout_constraintTop_toBottomOf="@+id/editText5"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp" />
 
         <EditText
             android:id="@+id/editText5"
@@ -63,71 +88,63 @@
             android:hint="@string/hint_input_user_password"
             android:inputType="textPassword"
             android:text="@={userEntity.userPassword}"
+            android:textColor="@color/md_dark_primary_text"
             android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.68"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.24" />
-
-        <EditText
-            android:id="@+id/editText2"
-            android:layout_width="320dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:ems="10"
-            android:hint="@string/displayNameHint"
-            android:text="@={userEntity.displayName}"
-            android:textSize="17sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.493"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.359" />
+            app:layout_constraintTop_toBottomOf="@+id/editText6"
+            app:layout_constraintVertical_bias="0.036"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp" />
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
             android:layout_weight="0.02"
+            android:background="@drawable/no_image"
             android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.441"
+            app:layout_constraintBottom_toTopOf="@+id/editText6"
+            app:layout_constraintHorizontal_bias="0.432"
             app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.54"
+            app:layout_constraintVertical_bias="0.545"
             app:loadImageFirstIcon="@{userEntity.imageUri}"
-            app:srcCompat="@drawable/group"
-            app:layout_constraintRight_toLeftOf="@+id/button" />
+            app:srcCompat="@drawable/plus"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="8dp" />
 
         <Button
             android:id="@+id/button"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
+            android:layout_width="88dp"
+            android:layout_height="50dp"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="32dp"
             android:layout_marginTop="8dp"
             android:layout_weight="0.83"
-            android:background="@color/md_amber_A700"
+            android:background="@drawable/no_image_register"
+            android:foregroundGravity="center_vertical|center_horizontal|center"
+            android:gravity="center_vertical|center_horizontal|center"
             android:onClick="@{userEntity.onClickChangeIconImage}"
-            android:text="@string/change_image_button_text"
+            android:text="+"
             android:textColor="@color/material_drawer_dark_header_selection_text"
-            android:textSize="15sp"
+            android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.657"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.55" />
+            app:layout_constraintVertical_bias="0.258"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="32dp" />
 
         <Button
             android:id="@+id/button4"
@@ -138,16 +155,19 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
-            android:background="@color/md_red_400"
+            android:background="@drawable/red_button"
             android:onClick="@{userEntity.onClickLoginButton}"
             android:text="@{userEntity.loginButtonText}"
             android:textColor="#ffffff"
             android:textSize="15sp"
+            app:layout_constraintBottom_toTopOf="@+id/button3"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.98"
-            app:layout_constraintBottom_toTopOf="@+id/button3" />
+            app:layout_constraintTop_toBottomOf="@+id/editText2"
+            app:layout_constraintVertical_bias="0.712"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp" />
 
         <Button
             android:id="@+id/button3"
@@ -157,16 +177,31 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
-            android:background="@color/md_blue_500"
+            android:background="@drawable/green_button"
             android:onClick="@{userEntity.onClicktoLoginButton}"
             android:text="ログイン"
             android:textColor="@color/material_drawer_background"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.9" />
+            app:layout_constraintVertical_bias="0.947"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp" />
+
+        <TextView
+            android:id="@+id/textView55"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="ログインをする場合はこちら"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/button3"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 

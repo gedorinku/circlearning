@@ -21,16 +21,22 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/backgroud"
                 android:orientation="vertical">
 
-                <Space
+                <TextView
+                    android:id="@+id/textView"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp" />
+                    android:layout_height="64dp"
+                    android:background="@color/md_cyan_500"
+                    android:gravity="center"
+                    android:text="解答閲覧"
+                    android:textColor="@color/md_dark_primary_text"
+                    android:textSize="24sp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="16dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -65,19 +71,17 @@
                     android:id="@+id/problem_image_at_answer"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:background="@drawable/no_image"
-                    app:srcCompat="@drawable/text_noimage"
-                    app:AnswerImageLoad="@{AnswerAct.problemUri}"
-                    android:scaleType="centerCrop"/>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp" />
+                    android:layout_marginBottom="32dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/md_blue_grey_200"
+                    android:scaleType="centerCrop"
+                    app:AnswerImageLoad="@{AnswerAct.problemUri}" />
 
                 <TextView
                     android:id="@+id/textView28"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
                     android:paddingBottom="4dp"
                     android:text="想定解"
                     android:textColor="@color/colorPrimaryDark"
@@ -87,15 +91,11 @@
                     android:id="@+id/answer_image_at_answer"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:background="@drawable/no_image"
-                    app:srcCompat="@drawable/text_noimage"
-                    app:AnswerImageLoad="@{AnswerAct.answerUri}"
-                    android:scaleType="centerCrop"/>
+                    android:layout_marginBottom="32dp"
+                    android:background="@color/md_blue_grey_200"
+                    android:scaleType="centerCrop"
+                    app:AnswerImageLoad="@{AnswerAct.answerUri}" />
 
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp" />
 
                 <TextView
                     android:id="@+id/textView29"

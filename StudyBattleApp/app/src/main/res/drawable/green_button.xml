@@ -6,14 +6,9 @@
 
             //丸くする
             <corners
-                android:radius="8sp"/>
+                android:radius="50sp"/>
 
-            //グラーデーション＆角度
-            <gradient
-                android:angle="90"
-                android:endColor="#d4fe6d"
-                android:startColor="#89d347"
-                android:type="linear"/>
+          <solid android:color="@color/md_light_green_500"/>
 
         </shape>
     </item>
