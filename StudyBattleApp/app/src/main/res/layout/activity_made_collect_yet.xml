@@ -45,7 +45,7 @@
                     android:textSize="21sp" />
 
                 <ImageButton
-                    android:id="@+id/imageView14"
+                    android:id="@+id/problem_image_view"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_marginBottom="32dp"
