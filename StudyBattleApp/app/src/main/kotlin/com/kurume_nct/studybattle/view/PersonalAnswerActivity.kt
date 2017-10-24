@@ -1,5 +1,6 @@
 package com.kurume_nct.studybattle.view
 
+import android.content.Context
 import android.databinding.DataBindingUtil
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
@@ -37,7 +38,32 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
         problemId = intent.getIntExtra("problemId", 0)
         situationId = intent.getBooleanExtra("fin", false)
         binding.personalAnswer.getInitData()
+        binding.apply {
+            commentEdit.visibility = View.GONE
+            yourScoreCommentEditText.visibility = View.GONE
+        }
     }
+
+    override fun visibilityEditText(score: Boolean, boolean: Boolean) {
+        if (score) {
+            binding.yourScoreCommentEditText.visibility.let {
+                if (boolean) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+            }
+        } else {
+            binding.commentEdit.visibility.let {
+                if (boolean) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+            }
+        }
+    }
+
 
     override fun getProblemId() = problemId
 

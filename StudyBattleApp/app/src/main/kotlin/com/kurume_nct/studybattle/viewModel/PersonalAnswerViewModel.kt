@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.client.ServerClient
+import com.kurume_nct.studybattle.databinding.ActivityPersonalAnswerBinding
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.tools.ImageViewActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -30,7 +31,7 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
     private val comfierText = "+コメントを送信"
 
     companion object {
-        @BindingAdapter("loadImagePersonalAnswer")
+        @BindingAdapter("loadImagePersonal")
         @JvmStatic
         fun setIconImage(view: ImageView, uri: Uri?) {
             if (uri == null) {
@@ -98,6 +99,13 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
             notifyPropertyChanged(BR.remainigAnsTime)
         }
 
+    @Bindable
+    var imageClickable = false
+    set(value) {
+        field = value
+        notifyPropertyChanged(BR.imageClickAble)
+    }
+
     fun onClickProblemView(view: View) {
         val intent = Intent(context, ImageViewActivity::class.java)
         intent.putExtra("url", problemUrl)
@@ -124,19 +132,9 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
             notifyPropertyChanged(BR.yourComment)
         }
 
-    @Bindable
-    var commentEditText = View.GONE
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.commentEditText)
-        }
+    var commentEditText: Boolean = false
 
-    @Bindable
-    var scoreCommentEditText = View.GONE
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.scoreCommentEditText)
-        }
+    var scoreCommentEditText: Boolean = false
 
     @Bindable
     var commentButtonText = addText
@@ -152,22 +150,21 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
             notifyPropertyChanged(BR.scoreCommentButtonText)
         }
 
-    @Bindable
-    var imageClickAble = false
-    set(value) {
-        field = value
-        notifyPropertyChanged(BR.imageClickAble)
-    }
-
     fun onClickComment(view: View) {
         onWriteComment()
     }
 
+    fun onClickScoreComment(view: View) {
+        onWriteComment()
+    }
+
     fun getInitData() {
-        /*val unitPer = context.applicationContext as UnitPersonal
+        val unitPer = context.applicationContext as UnitPersonal
         val client = ServerClient(unitPer.authenticationKey)
+        //todo solutionを受け取りたい！
+        val solutionId = 0
         client
-                .getSolution(callback.getSolutionId())
+                .getSolution(solutionId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap {
@@ -201,26 +198,23 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                 .subscribe({
                     url = it.url
                     personalAnswerUri = Uri.parse(url)
-                    imageClickAble = true
+                    imageClickable = true
                 }, {
                     callback.onFinish()
-                })*/
+                })
     }
 
 
     private fun onWriteScores() {
         writeScoreNow = if (writeScoreNow && yourScoreCmment.isNotBlank()) {
-            scoreCommentEditText.let {
-                if (it == View.GONE) View.VISIBLE
-            }
+            callback.visibilityEditText(true, false)
             addScoreComment(yourScoreCmment)
-            scoreCommentEditText = View.GONE
             //TODO sent
             yourScoreCmment = ""
             scoreCommentButtonText = addText
             false
         } else {
-            scoreCommentEditText = View.VISIBLE
+            callback.visibilityEditText(true, true)
             scoreCommentButtonText = comfierText
             true
         }
@@ -229,18 +223,15 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
 
     private fun onWriteComment() {
         writeNow = if (writeNow && yourComment.isNotBlank()) {
-            commentEditText.let {
-                if (it == View.GONE) View.VISIBLE
-            }
             addComment(yourComment)
-            commentEditText = View.GONE
+            callback.visibilityEditText(false, false)
             //TODO sent
             yourComment = ""
-            commentButtonText = addText
+            commentButtonText = comfierText
             false
         } else {
-            commentEditText = View.VISIBLE
-            commentButtonText = comfierText
+            callback.visibilityEditText(false, true)
+            commentButtonText = addText
             true
         }
     }
@@ -258,6 +249,8 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
     }
 
     interface Callback {
+
+        fun visibilityEditText(score: Boolean, boolean: Boolean)
 
         fun getProblemId(): Int
 
