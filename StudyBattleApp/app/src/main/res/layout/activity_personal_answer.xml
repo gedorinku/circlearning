@@ -37,7 +37,7 @@
                     android:layout_weight="1"
                     android:text="@{PersonalAnswer.correctPersonal}" />
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/imageView13"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
@@ -46,6 +46,8 @@
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/no_image"
+                    android:onClick="@{PersonalAnswer.onClickImageView}"
+                    android:scaleType="centerCrop"
                     app:loadImagePersonalAnswer="@{PersonalAnswer.personalAnswerUri}" />
 
                 <LinearLayout

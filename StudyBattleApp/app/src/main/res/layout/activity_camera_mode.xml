@@ -30,6 +30,10 @@
             android:textSize="24sp"
             tools:ignore="HardcodedText" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
         <TextView
             android:id="@+id/problem_name_at_camera"
             android:layout_width="wrap_content"
@@ -58,13 +62,14 @@
                 tools:ignore="HardcodedText" />
         </LinearLayout>
 
-        <ImageView
+        <ImageButton
             android:id="@+id/problem_image_at_camera"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:background="@color/md_blue_grey_200"
+            android:scaleType="centerCrop"
             tools:ignore="ContentDescription" />
 
         <LinearLayout

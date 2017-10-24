@@ -23,6 +23,8 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
     private var fin: Int = 0
     lateinit var unit: UnitPersonal
     private var problemId = -1
+    private var problemTitle = ""
+    private var problemUrl = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +38,8 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
         if (problemId == -1) failAction()
 
         supportFragmentManager.beginTransaction()
-                .replace(R.id.answers_fragment, AnswerFragment().newInstance(fin, problemId))
+                .replace(R.id.answers_fragment,
+                        AnswerFragment().newInstance(fin, problemId, problemTitle, problemUrl))
                 .commit()
         if (fin != 3) {
             binding.problemScoreAnsText.visibility = View.GONE
@@ -52,8 +55,8 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap {
-                    binding.answerAct.problemName = it.title
-
+                    problemTitle = it.title
+                    binding.answerAct.problemName = problemTitle
                     client
                             .getUser(it.ownerId)
                             .subscribeOn(Schedulers.io())
@@ -69,7 +72,8 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe {
-                                binding.answerAct.problemUri = Uri.parse(it.url)
+                                problemUrl = it.url
+                                binding.answerAct.problemUri = Uri.parse(problemUrl)
                             }
                     client
                             .getImageById(it.solutions[0].imageIds[0])

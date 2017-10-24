@@ -1,6 +1,7 @@
 package com.kurume_nct.studybattle.viewModel
 
 import android.content.Context
+import android.content.Intent
 import android.databinding.BaseObservable
 import android.databinding.Bindable
 import android.databinding.BindingAdapter
@@ -10,13 +11,12 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
+import com.kurume_nct.studybattle.tools.ImageViewActivity
 
 /**
  * Created by hanah on 10/16/2017.
  */
 class FinalScoringViewModel(val context: Context, val callback: Callback): BaseObservable() {
-
-    private var uri: Uri? = null
 
     companion object {
         @BindingAdapter("loadImageFinalScoring")
@@ -31,7 +31,7 @@ class FinalScoringViewModel(val context: Context, val callback: Callback): BaseO
     }
 
     @Bindable
-    var personalAnswerUri = uri
+    var personalAnswerUri: Uri? = null
         get
         set(value) {
             field = value
@@ -68,6 +68,18 @@ class FinalScoringViewModel(val context: Context, val callback: Callback): BaseO
         callback.onWriteScores()
     }
 
+    @Bindable
+    var imageClickAble = false
+    set(value) {
+        field = value
+        notifyPropertyChanged(BR.imageClickAble)
+    }
+
+    fun onClickImageView(view: View){
+        val intent = Intent(context, ImageViewActivity::class.java)
+        intent.putExtra("url", callback.onGetImageUrl())
+        context.startActivity(intent)
+    }
 
     @Bindable
     var everyoneComment : String = ""
@@ -96,6 +108,8 @@ class FinalScoringViewModel(val context: Context, val callback: Callback): BaseO
         fun onWriteScores()
 
         fun onWriteComment()
+
+        fun onGetImageUrl(): String
 
         fun onReset()
     }
