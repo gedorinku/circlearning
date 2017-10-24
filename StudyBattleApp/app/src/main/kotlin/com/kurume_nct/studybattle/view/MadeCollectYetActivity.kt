@@ -33,7 +33,7 @@ class MadeCollectYetActivity : AppCompatActivity() {
         checkProblem(problemId)
         unitPer = application as UnitPersonal
         getProblemInfo()
-        binding.imageView14.apply {
+        binding.problemImageView.apply {
             setOnClickListener {
                 val intent = Intent(context, ImageViewActivity::class.java)
                 intent.putExtra("url", url)
@@ -71,7 +71,7 @@ class MadeCollectYetActivity : AppCompatActivity() {
                                 .subscribe {
                                     setUpPicture(Uri.parse(it.url))
                                     url = it.url
-                                    binding.imageView14.isClickable = true
+                                    binding.problemImageView.isClickable = true
                                 }
                     }
                 }
@@ -90,7 +90,7 @@ class MadeCollectYetActivity : AppCompatActivity() {
     }
 
     private fun setUpPicture(uri: Uri) {
-        Glide.with(this).load(uri).into(binding.imageView14)
+        Glide.with(this).load(uri).into(binding.problemImageView)
     }
 
 }
