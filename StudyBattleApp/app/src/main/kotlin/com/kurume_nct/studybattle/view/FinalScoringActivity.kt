@@ -29,6 +29,7 @@ class FinalScoringActivity : AppCompatActivity(), FinalScoringViewModel.Callback
     private lateinit var client: ServerClient
     private var soulution = Solution()
     private val FINAL_SCORING_CODE = 10
+    private var url = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +43,7 @@ class FinalScoringActivity : AppCompatActivity(), FinalScoringViewModel.Callback
         client = ServerClient(unitPer.authenticationKey)
         getInitData()
 
+        //自分がコメントするためのEditText
         binding.yourCommentEditText.visibility = View.GONE
         binding.yourScoreCommentEditText.visibility = View.GONE
     }
@@ -52,17 +54,21 @@ class FinalScoringActivity : AppCompatActivity(), FinalScoringViewModel.Callback
         finish()
     }
 
+    override fun onGetImageUrl(): String = url
+
     private fun getInitData() {
         client
                 .getSolution(solutionId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap {
-                    if (it.accepted) {
-                        binding.radioScoring.check(R.id.radio_correct)
-                    } else {
-                        binding.radioScoring.check(R.id.radio_mistake)
-                    }
+                    binding.radioScoring.check(
+                            if (it.accepted) {
+                                (R.id.radio_correct)
+                            } else {
+                                (R.id.radio_mistake)
+                            }
+                    )
                     client
                             .getUser(it.authorId)
                             .subscribeOn(Schedulers.io())
@@ -79,7 +85,11 @@ class FinalScoringActivity : AppCompatActivity(), FinalScoringViewModel.Callback
                             .observeOn(AndroidSchedulers.mainThread())
                 }
                 .subscribe({
-                    binding.finalScoring.personalAnswerUri = Uri.parse(it.url)
+                    url = it.url
+                    binding.finalScoring.apply {
+                        personalAnswerUri = Uri.parse(url)
+                        imageClickAble = true
+                    }
                 }, {
                     failAction()
                 })
@@ -87,14 +97,14 @@ class FinalScoringActivity : AppCompatActivity(), FinalScoringViewModel.Callback
 
     override fun onWriteScores() {
         writeScoreNow = if (writeScoreNow && binding.finalScoring.yourScoreCmment.isNotBlank()) {
-            binding.scoreCommentText.let {
-                if (it.visibility == View.GONE) {
-                    it.visibility = View.VISIBLE
-                }
+            binding.scoreCommentText.visibility.let {
+                if (it == View.GONE) View.VISIBLE
             }
             addScoreComment(binding.finalScoring.yourScoreCmment)
-            binding.yourScoreCommentEditText.visibility = View.GONE
-            binding.finalScoring.yourScoreCmment = ""
+            binding.apply {
+                yourScoreCommentEditText.visibility = View.GONE
+                finalScoring.yourScoreCmment = ""
+            }
             false
         } else {
             binding.yourScoreCommentEditText.visibility = View.VISIBLE
@@ -104,10 +114,8 @@ class FinalScoringActivity : AppCompatActivity(), FinalScoringViewModel.Callback
 
     override fun onWriteComment() {
         writeNow = if (writeNow && binding.finalScoring.yourComment.isNotBlank()) {
-            binding.commentsText.let {
-                if (it.visibility == View.GONE) {
-                    it.visibility = View.VISIBLE
-                }
+            binding.commentsText.visibility.let {
+                if (it == View.GONE) View.VISIBLE
             }
             addComment(binding.finalScoring.yourComment)
             binding.yourCommentEditText.visibility = View.GONE

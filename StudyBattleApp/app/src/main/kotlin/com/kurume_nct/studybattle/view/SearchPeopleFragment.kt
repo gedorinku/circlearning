@@ -85,6 +85,7 @@ class SearchPeopleFragment(val callback: Callback, val context: SelectMainPeople
     private fun listFilter(newList: MutableList<User>){
         filterSet = context.getPeopleList().toMutableSet()
         filterSet.addAll(unitPer.nowGroup.members.toMutableSet())
+        filterSet.add(unitPer.myInfomation)
         val size = filterSet.size
         filterSet.addAll(newList)
         list.addAll(filterSet.toMutableList().subList(size, filterSet.size))

@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.support.design.widget.TabLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
@@ -17,6 +18,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
+import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.adapter.MainPagerAdapter
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.Group
@@ -47,6 +49,7 @@ class Main2Activity : AppCompatActivity() {
     private lateinit var viewPaper: ViewPager
     private lateinit var tabLayout: TabLayout
     private lateinit var mainPagerAdapter: MainPagerAdapter
+    private lateinit var userIcon: Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,7 +84,7 @@ class Main2Activity : AppCompatActivity() {
                 .subscribe({
                     Log.d("userの情報を取得", "")
                     unitPer.myInfomation = it
-                    unitPer.userIcon = Uri.parse(it.icon!!.url)
+                    userIcon = Uri.parse(it.icon!!.url)
                     getMyGroup()
                 }, {
                     progressDialog.dismiss()
@@ -163,7 +166,7 @@ class Main2Activity : AppCompatActivity() {
     }
 
     private fun getIconBitmap(): Single<Bitmap> = Single.fromCallable {
-        BitmapFactory.decodeStream(URL(unitPer.userIcon.toString()).openStream())
+        BitmapFactory.decodeStream(URL(userIcon.toString()).openStream())
     }
 
 

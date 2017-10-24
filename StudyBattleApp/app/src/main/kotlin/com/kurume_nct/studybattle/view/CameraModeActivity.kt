@@ -34,6 +34,7 @@ import com.kurume_nct.studybattle.model.Air
 import com.kurume_nct.studybattle.model.Bomb
 import com.kurume_nct.studybattle.model.ProblemOpenAction
 import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.tools.ImageViewActivity
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
 import com.kurume_nct.studybattle.tools.ToolClass
 import io.reactivex.Observable
@@ -57,6 +58,7 @@ class CameraModeActivity : Activity() {
     private var bmp1: Bitmap? = null
     private var cameraFile: File? = null
     private var cameraUri: Uri? = null
+    private var problemUrl = ""
     private var filePath: String? = null
     private lateinit var dialog: AlertDialog
     private var putItemId = -1
@@ -91,6 +93,15 @@ class CameraModeActivity : Activity() {
         if (problemId == 0) {
             Toast.makeText(this, "やり直してください", Toast.LENGTH_SHORT).show()
             finish()
+        }
+
+        problemImage.apply {
+            setOnClickListener {
+                val intent = Intent(context, ImageViewActivity::class.java)
+                intent.putExtra("url", problemUrl)
+                startActivity(intent)
+            }
+            isClickable = false
         }
 
         openProblemServer()
@@ -193,7 +204,9 @@ class CameraModeActivity : Activity() {
                             .observeOn(AndroidSchedulers.mainThread())
                 }
                 .subscribe({
-                    setUpPicture(Uri.parse(it.url))
+                    problemUrl = it.url
+                    setUpPicture(Uri.parse(problemUrl))
+                    problemImage.isClickable = true
                     progressDialog.dismiss()
                 }, {
                     it.printStackTrace()
@@ -453,7 +466,7 @@ class CameraModeActivity : Activity() {
             setContentView(image)
             window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             setOnDismissListener {
-                when(actionSignal){
+                when (actionSignal) {
                     ProblemOpenAction.EXPLODED -> {
                         onExpandDialog()
                     }
@@ -469,7 +482,7 @@ class CameraModeActivity : Activity() {
         }
     }
 
-    private fun onShieldDialog(){
+    private fun onShieldDialog() {
         val dialog1 = Dialog(this)
         val image = ImageView(this)
         image.run {
@@ -488,7 +501,7 @@ class CameraModeActivity : Activity() {
         }
     }
 
-    private fun onExpandDialog(){
+    private fun onExpandDialog() {
         val dialog1 = Dialog(this)
         val image = ImageView(this)
         image.run {
@@ -507,7 +520,7 @@ class CameraModeActivity : Activity() {
 
     }
 
-    private fun openProblemServer(){
+    private fun openProblemServer() {
         ServerClient(unitPer.authenticationKey)
                 .openProblem(problemId)
                 .subscribeOn(Schedulers.io())

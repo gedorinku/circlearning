@@ -16,7 +16,6 @@ class UnitPersonal : Application(){
 
     //var userName : String
     var myInfomation: User = User()
-    var userIcon : Uri
     var nowGroup : Group
     var itemCount : HunachiItem
     private lateinit var prefer: SharedPreferences
@@ -28,7 +27,6 @@ class UnitPersonal : Application(){
         nowGroup = Group()
         myGroupCount = 0
         itemCount = HunachiItem()
-        userIcon = getIconUri(R.drawable.group)
         myGroupList = mutableListOf()
     }
 
@@ -37,8 +35,6 @@ class UnitPersonal : Application(){
         prefer = getSharedPreferences(packageName + ".txt", Context.MODE_PRIVATE)
         authenticationKey = prefer.getString("key", "0")
     }
-
-    private fun getIconUri(@RawRes resId: Int) = Uri.parse("android.resource://$packageName/$resId")!!
 
     fun writeFile(){
         val edit = prefer.edit()

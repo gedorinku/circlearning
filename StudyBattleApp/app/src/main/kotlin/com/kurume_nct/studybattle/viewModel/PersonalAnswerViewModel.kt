@@ -1,6 +1,7 @@
 package com.kurume_nct.studybattle.viewModel
 
 import android.content.Context
+import android.content.Intent
 import android.databinding.BaseObservable
 import android.databinding.Bindable
 import android.databinding.BindingAdapter
@@ -10,6 +11,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
+import com.kurume_nct.studybattle.tools.ImageViewActivity
 import com.kurume_nct.studybattle.tools.ToolClass
 
 /**
@@ -93,7 +95,21 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
         callback.onWriteComment()
     }
 
+    @Bindable
+    var imageClickable = false
+    set(value) {
+        field = value
+        notifyPropertyChanged(BR.imageClickAble)
+    }
+
+    fun onClickImageView(view: View){
+        val intent = Intent(context, ImageViewActivity::class.java)
+        intent.putExtra("url",callback.getImageUrl())
+        context.startActivity(intent)
+    }
+
     interface Callback {
+        fun getImageUrl(): String
         fun onWriteComment()
         fun onWriteScores()
     }

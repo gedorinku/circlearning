@@ -26,6 +26,7 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
     private var problemId = 0
     private var situationId = false
     private var problem: Problem = Problem()
+    private var url = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +53,11 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({
-                                binding.personalAnswer.personalAnswerUri = Uri.parse(it.url)
+                                url = it.url
+                                binding.personalAnswer.apply {
+                                    personalAnswerUri = Uri.parse(url)
+                                    imageClickable = true
+                                }
                             }, {
                                 Toast.makeText(this, "", Toast.LENGTH_SHORT).show()
                             })
@@ -126,4 +131,5 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
         }
     }
 
+    override fun getImageUrl() = url
 }

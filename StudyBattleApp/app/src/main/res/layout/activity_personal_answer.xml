@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
@@ -27,42 +26,34 @@
                 <TextView
                     android:id="@+id/textView37"
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@color/md_cyan_300"
-                    android:gravity="center"
-                    android:text="解答閲覧"
-                    android:textColor="@color/md_dark_primary_text"
-                    android:textSize="24sp" />
+                    android:text="@{PersonalAnswer.ansCreatorName}" />
 
                 <TextView
                     android:id="@+id/current_personal_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:text="@{PersonalAnswer.correctPersonal}" />
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/imageView13"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:background="@color/md_blue_grey_200"
+                    android:background="@drawable/no_image"
+                    android:onClick="@{PersonalAnswer.onClickImageView}"
+                    android:scaleType="centerCrop"
                     app:loadImagePersonalAnswer="@{PersonalAnswer.personalAnswerUri}" />
 
                 <LinearLayout
                     android:id="@+id/score_comment_layout_text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="32dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -72,7 +63,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:layout_weight="1"
-                        android:text="正誤ミスについてのコメント"
+                        android:text="この問題の正誤ミスについてのコメント"
                         android:textColor="@color/primary_dark"
                         android:textSize="17sp" />
 
@@ -114,7 +105,7 @@
                         android:layout_gravity="center"
                         android:layout_marginBottom="20dp"
                         android:layout_weight="1"
-                        android:background="@drawable/green_button"
+                        android:background="@color/md_amber_700"
                         android:onClick="@{PersonalAnswer.onClickScoreComment}"
                         android:text="+コメントを追加する"
                         android:textColor="@color/material_drawer_dark_primary_text"
@@ -123,12 +114,16 @@
                 </LinearLayout>
 
 
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:layout_weight="1" />
+
                 <TextView
                     android:id="@+id/textView41"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_weight="1"
                     android:text="みんなのコメント"
                     android:textColor="@color/primary_dark"
@@ -138,8 +133,8 @@
                     android:id="@+id/comments_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
                     android:layout_weight="1"
                     android:text="@{PersonalAnswer.everyoneComment}"
                     android:textColor="@color/material_drawer_dark_selected" />
@@ -148,8 +143,8 @@
                     android:id="@+id/your_comment_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
                     android:layout_weight="1"
                     android:ems="10"
                     android:inputType="textPersonName"
@@ -160,9 +155,8 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="32dp"
                     android:layout_weight="1"
-                    android:background="@drawable/green_button"
+                    android:background="@color/md_amber_700"
                     android:onClick="@{PersonalAnswer.onClickComment}"
                     android:text="+コメントを追加する"
                     android:textColor="@color/material_drawer_dark_header_selection_text"
