@@ -166,13 +166,7 @@ class Main2Activity : AppCompatActivity() {
     }
 
     private fun getIconBitmap(): Single<Bitmap> = Single.fromCallable {
-        val connection = URL(userIcon.toString()).openConnection()
-        val input = connection.run {
-            doInput = true
-            connect()
-            getInputStream()
-        }
-        BitmapFactory.decodeStream(input)
+        BitmapFactory.decodeStream(URL(userIcon.toString()).openStream())
     }
 
 
