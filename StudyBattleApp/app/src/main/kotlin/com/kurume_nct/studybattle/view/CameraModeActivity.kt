@@ -153,21 +153,21 @@ class CameraModeActivity : Activity() {
 
         dialogView.bombButton17.setOnClickListener {
             if (putItemId != 0) {
-                Glide.with(this).load(R.drawable.framecard_bomb).into(submitItemImageButton)
+                Glide.with(this).load(R.drawable.framecardb).into(submitItemImageButton)
             }
             putItemId = 0
             dialog.dismiss()
         }
         dialogView.cardButton16.setOnClickListener {
             if (putItemId != 1) {
-                Glide.with(this).load(R.drawable.framecard_card).into(submitItemImageButton)
+                Glide.with(this).load(R.drawable.framecardc).into(submitItemImageButton)
             }
             putItemId = 1
             dialog.dismiss()
         }
         dialogView.handButton12.setOnClickListener {
             if (putItemId != 3) {
-                Glide.with(this).load(R.drawable.framecard_magichand).into(submitItemImageButton)
+                Glide.with(this).load(R.drawable.framecardm).into(submitItemImageButton)
             }
             putItemId = 3
             dialog.dismiss()

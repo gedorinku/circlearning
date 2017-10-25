@@ -135,7 +135,7 @@
                         android:layout_height="50dp"
                         android:layout_marginRight="20dp"
                         android:layout_weight="0.08"
-                        android:background="@drawable/orange_button"
+                        android:background="@drawable/green_button"
                         android:onClick="@{CreateView.onClickDateChange}"
                         android:text="変更"
                         android:textColor="#ffffff"

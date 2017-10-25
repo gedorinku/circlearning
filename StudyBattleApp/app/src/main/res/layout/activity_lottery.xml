@@ -18,29 +18,25 @@
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp">
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="24dp" />
-
         <TextView
             android:id="@+id/lottery_name_text"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="64dp"
+            android:background="@color/md_cyan_300"
             android:gravity="center"
             android:text="アイテム抽選会"
+            android:textColor="@color/md_dark_primary_text"
             android:textSize="24sp"
             tools:ignore="HardcodedText"
             tools:layout_editor_absoluteX="68dp"
             tools:layout_editor_absoluteY="28dp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
-
         <TextView
             android:id="@+id/lottery_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:layout_marginTop="16dp"
             android:gravity="center_horizontal"
             android:text="☆好きなカードを一枚選んでね☆"
             android:textSize="17sp"
@@ -51,10 +47,6 @@
             tools:layout_conversion_absoluteY="65dp"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="65dp" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"

@@ -75,7 +75,7 @@
                     android:layout_marginTop="32dp"
                     android:background="@drawable/green_button"
                     android:onClick="@{GroupSetView.onClickChangeInfo}"
-                    android:text="情報を更新"
+                    android:text="追加する"
                     android:textColor="@color/material_drawer_background"
                     android:textSize="15sp" />
 

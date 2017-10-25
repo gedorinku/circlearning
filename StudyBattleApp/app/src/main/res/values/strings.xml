@@ -14,10 +14,10 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="magic_hand_explain">提出する時に使うことができ、自分が問題に正解したら、その問題を間違えた人からスコアを奪うことができるよ。</string>
+    <string name="magic_hand_explain">提出する時に使うことができ、自分が問題に正解したら、その問題を間違えた人からスコアを奪うことができるよ</string>
     <string name="bomb_explain">問題の解答を提出する時に使うことができ、自分の次にその問題を受け取った人のスコアを-10点するよ</string>
     <string name="secound_card_explain">問題の解答を提出する時に使うことができ、その時提出した解答が正解であれば、そのスコアが2倍になるよ</string>
-    <string name="sheild_explain">もし開いた問題に爆弾が仕掛けられていても、自分のスコアを守ることができるよ\n（盾は自動で使用されます）</string>
+    <string name="sheild_explain">もし開いた問題に爆弾が仕掛けられていても、自分のスコアを守ることができるよ（盾は自動で使用されます）</string>
     <string name="errorLoginStatus">ユーザー名とパスワードを入力してください</string>
     <string name="hint_input_user_name">ユーザー名（半角英数のみ2~20文字）</string>
     <string name="hint_input_user_password">パスワード</string>
@@ -42,10 +42,10 @@
     <string name="shield">盾</string>
     <string name="not_good_word_username">ユーザー名に不適切な文字列が含まれています.</string>
     <array name="item">
-        <item>@drawable/framecard_bomb</item>
-        <item>@drawable/framecard_card</item>
-        <item>@drawable/framecard_magichand</item>
-        <item>@drawable/framecard_shield</item>
+        <item>@drawable/framecardb</item>
+        <item>@drawable/framecardc</item>
+        <item>@drawable/framecardm</item>
+        <item>@drawable/framecardg</item>
         <item>@drawable/hazure</item>
     </array>
 </resources>
