@@ -33,11 +33,24 @@ data class Problem(
         @SerializedName("startsAt") val rawStartsAt: String = "",
         val durationMillis: Long = 0L,
         val point: Int = 0,
-        val solutions: List<Solution> = emptyList()
+        val solutions: List<Solution> = emptyList(),
+        val assignedUser: User? = null,
+        @SerializedName("assignedAt") val rawAssignedAt: String = "",
+        val durationPerUserMillis: Long = 0L,
+        @SerializedName("state") val rawState: String = ""
 ) {
 
     val startsAtTime: DateTime by lazy { DateTime.parse(rawStartsAt) }
     val duration: Duration by lazy { Duration.millis(durationMillis) }
+    val assignedAtTime: DateTime by lazy { DateTime.parse(rawAssignedAt) }
+    val durationPerUser: Duration by lazy { Duration.millis(durationPerUserMillis) }
+    val problemState: ProblemState by lazy { ProblemState.valueOf(rawState) }
+}
+
+enum class ProblemState {
+    Opening,
+    Judging,
+    Judged
 }
 
 data class ProblemRequestResponse(
