@@ -42,10 +42,10 @@
     <string name="shield">盾</string>
     <string name="not_good_word_username">ユーザー名に不適切な文字列が含まれています.</string>
     <array name="item">
+        <item>@drawable/hazure</item>
         <item>@drawable/framecardb</item>
+        <item>@drawable/framecardg</item>
         <item>@drawable/framecardc</item>
         <item>@drawable/framecardm</item>
-        <item>@drawable/framecardg</item>
-        <item>@drawable/hazure</item>
     </array>
 </resources>

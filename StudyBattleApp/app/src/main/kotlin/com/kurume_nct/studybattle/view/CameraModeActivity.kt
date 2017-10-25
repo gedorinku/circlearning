@@ -30,10 +30,7 @@ import android.widget.*
 import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.*
-import com.kurume_nct.studybattle.model.Air
-import com.kurume_nct.studybattle.model.Bomb
-import com.kurume_nct.studybattle.model.ProblemOpenAction
-import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.model.*
 import com.kurume_nct.studybattle.tools.ImageViewActivity
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
 import com.kurume_nct.studybattle.tools.ToolClass
@@ -221,6 +218,7 @@ class CameraModeActivity : Activity() {
     private fun sendProblemServer() {
         val client = ServerClient(unitPer.authenticationKey)
         val uri: Uri = answerUri!!
+        var randomItem: Item = Air
 
         progress.show()
         client
@@ -240,21 +238,32 @@ class CameraModeActivity : Activity() {
                                             Bomb
                                         }
                                         1 -> {
-                                            Bomb/*Card*/
+                                            DoubleScoreCard
                                         }
                                         2 -> {
-                                            Air/*Magic*/
+                                            MagicHand
                                         }
                                         else -> {
                                             Air
                                         }
+                                    },
+                                    callback = {
+                                        item ->  randomItem = item
                                     }
                             )
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                 }.subscribe({
             progress.dismiss()
-            startActivity(Intent(this, LotteryActivity::class.java))
+            val intent = Intent(this, LotteryActivity::class.java)
+            when(randomItem){
+                Air -> intent.putExtra("item", 0)
+                Bomb -> intent.putExtra("item", 1)
+                Shield -> intent.putExtra("item", 2)
+                DoubleScoreCard -> intent.putExtra("item", 3)
+                MagicHand -> intent.putExtra("item", 4)
+            }
+            startActivity(intent)
             finish()
         }, {
             progress.dismiss()

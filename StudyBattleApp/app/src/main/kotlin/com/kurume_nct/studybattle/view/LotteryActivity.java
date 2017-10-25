@@ -1,4 +1,5 @@
 package com.kurume_nct.studybattle.view;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -14,11 +15,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.kurume_nct.studybattle.R;
+import com.kurume_nct.studybattle.client.Server;
+import com.kurume_nct.studybattle.client.ServerClient;
 import com.kurume_nct.studybattle.model.UnitPersonal;
 
 
-public class LotteryActivity extends Activity{
+public class LotteryActivity extends Activity {
 
     ImageView card1;
     ImageView card2;
@@ -27,8 +31,9 @@ public class LotteryActivity extends Activity{
     ImageView lottery_text;
     TextView text1;
     Bitmap bmp4;
-    final int item_sum=5;
+    final int item_sum = 5;
     UnitPersonal unitPer;
+    int itemNumber = 0;
 
 
     @Override
@@ -36,22 +41,24 @@ public class LotteryActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lottery);
 
+        itemNumber = getIntent().getIntExtra("item", 0);
+
         Resources resources = getResources();
         card1 = (ImageView) findViewById(R.id.card1);
         card2 = (ImageView) findViewById(R.id.card2);
         card3 = (ImageView) findViewById(R.id.card3);
-        text1=(TextView) findViewById(R.id.lottery_text) ;
-        lotteried=(ImageView)findViewById(R.id.lotteried_item);
-        lottery_text=(ImageView)findViewById(R.id.lottery_item_text);
+        text1 = (TextView) findViewById(R.id.lottery_text);
+        lotteried = (ImageView) findViewById(R.id.lotteried_item);
+        lottery_text = (ImageView) findViewById(R.id.lottery_item_text);
         unitPer = (UnitPersonal) getApplication();
 
-        Bitmap bmp1= BitmapFactory.decodeResource(getResources(),R.drawable.lotterycard);
+        Bitmap bmp1 = BitmapFactory.decodeResource(getResources(), R.drawable.lotterycard);
         card1.setImageBitmap(bmp1);
-        Bitmap bmp2= BitmapFactory.decodeResource(getResources(),R.drawable.lotterycard);
+        Bitmap bmp2 = BitmapFactory.decodeResource(getResources(), R.drawable.lotterycard);
         card2.setImageBitmap(bmp2);
-        Bitmap bmp3= BitmapFactory.decodeResource(getResources(),R.drawable.lotterycard);
+        Bitmap bmp3 = BitmapFactory.decodeResource(getResources(), R.drawable.lotterycard);
         card3.setImageBitmap(bmp3);
-        bmp4= BitmapFactory.decodeResource(getResources(),R.drawable.text_itemget);
+        bmp4 = BitmapFactory.decodeResource(getResources(), R.drawable.text_itemget);
 
         card1.setVisibility(View.VISIBLE);
         card2.setVisibility(View.VISIBLE);
@@ -59,19 +66,19 @@ public class LotteryActivity extends Activity{
         lotteried.setVisibility(View.INVISIBLE);
         lottery_text.setVisibility(View.INVISIBLE);
 
-        card1.setOnClickListener(new View.OnClickListener(){
+        card1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mainToReturn(card1);
             }
         });
-        card2.setOnClickListener(new View.OnClickListener(){
+        card2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mainToReturn(card2);
             }
         });
-        card3.setOnClickListener(new View.OnClickListener(){
+        card3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mainToReturn(card3);
@@ -80,55 +87,50 @@ public class LotteryActivity extends Activity{
     }
 
 
-
-    void mainToReturn(ImageView item){
+    void mainToReturn(ImageView item) {
         //一回限りの処理
         card1.setEnabled(false);
         card2.setEnabled(false);
         card3.setEnabled(false);
         TypedArray typedArray = getResources().obtainTypedArray(R.array.item);
-        int i = (int) (Math.floor(Math.random() * item_sum));
+        int i = itemNumber;
         Drawable drawable = typedArray.getDrawable(i);
         item.setImageDrawable(drawable);
         item.setVisibility(View.VISIBLE);
-        if(i==0) {
+        if (i == 0) {
             text1.setText("爆弾GET！");
             unitPer.getItemCount().setBomb(unitPer.getItemCount().getBomb() + 1);
-            lotteried.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.bomb));
+            lotteried.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.bomb));
             lottery_text.setImageBitmap(bmp4);
-        }else if(i==1) {
+        } else if (i == 1) {
             text1.setText("2倍カードGET!");
             unitPer.getItemCount().setCard(unitPer.getItemCount().getCard() + 1);
-            lotteried.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.card));
+            lotteried.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.card));
             lottery_text.setImageBitmap(bmp4);
-        }else if(i==2) {
+        } else if (i == 2) {
             text1.setText("マジックハンドGET！");
             unitPer.getItemCount().setMagicHand(unitPer.getItemCount().getMagicHand() + 1);
-            lotteried.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.magichand));
+            lotteried.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.magichand));
             lottery_text.setImageBitmap(bmp4);
-        }else if(i==3) {
+        } else if (i == 3) {
             text1.setText("シールドGET!");
             unitPer.getItemCount().setShield(unitPer.getItemCount().getShield() + 1);
-            lotteried.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.shield));
+            lotteried.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.shield));
             lottery_text.setImageBitmap(bmp4);
-        }else {
+        } else {
             text1.setText("アイテム獲得ならず.....");
-            bmp4= BitmapFactory.decodeResource(getResources(),R.drawable.gagan);
-            //lotteried.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.gagan));
-            lotteried.setImageBitmap( Bitmap.createScaledBitmap(bmp4, 500, 500, false));
+            bmp4 = BitmapFactory.decodeResource(getResources(), R.drawable.gagan);
+            lotteried.setImageBitmap(Bitmap.createScaledBitmap(bmp4, 500, 500, false));
         }
         lotteried.setVisibility(View.VISIBLE);
         lottery_text.setVisibility(View.VISIBLE);
-        final Handler handler=new Handler();
+        final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 finish();
             }
-        },2500);
-
-
-
+        }, 2500);
     }
 
 }
