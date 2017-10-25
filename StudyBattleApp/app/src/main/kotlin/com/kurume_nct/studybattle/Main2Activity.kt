@@ -196,10 +196,10 @@ class Main2Activity : AppCompatActivity() {
                     val intent = Intent(this, GroupSetChangeActivity::class.java)
                     startActivityForResult(intent, 0)
                 }
-                R.id.to_setting_group -> {
+                /*R.id.to_setting_group -> {
                     startActivity(Intent(this, CustomViewActivity::class.java))
                     Toast.makeText(this, "未実装の機能です。本選までお楽しみに！", Toast.LENGTH_SHORT).show()
-                }
+                }*/
             }
             false
         }

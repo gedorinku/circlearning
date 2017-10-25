@@ -4,33 +4,28 @@
 
     <item
         android:id="@+id/to_item"
-        android:icon="@drawable/bomb"
+        android:icon="@drawable/upicon7mdpi"
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/to_ranking"
-        android:icon="@drawable/ranking"
+        android:icon="@drawable/upicon5mdpi"
         android:orderInCategory="100"
         android:title="hoge"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/to_setting"
-        android:icon="@android:drawable/ic_menu_manage"
+        android:icon="@drawable/upicon6mdpi"
         android:orderInCategory="100"
         android:title="hoge"
         app:showAsAction="always">
         <menu>
             <item
                 android:id="@+id/to_change_member"
-                android:title="グループの設定">
-            </item>
-            <item
-                android:id="@+id/to_setting_group"
-                android:title="プロフィールの設定">
-            </item>
+                android:title="グループの設定"></item>
         </menu>
     </item>
 </menu>
