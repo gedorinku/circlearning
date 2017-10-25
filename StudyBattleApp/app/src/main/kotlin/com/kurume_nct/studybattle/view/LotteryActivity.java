@@ -99,22 +99,18 @@ public class LotteryActivity extends Activity {
         item.setVisibility(View.VISIBLE);
         if (i == 0) {
             text1.setText("爆弾GET！");
-            unitPer.getItemCount().setBomb(unitPer.getItemCount().getBomb() + 1);
             lotteried.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.bomb));
             lottery_text.setImageBitmap(bmp4);
         } else if (i == 1) {
             text1.setText("2倍カードGET!");
-            unitPer.getItemCount().setCard(unitPer.getItemCount().getCard() + 1);
             lotteried.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.card));
             lottery_text.setImageBitmap(bmp4);
         } else if (i == 2) {
             text1.setText("マジックハンドGET！");
-            unitPer.getItemCount().setMagicHand(unitPer.getItemCount().getMagicHand() + 1);
             lotteried.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.magichand));
             lottery_text.setImageBitmap(bmp4);
         } else if (i == 3) {
             text1.setText("シールドGET!");
-            unitPer.getItemCount().setShield(unitPer.getItemCount().getShield() + 1);
             lotteried.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.shield));
             lottery_text.setImageBitmap(bmp4);
         } else {
