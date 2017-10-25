@@ -29,13 +29,13 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginBottom="20dp"
-                android:background="@drawable/framecard_card" />
+                android:background="@drawable/framecardc" />
 
             <Button
                 android:id="@+id/bomb_button17"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:background="@drawable/framecard_bomb" />
+                android:background="@drawable/framecardb" />
 
         </LinearLayout>
 
@@ -58,7 +58,7 @@
                 android:id="@+id/hand_button12"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:background="@drawable/framecard_magichand" />
+                android:background="@drawable/framecardm" />
 
         </LinearLayout>
 
@@ -71,7 +71,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
-            android:background="@color/md_amber_700"
+            android:background="@drawable/pass_border"
             android:elevation="0dp"
             android:text="アイテムを外す"
             android:textColor="#ffffff"
