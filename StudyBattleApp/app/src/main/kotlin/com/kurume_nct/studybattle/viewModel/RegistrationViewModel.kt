@@ -33,7 +33,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
 
     init {
         iconId = 0
-        uri = ToolClass(context).convertUrlFromDrawableResId(R.drawable.group)
+        uri = ToolClass(context).convertUrlFromDrawableResId(R.drawable.plus)
     }
 
     companion object {
