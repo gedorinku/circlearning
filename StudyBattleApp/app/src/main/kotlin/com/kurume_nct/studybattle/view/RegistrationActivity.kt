@@ -64,8 +64,10 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        Log.d("ほげほげ", resultCode.toString()+ " " + requestCode.toString())
         if(data == null){
             enableButton(false)
+            Log.d("ほげほげ", resultCode.toString() )
             return
         }
         binding.userEntity.onActivityResult(requestCode, resultCode, data)
@@ -202,7 +204,7 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
 
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
-        startActivityForResult(intent, 0)
+        startActivityForResult(intent, 114)
     }
 
     private fun storageStart() {

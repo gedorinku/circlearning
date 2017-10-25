@@ -39,12 +39,8 @@ class RegistrationViewModel(private val context: Context, private val callback: 
     companion object {
         @BindingAdapter("loadImageFirstIcon")
         @JvmStatic
-        fun setIconImage(view: ImageView, uri: Uri?) {
-            if (uri == null) /*{
-                Glide.with(view).load(R.drawable.group).into(view)//loadの中にresourceを入れたらtestできる
-            } else */{
-                Glide.with(view).load(uri).into(view)
-            }
+        fun setIconImage(view: ImageView, uri: Uri) {
+            Glide.with(view).load(uri).into(view)
         }
     }
 
@@ -125,8 +121,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
         }
     }
 
-    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (data == null) return
+    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         uri = data.data
         imageUri = uri
         callback.enableButton(false)
