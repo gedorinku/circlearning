@@ -145,8 +145,14 @@ class Main2Activity : AppCompatActivity() {
                                 .subscribe { it ->
                                     val xSize = it.width
                                     val ySize = it.height
-                                    if (xSize > 2000 && ySize > 2000)
-                                        viewSetup(Bitmap.createBitmap(it, (xSize - 2000) / 2, (ySize - 2000) / 2, 2000, 2000, null, false))
+                                    var bitmap = it
+                                    Log.d("size","変更")
+                                    if (xSize > ySize)
+                                        bitmap = Bitmap.createBitmap(bitmap, (xSize - ySize) / 2, 0, ySize, ySize, null, false)
+                                    else if(ySize > xSize)
+                                        bitmap = Bitmap.createBitmap(bitmap, 0, (ySize - xSize) / 2, xSize, xSize, null, false)
+
+                                    viewSetup(bitmap)
                                 }
                     }
                 }, {
@@ -162,10 +168,10 @@ class Main2Activity : AppCompatActivity() {
         onNavigationDrawer(userIcon)
         onToolBar()
         Log.d(unitPer.myInfomation.id.toString(), "ユーザーID")
-
     }
 
     private fun getIconBitmap(): Single<Bitmap> = Single.fromCallable {
+        Log.d("bitMap","に変換中・・・。")
         BitmapFactory.decodeStream(URL(userIcon.toString()).openStream())
     }
 

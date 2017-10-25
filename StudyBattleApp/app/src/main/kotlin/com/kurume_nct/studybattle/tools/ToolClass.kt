@@ -16,7 +16,7 @@ class ToolClass(val context: Context) {
 
     val unitPer: UnitPersonal = context.applicationContext as UnitPersonal
 
-    fun convertUrlFromDrawableResId(drawableResId: Int): Uri? {
+    fun convertUrlFromDrawableResId(drawableResId: Int): Uri {
         val sb = StringBuilder()
         sb.append(ContentResolver.SCHEME_ANDROID_RESOURCE)
         sb.append("://")
