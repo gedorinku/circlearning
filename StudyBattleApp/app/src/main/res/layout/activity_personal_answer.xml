@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="PersonalAnswer"
             type="com.kurume_nct.studybattle.viewModel.PersonalAnswerViewModel" />
@@ -22,6 +24,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/problem_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{PersonalAnswer.problemTitle}" />
+
+                <ImageButton
+                    android:id="@+id/problem_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/no_image"
+                    android:clickable="@{PersonalAnswer.imageClickable}"
+                    android:onClick="@{PersonalAnswer.onClickProblemView}"
+                    android:scaleType="centerCrop"
+                    app:loadImagePersonal="@{PersonalAnswer.personalProblemUri}" />
 
                 <TextView
                     android:id="@+id/textView37"
@@ -46,9 +69,11 @@
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/no_image"
+                    android:clickable="@{PersonalAnswer.imageClickable}"
                     android:onClick="@{PersonalAnswer.onClickImageView}"
                     android:scaleType="centerCrop"
-                    app:loadImagePersonalAnswer="@{PersonalAnswer.personalAnswerUri}" />
+                    app:loadImagePersonal="@{PersonalAnswer.personalAnswerUri}" />
+
 
                 <LinearLayout
                     android:id="@+id/score_comment_layout_text"
@@ -61,11 +86,12 @@
                         android:id="@+id/textView38"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
                         android:layout_weight="1"
-                        android:text="この問題の正誤ミスについてのコメント"
+                        android:text="正誤判定についてのコメント"
                         android:textColor="@color/primary_dark"
-                        android:textSize="17sp" />
+                        android:textSize="21sp" />
 
                     <TextView
                         android:id="@+id/remaining_time_text"
@@ -81,8 +107,8 @@
                         android:id="@+id/score_comment_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
                         android:layout_weight="1"
                         android:text="@{PersonalAnswer.scoreComment}"
                         android:textColor="@color/material_drawer_dark_selected" />
@@ -91,81 +117,74 @@
                         android:id="@+id/your_score_comment_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
                         android:layout_weight="1"
                         android:ems="10"
                         android:inputType="textPersonName"
-                        android:text="@={PersonalAnswer.yourScoreCmment}" />
+                        android:text="@{PersonalAnswer.yourScoreCmment}" />
 
                     <Button
                         android:id="@+id/add_score_comment_button"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="20dp"
+                        android:layout_marginBottom="32dp"
+                        android:layout_marginTop="8dp"
                         android:layout_weight="1"
-                        android:background="@color/md_amber_700"
+                        android:background="@drawable/green_button"
                         android:onClick="@{PersonalAnswer.onClickScoreComment}"
-                        android:text="+コメントを追加する"
+                        android:text="+コメントを追加"
                         android:textColor="@color/material_drawer_dark_primary_text"
                         android:textSize="15sp" />
 
                 </LinearLayout>
 
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:layout_weight="1" />
-
                 <TextView
-                    android:id="@+id/textView41"
+                    android:id="@+id/textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:text="みんなのコメント"
                     android:textColor="@color/primary_dark"
-                    android:textSize="17sp" />
+                    android:textSize="21sp" />
 
                 <TextView
-                    android:id="@+id/comments_text"
+                    android:id="@+id/comments"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:text="@{PersonalAnswer.everyoneComment}"
                     android:textColor="@color/material_drawer_dark_selected" />
 
                 <EditText
-                    android:id="@+id/your_comment_edit_text"
+                    android:id="@+id/comment_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:ems="10"
                     android:inputType="textPersonName"
                     android:text="@={PersonalAnswer.yourComment}" />
 
                 <Button
-                    android:id="@+id/add_normal_comment_button"
+                    android:id="@+id/add_comment_button"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="32dp"
+                    android:layout_marginTop="8dp"
                     android:layout_weight="1"
-                    android:background="@color/md_amber_700"
+                    android:background="@drawable/green_button"
                     android:onClick="@{PersonalAnswer.onClickComment}"
-                    android:text="+コメントを追加する"
+                    android:text="+コメントを追加"
                     android:textColor="@color/material_drawer_dark_header_selection_text"
                     android:textSize="15sp" />
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_weight="1" />
 
             </LinearLayout>
         </ScrollView>
