@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.client.ServerClient
+import com.kurume_nct.studybattle.tools.ToolClass
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.io.BufferedInputStream
@@ -26,19 +27,22 @@ import java.io.BufferedInputStream
  */
 class RegistrationViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
 
+
+    private var uri: Uri
     var iconId: Int
 
     init {
         iconId = 0
+        uri = ToolClass(context).convertUrlFromDrawableResId(R.drawable.group)
     }
 
     companion object {
         @BindingAdapter("loadImageFirstIcon")
         @JvmStatic
         fun setIconImage(view: ImageView, uri: Uri?) {
-            if (uri == null) {
+            if (uri == null) /*{
                 Glide.with(view).load(R.drawable.group).into(view)//loadの中にresourceを入れたらtestできる
-            } else {
+            } else */{
                 Glide.with(view).load(uri).into(view)
             }
         }
@@ -62,7 +66,6 @@ class RegistrationViewModel(private val context: Context, private val callback: 
 
     @Bindable
     var displayName = ""
-        get
         set(value) {
             field = value
             notifyPropertyChanged(BR.displayName)
@@ -72,8 +75,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
     var loginButtonText = "登録"
 
     @Bindable
-    var imageUri: Uri? = null
-        get
+    var imageUri: Uri = uri
         set(value) {
             field = value
             notifyPropertyChanged(BR.imageUri)
@@ -89,34 +91,33 @@ class RegistrationViewModel(private val context: Context, private val callback: 
         } else if (!userNameRegister.matches("^[a-zA-Z0-9_]{2,20}".toRegex())) {
             Toast.makeText(context, "ユーザー名に不適切な文字が含まれています。", Toast.LENGTH_LONG).show()
             userNameRegister = ""
-        } else {
+        } /*else if (imageUri == null) {
+            Toast.makeText(context, "iconを設定してください", Toast.LENGTH_SHORT).show()
+        } */else {
             callback.stopButton(true)
             //sever処理
-            Log.d("開始","Register")
+            Log.d("開始", "Register")
             val client = ServerClient()
-            if(imageUri == null){
-                imageUri = convertUrlFromDrawableResId(context, R.drawable.group)!!
-            }
             client
                     .uploadImage(imageUri!!, context)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe ({
+                    .subscribe({
                         //たまに落ちるので分けた。
-                        Log.d("開始2","Register")
+                        Log.d("開始2", "Register")
                         client
                                 .register(displayName, userNameRegister, userPassword, it.id)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe ({
+                                .subscribe({
                                     callback.onLogin()
                                     callback.enableButton(true)
-                                },{
+                                }, {
                                     it.printStackTrace()
                                     Toast.makeText(context, context.getString(R.string.usedUserNameAlart), Toast.LENGTH_LONG).show()
                                     callback.enableButton(true)
                                 })
-                    },{
+                    }, {
                         it.printStackTrace()
                         Toast.makeText(context, "もう一度やり直してください", Toast.LENGTH_LONG).show()
                         callback.enableButton(true)
@@ -124,8 +125,10 @@ class RegistrationViewModel(private val context: Context, private val callback: 
         }
     }
 
-    fun onActivityResult(data: Intent?) {
-        imageUri = data?.data
+    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (data == null) return
+        uri = data.data
+        imageUri = uri
         callback.enableButton(false)
     }
 

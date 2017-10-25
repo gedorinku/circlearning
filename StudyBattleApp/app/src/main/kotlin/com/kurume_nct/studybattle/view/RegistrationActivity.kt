@@ -68,7 +68,7 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
             enableButton(false)
             return
         }
-        binding.userEntity.onActivityResult(data)
+        binding.userEntity.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun stopButton(enable: Boolean) {
