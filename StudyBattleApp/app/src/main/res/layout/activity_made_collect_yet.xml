@@ -45,7 +45,7 @@
                     android:textSize="21sp" />
 
                 <ImageButton
-                    android:id="@+id/problemImageView"
+                    android:id="@+id/problem_image_view"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_marginBottom="32dp"
@@ -159,16 +159,16 @@
                     android:layout_weight="1"
                     android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/textView53"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_weight="1"
-                    android:paddingLeft="8dp"
-                    android:text="一人あたりに与えられている解答時間"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="17sp" />
+                    <TextView
+                        android:id="@+id/textView53"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_weight="1"
+                        android:paddingLeft="8dp"
+                        android:text="解答時間"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="17sp" />
 
                     <TextView
                         android:id="@+id/duration_per_one_text"
