@@ -60,7 +60,7 @@ class MadeCollectYetActivity : AppCompatActivity() {
                 .subscribe {
                     binding.run {
                         problemNameText.text = it.title
-                        problemNowSituationText.text = it.rawState + stateString(it.rawState)
+                        problemNowSituationText.text = stateString(it.rawState)
                         problemCollectedDateText.text = dateConverter(it.createdAt, 0) + calculatePerOneHour(it.durationMillis)
                         problemMadeDateText.text = dateConverter(it.createdAt, 0)
                         durationPerOneText.text = calculatePerOneHour(it.durationPerUserMillis)

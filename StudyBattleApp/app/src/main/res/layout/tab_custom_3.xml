@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="top|center_horizontal"
-        android:text="提出した解答"
+        android:text="自分の解答"
         android:textColor="@color/md_dark_primary_text"
         android:textSize="13sp" />
 </LinearLayout>
