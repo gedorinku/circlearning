@@ -80,9 +80,9 @@ class MadeCollectYetActivity : AppCompatActivity() {
 
     private fun stateString(state: String) =
             when (state) {
-                "Opening" -> "　回収中　"
-                "Judging" -> "　正誤判定中　"
-                "Judged" -> "　正誤判定済み　"
+                "Opening" -> "回収中"
+                "Judging" -> "正誤判定中"
+                "Judged" -> "正誤判定済み"
                 else -> {
                     "謎"
                 }
