@@ -50,7 +50,8 @@ class SubmittedMainFragment : Fragment(), MainListFragment.Callback {
             onRefresh()
         }
 
-        binding.swipeRefreshFragmentSubmit.setColorSchemeResources(R.color.md_red_700, R.color.md_yellow_700)
+        //binding.swipeRefreshFragmentSubmit.setColorSchemeResources(R.color.md_red_700, R.color.md_yellow_700)
+        binding.swipeRefreshFragmentSubmit.setColorSchemeResources(R.color.md_blue_800)
 
         return binding.root
     }
