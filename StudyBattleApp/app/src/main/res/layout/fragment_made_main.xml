@@ -28,8 +28,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_weight="1"
+                        android:background="@color/md_light_green_500"
+                        android:paddingLeft="16dp"
                         android:text="解答収集中の自作の問題"
-                        android:textColor="@color/md_green_500"
+                        android:textColor="@color/md_dark_primary_text"
                         android:textSize="21sp" />
 
                     <LinearLayout
@@ -47,8 +49,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_weight="1"
+                        android:background="@color/md_red_300"
+                        android:paddingLeft="16dp"
                         android:text="最終正誤判定がまだの問題"
-                        android:textColor="@color/colorAccent"
+                        android:textColor="@color/md_dark_primary_text"
                         android:textSize="21sp" />
 
                     <LinearLayout
@@ -64,8 +68,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_weight="1"
+                        android:background="@color/md_orange_400"
+                        android:paddingLeft="16dp"
                         android:text="最初の正誤判定がまだの問題"
-                        android:textColor="@color/md_yellow_900"
+                        android:textColor="@color/md_dark_primary_text"
                         android:textSize="21sp" />
 
                     <LinearLayout
@@ -81,8 +87,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_weight="1"
+                        android:background="@color/md_blue_400"
+                        android:paddingLeft="16dp"
                         android:text="過去に作った問題"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:textColor="@color/md_dark_primary_text"
                         android:textSize="21sp" />
 
                     <LinearLayout
