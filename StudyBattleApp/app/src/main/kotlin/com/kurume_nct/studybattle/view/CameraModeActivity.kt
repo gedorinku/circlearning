@@ -218,7 +218,7 @@ class CameraModeActivity : Activity() {
     private fun sendProblemServer() {
         val client = ServerClient(unitPer.authenticationKey)
         val uri: Uri = answerUri!!
-        var randomItem: Item = Air
+        var randomItem = 0
 
         progress.show()
         client
@@ -229,7 +229,7 @@ class CameraModeActivity : Activity() {
                     val imageId = it.id
                     client
                             .createSolution(
-                                    text = "事前提出むり。みんな鬱になっちゃう。",
+                                    text = "解答提出",
                                     problemId = problemId,
                                     imageIds = listOf(imageId),
                                     item =
@@ -246,23 +246,15 @@ class CameraModeActivity : Activity() {
                                         else -> {
                                             Air
                                         }
-                                    },
-                                    callback = {
-                                        item ->  randomItem = item
                                     }
                             )
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                 }.subscribe({
+            randomItem = it.itemId
             progress.dismiss()
             val intent = Intent(this, LotteryActivity::class.java)
-            when(randomItem){
-                Air -> intent.putExtra("item", 0)
-                Bomb -> intent.putExtra("item", 1)
-                Shield -> intent.putExtra("item", 2)
-                DoubleScoreCard -> intent.putExtra("item", 3)
-                MagicHand -> intent.putExtra("item", 4)
-            }
+            intent.putExtra("item",randomItem)
             startActivity(intent)
             finish()
         }, {
