@@ -32,7 +32,6 @@ public class LotteryActivity extends Activity {
     ImageView lottery_text;
     TextView text1;
     Bitmap bmp4;
-    final int item_sum = 5;
     UnitPersonal unitPer;
     int itemNumber = 0;
 
