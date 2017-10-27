@@ -27,10 +27,11 @@
                         android:id="@+id/textView3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:layout_weight="1"
+                        android:background="@color/md_red_300"
+                        android:paddingLeft="16dp"
                         android:text="採点中の問題"
-                        android:textColor="@color/colorAccent"
+                        android:textColor="@color/md_dark_primary_text"
                         android:textSize="21sp" />
 
                     <LinearLayout
@@ -48,8 +49,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_weight="1"
+                        android:background="@color/md_blue_400"
+                        android:paddingLeft="16dp"
                         android:text="過去の問題"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:textColor="@color/md_dark_primary_text"
                         android:textSize="21sp" />
 
                     <LinearLayout

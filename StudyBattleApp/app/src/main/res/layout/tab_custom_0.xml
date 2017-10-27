@@ -19,5 +19,6 @@
         android:layout_gravity="center"
         android:gravity="top|center_horizontal"
         android:text="問題"
+        android:textColor="@color/md_dark_primary_text"
         android:textSize="13sp" />
 </LinearLayout>

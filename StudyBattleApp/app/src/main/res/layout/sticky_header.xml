@@ -10,8 +10,10 @@
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="✎今持っている問題✎"
-        android:textColor="@color/colorAccent"
+        android:background="@color/md_pink_200"
+        android:paddingLeft="17dp"
+        android:text="今持っている問題"
+        android:textColor="@color/md_dark_primary_text"
         android:textSize="18sp"
         app:layout_constraintTop_toTopOf="parent" />
 </LinearLayout>

@@ -29,9 +29,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_weight="1"
+                        android:background="@color/md_red_300"
+                        android:paddingLeft="16dp"
                         android:text="提出した解答(採点済み)"
-                        android:textColor="@color/colorAccent"
-                        android:textSize="18sp" />
+                        android:textColor="@color/md_dark_primary_text"
+                        android:textSize="21sp" />
 
                     <LinearLayout
                         android:id="@+id/fragment_list_suggested"
@@ -48,9 +50,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_weight="1"
+                        android:background="@color/md_light_green_500"
+                        android:paddingLeft="16dp"
                         android:text="提出した解答(未採点)"
-                        android:textColor="@color/md_green_500"
-                        android:textSize="18sp"
+                        android:textColor="@color/md_dark_primary_text"
+                        android:textSize="21sp"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="8dp" />
 
