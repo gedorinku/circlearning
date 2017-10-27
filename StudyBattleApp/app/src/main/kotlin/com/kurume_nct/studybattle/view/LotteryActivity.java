@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.kurume_nct.studybattle.R;
 import com.kurume_nct.studybattle.client.Server;
 import com.kurume_nct.studybattle.client.ServerClient;
@@ -43,7 +44,6 @@ public class LotteryActivity extends Activity {
 
         itemNumber = getIntent().getIntExtra("item", 0);
 
-        Resources resources = getResources();
         card1 = (ImageView) findViewById(R.id.card1);
         card2 = (ImageView) findViewById(R.id.card2);
         card3 = (ImageView) findViewById(R.id.card3);
@@ -52,12 +52,9 @@ public class LotteryActivity extends Activity {
         lottery_text = (ImageView) findViewById(R.id.lottery_item_text);
         unitPer = (UnitPersonal) getApplication();
 
-        Bitmap bmp1 = BitmapFactory.decodeResource(getResources(), R.drawable.lotterycard);
-        card1.setImageBitmap(bmp1);
-        Bitmap bmp2 = BitmapFactory.decodeResource(getResources(), R.drawable.lotterycard);
-        card2.setImageBitmap(bmp2);
-        Bitmap bmp3 = BitmapFactory.decodeResource(getResources(), R.drawable.lotterycard);
-        card3.setImageBitmap(bmp3);
+        Glide.with(this).load(R.drawable.lotterycard).into(card1);
+        Glide.with(this).load(R.drawable.lotterycard).into(card2);
+        Glide.with(this).load(R.drawable.lotterycard).into(card3);
         bmp4 = BitmapFactory.decodeResource(getResources(), R.drawable.text_itemget);
 
         card1.setVisibility(View.VISIBLE);
