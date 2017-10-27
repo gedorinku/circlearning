@@ -206,4 +206,5 @@ interface Server {
             @Query("authenticationKey") authenticationKey: String,
             @Query("groupId") groupId: Int
     ): Observable<Ranking>
+
 }

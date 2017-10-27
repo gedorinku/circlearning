@@ -87,15 +87,13 @@ class RegistrationViewModel(private val context: Context, private val callback: 
         } else if (!userNameRegister.matches("^[a-zA-Z0-9_]{2,20}".toRegex())) {
             Toast.makeText(context, "ユーザー名に不適切な文字が含まれています。", Toast.LENGTH_LONG).show()
             userNameRegister = ""
-        } /*else if (imageUri == null) {
-            Toast.makeText(context, "iconを設定してください", Toast.LENGTH_SHORT).show()
-        } */else {
+        } else {
             callback.stopButton(true)
             //sever処理
             Log.d("開始", "Register")
             val client = ServerClient()
             client
-                    .uploadImage(imageUri!!, context)
+                    .uploadImage(imageUri, context)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
@@ -109,12 +107,10 @@ class RegistrationViewModel(private val context: Context, private val callback: 
                                     callback.onLogin()
                                     callback.enableButton(true)
                                 }, {
-                                    it.printStackTrace()
                                     Toast.makeText(context, context.getString(R.string.usedUserNameAlart), Toast.LENGTH_LONG).show()
                                     callback.enableButton(true)
                                 })
                     }, {
-                        it.printStackTrace()
                         Toast.makeText(context, "もう一度やり直してください", Toast.LENGTH_LONG).show()
                         callback.enableButton(true)
                     })

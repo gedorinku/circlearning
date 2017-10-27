@@ -30,10 +30,7 @@ import android.widget.*
 import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.*
-import com.kurume_nct.studybattle.model.Air
-import com.kurume_nct.studybattle.model.Bomb
-import com.kurume_nct.studybattle.model.ProblemOpenAction
-import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.model.*
 import com.kurume_nct.studybattle.tools.ImageViewActivity
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
 import com.kurume_nct.studybattle.tools.ToolClass
@@ -221,6 +218,7 @@ class CameraModeActivity : Activity() {
     private fun sendProblemServer() {
         val client = ServerClient(unitPer.authenticationKey)
         val uri: Uri = answerUri!!
+        var randomItem = 0
 
         progress.show()
         client
@@ -231,7 +229,7 @@ class CameraModeActivity : Activity() {
                     val imageId = it.id
                     client
                             .createSolution(
-                                    text = "事前提出むり。みんな鬱になっちゃう。",
+                                    text = "解答提出",
                                     problemId = problemId,
                                     imageIds = listOf(imageId),
                                     item =
@@ -240,10 +238,10 @@ class CameraModeActivity : Activity() {
                                             Bomb
                                         }
                                         1 -> {
-                                            Bomb/*Card*/
+                                            DoubleScoreCard
                                         }
                                         2 -> {
-                                            Air/*Magic*/
+                                            MagicHand
                                         }
                                         else -> {
                                             Air
@@ -253,8 +251,11 @@ class CameraModeActivity : Activity() {
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                 }.subscribe({
+            randomItem = it.itemId
             progress.dismiss()
-            startActivity(Intent(this, LotteryActivity::class.java))
+            val intent = Intent(this, LotteryActivity::class.java)
+            intent.putExtra("item",randomItem)
+            startActivity(intent)
             finish()
         }, {
             progress.dismiss()

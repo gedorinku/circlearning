@@ -183,16 +183,11 @@ class ServerClient(authenticationKey: String = "") {
 
     fun createSolution(
             text: String, problem: Problem, imageIds: List<Int>, item: Item
-    ): Observable<Solution> = createSolution(text, problem.id, imageIds, item)
+    ): Observable<IDResponse> = createSolution(text, problem.id, imageIds, item)
 
     fun createSolution(
             text: String, problemId: Int, imageIds: List<Int>, item: Item
-    ): Observable<Solution> =
-            server
-                    .createSolution(authenticationKey, text, problemId, imageIds.toIntArray(), item.id)
-                    .flatMap {
-                        server.getSolution(authenticationKey, it.id)
-                    }
+    ): Observable<IDResponse> = server.createSolution(authenticationKey, text, problemId, imageIds.toIntArray(), item.id)
 
     fun getSolution(solution: Solution) = getSolution(solution.id)
 
