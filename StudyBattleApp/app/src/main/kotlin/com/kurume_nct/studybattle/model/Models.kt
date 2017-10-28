@@ -73,7 +73,8 @@ data class Solution(
         val problemId: Int = 0,
         val imageCount: Int = 0,
         val imageIds: List<Int> = emptyList(),
-        @SerializedName("judgingState") val rawJudgingState: String = ""
+        @SerializedName("judgingState") val rawJudgingState: String = "",
+        val comments: List<Comment> = emptyList()
 ) {
 
     val judgingState by lazy { JudgingState.valueOf(rawJudgingState) }
@@ -83,6 +84,18 @@ data class Solution(
     val accepted by lazy {
         judgingState == JudgingState.Accepted
     }
+}
+
+data class Comment(
+        val id: Int = 0,
+        val text: String = "hoge",
+        val authorId: Int = 0,
+        val replyTo: Int = 0,
+        val imageIds: List<Int> = emptyList(),
+        @SerializedName("createdAt") val rawCreatedAt: String = ""
+) {
+
+    val createdAtTime: DateTime by lazy { DateTime.parse(rawCreatedAt) }
 }
 
 data class ProblemOpenResponse(

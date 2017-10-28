@@ -207,4 +207,12 @@ interface Server {
             @Query("groupId") groupId: Int
     ): Observable<Ranking>
 
+    @POST("/comment/create")
+    fun createComment(
+            @Field("authenticationKey") authenticationKey: String,
+            @Field("solutionId") solutionId: Int,
+            @Field("text") text: String,
+            @Field("imageIds[]") imageIds: IntArray,
+            @Field("replyTo") replyTo: Int
+    )
 }
