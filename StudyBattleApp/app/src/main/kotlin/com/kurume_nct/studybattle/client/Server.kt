@@ -214,5 +214,5 @@ interface Server {
             @Field("text") text: String,
             @Field("imageIds[]") imageIds: IntArray,
             @Field("replyTo") replyTo: Int
-    )
+    ): Observable<IDResponse>
 }
