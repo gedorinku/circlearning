@@ -61,7 +61,7 @@ class MadeCollectYetActivity : AppCompatActivity() {
                     binding.run {
                         problemNameText.text = it.title
                         problemNowSituationText.text = stateString(it.rawState)
-                        problemCollectedDateText.text = dateConverter(it.createdAt, 0) + calculatePerOneHour(it.durationMillis)
+                        problemCollectedDateText.text = dateConverter(it.createdAt, 0) + calculateHour(it.durationMillis)
                         problemMadeDateText.text = dateConverter(it.createdAt, 0)
                         durationPerOneText.text = calculatePerOneHour(it.durationPerUserMillis)
                         problemSubmittedPeopleText.text = it.solutions.size.toString() + "人が提出済み"
@@ -87,13 +87,6 @@ class MadeCollectYetActivity : AppCompatActivity() {
                     "謎"
                 }
             }
-
-    private fun calculateDate(millis: Long): String {
-        var dateStr = "~"
-        dateStr += "月"
-        dateStr += "日"
-        return dateStr
-    }
 
     private fun dateConverter(base: String, millis: Long): String {
         val hours = millis / (60 * 1000 * 60)
@@ -129,7 +122,12 @@ class MadeCollectYetActivity : AppCompatActivity() {
     private fun calculatePerOneHour(millis: Long): String {
         val hour = (millis / (60 * 60 * 1000))
         val min = ((millis - hour * 60 * 60 * 1000) / (60 * 1000))
-        return hour.toString() + "時" + min.toString() + "分"
+        return hour.toString() + "時"// + min.toString() + "分"
+    }
+
+    private fun calculateHour(millis: Long): String {
+        val hour = (millis / (60 * 60 * 1000)) % 24
+        return hour.toString() + "時"
     }
 
     private fun setUpPicture(uri: Uri) {
