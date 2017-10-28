@@ -54,7 +54,7 @@
                     android:layout_marginRight="8dp"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="グループ名を入力してください"
+                    android:hint="グループ名（2~20文字）"
                     android:inputType="textPersonName"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
