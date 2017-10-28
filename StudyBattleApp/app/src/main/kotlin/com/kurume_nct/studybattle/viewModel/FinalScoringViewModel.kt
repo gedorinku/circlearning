@@ -76,26 +76,6 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
         notifyPropertyChanged(BR.correctPersonal)
     }
 
-
-    @Bindable
-    var scoreComment = ""
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.scoreComment)
-        }
-
-    @Bindable
-    var yourScoreCmment = ""
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.yourScoreCmment)
-        }
-
-
-    fun onClickScoreComment(view: View) {
-        onWriteScores()
-    }
-
     @Bindable
     var imageClickAble = false
         set(value) {
@@ -233,26 +213,6 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
                 })
     }
 
-
-    private fun onWriteScores() {
-        writeScoreNow = if (writeScoreNow && yourScoreCmment.isNotBlank()) {
-            scoreCommentEditText.let {
-                if (it == View.GONE) View.VISIBLE
-            }
-            addScoreComment(yourScoreCmment)
-            scoreCommentEditText = View.GONE
-            //TODO sent
-            yourScoreCmment = ""
-            scoreCommentButtonText = addText
-            false
-        } else {
-            scoreCommentEditText = View.VISIBLE
-            scoreCommentButtonText = comfilmText
-            true
-        }
-    }
-
-
     private fun onWriteComment() {
         writeNow = if (writeNow && yourComment.isNotBlank()) {
             commentEditText.let {
@@ -276,13 +236,6 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
         everyoneComment += ("\n" + text + "\n\t by " +
                 unitPer.myInfomation.displayName + "(" + unitPer.myInfomation.userName + ")" + "\n")
     }
-
-    private fun addScoreComment(text: String) {
-        val unitPer = context.applicationContext as UnitPersonal
-        scoreComment += ("\n" + text + "\n\t by " +
-                unitPer.myInfomation.displayName + "(" + unitPer.myInfomation.userName + ")" + "\n")
-    }
-
 
     private fun failAction() {
         Toast.makeText(context, "解答の取得に失敗しました。", Toast.LENGTH_SHORT).show()

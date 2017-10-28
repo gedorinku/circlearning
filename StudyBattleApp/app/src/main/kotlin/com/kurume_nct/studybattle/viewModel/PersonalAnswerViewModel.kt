@@ -65,20 +65,6 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
     }
 
     @Bindable
-    var scoreComment = ""
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.scoreComment)
-        }
-
-    @Bindable
-    var yourScoreCmment = ""
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.yourScoreCmment)
-        }
-
-    @Bindable
     var ansCreatorName = ""
         set(value) {
             field = value
@@ -132,10 +118,6 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
             notifyPropertyChanged(BR.yourComment)
         }
 
-    var commentEditText: Boolean = false
-
-    var scoreCommentEditText: Boolean = false
-
     @Bindable
     var commentButtonText = addText
         set(value) {
@@ -143,18 +125,7 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
             notifyPropertyChanged(BR.commentButtonText)
         }
 
-    @Bindable
-    var scoreCommentButtonText = comfierText
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.scoreCommentButtonText)
-        }
-
     fun onClickComment(view: View) {
-        onWriteComment()
-    }
-
-    fun onClickScoreComment(view: View) {
         onWriteComment()
     }
 
@@ -205,33 +176,18 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
     }
 
 
-    private fun onWriteScores() {
-        writeScoreNow = if (writeScoreNow && yourScoreCmment.isNotBlank()) {
-            callback.visibilityEditText(true, false)
-            addScoreComment(yourScoreCmment)
-            //TODO sent
-            yourScoreCmment = ""
-            scoreCommentButtonText = addText
-            false
-        } else {
-            callback.visibilityEditText(true, true)
-            scoreCommentButtonText = comfierText
-            true
-        }
-    }
-
-
     private fun onWriteComment() {
         writeNow = if (writeNow && yourComment.isNotBlank()) {
             addComment(yourComment)
-            callback.visibilityEditText(false, false)
+            callback.visibilityEditText(false)
             //TODO sent
             yourComment = ""
             commentButtonText = comfierText
             false
         } else {
-            callback.visibilityEditText(false, true)
+            callback.visibilityEditText(true)
             commentButtonText = addText
+            writeNow = true
             true
         }
     }
@@ -242,15 +198,9 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                 unitPer.myInfomation.displayName + "(" + unitPer.myInfomation.userName + ")" + "\n")
     }
 
-    private fun addScoreComment(text: String) {
-        val unitPer = context.applicationContext as UnitPersonal
-        scoreComment += ("\n" + text + "\n\t by " +
-                unitPer.myInfomation.displayName + "(" + unitPer.myInfomation.userName + ")" + "\n")
-    }
-
     interface Callback {
 
-        fun visibilityEditText(score: Boolean, boolean: Boolean)
+        fun visibilityEditText(boolean: Boolean)
 
         fun getProblemId(): Int
 

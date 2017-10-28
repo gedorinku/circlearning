@@ -5,7 +5,7 @@
     <data>
 
         <variable
-            name="AnswerAct"
+            name="viewModel"
             type="com.kurume_nct.studybattle.viewModel.AnswerViewModel" />
     </data>
 
@@ -44,7 +44,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@{AnswerAct.problemName}"
+                        android:text="@{viewModel.problemName}"
                         android:textColor="@color/material_drawer_dark_selected"
                         android:textSize="18sp" />
 
@@ -53,8 +53,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@{AnswerAct.masterName}"
-                        android:textColor="?android:attr/textColorHintInverse"
+                        android:text="@{viewModel.masterName}"
+                        android:textColor="?android:attr/textColorHint"
                         android:textSize="18sp" />
 
                     <TextView
@@ -62,7 +62,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@{AnswerAct.problemScore}"
+                        android:text="@{viewModel.problemScore}"
                         android:textColor="@color/material_drawer_dark_selected"
                         android:textSize="18sp" />
                 </LinearLayout>
@@ -75,8 +75,8 @@
                     android:layout_marginTop="5dp"
                     android:background="@color/md_blue_grey_200"
                     android:scaleType="centerCrop"
-                    android:onClick="@{AnswerAct.onClickProblemImage}"
-                    app:AnswerImageLoad="@{AnswerAct.problemUri}" />
+                    android:onClick="@{viewModel.onClickProblemImage}"
+                    app:AnswerImageLoad="@{viewModel.problemUri}" />
 
                 <TextView
                     android:id="@+id/textView28"
@@ -95,9 +95,66 @@
                     android:layout_marginBottom="32dp"
                     android:background="@color/md_blue_grey_200"
                     android:scaleType="centerCrop"
-                    android:onClick="@{AnswerAct.onClickAnswerImage}"
-                    app:AnswerImageLoad="@{AnswerAct.answerUri}" />
+                    android:onClick="@{viewModel.onClickAnswerImage}"
+                    app:AnswerImageLoad="@{viewModel.answerUri}" />
 
+
+
+
+                <LinearLayout
+                    android:id="@+id/comment_layout_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView38"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_weight="1"
+                        android:text="作問者に対するコメント"
+                        android:textColor="?android:attr/textColorLink"
+                        android:textSize="21sp" />
+
+                    <TextView
+                        android:id="@+id/comment_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_weight="1"
+                        android:text="@{viewModel.comment}"
+                        android:textColor="@color/material_drawer_dark_selected" />
+
+                    <EditText
+                        android:id="@+id/your_comment_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:text="@={viewModel.yourComment}" />
+
+                    <Button
+                        android:id="@+id/add_score_comment_button"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="32dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/green_button"
+                        android:onClick="@{viewModel.onClickCommentButton}"
+                        android:text="@{viewModel.scoreCommentButtonText}"
+                        android:textColor="@color/material_drawer_dark_primary_text"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/textView29"

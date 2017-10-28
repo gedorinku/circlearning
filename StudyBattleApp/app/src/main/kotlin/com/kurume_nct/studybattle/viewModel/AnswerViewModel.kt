@@ -6,12 +6,18 @@ import android.databinding.BaseObservable
 import android.databinding.Bindable
 import android.databinding.BindingAdapter
 import android.net.Uri
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
+import com.kurume_nct.studybattle.client.ServerClient
+import com.kurume_nct.studybattle.model.Problem
+import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.tools.ImageViewActivity
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by hanah on 9/28/2017.
@@ -22,6 +28,10 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
 
     var pUri: String = ""
     var aUri: String = ""
+    private var writeScoreNow = false
+    private val addText = "+コメントを追加"
+    private val comfierText = "+コメントを送信"
+    private lateinit var problem: Problem
 
 
     companion object {
@@ -44,7 +54,7 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
         }
 
     @Bindable
-    var masterName = "(made by Nana)"
+    var masterName = ""
         set(value) {
             field = value
             notifyPropertyChanged(BR.masterName)
@@ -74,17 +84,141 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
     fun onClickProblemImage(view: View) {
         val intent = Intent(context, ImageViewActivity::class.java)
         intent.putExtra("url", pUri)
-        context.startActivity(intent)
+        if(masterName.isNotBlank())context.startActivity(intent)
     }
 
     fun onClickAnswerImage(view: View) {
         val intent = Intent(context, ImageViewActivity::class.java)
         intent.putExtra("url", aUri)
-        context.startActivity(intent)
+        if(masterName.isNotBlank())context.startActivity(intent)
     }
 
+    @Bindable
+    var comment = ""
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.comment)
+        }
+
+    @Bindable
+    var yourComment = ""
+        get
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.yourComment)
+        }
+
+    @Bindable
+    var scoreCommentButtonText = addText
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.scoreCommentButtonText)
+        }
+
+    fun onClickCommentButton(view: View) {
+        onWriteComment()
+    }
+
+    private fun onWriteComment() {
+        Log.d(writeScoreNow.toString() + " ", yourComment)
+        writeScoreNow = if (writeScoreNow && yourComment.isNotBlank()) {
+            callback.visibilityEditText(false)
+            addScoreComment(yourComment)
+            //TODO sent
+            yourComment = ""
+            scoreCommentButtonText = addText
+            false
+        } else {
+            callback.visibilityEditText(true)
+            scoreCommentButtonText = comfierText
+            writeScoreNow = true
+            true
+        }
+    }
+
+    private fun sendComment() {
+        val unitPer = context.applicationContext as UnitPersonal
+        val client = ServerClient(unitPer.authenticationKey)
+        client
+                .createComment(
+                        solutionId = 0,
+                        text = yourComment,
+                        imageIds = listOf(),
+                        replyTo = 0
+                )
+        problem.assumedSolution.comments.forEach { it ->
+            client
+                    .getUser(it.authorId)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        comment += (it.displayName + "(" + it.userName + ")" + "\n")
+                    }
+            comment += (it.text + "\n")
+        }
+    }
+
+    private fun addScoreComment(text: String) {
+        val unitPer = context.applicationContext as UnitPersonal
+        comment += ("\n" + text + "\n\t by " +
+                unitPer.myInfomation.displayName + "(" + unitPer.myInfomation.userName + ")" + "\n")
+    }
+
+    fun onInitDataSet() {
+        val unitPer = context.applicationContext as UnitPersonal
+        val client = ServerClient(unitPer.authenticationKey)
+        client
+                .getProblem(callback.getProblemId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    problem = it
+                    problemName = problem.title
+                    problemScore = " " + problem.point.toString() + "点"
+                    it.assumedSolution.comments.forEach { it ->
+                        client
+                                .getUser(it.authorId)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe {
+                                    comment += (it.displayName + "(" + it.userName + ")" + "\n")
+                                }
+                        comment += (it.text + "\n")
+                    }
+                    client
+                            .getUser(it.ownerId)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe {
+                                masterName = " 作成者:" + it.displayName
+                            }
+                    client
+                            .getImageById(it.imageIds[0])
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe {
+                                pUri = it.url
+                                problemUri = Uri.parse(it.url)
+                            }
+                    client
+                            .getImageById(it.assumedSolution.imageIds[0])
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                aUri = it.url
+                                answerUri = Uri.parse(it.url)
+                            })
+                }, {
+                    Log.d("Rxbug", "ばぐ")
+                    it.printStackTrace()
+                    callback.onError()
+                })
+    }
 
     interface Callback {
-
+        fun visibilityEditText(boolean: Boolean)
+        fun onError()
+        fun getFin(): Int
+        fun getProblemId(): Int
     }
 }
