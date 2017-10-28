@@ -123,8 +123,8 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
 
     private fun onWriteComment() {
         Log.d(writeScoreNow.toString() + " ", yourComment)
-        writeScoreNow = if (writeScoreNow && yourComment.isNotBlank()) {
-            sendComment()
+        writeScoreNow = if (writeScoreNow) {
+            if (yourComment.isNotBlank()) sendComment()
             false
         } else {
             callback.visibilityEditText(true)

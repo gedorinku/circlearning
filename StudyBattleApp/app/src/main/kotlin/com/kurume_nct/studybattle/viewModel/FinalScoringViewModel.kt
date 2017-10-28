@@ -204,9 +204,8 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
     }
 
     private fun onWriteComment() {
-        writeNow = if (writeNow && yourComment.isNotBlank()) {
-            sendComment()
-            commentButtonText = addText
+        writeNow = if (writeNow) {
+            if (yourComment.isNotBlank()) sendComment()
             false
         } else {
             callback.enableEditText(true)
@@ -233,6 +232,7 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
                     everyoneComment = ""
                     callback.enableEditText(false)
                     yourComment = ""
+                    commentButtonText = addText
                     solution.comments.forEach { it ->
                         client
                                 .getUser(it.authorId)

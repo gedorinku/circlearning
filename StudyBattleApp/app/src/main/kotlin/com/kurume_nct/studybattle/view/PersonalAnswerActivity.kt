@@ -39,7 +39,7 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
         }
     }
 
-    override fun visibilityEditText(boolean: Boolean) {
+    override fun enableEditText(boolean: Boolean) {
         binding.commentEdit.visibility.let {
             if (boolean) {
                 View.VISIBLE
@@ -49,9 +49,7 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
         }
     }
 
-
     override fun getProblemId() = problemId
-
 
     override fun onFinish() {
         finish()
