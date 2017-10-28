@@ -59,11 +59,12 @@ class AnswerFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         Log.d("i'm ", javaClass.name)
 
+        unitPer = context.applicationContext as UnitPersonal
         client = ServerClient(unitPer.authenticationKey)
         unitPer = activity.application as UnitPersonal
         problemId = arguments.getInt("problemId")
-        var title: String = ""
-        var url: String = ""
+        var title = ""
+        var url = ""
         arguments.apply {
             fin = getInt("fin")
             title = getString("title")

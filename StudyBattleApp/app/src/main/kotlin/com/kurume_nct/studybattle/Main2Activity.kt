@@ -61,16 +61,17 @@ class Main2Activity : AppCompatActivity() {
         tabLayout = findViewById(R.id.tabs) as TabLayout
 
         unitPer = application as UnitPersonal
-        progressDialog = ProgressDialogTool(this).makeDialog()
-
-
         toolbar.inflateMenu(R.menu.toolbar_menu)
-
-        listenPermission()
-        getUserInformation()
 
         Log.d(unitPer.nowGroup.name, unitPer.myInfomation.userName)
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        progressDialog = ProgressDialogTool(this).makeDialog()
+        listenPermission()
+        getUserInformation()
     }
 
     private fun getUserInformation() {

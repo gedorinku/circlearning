@@ -35,7 +35,10 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
         fin = intent.getIntExtra("fin", 0)
         problemId = intent.getIntExtra("problemId", -1)
 
-        if (problemId == -1) failAction()
+        if (problemId == -1) {
+            Log.d("ProblemId", "ばぐ")
+            failAction()
+        }
 
         supportFragmentManager.beginTransaction()
                 .replace(R.id.answers_fragment,
@@ -54,7 +57,7 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
                 .getProblem(problemId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .flatMap {
+                .subscribe({
                     problemTitle = it.title
                     binding.answerAct.problemName = problemTitle
                     client
@@ -62,7 +65,7 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe {
-                                binding.answerAct.problemName = it.displayName + "(" + it.userName + ")"
+                                binding.answerAct.masterName = it.displayName + "(" + it.userName + ")"
                             }
                     if (fin == 3) {
                         //score
@@ -75,19 +78,22 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
                                 problemUrl = it.url
                                 binding.answerAct.problemUri = Uri.parse(problemUrl)
                             }
-                    client
-                            .getImageById(it.solutions[0].imageIds[0])
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                }
-                .subscribe({
-                    binding.answerAct.answerUri = Uri.parse(it.url)
+                    if (it.solutions.isNotEmpty())
+                        client
+                                .getImageById(it.solutions[0].imageIds[0])
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe({
+                                    binding.answerAct.answerUri = Uri.parse(it.url)
+                                })
                 }, {
-                    failAction()
+                    Log.d("Rxbug", "ばぐ")
+                    it.printStackTrace()
+                    //failAction()
                 })
     }
 
-    private fun failAction(){
+    private fun failAction() {
         Toast.makeText(this, "問題の取得に失敗しました", Toast.LENGTH_SHORT).show()
         finish()
     }

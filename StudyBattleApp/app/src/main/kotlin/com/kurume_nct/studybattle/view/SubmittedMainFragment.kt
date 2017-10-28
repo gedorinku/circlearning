@@ -27,8 +27,6 @@ class SubmittedMainFragment : Fragment(), MainListFragment.Callback {
                               savedInstanceState: Bundle?): View? {
         Log.d("i'm ", javaClass.name)
 
-        Log.d("ほげえええ", "ほげえええ")
-
         fragmentFin = MainListFragment
                 .newInstance(resources.getInteger(R.integer.SUBMIT_FIN), this)
 
