@@ -32,6 +32,8 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
     private val addText = "+コメントを追加"
     private val comfierText = "+コメントを送信"
     private lateinit var problem: Problem
+    private var solutionId = 0
+    private var replyTo = 0
 
 
     companion object {
@@ -123,7 +125,6 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
         Log.d(writeScoreNow.toString() + " ", yourComment)
         writeScoreNow = if (writeScoreNow && yourComment.isNotBlank()) {
             callback.visibilityEditText(false)
-            addScoreComment(yourComment)
             sendComment()
             yourComment = ""
             scoreCommentButtonText = addText
@@ -141,10 +142,10 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
         val client = ServerClient(unitPer.authenticationKey)
         client
                 .createComment(
-                        solutionId = 0,
+                        solutionId = solutionId,
                         text = yourComment,
                         imageIds = listOf(),
-                        replyTo = 0
+                        replyTo = replyTo
                 ).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
@@ -161,12 +162,6 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
                 }
     }
 
-    private fun addScoreComment(text: String) {
-        val unitPer = context.applicationContext as UnitPersonal
-        comment += ("\n" + text + "\n\t by " +
-                unitPer.myInfomation.displayName + "(" + unitPer.myInfomation.userName + ")" + "\n")
-    }
-
     fun onInitDataSet() {
         val unitPer = context.applicationContext as UnitPersonal
         val client = ServerClient(unitPer.authenticationKey)
@@ -175,6 +170,8 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
+                    replyTo = it.ownerId
+                    solutionId = it.assumedSolution.id
                     problem = it
                     problemName = problem.title
                     problemScore = " " + problem.point.toString() + "点"
