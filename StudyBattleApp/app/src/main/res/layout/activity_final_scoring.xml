@@ -113,7 +113,6 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:visibility="@{FinalScoring.commentEditText}"
                     android:text="@={FinalScoring.yourComment}" />
 
                 <Button
