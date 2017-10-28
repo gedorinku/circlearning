@@ -122,7 +122,7 @@ class MadeCollectYetActivity : AppCompatActivity() {
     private fun calculatePerOneHour(millis: Long): String {
         val hour = (millis / (60 * 60 * 1000))
         val min = ((millis - hour * 60 * 60 * 1000) / (60 * 1000))
-        return hour.toString() + "時"// + min.toString() + "分"
+        return hour.toString() + "時間"// + min.toString() + "分"
     }
 
     private fun calculateHour(millis: Long): String {
