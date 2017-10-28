@@ -207,6 +207,9 @@ class ServerClient(authenticationKey: String = "") {
     fun getMyItems(groupId: Int) = server.getMyItems(authenticationKey, groupId)
 
     fun getRanking(groupId: Int) = server.getRanking(authenticationKey, groupId)
+
+    fun createComment(solutionId: Int, text: String, imageIds: List<Int>, replyTo: Int = 0)
+            = server.createComment(authenticationKey, solutionId, text, imageIds.toIntArray(), replyTo)
 }
 
 private class StringConverterFactory : Converter.Factory() {
