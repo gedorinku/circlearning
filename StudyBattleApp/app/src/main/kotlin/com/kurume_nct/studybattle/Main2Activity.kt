@@ -44,10 +44,10 @@ class Main2Activity : AppCompatActivity() {
     private val REQUEST_CREATE_GROUP = 9
     private val REQUEST_PERMISSION_STRAGE = 1
     private lateinit var progressDialog: ProgressDialog
-    private lateinit var toolbar: Toolbar
+    private var toolbar: Toolbar? = null
     private lateinit var fab: View
-    private lateinit var viewPaper: ViewPager
-    private lateinit var tabLayout: TabLayout
+    private var viewPaper: ViewPager? = null
+    private var tabLayout: TabLayout? = null
     private lateinit var mainPagerAdapter: MainPagerAdapter
     private lateinit var userIcon: Uri
 
@@ -63,7 +63,7 @@ class Main2Activity : AppCompatActivity() {
         unitPer = application as UnitPersonal
 
 
-        toolbar.inflateMenu(R.menu.toolbar_menu)
+        toolbar?.inflateMenu(R.menu.toolbar_menu)
 
         //progressDialog = ProgressDialogTool(this).makeDialog()
         listenPermission()
@@ -183,9 +183,11 @@ class Main2Activity : AppCompatActivity() {
             startActivity(Intent(this, CreateProblemActivity::class.java))
         }
 
-        toolbar.title = unitPer.nowGroup.name
+        if(toolbar == null)toolbar = findViewById(R.id.toolbar) as Toolbar
 
-        toolbar.setOnMenuItemClickListener { item ->
+        toolbar?.title = unitPer.nowGroup.name
+
+        toolbar?.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.to_item -> {
                     startActivity(Intent(this, ItemInfoActivity::class.java))
@@ -211,20 +213,22 @@ class Main2Activity : AppCompatActivity() {
     }
 
     private fun initOnTabLayout() {
-        (0 until tabLayout.tabCount).forEach {
-            tabLayout.addTab(tabLayout.newTab())
+        if(viewPaper == null)viewPaper = findViewById(R.id.pager) as ViewPager
+        if(tabLayout == null)tabLayout = findViewById(R.id.tabs) as TabLayout
+        (0 until tabLayout?.tabCount!!).forEach {
+            tabLayout?.addTab(tabLayout?.newTab()!!)
         }
         mainPagerAdapter = MainPagerAdapter(supportFragmentManager)
 
         val pagerAdapter = mainPagerAdapter
-        viewPaper.adapter = pagerAdapter
-        viewPaper.offscreenPageLimit = pagerAdapter.count
-        tabLayout.setupWithViewPager(viewPaper)
-        Log.d(tabLayout.clipChildren.toString(), "")
+        viewPaper?.adapter = pagerAdapter
+        viewPaper?.offscreenPageLimit = pagerAdapter.count
+        tabLayout?.setupWithViewPager(viewPaper)
+        Log.d(tabLayout?.clipChildren.toString(), "")
 
         //Create the Tabs
-        (0 until tabLayout.tabCount).forEach {
-            val tab = tabLayout.getTabAt(it)
+        (0 until tabLayout?.tabCount!!).forEach {
+            val tab = tabLayout?.getTabAt(it)
             when (it) {
                 0 -> tab?.customView =
                         LayoutInflater.from(this).inflate(R.layout.tab_custom_0, null)
