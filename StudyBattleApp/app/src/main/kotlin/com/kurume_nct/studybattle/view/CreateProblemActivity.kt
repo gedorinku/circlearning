@@ -22,17 +22,18 @@ import com.kurume_nct.studybattle.listFragment.DurationFragment
 import com.kurume_nct.studybattle.viewModel.CreateProblemViewModel
 import org.joda.time.Duration
 import android.support.v4.app.ActivityCompat
+import org.joda.time.DateTime
 
 
 class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callback, DatePickerDialog.OnDateSetListener {
 
     private lateinit var binding: ActivityCreateProblemBinding
     private lateinit var unitPer: UnitPersonal
-    private var nameEnable: Boolean = false
     private var prob: Int
     private lateinit var decideDate: MutableList<Int>
     private lateinit var dialog: AlertDialog
     private val PERMISSION_CAMERA_CODE = 1
+    private lateinit var duration: Duration
 
     init {
         prob = -1
@@ -57,10 +58,8 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
     }
 
     private fun DataSetting() {
-        val date = DurationFragment().onGetInitDate()
-        decideDate = date
         binding.createView.let {
-            it.day = date[0].toString() + "年" + date[1].toString() + "月" + date[2].toString() + "日"
+            it.day = "回収日が設定されていません"
         }
     }
 
@@ -96,10 +95,16 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         decideDate = mutableListOf(year, month, dayOfMonth)
+        val settingdDate = DateTime(year, month+1, dayOfMonth,0,0,0)
+        val today = DateTime.now()
+        duration = Duration(today, settingdDate)
+        val gup = duration.standardHours
         binding.termHourForOne.isEnabled = true
         binding.createView.let {
-            it.day = year.toString() + "年" + (month + 1).toString() + "月" + dayOfMonth.toString() + "日"
-            it.termForOne = getDuration().standardHours.toString() + it.termExtra
+            it.day =
+                    year.toString() + "年" + (month + 1).toString() + "月" + dayOfMonth.toString() + "日"
+            it.termForOne =
+                    (gup / unitPer.nowGroup.members.size).toString() + it.termExtra
         }
         Log.d(binding.createView.day, "change")
     }
@@ -184,18 +189,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         }
     }
 
-    override fun getDuration(): Duration {
-        val date = DurationFragment().onGetToday()
-        var dayCount = 0
-        if (date[0] < decideDate[0]) {
-            dayCount = 30 * (date[1] - decideDate[1] + 12) - date[2] + decideDate[2]
-        } else if (date[1] < decideDate[1]) {
-            dayCount = 30 * (decideDate[1] - date[1]) - date[2] + decideDate[2]
-        } else {
-            dayCount = decideDate[2] - date[2]
-        }
-        return Duration.standardDays(dayCount.toLong())
-    }
+    override fun getDuration() = duration
 
     override fun getGroupId() = unitPer.nowGroup.id
 

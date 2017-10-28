@@ -28,7 +28,6 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
 
     lateinit var binding: ActivityRegistrationBinding
     lateinit var unitPer: UnitPersonal
-    lateinit var progress: ProgressDialog
     lateinit var dialog: AlertDialog
     private val STORAGE_CODE = 1
     private val CAMERA_STORAGE_CODE = 2
@@ -41,7 +40,6 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
         binding = DataBindingUtil.setContentView(this, R.layout.activity_registration)
         binding.userEntity = RegistrationViewModel(this, this)
         unitPer = application as UnitPersonal
-        progress = ProgressDialogTool(this).makeDialog()
 
         dialogSetting()
 
@@ -66,27 +64,25 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
         super.onActivityResult(requestCode, resultCode, data)
         Log.d("ほげほげ", resultCode.toString()+ " " + requestCode.toString())
         if(data == null){
-            enableButton(false)
+            enableButton()
             Log.d("ほげほげ", resultCode.toString() )
             return
         }
         binding.userEntity.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun stopButton(enable: Boolean) {
-        if (enable) progress.show()
+    override fun stopButton() {
         binding.button3.isClickable = false
         binding.button4.isClickable = false
     }
 
-    override fun enableButton(enable: Boolean) {
-        if (enable) progress.dismiss()
+    override fun enableButton() {
         binding.button3.isClickable = true
         binding.button4.isClickable = true
     }
 
     override fun alertDialog() {
-        stopButton(false)
+        stopButton()
         dialog.show()
     }
 
@@ -177,7 +173,7 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
                     cameraStart()
                 } else {
                     //back to deselect
-                    enableButton(false)
+                    enableButton()
                     Toast.makeText(this, "カメラを起動するためには許可が必要です", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -186,7 +182,7 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
                     storageStart()
                 } else {
                     //back to deselect
-                    enableButton(false)
+                    enableButton()
                     Toast.makeText(this, "写真を参照するには許可が必要です", Toast.LENGTH_SHORT).show()
                 }
             }

@@ -15,8 +15,8 @@ class DurationFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         Log.d("i'm ", javaClass.name)
-        val personal = UnitPersonal()
-        val peopleCount = personal.myGroupCount
+        val unitPer = context.applicationContext as UnitPersonal
+        val peopleCount = unitPer.nowGroup.members.size
         val c = Calendar.getInstance()
         val cYear = c[Calendar.YEAR]
         val cMonth = c[Calendar.MONTH]
@@ -28,10 +28,10 @@ class DurationFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
                 , cMonth
                 , cDay
         )
-        c.add(Calendar.DAY_OF_MONTH, 6)
+        c.add(Calendar.DAY_OF_MONTH, 1)
         val geoF = GregorianCalendar()
         geoF.set(c[Calendar.YEAR], c[Calendar.MONTH], c[Calendar.DAY_OF_MONTH])
-        c.add(Calendar.DAY_OF_MONTH, peopleCount * 6)
+        c.add(Calendar.DAY_OF_MONTH, peopleCount * 2)
         val geoE = GregorianCalendar()
         geoE.set(c[Calendar.YEAR], c[Calendar.MONTH], c[Calendar.DAY_OF_MONTH])
         val datePicker = datePickerDialog.datePicker
@@ -40,7 +40,7 @@ class DurationFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
         return datePickerDialog
     }
 
-    fun onGetInitDate(): MutableList<Int> {
+    /*fun onGetInitDate(): MutableList<Int> {
         val c = Calendar.getInstance()
         c.add(Calendar.DAY_OF_MONTH, 6)
         return mutableListOf(c[Calendar.YEAR], c[Calendar.MONTH] + 1, c[Calendar.DAY_OF_MONTH])
@@ -49,7 +49,7 @@ class DurationFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
     fun onGetToday(): MutableList<Int> {
         val c = Calendar.getInstance()
         return mutableListOf(c[Calendar.YEAR], c[Calendar.MONTH] + 1, c[Calendar.DAY_OF_MONTH])
-    }
+    }*/
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
     }

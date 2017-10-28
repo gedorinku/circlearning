@@ -43,4 +43,12 @@ class FinalScoringActivity : AppCompatActivity(), FinalScoringViewModel.Callback
         setResult(FINAL_SCORING_CODE)
         finish()
     }
+
+    override fun enableEditText(boolean: Boolean) {
+        if(boolean){
+            binding.yourCommentEditText.visibility = View.VISIBLE
+        }else{
+            binding.yourCommentEditText.visibility = View.GONE
+        }
+    }
 }

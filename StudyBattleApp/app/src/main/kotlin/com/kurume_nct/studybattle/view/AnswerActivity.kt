@@ -20,9 +20,9 @@ import io.reactivex.schedulers.Schedulers
 class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
 
     lateinit var binding: ActivityAnswerBinding
-    private var fin: Int = 0
+    private var mFin: Int = 0
     lateinit var unit: UnitPersonal
-    private var problemId = -1
+    private var mProblemId = -1
     private var problemTitle = ""
     private var problemUrl = ""
 
@@ -31,64 +31,43 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
         Log.d("i'm ", javaClass.name)
         unit = application as UnitPersonal
         binding = DataBindingUtil.setContentView(this, R.layout.activity_answer)
-        binding.answerAct = AnswerViewModel(this, this)
-        fin = intent.getIntExtra("fin", 0)
-        problemId = intent.getIntExtra("problemId", -1)
+        binding.viewModel = AnswerViewModel(this, this)
+        mFin = intent.getIntExtra("fin", 0)
+        mProblemId = intent.getIntExtra("problemId", -1)
 
-        if (problemId == -1) failAction()
+        if (mProblemId == -1) {
+            Log.d("ProblemId", "ばぐ")
+            onError()
+        }
 
         supportFragmentManager.beginTransaction()
                 .replace(R.id.answers_fragment,
-                        AnswerFragment().newInstance(fin, problemId, problemTitle, problemUrl))
+                        AnswerFragment().newInstance(mFin, mProblemId, problemTitle, problemUrl))
                 .commit()
-        if (fin != 3) {
+        if (mFin != 3) {
             binding.problemScoreAnsText.visibility = View.GONE
         }
 
-        onInitDataSet()
+        binding.yourCommentEditText.visibility = View.GONE
+
+        binding.viewModel.onInitDataSet()
     }
 
-    private fun onInitDataSet() {
-        val client = ServerClient(unit.authenticationKey)
-        client
-                .getProblem(problemId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .flatMap {
-                    problemTitle = it.title
-                    binding.answerAct.problemName = problemTitle
-                    client
-                            .getUser(it.ownerId)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe {
-                                binding.answerAct.problemName = it.displayName + "(" + it.userName + ")"
-                            }
-                    if (fin == 3) {
-                        //score
-                    }
-                    client
-                            .getImageById(it.imageIds[0])
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe {
-                                problemUrl = it.url
-                                binding.answerAct.problemUri = Uri.parse(problemUrl)
-                            }
-                    client
-                            .getImageById(it.solutions[0].imageIds[0])
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                }
-                .subscribe({
-                    binding.answerAct.answerUri = Uri.parse(it.url)
-                }, {
-                    failAction()
-                })
-    }
+    //ship code
 
-    private fun failAction(){
+    override fun visibilityEditText(boolean: Boolean) =
+            if (boolean)
+                binding.yourCommentEditText.visibility = View.VISIBLE
+            else {
+                binding.yourCommentEditText.visibility = View.GONE
+            }
+
+    override fun onError() {
         Toast.makeText(this, "問題の取得に失敗しました", Toast.LENGTH_SHORT).show()
         finish()
     }
+
+    override fun getFin() = mFin
+
+    override fun getProblemId() = mProblemId
 }

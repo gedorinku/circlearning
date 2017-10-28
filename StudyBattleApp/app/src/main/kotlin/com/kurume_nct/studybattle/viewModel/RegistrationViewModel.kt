@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.client.ServerClient
+import com.kurume_nct.studybattle.tools.ProgressDialogTool
 import com.kurume_nct.studybattle.tools.ToolClass
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -88,7 +89,9 @@ class RegistrationViewModel(private val context: Context, private val callback: 
             Toast.makeText(context, "ユーザー名に不適切な文字が含まれています。", Toast.LENGTH_LONG).show()
             userNameRegister = ""
         } else {
-            callback.stopButton(true)
+            val progress = ProgressDialogTool(context).makeDialog()
+            progress.show()
+            callback.stopButton()
             //sever処理
             Log.d("開始", "Register")
             val client = ServerClient()
@@ -105,14 +108,17 @@ class RegistrationViewModel(private val context: Context, private val callback: 
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe({
                                     callback.onLogin()
-                                    callback.enableButton(true)
+                                    progress.dismiss()
+                                    callback.enableButton()
                                 }, {
                                     Toast.makeText(context, context.getString(R.string.usedUserNameAlart), Toast.LENGTH_LONG).show()
-                                    callback.enableButton(true)
+                                    progress.dismiss()
+                                    callback.enableButton()
                                 })
                     }, {
                         Toast.makeText(context, "もう一度やり直してください", Toast.LENGTH_LONG).show()
-                        callback.enableButton(true)
+                        progress.dismiss()
+                        callback.enableButton()
                     })
         }
     }
@@ -120,7 +126,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         uri = data.data
         imageUri = uri
-        callback.enableButton(false)
+        callback.enableButton()
     }
 
     fun onClickChangeIconImage(view: View) {
@@ -147,9 +153,9 @@ class RegistrationViewModel(private val context: Context, private val callback: 
 
     interface Callback {
 
-        fun enableButton(enable: Boolean)
+        fun enableButton()
 
-        fun stopButton(enable: Boolean)
+        fun stopButton()
 
         fun toLoginActivity()
 

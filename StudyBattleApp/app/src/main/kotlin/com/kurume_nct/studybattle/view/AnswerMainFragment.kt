@@ -48,7 +48,7 @@ class AnswerMainFragment : Fragment(), MainListFragment.Callback {
             onRefresh()
         }
 
-        binding.swipeRefreshFragmentAnswer.setColorSchemeResources(R.color.md_yellow_A700, R.color.md_blue_900)
+        binding.swipeRefreshFragmentAnswer.setColorSchemeResources(R.color.md_blue_800)
 
         return binding.root
     }

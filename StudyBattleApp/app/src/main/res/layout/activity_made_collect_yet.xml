@@ -40,7 +40,7 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_weight="1"
-                    android:text="問題名"
+                    android:text=""
                     android:textColor="@color/material_drawer_primary_text"
                     android:textSize="21sp" />
 
@@ -82,7 +82,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_weight="1"
                         android:paddingLeft="8dp"
-                        android:text="解答を回収中"
+                        android:text=""
                         android:textColor="@color/material_drawer_secondary_text"
                         android:textSize="18sp" />
                 </LinearLayout>
@@ -114,7 +114,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_weight="1"
                         android:paddingLeft="8dp"
-                        android:text="0年0月0日"
+                        android:text=""
                         android:textColor="@color/material_drawer_secondary_text"
                         android:textSize="18sp" />
                 </LinearLayout>
@@ -146,7 +146,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_weight="1"
                         android:paddingLeft="8dp"
-                        android:text="n人"
+                        android:text=""
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -177,7 +177,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_weight="1"
                         android:paddingLeft="8dp"
-                        android:text="24時間"
+                        android:text=""
                         android:textColor="@color/material_drawer_secondary_text"
                         android:textSize="18sp" />
                 </LinearLayout>
@@ -209,7 +209,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_weight="1"
                         android:paddingLeft="8dp"
-                        android:text="0年0月0日"
+                        android:text=""
                         android:textSize="18sp" />
                 </LinearLayout>
 

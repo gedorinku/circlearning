@@ -27,8 +27,6 @@ class SubmittedMainFragment : Fragment(), MainListFragment.Callback {
                               savedInstanceState: Bundle?): View? {
         Log.d("i'm ", javaClass.name)
 
-        Log.d("ほげえええ", "ほげえええ")
-
         fragmentFin = MainListFragment
                 .newInstance(resources.getInteger(R.integer.SUBMIT_FIN), this)
 
@@ -50,7 +48,8 @@ class SubmittedMainFragment : Fragment(), MainListFragment.Callback {
             onRefresh()
         }
 
-        binding.swipeRefreshFragmentSubmit.setColorSchemeResources(R.color.md_red_700, R.color.md_yellow_700)
+        //binding.swipeRefreshFragmentSubmit.setColorSchemeResources(R.color.md_red_700, R.color.md_yellow_700)
+        binding.swipeRefreshFragmentSubmit.setColorSchemeResources(R.color.md_blue_800)
 
         return binding.root
     }
