@@ -14,6 +14,8 @@ import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.client.ServerClient
+import com.kurume_nct.studybattle.model.Problem
+import com.kurume_nct.studybattle.model.Solution
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.tools.ImageViewActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -28,10 +30,11 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
     private var problemUrl = ""
     private var problemTitle = ""
     private var writeNow = false
-    private var writeScoreNow = false
     private val addText = "+コメントを追加"
-    private val comfilmText = "+コメントを送信"
+    private val confirmText = "+コメントを送信"
     private var correct = false
+    private lateinit var solution: Solution
+    private var replyTo = 0
 
     companion object {
         @BindingAdapter("loadImageFinalScoring")
@@ -55,11 +58,11 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
 
     @Bindable
     var personalProblemUri: Uri? = null
-    get
-    set(value) {
-        field = value
-        notifyPropertyChanged(BR.personalProblemUri)
-    }
+        get
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.personalProblemUri)
+        }
 
 
     @Bindable
@@ -71,10 +74,10 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
 
     @Bindable
     var correctPersonal = "正解"
-    set(value) {
-        field = value
-        notifyPropertyChanged(BR.correctPersonal)
-    }
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.correctPersonal)
+        }
 
     @Bindable
     var imageClickAble = false
@@ -118,39 +121,18 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
         }
 
     @Bindable
-    var commentEditText = View.GONE
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.commentEditText)
-        }
-
-    @Bindable
-    var scoreCommentEditText = View.GONE
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.scoreCommentEditText)
-        }
-
-    @Bindable
     var commentButtonText = addText
-    set(value) {
-        field = value
-        notifyPropertyChanged(BR.commentButtonText)
-    }
-
-    @Bindable
-    var scoreCommentButtonText = comfilmText
-    set(value) {
-        field = value
-        notifyPropertyChanged(BR.scoreCommentButtonText)
-    }
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.commentButtonText)
+        }
 
     fun onClickComment(view: View) {
         onWriteComment()
     }
 
     fun onClickResetButton(view: View) {
-        if(correct != radioCorrect){
+        if (correct != radioCorrect) {
             val unitPer = context.applicationContext as UnitPersonal
             val client = ServerClient(unitPer.authenticationKey)
             client
@@ -171,12 +153,11 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap {
+                    solution = it
                     if (it.accepted) {
                         correct = true
                         radioCorrect = true
-                    }/* else {
-                        radioMiss = true
-                    }*/
+                    }
                     client.apply {
                         getUser(it.authorId)
                                 .subscribeOn(Schedulers.io())
@@ -196,8 +177,17 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
                                     personalProblemUri = Uri.parse(problemUrl)
                                 }
                     }
-                    //TODO getComments
-                    everyoneComment = "hoge"
+
+                    solution.comments.forEach { comment ->
+                        client
+                                .getUser(comment.authorId)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe {
+                                    everyoneComment += (it.displayName + "(" + it.userName + ")" + "\n")
+                                }
+                        everyoneComment += (comment.text + "\n")
+                    }
 
                     client
                             .getImageById(it.imageIds[0])
@@ -215,26 +205,45 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
 
     private fun onWriteComment() {
         writeNow = if (writeNow && yourComment.isNotBlank()) {
-            commentEditText.let {
-                if (it == View.GONE) View.VISIBLE
-            }
-            addComment(yourComment)
-            commentEditText = View.GONE
-            //TODO sent
-            yourComment = ""
+            sendComment()
             commentButtonText = addText
             false
         } else {
-            commentEditText = View.VISIBLE
-            commentButtonText = comfilmText
+            callback.enableEditText(true)
+            commentButtonText = confirmText
             true
         }
     }
 
-    private fun addComment(text: String) {
+    private fun sendComment() {
+
+        replyTo = solution.authorId
+
         val unitPer = context.applicationContext as UnitPersonal
-        everyoneComment += ("\n" + text + "\n\t by " +
-                unitPer.myInfomation.displayName + "(" + unitPer.myInfomation.userName + ")" + "\n")
+        val client = ServerClient(unitPer.authenticationKey)
+        client
+                .createComment(
+                        solutionId = solution.id,
+                        text = yourComment,
+                        imageIds = listOf(),
+                        replyTo = replyTo
+                ).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    everyoneComment = ""
+                    callback.enableEditText(false)
+                    yourComment = ""
+                    solution.comments.forEach { it ->
+                        client
+                                .getUser(it.authorId)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe {
+                                    everyoneComment += (it.displayName + "(" + it.userName + ")" + "\n")
+                                }
+                        everyoneComment += (it.text + "\n")
+                    }
+                }
     }
 
     private fun failAction() {
@@ -248,6 +257,8 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
         fun getSolutionId(): Int
 
         fun onReset()
+
+        fun enableEditText(boolean: Boolean)
 
     }
 }

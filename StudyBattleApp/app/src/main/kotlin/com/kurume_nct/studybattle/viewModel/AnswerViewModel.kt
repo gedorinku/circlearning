@@ -30,7 +30,7 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
     var aUri: String = ""
     private var writeScoreNow = false
     private val addText = "+コメントを追加"
-    private val comfierText = "+コメントを送信"
+    private val confirmText = "+コメントを送信"
     private lateinit var problem: Problem
     private var solutionId = 0
     private var replyTo = 0
@@ -124,15 +124,11 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
     private fun onWriteComment() {
         Log.d(writeScoreNow.toString() + " ", yourComment)
         writeScoreNow = if (writeScoreNow && yourComment.isNotBlank()) {
-            callback.visibilityEditText(false)
             sendComment()
-            yourComment = ""
-            scoreCommentButtonText = addText
             false
         } else {
             callback.visibilityEditText(true)
-            scoreCommentButtonText = comfierText
-            writeScoreNow = true
+            scoreCommentButtonText = confirmText
             true
         }
     }
@@ -149,15 +145,19 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
                 ).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    problem.assumedSolution.comments.forEach { it ->
+                    comment = ""
+                    callback.visibilityEditText(false)
+                    yourComment = ""
+                    scoreCommentButtonText = addText
+                    problem.assumedSolution.comments.forEach { comment1 ->
                         client
-                                .getUser(it.authorId)
+                                .getUser(comment1.authorId)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe {
                                     comment += (it.displayName + "(" + it.userName + ")" + "\n")
                                 }
-                        comment += (it.text + "\n")
+                        comment += (comment1.text + "\n")
                     }
                 }
     }
