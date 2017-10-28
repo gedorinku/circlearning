@@ -110,7 +110,7 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="8dp"
             android:layout_weight="0.02"
-            android:background="@drawable/no_image"
+            android:background="@drawable/group"
             android:foregroundGravity="center"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toTopOf="@+id/editText6"
@@ -119,8 +119,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.772"
-            app:loadImageFirstIcon="@{userEntity.imageUri}"
-            app:srcCompat="@drawable/plus" />
+            app:loadImageFirstIcon="@{userEntity.imageUri}" />
 
         <Button
             android:id="@+id/button"
@@ -145,7 +144,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.35" />
+            app:layout_constraintVertical_bias="0.354" />
 
         <Button
             android:id="@+id/button4"
@@ -158,7 +157,7 @@
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/red_button"
+            android:background="@drawable/red_button_t"
             android:foregroundGravity="center"
             android:onClick="@{userEntity.onClickLoginButton}"
             android:text="@{userEntity.loginButtonText}"

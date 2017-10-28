@@ -26,19 +26,35 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/textView56"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="32dp"
+                    android:layout_weight="1"
+                    android:background="@color/md_cyan_300"
+                    android:gravity="center"
+                    android:text="解答閲覧"
+                    android:textColor="@color/md_dark_primary_text"
+                    android:textSize="24sp" />
+
+                <TextView
                     android:id="@+id/problem_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:layout_weight="1"
-                    android:text="@{PersonalAnswer.problemTitle}" />
+                    android:text="@{PersonalAnswer.problemTitle}"
+                    android:textColor="@color/material_drawer_dark_selected"
+                    android:textSize="21sp" />
 
                 <ImageButton
                     android:id="@+id/problem_image"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="32dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:background="@color/md_blue_grey_200"
                     android:clickable="@{PersonalAnswer.imageClickable}"
@@ -50,6 +66,8 @@
                     android:id="@+id/textView37"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:text="@{PersonalAnswer.ansCreatorName}" />
 
@@ -64,9 +82,9 @@
                     android:id="@+id/imageView13"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="32dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:background="@color/md_blue_grey_200"
                     android:clickable="@{PersonalAnswer.imageClickable}"
@@ -132,7 +150,7 @@
                         android:layout_marginBottom="32dp"
                         android:layout_marginTop="8dp"
                         android:layout_weight="1"
-                        android:background="@drawable/green_button"
+                        android:background="@drawable/green_button__t"
                         android:onClick="@{PersonalAnswer.onClickScoreComment}"
                         android:text="+コメントを追加"
                         android:textColor="@color/material_drawer_dark_primary_text"
