@@ -84,13 +84,13 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
     fun onClickProblemImage(view: View) {
         val intent = Intent(context, ImageViewActivity::class.java)
         intent.putExtra("url", pUri)
-        if(masterName.isNotBlank())context.startActivity(intent)
+        if (masterName.isNotBlank()) context.startActivity(intent)
     }
 
     fun onClickAnswerImage(view: View) {
         val intent = Intent(context, ImageViewActivity::class.java)
         intent.putExtra("url", aUri)
-        if(masterName.isNotBlank())context.startActivity(intent)
+        if (masterName.isNotBlank()) context.startActivity(intent)
     }
 
     @Bindable
@@ -124,7 +124,7 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
         writeScoreNow = if (writeScoreNow && yourComment.isNotBlank()) {
             callback.visibilityEditText(false)
             addScoreComment(yourComment)
-            //TODO sent
+            sendComment()
             yourComment = ""
             scoreCommentButtonText = addText
             false
@@ -145,17 +145,20 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
                         text = yourComment,
                         imageIds = listOf(),
                         replyTo = 0
-                )
-        problem.assumedSolution.comments.forEach { it ->
-            client
-                    .getUser(it.authorId)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        comment += (it.displayName + "(" + it.userName + ")" + "\n")
+                ).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    problem.assumedSolution.comments.forEach { it ->
+                        client
+                                .getUser(it.authorId)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe {
+                                    comment += (it.displayName + "(" + it.userName + ")" + "\n")
+                                }
+                        comment += (it.text + "\n")
                     }
-            comment += (it.text + "\n")
-        }
+                }
     }
 
     private fun addScoreComment(text: String) {
