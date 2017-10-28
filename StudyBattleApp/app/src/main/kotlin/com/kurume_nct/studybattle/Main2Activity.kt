@@ -61,20 +61,20 @@ class Main2Activity : AppCompatActivity() {
         tabLayout = findViewById(R.id.tabs) as TabLayout
 
         unitPer = application as UnitPersonal
+
+
         toolbar.inflateMenu(R.menu.toolbar_menu)
+
+        //progressDialog = ProgressDialogTool(this).makeDialog()
+        listenPermission()
+        getUserInformation()
 
         Log.d(unitPer.nowGroup.name, unitPer.myInfomation.userName)
 
     }
 
-    override fun onStart() {
-        super.onStart()
-        progressDialog = ProgressDialogTool(this).makeDialog()
-        listenPermission()
-        getUserInformation()
-    }
-
     private fun getUserInformation() {
+        progressDialog = ProgressDialogTool(this).makeDialog()
         progressDialog.show()
         Log.d("getUserInfo", "")
         val client = ServerClient(unitPer.authenticationKey)
@@ -88,7 +88,7 @@ class Main2Activity : AppCompatActivity() {
                     userIcon = Uri.parse(it.icon!!.url)
                     getMyGroup()
                 }, {
-                    progressDialog.dismiss()
+                    if(progressDialog.isShowing)progressDialog.dismiss()
                     //TODO　アプリ再起動
                     Toast.makeText(this, "Userの情報取得に失敗しました." + "アプリを再起動します", Toast.LENGTH_SHORT).show()
                 })
@@ -157,14 +157,14 @@ class Main2Activity : AppCompatActivity() {
                                 }
                     }
                 }, {
-                    progressDialog.dismiss()
+                    if(progressDialog.isShowing)progressDialog.dismiss()
                     Log.d("Groupの情報を取得するのに失敗", "")
                     Toast.makeText(this, "アプリを立ち上げなおしてください", Toast.LENGTH_SHORT).show()
                 })
     }
 
     fun viewSetup(userIcon: Bitmap) {
-        progressDialog.dismiss()
+        if(progressDialog.isShowing)progressDialog.dismiss()
         initOnTabLayout()
         onNavigationDrawer(userIcon)
         onToolBar()
@@ -255,7 +255,6 @@ class Main2Activity : AppCompatActivity() {
                                 .withIdentifier(acountCount)
                 )
                 .withOnAccountHeaderListener(AccountHeader.OnAccountHeaderListener { view, profile, currentProfile ->
-                    //TODO プロフィール設定画面に飛ぶ
                     false
                 })
                 .build()
