@@ -65,7 +65,7 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe {
-                                binding.answerAct.masterName = it.displayName + "(" + it.userName + ")"
+                                binding.answerAct.masterName = " 作成者:" + it.displayName
                             }
                     if (fin == 3) {
                         //score
@@ -75,21 +75,25 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe {
-                                problemUrl = it.url
-                                binding.answerAct.problemUri = Uri.parse(problemUrl)
+                                binding.answerAct.apply {
+                                    pUri = it.url
+                                    problemUri = Uri.parse(it.url)
+                                }
                             }
-                    if (it.solutions.isNotEmpty())
-                        client
-                                .getImageById(it.solutions[0].imageIds[0])
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe({
-                                    binding.answerAct.answerUri = Uri.parse(it.url)
-                                })
+                    client
+                            .getImageById(it.assumedSolution.imageIds[0])
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                binding.answerAct.apply {
+                                    aUri = it.url
+                                    answerUri = Uri.parse(it.url)
+                                }
+                            })
                 }, {
                     Log.d("Rxbug", "ばぐ")
                     it.printStackTrace()
-                    //failAction()
+                    failAction()
                 })
     }
 

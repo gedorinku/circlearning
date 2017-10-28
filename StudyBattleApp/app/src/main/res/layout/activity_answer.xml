@@ -54,7 +54,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@{AnswerAct.masterName}"
-                        android:textColor="@color/material_drawer_dark_selected"
+                        android:textColor="?android:attr/textColorHintInverse"
                         android:textSize="18sp" />
 
                     <TextView
@@ -67,7 +67,7 @@
                         android:textSize="18sp" />
                 </LinearLayout>
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/problem_image_at_answer"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
@@ -75,6 +75,7 @@
                     android:layout_marginTop="5dp"
                     android:background="@color/md_blue_grey_200"
                     android:scaleType="centerCrop"
+                    android:onClick="@{AnswerAct.onClickProblemImage}"
                     app:AnswerImageLoad="@{AnswerAct.problemUri}" />
 
                 <TextView
@@ -87,13 +88,14 @@
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="21sp" />
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/answer_image_at_answer"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_marginBottom="32dp"
                     android:background="@color/md_blue_grey_200"
                     android:scaleType="centerCrop"
+                    android:onClick="@{AnswerAct.onClickAnswerImage}"
                     app:AnswerImageLoad="@{AnswerAct.answerUri}" />
 
 
