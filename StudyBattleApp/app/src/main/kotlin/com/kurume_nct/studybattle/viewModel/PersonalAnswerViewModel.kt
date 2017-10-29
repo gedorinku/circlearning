@@ -31,6 +31,7 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
     private val addText = "+コメントを追加"
     private val comfierText = "+コメントを送信"
     private lateinit var solution: Solution
+    private var lastCommentIndex = 0
     private var replyTo = 0
 
     companion object {
@@ -146,7 +147,7 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                             solution = it
                         }
                     }
-                    //TODO solutionが見つからないと爆発する。
+                    //solutionが見つからないと爆発する。
                     client.apply {
                         getUser(solution.authorId)
                                 .subscribeOn(Schedulers.io())
@@ -166,6 +167,7 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                                     personalProblemUri = Uri.parse(problemUrl)
                                 }
                     }
+                    lastCommentIndex = solution.comments.size
                     solution.comments.forEach { comment ->
                         client
                                 .getUser(comment.authorId)
@@ -218,20 +220,21 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                 ).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    everyoneComment = ""
                     callback.enableEditText(false)
                     yourComment = ""
                     commentButtonText = comfierText
-                    solution.comments.forEach { comment ->
+                    solution.comments.forEachIndexed { index, comment ->
+                        if(index >= lastCommentIndex)
                         client
                                 .getUser(comment.authorId)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe {
                                     everyoneComment += (it.displayName + "(" + it.userName + ")" + "\n")
+                                    everyoneComment += (comment.text + "\n")
                                 }
-                        everyoneComment += (comment.text + "\n")
                     }
+                    lastCommentIndex = solution.comments.size
                 }
     }
 
