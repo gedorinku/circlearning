@@ -153,6 +153,8 @@ class ServerClient(authenticationKey: String = "") {
 
     fun getMyJudgedProblems(groupId: Int) = server.getMyJudgedProblems(authenticationKey, groupId)
 
+    fun getMyChallengePhaseProblems(groupId: Int) = server.getMyChallengePhaseProblems(authenticationKey, groupId)
+
     fun getMyJudgingProblems(groupId: Int) = server.getMyJudgingProblems(authenticationKey, groupId)
 
     fun getMyCollectingProblems(groupId: Int) = server.getMyCollectingProblems(authenticationKey, groupId)
