@@ -33,7 +33,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
     private var aUri: Uri
     private var checkCount: Boolean = false
     private var termOne: Double
-    val termExtra = "時間(解答回収期間より)"
+    val termExtra = "(解答回収期間より)"
     var problemImageId = 0
     var answerImageId = 0
 
