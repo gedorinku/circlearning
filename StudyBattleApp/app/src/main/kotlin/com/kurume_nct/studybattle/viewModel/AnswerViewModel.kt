@@ -150,19 +150,26 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
                     callback.visibilityEditText(false)
                     yourComment = ""
                     scoreCommentButtonText = addText
-                    problem.assumedSolution.comments.forEachIndexed { index, comment1 ->
-                        if (index >= lastCommentIndex)
-                            client
-                                    .getUser(comment1.authorId)
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe {
-                                        comment += (it.displayName + "(" + it.userName + ")" + "\n")
-                                        comment += (comment1.text + "\n")
-                                    }
-                    }
-                    lastCommentIndex = problem.assumedSolution.comments.size
+                    refreshComment(false)
                 }
+    }
+
+    fun refreshComment(boolean: Boolean){
+        val unitPer = context.applicationContext as UnitPersonal
+        val client = ServerClient(unitPer.authenticationKey)
+        problem.assumedSolution.comments.forEachIndexed { index, comment1 ->
+            if (index >= lastCommentIndex)
+                client
+                        .getUser(comment1.authorId)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe {
+                            comment += (it.displayName + "(" + it.userName + ")" + "\n")
+                            comment += (comment1.text + "\n")
+                        }
+        }
+        lastCommentIndex = problem.assumedSolution.comments.size
+        if(boolean)callback.finishedRefresh()
     }
 
     fun onInitDataSet() {
@@ -225,5 +232,6 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
         fun onError()
         fun getFin(): Int
         fun getProblemId(): Int
+        fun finishedRefresh()
     }
 }

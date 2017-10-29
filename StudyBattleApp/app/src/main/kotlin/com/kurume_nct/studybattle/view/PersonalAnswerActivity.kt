@@ -36,6 +36,9 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
         binding.personalAnswer.getInitData()
         binding.apply {
             commentEdit.visibility = View.GONE
+            swipeRefreshPersonal.setOnRefreshListener {
+                personalAnswer.refreshComment(true)
+            }
         }
     }
 
@@ -47,6 +50,10 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
                 View.GONE
             }
         }
+    }
+
+    override fun finishedRefresh() {
+        binding.swipeRefreshPersonal.isRefreshing = false
     }
 
     override fun getProblemId() = problemId

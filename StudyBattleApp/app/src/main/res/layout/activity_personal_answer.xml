@@ -9,119 +9,125 @@
             type="com.kurume_nct.studybattle.viewModel.PersonalAnswerViewModel" />
     </data>
 
-    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/normalback"
-        tools:context="com.kurume_nct.studybattle.view.PersonalAnswerActivity">
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_personal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-        <ScrollView
+        <LinearLayout xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:background="@drawable/normalback"
+            tools:context="com.kurume_nct.studybattle.view.PersonalAnswerActivity">
 
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
-                <TextView
-                    android:id="@+id/problem_name"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@{PersonalAnswer.problemTitle}" />
+                    android:orientation="vertical">
 
-                <ImageButton
-                    android:id="@+id/problem_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:background="@color/md_blue_grey_200"
-                    android:clickable="@{PersonalAnswer.imageClickable}"
-                    android:onClick="@{PersonalAnswer.onClickProblemView}"
-                    android:scaleType="centerCrop"
-                    app:loadImagePersonal="@{PersonalAnswer.personalProblemUri}" />
+                    <TextView
+                        android:id="@+id/problem_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@{PersonalAnswer.problemTitle}" />
 
-                <TextView
-                    android:id="@+id/textView37"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@{PersonalAnswer.ansCreatorName}" />
+                    <ImageButton
+                        android:id="@+id/problem_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:background="@color/md_blue_grey_200"
+                        android:clickable="@{PersonalAnswer.imageClickable}"
+                        android:onClick="@{PersonalAnswer.onClickProblemView}"
+                        android:scaleType="centerCrop"
+                        app:loadImagePersonal="@{PersonalAnswer.personalProblemUri}" />
 
-                <TextView
-                    android:id="@+id/current_personal_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@{PersonalAnswer.correctPersonal}" />
+                    <TextView
+                        android:id="@+id/textView37"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@{PersonalAnswer.ansCreatorName}" />
 
-                <ImageButton
-                    android:id="@+id/imageView13"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:background="@color/md_blue_grey_200"
-                    android:clickable="@{PersonalAnswer.imageClickable}"
-                    android:onClick="@{PersonalAnswer.onClickImageView}"
-                    android:scaleType="centerCrop"
-                    app:loadImagePersonal="@{PersonalAnswer.personalAnswerUri}" />
+                    <TextView
+                        android:id="@+id/current_personal_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@{PersonalAnswer.correctPersonal}" />
 
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_weight="1"
-                    android:text="みんなのコメント"
-                    android:textColor="@color/primary_dark"
-                    android:textSize="21sp" />
+                    <ImageButton
+                        android:id="@+id/imageView13"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:background="@color/md_blue_grey_200"
+                        android:clickable="@{PersonalAnswer.imageClickable}"
+                        android:onClick="@{PersonalAnswer.onClickImageView}"
+                        android:scaleType="centerCrop"
+                        app:loadImagePersonal="@{PersonalAnswer.personalAnswerUri}" />
 
-                <TextView
-                    android:id="@+id/comments"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_weight="1"
-                    android:text="@{PersonalAnswer.everyoneComment}"
-                    android:textColor="@color/material_drawer_dark_selected" />
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_weight="1"
+                        android:text="みんなのコメント"
+                        android:textColor="@color/primary_dark"
+                        android:textSize="21sp" />
 
-                <EditText
-                    android:id="@+id/comment_edit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="@={PersonalAnswer.yourComment}" />
+                    <TextView
+                        android:id="@+id/comments"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_weight="1"
+                        android:text="@{PersonalAnswer.everyoneComment}"
+                        android:textColor="@color/material_drawer_dark_selected" />
 
-                <Button
-                    android:id="@+id/add_comment_button"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="32dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/green_button"
-                    android:onClick="@{PersonalAnswer.onClickComment}"
-                    android:text="@{PersonalAnswer.commentButtonText}"
-                    android:textColor="@color/material_drawer_dark_header_selection_text"
-                    android:textSize="15sp" />
+                    <EditText
+                        android:id="@+id/comment_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:text="@={PersonalAnswer.yourComment}" />
 
-            </LinearLayout>
-        </ScrollView>
+                    <Button
+                        android:id="@+id/add_comment_button"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="32dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/green_button"
+                        android:onClick="@{PersonalAnswer.onClickComment}"
+                        android:text="@{PersonalAnswer.commentButtonText}"
+                        android:textColor="@color/material_drawer_dark_header_selection_text"
+                        android:textSize="15sp" />
 
-    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </layout>

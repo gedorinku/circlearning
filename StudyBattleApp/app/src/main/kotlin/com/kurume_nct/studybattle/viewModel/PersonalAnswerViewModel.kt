@@ -223,19 +223,27 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                     callback.enableEditText(false)
                     yourComment = ""
                     commentButtonText = comfierText
-                    solution.comments.forEachIndexed { index, comment ->
-                        if(index >= lastCommentIndex)
-                        client
-                                .getUser(comment.authorId)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe {
-                                    everyoneComment += (it.displayName + "(" + it.userName + ")" + "\n")
-                                    everyoneComment += (comment.text + "\n")
-                                }
-                    }
-                    lastCommentIndex = solution.comments.size
+                    refreshComment(false)
                 }
+    }
+
+    fun refreshComment(boolean: Boolean){
+        val unitPer = context.applicationContext as UnitPersonal
+        val client = ServerClient(unitPer.authenticationKey)
+        solution.comments.forEachIndexed { index, comment ->
+            if(index >= lastCommentIndex)
+                client
+                        .getUser(comment.authorId)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe {
+                            everyoneComment += (it.displayName + "(" + it.userName + ")" + "\n")
+                            everyoneComment += (comment.text + "\n")
+                        }
+        }
+        lastCommentIndex = solution.comments.size
+
+        if(boolean)callback.finishedRefresh()
     }
 
     interface Callback {
@@ -245,6 +253,8 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
         fun getProblemId(): Int
 
         fun onFinish()
+
+        fun finishedRefresh()
 
     }
 }
