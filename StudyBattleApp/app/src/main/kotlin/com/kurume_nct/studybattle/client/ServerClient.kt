@@ -162,6 +162,11 @@ class ServerClient(authenticationKey: String = "") {
      */
     fun getChallengePhaseProblems(groupId: Int) = server.getChallengePhaseProblems(authenticationKey, groupId)
 
+    /**
+     * 公開されている採点が終了した問題一覧を取得します。
+     */
+    fun getJudgedProblems(groupId: Int) = server.getJudgedProblems(authenticationKey, groupId)
+
     fun getAssignedProblems(group: Group) = getAssignedProblems(group.id)
 
     fun getAssignedProblems(groupId: Int) = server.getAssignedProblems(authenticationKey, groupId)

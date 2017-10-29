@@ -138,6 +138,12 @@ interface Server {
             @Query("groupId") groupId: Int
     ): Observable<List<Problem>>
 
+    @GET("/problem/judged")
+    fun getJudgedProblems(
+            @Query("authenticationKey") authenticationKey: String,
+            @Query("groupId") groupId: Int
+    ): Observable<List<Problem>>
+
     @FormUrlEncoded
     @POST("/problem/assigned")
     fun getAssignedProblems(
