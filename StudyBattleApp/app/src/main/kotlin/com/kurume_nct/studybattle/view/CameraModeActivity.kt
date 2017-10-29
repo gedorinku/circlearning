@@ -107,7 +107,8 @@ class CameraModeActivity : Activity() {
 
         openProblemServer()
 
-        Glide.with(this).load(R.drawable.hatena).into(submitItemImageButton)
+        Glide.with(this).load(R.drawable.plus).into(submitItemImageButton)
+        Glide.with(this).load(R.drawable.plus).into(submitImageButton)
         onGetProblemInfo()
 
         //(uriについての実験機能)

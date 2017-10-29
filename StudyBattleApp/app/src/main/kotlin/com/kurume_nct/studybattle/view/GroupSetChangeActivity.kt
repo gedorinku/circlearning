@@ -49,9 +49,7 @@ class GroupSetChangeActivity : AppCompatActivity(), GroupSetChangeViewModel.Call
                     .subscribe {}
             Log.d(it.displayName,"追加された")
         }
-
-        //TODO gtoup名の変更エンドポイント
-        setResult(0)
+        setResult(1)
         finish()
     }
 
@@ -59,7 +57,7 @@ class GroupSetChangeActivity : AppCompatActivity(), GroupSetChangeViewModel.Call
         confirmDialog()
     }
 
-    fun getOutGroup(){
+    private fun getOutGroup(){
         Toast.makeText(this, "Groupから退出中・・・", Toast.LENGTH_SHORT).show()
         ServerClient(unitPersonal.authenticationKey)
                 .leaveGroup(unitPersonal.nowGroup.id)
@@ -71,7 +69,7 @@ class GroupSetChangeActivity : AppCompatActivity(), GroupSetChangeViewModel.Call
                 }
     }
 
-    fun confirmDialog(){
+    private fun confirmDialog(){
         val builder = AlertDialog.Builder(this)
         builder.setTitle("本当に今のグループから抜けてもいいですか？")
         builder.setMessage("このグループ内でのデータが完全に消える可能性があります")

@@ -39,8 +39,8 @@ class CreateProblemViewModel(private val context: Context, private val callback:
 
     init {
         termOne = 24.0
-        pUri = ToolClass(context).convertUrlFromDrawableResId(R.drawable.group)
-        aUri = ToolClass(context).convertUrlFromDrawableResId(R.drawable.group)
+        pUri = ToolClass(context).convertUrlFromDrawableResId(R.drawable.plus)
+        aUri = ToolClass(context).convertUrlFromDrawableResId(R.drawable.plus)
     }
 
     companion object {

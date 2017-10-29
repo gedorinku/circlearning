@@ -68,7 +68,6 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_weight="1"
-                    android:background="@color/md_blue_grey_200"
                     android:onClick="@{CreateView.onClickProblemImage}"
                     app:loadProblem="@{CreateView.problemUri}"
                     tools:ignore="ContentDescription" />
@@ -162,7 +161,6 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_weight="1"
-                    android:background="@color/md_blue_grey_200"
                     android:onClick="@{CreateView.onClickAnswerImage}"
                     app:loadProblem="@{CreateView.answerUri}" />
 
