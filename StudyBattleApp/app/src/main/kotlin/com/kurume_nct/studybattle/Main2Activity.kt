@@ -41,13 +41,12 @@ import java.net.URL
 class Main2Activity : AppCompatActivity() {
 
     private lateinit var unitPer: UnitPersonal
-    private val REQUEST_CREATE_GROUP = 9
     private val REQUEST_PERMISSION_STRAGE = 1
     private lateinit var progressDialog: ProgressDialog
-    private lateinit var toolbar: Toolbar
+    private var toolbar: Toolbar? = null
     private lateinit var fab: View
-    private lateinit var viewPaper: ViewPager
-    private lateinit var tabLayout: TabLayout
+    private var viewPaper: ViewPager? = null
+    private var tabLayout: TabLayout? = null
     private lateinit var mainPagerAdapter: MainPagerAdapter
     private lateinit var userIcon: Uri
 
@@ -62,16 +61,21 @@ class Main2Activity : AppCompatActivity() {
 
         unitPer = application as UnitPersonal
 
+        toolbar?.inflateMenu(R.menu.toolbar_menu)
 
-        toolbar.inflateMenu(R.menu.toolbar_menu)
-
-        //progressDialog = ProgressDialogTool(this).makeDialog()
         listenPermission()
         getUserInformation()
 
         Log.d(unitPer.nowGroup.name, unitPer.myInfomation.userName)
 
     }
+
+   /* override fun onStart() {
+        super.onStart()
+        fab = findViewById(R.id.fab)
+        listenPermission()
+        getUserInformation()
+    }*/
 
     private fun getUserInformation() {
         progressDialog = ProgressDialogTool(this).makeDialog()
@@ -88,7 +92,7 @@ class Main2Activity : AppCompatActivity() {
                     userIcon = Uri.parse(it.icon!!.url)
                     getMyGroup()
                 }, {
-                    if(progressDialog.isShowing)progressDialog.dismiss()
+                    if (progressDialog.isShowing) progressDialog.dismiss()
                     //TODO　アプリ再起動
                     Toast.makeText(this, "Userの情報取得に失敗しました." + "アプリを再起動します", Toast.LENGTH_SHORT).show()
                 })
@@ -147,24 +151,24 @@ class Main2Activity : AppCompatActivity() {
                                     val xSize = it.width
                                     val ySize = it.height
                                     var bitmap = it
-                                    Log.d("size","変更")
+                                    Log.d("size", "変更")
                                     if (xSize > ySize)
                                         bitmap = Bitmap.createBitmap(bitmap, (xSize - ySize) / 2, 0, ySize, ySize, null, false)
-                                    else if(ySize > xSize)
+                                    else if (ySize > xSize)
                                         bitmap = Bitmap.createBitmap(bitmap, 0, (ySize - xSize) / 2, xSize, xSize, null, false)
 
                                     viewSetup(bitmap)
                                 }
                     }
                 }, {
-                    if(progressDialog.isShowing)progressDialog.dismiss()
+                    if (progressDialog.isShowing) progressDialog.dismiss()
                     Log.d("Groupの情報を取得するのに失敗", "")
                     Toast.makeText(this, "アプリを立ち上げなおしてください", Toast.LENGTH_SHORT).show()
                 })
     }
 
     fun viewSetup(userIcon: Bitmap) {
-        if(progressDialog.isShowing)progressDialog.dismiss()
+        if (progressDialog.isShowing) progressDialog.dismiss()
         initOnTabLayout()
         onNavigationDrawer(userIcon)
         onToolBar()
@@ -172,7 +176,7 @@ class Main2Activity : AppCompatActivity() {
     }
 
     private fun getIconBitmap(): Single<Bitmap> = Single.fromCallable {
-        Log.d("bitMap","に変換中・・・。")
+        Log.d("bitMap", "に変換中・・・。")
         BitmapFactory.decodeStream(URL(userIcon.toString()).openStream())
     }
 
@@ -183,9 +187,11 @@ class Main2Activity : AppCompatActivity() {
             startActivity(Intent(this, CreateProblemActivity::class.java))
         }
 
-        toolbar.title = unitPer.nowGroup.name
+        if (toolbar == null) toolbar = findViewById(R.id.toolbar) as Toolbar
 
-        toolbar.setOnMenuItemClickListener { item ->
+        toolbar?.title = unitPer.nowGroup.name
+
+        toolbar?.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.to_item -> {
                     startActivity(Intent(this, ItemInfoActivity::class.java))
@@ -197,10 +203,6 @@ class Main2Activity : AppCompatActivity() {
                     val intent = Intent(this, GroupSetChangeActivity::class.java)
                     startActivityForResult(intent, 0)
                 }
-                /*R.id.to_setting_group -> {
-                    startActivity(Intent(this, CustomViewActivity::class.java))
-                    Toast.makeText(this, "未実装の機能です。本選までお楽しみに！", Toast.LENGTH_SHORT).show()
-                }*/
             }
             false
         }
@@ -211,20 +213,22 @@ class Main2Activity : AppCompatActivity() {
     }
 
     private fun initOnTabLayout() {
-        (0 until tabLayout.tabCount).forEach {
-            tabLayout.addTab(tabLayout.newTab())
+        if (viewPaper == null) viewPaper = findViewById(R.id.pager) as ViewPager
+        if (tabLayout == null) tabLayout = findViewById(R.id.tabs) as TabLayout
+        (0 until tabLayout?.tabCount!!).forEach {
+            tabLayout?.addTab(tabLayout?.newTab()!!)
         }
         mainPagerAdapter = MainPagerAdapter(supportFragmentManager)
 
         val pagerAdapter = mainPagerAdapter
-        viewPaper.adapter = pagerAdapter
-        viewPaper.offscreenPageLimit = pagerAdapter.count
-        tabLayout.setupWithViewPager(viewPaper)
-        Log.d(tabLayout.clipChildren.toString(), "")
+        viewPaper?.adapter = pagerAdapter
+        viewPaper?.offscreenPageLimit = pagerAdapter.count
+        tabLayout?.setupWithViewPager(viewPaper)
+        Log.d(tabLayout?.clipChildren.toString(), "")
 
         //Create the Tabs
-        (0 until tabLayout.tabCount).forEach {
-            val tab = tabLayout.getTabAt(it)
+        (0 until tabLayout?.tabCount!!).forEach {
+            val tab = tabLayout?.getTabAt(it)
             when (it) {
                 0 -> tab?.customView =
                         LayoutInflater.from(this).inflate(R.layout.tab_custom_0, null)
@@ -295,8 +299,8 @@ class Main2Activity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 0) {
-            getMyGroup()
+        when (requestCode) {
+            0 -> getMyGroup()
         }
     }
 

@@ -17,7 +17,7 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="64dp"
             android:layout_marginBottom="8dp"
             android:background="@color/md_cyan_300"
@@ -111,7 +111,7 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="8dp"
             android:layout_weight="0.02"
-            android:background="@drawable/group"
+            android:background="@drawable/no_image"
             android:foregroundGravity="center"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toTopOf="@+id/editText6"
@@ -120,32 +120,9 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.772"
-            app:loadImageFirstIcon="@{userEntity.imageUri}" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="32dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_weight="0.83"
-            android:background="@drawable/no_image_register"
-            android:foregroundGravity="center_vertical|center_horizontal|center"
-            android:gravity="center_vertical|center_horizontal|center"
             android:onClick="@{userEntity.onClickChangeIconImage}"
-            android:text="+"
-            android:textColor="@color/material_drawer_dark_header_selection_text"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.691"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.354" />
+            app:loadImageFirstIcon="@{userEntity.imageUri}"
+            app:srcCompat="@drawable/plus" />
 
         <Button
             android:id="@+id/button4"
@@ -193,7 +170,7 @@
             android:layout_height="wrap_content"
             app:srcCompat="@color/md_cyan_300"
             tools:layout_editor_absoluteX="365dp"
-            tools:layout_editor_absoluteY="80dp" />
+            tools:layout_editor_absoluteY="105dp" />
 
     </android.support.constraint.ConstraintLayout>
 

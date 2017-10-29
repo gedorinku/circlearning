@@ -107,7 +107,7 @@ class MainListFragment(val callback: Callback) : Fragment() {
         }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { it ->
-                    if (it.isNotEmpty()) {
+                    /*if (it.isNotEmpty()) {*/
                         val listSize = problemList.size
                         problemList.clear()
                         listAdapter.notifyItemRangeRemoved(0, listSize)
@@ -118,10 +118,11 @@ class MainListFragment(val callback: Callback) : Fragment() {
                         listAdapter.notifyItemRangeInserted(0, it.size)
                         Log.d(it.size.toString(), "isNotEmpty" + unitPersonal.nowGroup.id.toString())
                         callback.onStopSwipeRefresh()
-                    } else {
+                    /*} else {
+                        listAdapter.notifyItemRangeRemoved(0, problemList.size)
                         callback.onStopSwipeRefresh()
                         Log.d(it.toString(), "空")
-                    }
+                    }*/
                 }
     }
 

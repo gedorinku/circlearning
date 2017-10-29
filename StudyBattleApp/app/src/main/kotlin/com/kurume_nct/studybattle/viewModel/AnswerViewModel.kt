@@ -34,6 +34,7 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
     private lateinit var problem: Problem
     private var solutionId = 0
     private var replyTo = 0
+    private var lastCommentIndex = 0
 
 
     companion object {
@@ -149,16 +150,18 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
                     callback.visibilityEditText(false)
                     yourComment = ""
                     scoreCommentButtonText = addText
-                    problem.assumedSolution.comments.forEach { comment1 ->
-                        client
-                                .getUser(comment1.authorId)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe {
-                                    comment += (it.displayName + "(" + it.userName + ")" + "\n")
-                                }
-                        comment += (comment1.text + "\n")
+                    problem.assumedSolution.comments.forEachIndexed { index, comment1 ->
+                        if (index >= lastCommentIndex)
+                            client
+                                    .getUser(comment1.authorId)
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe {
+                                        comment += (it.displayName + "(" + it.userName + ")" + "\n")
+                                        comment += (comment1.text + "\n")
+                                    }
                     }
+                    lastCommentIndex = problem.assumedSolution.comments.size
                 }
     }
 
@@ -175,6 +178,8 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
                     problem = it
                     problemName = problem.title
                     problemScore = " " + problem.point.toString() + "点"
+                    lastCommentIndex = it.assumedSolution.comments.size
+
                     it.assumedSolution.comments.forEach { it ->
                         client
                                 .getUser(it.authorId)

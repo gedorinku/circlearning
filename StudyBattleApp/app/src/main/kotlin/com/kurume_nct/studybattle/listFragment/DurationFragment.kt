@@ -28,7 +28,7 @@ class DurationFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
                 , cMonth
                 , cDay
         )
-        c.add(Calendar.DAY_OF_MONTH, 1)
+        c.add(Calendar.DAY_OF_MONTH, 0)
         val geoF = GregorianCalendar()
         geoF.set(c[Calendar.YEAR], c[Calendar.MONTH], c[Calendar.DAY_OF_MONTH])
         c.add(Calendar.DAY_OF_MONTH, peopleCount * 2)
