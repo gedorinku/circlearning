@@ -71,7 +71,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/pass_border"
+            android:background="@drawable/blue_button_t"
             android:elevation="0dp"
             android:text="アイテムを外す"
             android:textColor="#ffffff"
