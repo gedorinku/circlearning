@@ -37,7 +37,9 @@ class ToolClass(val context: Context) {
                     it.forEach {
                         when(it.id){
                             1 -> unitPer.itemCount.bomb = it.count
-                            2 -> unitPer.itemCount.bomb = it.count
+                            2 -> unitPer.itemCount.shield= it.count
+                            3 -> unitPer.itemCount.card = it.count
+                            4 -> unitPer.itemCount.magicHand = it.count
                         }
                     }
                 }

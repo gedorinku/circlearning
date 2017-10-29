@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ActionMenuView
 import android.widget.Toast
 import com.bumptech.glide.Glide
 
@@ -59,11 +60,11 @@ class MadeCollectYetActivity : AppCompatActivity() {
                 .subscribe {
                     binding.run {
                         problemNameText.text = it.title
-                        problemNowSituationText.text = "問題の状態の分かるエンドポイントありますか？"
-                        problemCollectedDateText.text = "収集日は計算する感じですかね・・・？"
-                        problemMadeDateText.text = it.createdAt
-                        durationPerOneText.text = calculatePerOneHour(it.durationMillis)
-                        problemSubmittedPeopleText.text = "今までに" + "エンドポイント" + "人が解答を提出しています"
+                        problemNowSituationText.text = stateString(it.rawState)
+                        problemCollectedDateText.text = dateConverter(it.createdAt, 0) + calculateHour(it.durationMillis)
+                        problemMadeDateText.text = dateConverter(it.createdAt, 0)
+                        durationPerOneText.text = calculatePerOneHour(it.durationPerUserMillis)
+                        problemSubmittedPeopleText.text = it.solutions.size.toString() + "人が提出済み"
                         client
                                 .getImageById(it.imageIds[0])
                                 .subscribeOn(Schedulers.io())
@@ -77,16 +78,56 @@ class MadeCollectYetActivity : AppCompatActivity() {
                 }
     }
 
-    private fun calculateDate(): String{
-        var dateStr = "~"
-        dateStr += "月"
-        dateStr += "日"
-        return dateStr
+    private fun stateString(state: String) =
+            when (state) {
+                "Opening" -> "回収中"
+                "Judging" -> "正誤判定中"
+                "Judged" -> "正誤判定済み"
+                else -> {
+                    "謎"
+                }
+            }
+
+    private fun dateConverter(base: String, millis: Long): String {
+        val hours = millis / (60 * 1000 * 60)
+        var date = ""
+        val ngWord = listOf('-', ':', 'T')
+        var i = 0
+        var j: Int
+        (0..3).forEach {
+            j = i
+            while (!ngWord.contains(base[i])) {
+                i++
+            }
+            //00時が気に入らなかったので
+            date += if (base.subSequence(j, i).isNotBlank() && base.subSequence(j, i)[0] == '0') {
+                " " + base.subSequence(j + 1, i)
+            } else {
+                base.subSequence(j, i)
+            }
+            i++
+            when (it) {
+                0 -> {
+                    date += "年"
+                    date = ""
+                }
+                1 -> date += "月"
+                2 -> date += "日"
+                3 -> date += "時"
+            }
+        }
+        return date
     }
 
-    private fun calculatePerOneHour(millis: Long): String{
-        val str = (millis /(60 * 60 * 1000)).toString() + "時間"
-        return str
+    private fun calculatePerOneHour(millis: Long): String {
+        val hour = (millis / (60 * 60 * 1000))
+        val min = ((millis - hour * 60 * 60 * 1000) / (60 * 1000))
+        return hour.toString() + "時間"// + min.toString() + "分"
+    }
+
+    private fun calculateHour(millis: Long): String {
+        val hour = (millis / (60 * 60 * 1000)) % 24
+        return hour.toString() + "時"
     }
 
     private fun setUpPicture(uri: Uri) {
@@ -94,3 +135,4 @@ class MadeCollectYetActivity : AppCompatActivity() {
     }
 
 }
+

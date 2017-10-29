@@ -21,7 +21,7 @@ data class Image(
         val fileName: String = "")
 
 //TODO これやめたい
-data class IDResponse(val id: Int)
+data class IDResponse(val id: Int, val itemId: Int)
 
 data class Problem(
         val id: Int = 0,
@@ -37,7 +37,8 @@ data class Problem(
         val assignedUser: User? = null,
         @SerializedName("assignedAt") val rawAssignedAt: String = "",
         val durationPerUserMillis: Long = 0L,
-        @SerializedName("state") val rawState: String = ""
+        @SerializedName("state") val rawState: String = "",
+        val assumedSolution: Solution = Solution()
 ) {
 
     val startsAtTime: DateTime by lazy { DateTime.parse(rawStartsAt) }
@@ -73,7 +74,8 @@ data class Solution(
         val problemId: Int = 0,
         val imageCount: Int = 0,
         val imageIds: List<Int> = emptyList(),
-        @SerializedName("judgingState") val rawJudgingState: String = ""
+        @SerializedName("judgingState") val rawJudgingState: String = "",
+        val comments: List<Comment> = emptyList()
 ) {
 
     val judgingState by lazy { JudgingState.valueOf(rawJudgingState) }
@@ -83,6 +85,18 @@ data class Solution(
     val accepted by lazy {
         judgingState == JudgingState.Accepted
     }
+}
+
+data class Comment(
+        val id: Int = 0,
+        val text: String = "hoge",
+        val authorId: Int = 0,
+        val replyTo: Int = 0,
+        val imageIds: List<Int> = emptyList(),
+        @SerializedName("createdAt") val rawCreatedAt: String = ""
+) {
+
+    val createdAtTime: DateTime by lazy { DateTime.parse(rawCreatedAt) }
 }
 
 data class ProblemOpenResponse(

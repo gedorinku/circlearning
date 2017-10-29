@@ -17,6 +17,7 @@ import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.Solution
 import com.kurume_nct.studybattle.model.User
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
+import com.kurume_nct.studybattle.tools.ToolClass
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.joda.time.DateTime
@@ -30,17 +31,16 @@ class CreateProblemViewModel(private val context: Context, private val callback:
 
     private var pUri: Uri
     private var aUri: Uri
-    private var checkCount: Boolean
+    private var checkCount: Boolean = false
     private var termOne: Double
     val termExtra = "時間(解答回収期間より)"
     var problemImageId = 0
     var answerImageId = 0
 
     init {
-        checkCount = false
         termOne = 24.0
-        pUri = convertUrlFromDrawableResId(context, R.drawable.group)
-        aUri = convertUrlFromDrawableResId(context, R.drawable.group)
+        pUri = ToolClass(context).convertUrlFromDrawableResId(R.drawable.group)
+        aUri = ToolClass(context).convertUrlFromDrawableResId(R.drawable.group)
     }
 
     companion object {
@@ -151,7 +151,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
     }
 
     fun onClickFinish(view: View) {
-        val a = convertUrlFromDrawableResId(context, R.drawable.group)
+        val a = ToolClass(context).convertUrlFromDrawableResId(R.drawable.group)
         if (problemUri == a || answerUri == a || problemName.isEmpty() || problemName.isBlank() || termForOne.isBlank()) {
             Toast.makeText(context, "入力に不備があります(`・ω・´)", Toast.LENGTH_SHORT).show()
         } else {
@@ -159,8 +159,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
         }
     }
 
-    fun sendData() {
-        //Toast.makeText(context, "問題をサーバーに送っています", Toast.LENGTH_LONG).show()
+    private fun sendData() {
         val dialogClass = ProgressDialogTool(context)
         val dialog = dialogClass.makeDialog()
         dialog.show()
@@ -180,13 +179,13 @@ class CreateProblemViewModel(private val context: Context, private val callback:
                                 answerImageId = it.id
                                 client
                                         .createProblem(
-                                                problemName,
-                                                "ごめんなさい",
-                                                listOf(problemImageId),
-                                                dateTime(),
-                                                callback.getDuration(),
-                                                callback.getGroupId(),
-                                                Solution(
+                                                title = problemName,
+                                                text = "ごめんなさい",
+                                                imageIds = listOf(problemImageId),
+                                                startsAt = dateTime(),
+                                                duration = callback.getDuration(),
+                                                groupId = callback.getGroupId(),
+                                                assumedSolution = Solution(
                                                         text = "お寿司と焼き肉の戦い。",
                                                         authorId = callback.userInformation().id,
                                                         imageCount = 1,
@@ -218,18 +217,6 @@ class CreateProblemViewModel(private val context: Context, private val callback:
     }
 
     private fun dateTime(): DateTime = DateTime.now()
-
-    fun convertUrlFromDrawableResId(context: Context, drawableResId: Int): Uri {
-        val sb = StringBuilder()
-        sb.append(ContentResolver.SCHEME_ANDROID_RESOURCE)
-        sb.append("://")
-        sb.append(context.resources.getResourcePackageName(drawableResId))
-        sb.append("/")
-        sb.append(context.resources.getResourceTypeName(drawableResId))
-        sb.append("/")
-        sb.append(context.resources.getResourceEntryName(drawableResId))
-        return Uri.parse(sb.toString())
-    }
 
     interface Callback {
 

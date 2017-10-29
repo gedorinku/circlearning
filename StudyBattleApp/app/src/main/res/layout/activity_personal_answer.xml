@@ -26,35 +26,19 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView56"
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:layout_marginBottom="32dp"
-                    android:layout_weight="1"
-                    android:background="@color/md_cyan_300"
-                    android:gravity="center"
-                    android:text="解答閲覧"
-                    android:textColor="@color/md_dark_primary_text"
-                    android:textSize="24sp" />
-
-                <TextView
                     android:id="@+id/problem_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
                     android:layout_weight="1"
-                    android:text="@{PersonalAnswer.problemTitle}"
-                    android:textColor="@color/material_drawer_dark_selected"
-                    android:textSize="21sp" />
+                    android:text="@{PersonalAnswer.problemTitle}" />
 
                 <ImageButton
                     android:id="@+id/problem_image"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:layout_marginBottom="32dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:background="@color/md_blue_grey_200"
                     android:clickable="@{PersonalAnswer.imageClickable}"
@@ -66,8 +50,6 @@
                     android:id="@+id/textView37"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:text="@{PersonalAnswer.ansCreatorName}" />
 
@@ -82,81 +64,15 @@
                     android:id="@+id/imageView13"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:layout_marginBottom="32dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:background="@color/md_blue_grey_200"
                     android:clickable="@{PersonalAnswer.imageClickable}"
                     android:onClick="@{PersonalAnswer.onClickImageView}"
                     android:scaleType="centerCrop"
                     app:loadImagePersonal="@{PersonalAnswer.personalAnswerUri}" />
-
-
-                <LinearLayout
-                    android:id="@+id/score_comment_layout_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/textView38"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_weight="1"
-                        android:text="正誤判定についてのコメント"
-                        android:textColor="@color/primary_dark"
-                        android:textSize="21sp" />
-
-                    <TextView
-                        android:id="@+id/remaining_time_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_weight="1"
-                        android:text="@{PersonalAnswer.remainigAnsTime}"
-                        android:textColor="@color/colorAccent" />
-
-                    <TextView
-                        android:id="@+id/score_comment_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_weight="1"
-                        android:text="@{PersonalAnswer.scoreComment}"
-                        android:textColor="@color/material_drawer_dark_selected" />
-
-                    <EditText
-                        android:id="@+id/your_score_comment_edit_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:inputType="textPersonName"
-                        android:text="@{PersonalAnswer.yourScoreCmment}" />
-
-                    <Button
-                        android:id="@+id/add_score_comment_button"
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="32dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/green_button__t"
-                        android:onClick="@{PersonalAnswer.onClickScoreComment}"
-                        android:text="+コメントを追加"
-                        android:textColor="@color/material_drawer_dark_primary_text"
-                        android:textSize="15sp" />
-
-                </LinearLayout>
 
                 <TextView
                     android:id="@+id/textView"
@@ -200,7 +116,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/green_button"
                     android:onClick="@{PersonalAnswer.onClickComment}"
-                    android:text="+コメントを追加"
+                    android:text="@{PersonalAnswer.commentButtonText}"
                     android:textColor="@color/material_drawer_dark_header_selection_text"
                     android:textSize="15sp" />
 

@@ -110,26 +110,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@{CreateView.day}"
-                        android:textAlignment="textEnd"
+                        android:textAlignment="center"
                         android:textSize="18sp" />
-
-                    <!-->
-                    <CheckedTextView
-                        android:id="@+id/checkedTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@{CreateView.day}"
-                        android:onClick="@{CreateView.onClickDateChange}"/>
-                   <-->
-
-                    <TextView
-                        android:id="@+id/textView36"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="に回収"
-                        android:textSize="13sp" />
 
                     <Button
                         android:id="@+id/button7"

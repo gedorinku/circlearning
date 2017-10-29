@@ -63,7 +63,8 @@ class MadeMainFragment : Fragment(), MainListFragment.Callback {
             onRefresh()
         }
 
-        binding.swipeRefreshFragmentMade.setColorSchemeResources(R.color.md_yellow_400, R.color.md_blue_A700, R.color.md_red_A700)
+        //binding.swipeRefreshFragmentMade.setColorSchemeResources(R.color.md_yellow_400, R.color.md_blue_A700, R.color.md_red_A700)
+        binding.swipeRefreshFragmentMade.setColorSchemeResources(R.color.md_red_A700)
 
         return binding.root
     }

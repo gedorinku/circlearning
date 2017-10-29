@@ -22,12 +22,8 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
 
     private lateinit var binding: ActivityPersonalAnswerBinding
     private lateinit var unitPer: UnitPersonal
-    private var writeNows = false
-    private var writeNow = false
     private var problemId = 0
     private var situationId = false
-    private var problem: Problem = Problem()
-    private var url = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,33 +36,20 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
         binding.personalAnswer.getInitData()
         binding.apply {
             commentEdit.visibility = View.GONE
-            yourScoreCommentEditText.visibility = View.GONE
         }
     }
 
-    override fun visibilityEditText(score: Boolean, boolean: Boolean) {
-        if (score) {
-            binding.yourScoreCommentEditText.visibility.let {
-                if (boolean) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
-            }
-        } else {
-            binding.commentEdit.visibility.let {
-                if (boolean) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
+    override fun enableEditText(boolean: Boolean) {
+        binding.commentEdit.visibility.let {
+            if (boolean) {
+                View.VISIBLE
+            } else {
+                View.GONE
             }
         }
     }
-
 
     override fun getProblemId() = problemId
-
 
     override fun onFinish() {
         finish()
