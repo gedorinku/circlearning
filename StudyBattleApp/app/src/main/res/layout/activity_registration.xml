@@ -17,7 +17,7 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="64dp"
             android:layout_marginBottom="8dp"
             android:background="@color/md_cyan_300"
@@ -170,7 +170,7 @@
             android:layout_height="wrap_content"
             app:srcCompat="@color/md_cyan_300"
             tools:layout_editor_absoluteX="365dp"
-            tools:layout_editor_absoluteY="80dp" />
+            tools:layout_editor_absoluteY="105dp" />
 
     </android.support.constraint.ConstraintLayout>
 
