@@ -114,20 +114,26 @@ interface Server {
             @Path("id") id: Int
     ): Observable<Problem>
 
-    @GET("/problem/judged")
+    @GET("/my_problem/judged")
     fun getMyJudgedProblems(
             @Query("authenticationKey") authenticationKey: String,
             @Query("groupId") groupId: Int
     ): Observable<List<Problem>>
 
-    @GET("/problem/judging")
+    @GET("/my_problem/judging")
     fun getMyJudgingProblems(
             @Query("authenticationKey") authenticationKey: String,
             @Query("groupId") groupId: Int
     ): Observable<List<Problem>>
 
-    @GET("/problem/collecting")
+    @GET("/my_problem/collecting")
     fun getMyCollectingProblems(
+            @Query("authenticationKey") authenticationKey: String,
+            @Query("groupId") groupId: Int
+    ): Observable<List<Problem>>
+
+    @GET("/problem/challenge")
+    fun getChallengePhaseProblems(
             @Query("authenticationKey") authenticationKey: String,
             @Query("groupId") groupId: Int
     ): Observable<List<Problem>>

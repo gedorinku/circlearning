@@ -157,6 +157,11 @@ class ServerClient(authenticationKey: String = "") {
 
     fun getMyCollectingProblems(groupId: Int) = server.getMyCollectingProblems(authenticationKey, groupId)
 
+    /**
+     * 公開されている正誤判定に文句をつけるフェーズの問題一覧を取得します。
+     */
+    fun getChallengePhaseProblems(groupId: Int) = server.getChallengePhaseProblems(authenticationKey, groupId)
+
     fun getAssignedProblems(group: Group) = getAssignedProblems(group.id)
 
     fun getAssignedProblems(groupId: Int) = server.getAssignedProblems(authenticationKey, groupId)
