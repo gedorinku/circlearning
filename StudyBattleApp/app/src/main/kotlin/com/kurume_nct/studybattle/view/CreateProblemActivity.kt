@@ -30,7 +30,6 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
     private lateinit var binding: ActivityCreateProblemBinding
     private lateinit var unitPer: UnitPersonal
     private var prob: Int
-    private lateinit var decideDate: MutableList<Int>
     private lateinit var dialog: AlertDialog
     private val PERMISSION_CAMERA_CODE = 1
     private lateinit var duration: Duration
@@ -94,17 +93,18 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        decideDate = mutableListOf(year, month, dayOfMonth)
-        val settingdDate = DateTime(year, month+1, dayOfMonth,0,0,0)
         val today = DateTime.now()
-        duration = Duration(today, settingdDate)
-        val gup = duration.standardHours
+        val settingDate = DateTime(year, month + 1, dayOfMonth, today.hourOfDay, today.minuteOfHour + 20, today.secondOfMinute)
+        duration = Duration(today, settingDate)
+        val gup = duration.standardMinutes
+        Log.d(gup.toString() + "時間", settingDate.toString())
         binding.termHourForOne.isEnabled = true
         binding.createView.let {
             it.day =
                     year.toString() + "年" + (month + 1).toString() + "月" + dayOfMonth.toString() + "日"
             it.termForOne =
-                    (gup / unitPer.nowGroup.members.size).toString() + it.termExtra
+                    (gup / 60 /unitPer.nowGroup.members.size).toString() + "時間" +
+                            ((gup / unitPer.nowGroup.members.size) % 60).toString() + "分" + it.termExtra
         }
         Log.d(binding.createView.day, "change")
     }

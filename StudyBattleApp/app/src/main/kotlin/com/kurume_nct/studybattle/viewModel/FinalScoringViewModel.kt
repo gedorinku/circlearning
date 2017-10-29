@@ -34,6 +34,7 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
     private val confirmText = "+コメントを送信"
     private var correct = false
     private lateinit var solution: Solution
+    private var lastCommentIndex = 0
     private var replyTo = 0
 
     companion object {
@@ -178,6 +179,7 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
                                 }
                     }
 
+                    lastCommentIndex = solution.comments.size
                     solution.comments.forEach { comment ->
                         client
                                 .getUser(comment.authorId)
@@ -233,16 +235,18 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
                     callback.enableEditText(false)
                     yourComment = ""
                     commentButtonText = addText
-                    solution.comments.forEach { it ->
+                    solution.comments.forEachIndexed { index, comment ->
+                        if(lastCommentIndex <= index)
                         client
-                                .getUser(it.authorId)
+                                .getUser(comment.authorId)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe {
                                     everyoneComment += (it.displayName + "(" + it.userName + ")" + "\n")
+                                    everyoneComment += (comment.text + "\n")
                                 }
-                        everyoneComment += (it.text + "\n")
                     }
+                    lastCommentIndex = solution.comments.size
                 }
     }
 

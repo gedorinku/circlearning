@@ -32,7 +32,7 @@
                     android:layout_marginBottom="16dp"
                     android:background="@color/md_cyan_300"
                     android:gravity="center_horizontal|center"
-                    android:text="正誤判定画面"
+                    android:text="答え合わせ"
                     android:textColor="@color/md_dark_primary_text"
                     android:textSize="24sp" />
 

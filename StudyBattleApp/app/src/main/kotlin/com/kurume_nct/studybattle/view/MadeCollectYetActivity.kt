@@ -61,7 +61,7 @@ class MadeCollectYetActivity : AppCompatActivity() {
                     binding.run {
                         problemNameText.text = it.title
                         problemNowSituationText.text = stateString(it.rawState)
-                        problemCollectedDateText.text = dateConverter(it.createdAt, 0) + calculateHour(it.durationMillis)
+                        problemCollectedDateText.text = dateConverter(it.createdAt, it.durationMillis)
                         problemMadeDateText.text = dateConverter(it.createdAt, 0)
                         durationPerOneText.text = calculatePerOneHour(it.durationPerUserMillis)
                         problemSubmittedPeopleText.text = it.solutions.size.toString() + "人が提出済み"
@@ -100,11 +100,24 @@ class MadeCollectYetActivity : AppCompatActivity() {
                 i++
             }
             //00時が気に入らなかったので
-            date += if (base.subSequence(j, i).isNotBlank() && base.subSequence(j, i)[0] == '0') {
-                " " + base.subSequence(j + 1, i)
-            } else {
-                base.subSequence(j, i)
+            var plusDuration = ""
+            if (hours != 0L) {
+                if (it == 2 && hours >= 24) {
+                    plusDuration = (base.subSequence(j , i).toString().toLong() + (hours / 24)).toString()
+                }
+                if (it == 3) {
+                    plusDuration = (base.subSequence(j , i).toString().toLong() + (hours % 24)).toString()
+                }
             }
+            Log.d(hours.toString() +base.subSequence(j + 1, i).toString().toLong()+ "時間", plusDuration + "ほげ")
+            date += if (plusDuration.isBlank())
+                if (base.subSequence(j, i).isNotBlank() && base.subSequence(j, i)[0] == '0') {
+                    " " + base.subSequence(j + 1, i)
+                } else {
+                    base.subSequence(j, i)
+                }
+            else
+                plusDuration
             i++
             when (it) {
                 0 -> {
@@ -122,12 +135,7 @@ class MadeCollectYetActivity : AppCompatActivity() {
     private fun calculatePerOneHour(millis: Long): String {
         val hour = (millis / (60 * 60 * 1000))
         val min = ((millis - hour * 60 * 60 * 1000) / (60 * 1000))
-        return hour.toString() + "時間"// + min.toString() + "分"
-    }
-
-    private fun calculateHour(millis: Long): String {
-        val hour = (millis / (60 * 60 * 1000)) % 24
-        return hour.toString() + "時"
+        return hour.toString() + "時間" + min.toString() + "分"
     }
 
     private fun setUpPicture(uri: Uri) {

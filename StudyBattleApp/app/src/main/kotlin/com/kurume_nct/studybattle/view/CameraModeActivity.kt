@@ -38,6 +38,8 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import org.joda.time.DateTime
+import org.joda.time.Duration
 
 import java.io.File
 import java.io.IOException
@@ -69,6 +71,7 @@ class CameraModeActivity : Activity() {
     private lateinit var problemImage: ImageView
     private lateinit var problemName: TextView
     private lateinit var writerName: TextView
+    private lateinit var remainigTerm: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,6 +88,7 @@ class CameraModeActivity : Activity() {
         problemImage = findViewById(R.id.problem_image_at_camera) as ImageView
         problemName = findViewById(R.id.problem_name_at_camera) as TextView
         writerName = findViewById(R.id.writer_name_at_camera) as TextView
+        remainigTerm = findViewById(R.id.remainnig_term_text) as TextView
 
         problemId = intent.getIntExtra("problemId", 0)
         if (problemId == 0) {
@@ -103,7 +107,8 @@ class CameraModeActivity : Activity() {
 
         openProblemServer()
 
-        Glide.with(this).load(R.drawable.hatena).into(submitItemImageButton)
+        Glide.with(this).load(R.drawable.plus).into(submitItemImageButton)
+        Glide.with(this).load(R.drawable.plus).into(submitImageButton)
         onGetProblemInfo()
 
         //(uriについての実験機能)
@@ -188,6 +193,10 @@ class CameraModeActivity : Activity() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap {
                     problemName.text = it.title
+                    val duration = Duration(it.assignedAtTime.toDateTime(), DateTime.now())
+                    val hour = it.durationPerUser.standardHours - duration.standardHours
+                    val min = (it.durationPerUser.standardMinutes - duration.standardMinutes) % 60
+                    remainigTerm.text = hour.toString() + "時間 " + min.toString() + "分"
                     client
                             .getUser(it.ownerId)
                             .subscribeOn(Schedulers.io())
@@ -254,7 +263,7 @@ class CameraModeActivity : Activity() {
             randomItem = it.itemId
             progress.dismiss()
             val intent = Intent(this, LotteryActivity::class.java)
-            intent.putExtra("item",randomItem)
+            intent.putExtra("item", randomItem)
             startActivity(intent)
             finish()
         }, {
