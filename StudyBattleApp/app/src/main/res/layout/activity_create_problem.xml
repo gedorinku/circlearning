@@ -69,7 +69,9 @@
                     android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:onClick="@{CreateView.onClickProblemImage}"
+                    android:scaleType="centerCrop"
                     app:loadProblem="@{CreateView.problemUri}"
+                    app:srcCompat="@drawable/plus"
                     tools:ignore="ContentDescription" />
 
                 <TextView
@@ -116,7 +118,7 @@
                         android:layout_height="50dp"
                         android:layout_marginRight="20dp"
                         android:layout_weight="0.08"
-                        android:background="@drawable/green_button"
+                        android:background="@drawable/green_button__t"
                         android:onClick="@{CreateView.onClickDateChange}"
                         android:text="変更"
                         android:textColor="#ffffff"
@@ -162,7 +164,9 @@
                     android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:onClick="@{CreateView.onClickAnswerImage}"
-                    app:loadProblem="@{CreateView.answerUri}" />
+                    android:scaleType="centerCrop"
+                    app:loadProblem="@{CreateView.answerUri}"
+                    app:srcCompat="@drawable/plus" />
 
                 <Button
                     android:id="@+id/button6"
@@ -172,7 +176,7 @@
                     android:layout_marginBottom="32dp"
                     android:layout_marginTop="32dp"
                     android:layout_weight="1"
-                    android:background="@drawable/red_button"
+                    android:background="@drawable/red_button_t"
                     android:onClick="@{CreateView.onClickFinish}"
                     android:text="✅問題を作成"
                     android:textColor="#ffffff"
