@@ -193,7 +193,9 @@ class CameraModeActivity : Activity() {
                 .flatMap {
                     problemName.text = it.title
                     val duration = Duration(it.assignedAtTime.toDateTime(), DateTime.now())
-                    remainigTerm.text = (it.durationPerUser.standardHours - duration.standardHours).toString() + "時間"
+                    val hour = it.durationPerUser.standardHours - duration.standardHours
+                    val min = (it.durationPerUser.standardMinutes - duration.standardMinutes) % 60
+                    remainigTerm.text = hour.toString() + "時間 " + min.toString() + "分"
                     client
                             .getUser(it.ownerId)
                             .subscribeOn(Schedulers.io())

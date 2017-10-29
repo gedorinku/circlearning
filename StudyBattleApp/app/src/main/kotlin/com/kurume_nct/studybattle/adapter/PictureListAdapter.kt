@@ -58,7 +58,7 @@ class PictureListAdapter(val context: Context, val list: MutableList<RankingUser
 
         @BindingAdapter("loadIconRanking")
         @JvmStatic
-        fun setIcon(view: ImageView, uri: Uri) {
+        fun setIcon(view: ImageView, uri: Uri?) {
             Glide.with(view).load(uri).into(view)
         }
     }

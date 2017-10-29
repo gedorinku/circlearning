@@ -64,11 +64,12 @@ class RankingListFragment : Fragment() {
                 .subscribe ({
                     it.ranking.forEachIndexed { index, pair ->
                         grouplist.add(RankingUser(
-                                score = pair.toString(),
+                                score = pair.second.toString(),
                                 displayName = pair.first.displayName,
                                 userName = pair.first.userName,
                                 medal = index,
-                                icon = Uri.parse(pair.first.icon?.url)))
+                                icon = if(pair.first.icon?.url != null) Uri.parse(pair.first.icon?.url) else null
+                        ))
                         Log.d(pair.first.userName, pair.first.displayName + "ランキング")
                     }
                     listAdapter.notifyItemRangeInserted(0, grouplist.size)
