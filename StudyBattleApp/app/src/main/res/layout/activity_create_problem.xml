@@ -70,7 +70,9 @@
                     android:layout_weight="1"
                     android:background="@color/md_blue_grey_200"
                     android:onClick="@{CreateView.onClickProblemImage}"
+                    android:scaleType="centerCrop"
                     app:loadProblem="@{CreateView.problemUri}"
+                    app:srcCompat="@drawable/plus"
                     tools:ignore="ContentDescription" />
 
                 <TextView
@@ -182,7 +184,9 @@
                     android:layout_weight="1"
                     android:background="@color/md_blue_grey_200"
                     android:onClick="@{CreateView.onClickAnswerImage}"
-                    app:loadProblem="@{CreateView.answerUri}" />
+                    android:scaleType="centerCrop"
+                    app:loadProblem="@{CreateView.answerUri}"
+                    app:srcCompat="@drawable/plus" />
 
                 <Button
                     android:id="@+id/button6"

@@ -70,6 +70,7 @@
             android:layout_marginRight="16dp"
             android:background="@color/md_blue_grey_200"
             android:scaleType="centerCrop"
+            android:src="@drawable/plus"
             tools:ignore="ContentDescription" />
 
         <LinearLayout
@@ -88,6 +89,7 @@
             android:layout_marginRight="16dp"
             android:background="@color/md_blue_grey_200"
             android:scaleType="centerCrop"
+            android:src="@drawable/plus"
             tools:ignore="ContentDescription" />
 
         <TextView
