@@ -41,7 +41,6 @@ import java.net.URL
 class Main2Activity : AppCompatActivity() {
 
     private lateinit var unitPer: UnitPersonal
-    private val REQUEST_CREATE_GROUP = 9
     private val REQUEST_PERMISSION_STRAGE = 1
     private lateinit var progressDialog: ProgressDialog
     private var toolbar: Toolbar? = null
@@ -64,13 +63,19 @@ class Main2Activity : AppCompatActivity() {
 
         toolbar?.inflateMenu(R.menu.toolbar_menu)
 
-        //progressDialog = ProgressDialogTool(this).makeDialog()
         listenPermission()
         getUserInformation()
 
         Log.d(unitPer.nowGroup.name, unitPer.myInfomation.userName)
 
     }
+
+   /* override fun onStart() {
+        super.onStart()
+        fab = findViewById(R.id.fab)
+        listenPermission()
+        getUserInformation()
+    }*/
 
     private fun getUserInformation() {
         progressDialog = ProgressDialogTool(this).makeDialog()
@@ -198,10 +203,6 @@ class Main2Activity : AppCompatActivity() {
                     val intent = Intent(this, GroupSetChangeActivity::class.java)
                     startActivityForResult(intent, 0)
                 }
-            /*R.id.to_setting_group -> {
-                startActivity(Intent(this, CustomViewActivity::class.java))
-                Toast.makeText(this, "未実装の機能です。本選までお楽しみに！", Toast.LENGTH_SHORT).show()
-            }*/
             }
             false
         }

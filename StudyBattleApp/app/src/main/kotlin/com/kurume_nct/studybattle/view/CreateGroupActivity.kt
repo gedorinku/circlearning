@@ -59,7 +59,7 @@ class CreateGroupActivity : AppCompatActivity(), CreateGroupViewModel.Callback {
                     }
                     val intent = Intent(this, Main2Activity::class.java)
                     Toast.makeText(this, "グループの作成に成功", Toast.LENGTH_SHORT).show()
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                     startActivity(intent)
                 }, {
                     it.printStackTrace()

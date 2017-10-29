@@ -10,16 +10,10 @@
 
     <LinearLayout
         android:id="@+id/join_people_layout"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/colorLightBlue"
         android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/imageView16"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:srcCompat="@android:drawable/ic_menu_my_calendar" />
 
         <LinearLayout
             android:layout_width="250dp"
@@ -45,11 +39,16 @@
 
         <ImageButton
             android:id="@+id/get_out_list_button"
-            android:layout_width="30dp"
+            android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_gravity="right|center"
-            android:layout_weight="1"
+            android:background="@color/material_drawer_dark_header_selection_text"
             app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
     </LinearLayout>
 </layout>

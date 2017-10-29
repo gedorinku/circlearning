@@ -69,9 +69,11 @@ class RankingListFragment : Fragment() {
                                 userName = pair.first.userName,
                                 medal = index,
                                 icon = Uri.parse(pair.first.icon?.url)))
+                        Log.d(pair.first.userName, pair.first.displayName + "ランキング")
                     }
                     listAdapter.notifyItemRangeInserted(0, grouplist.size)
                 },{
+                    it.printStackTrace()
                    grouplist.add(RankingUser(
                            displayName = "まだランキングが存在しないよ",
                            icon = ToolClass(context).convertUrlFromDrawableResId(R.drawable.no_image)!!
