@@ -146,7 +146,6 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
                 ).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    comment = ""
                     callback.visibilityEditText(false)
                     yourComment = ""
                     scoreCommentButtonText = addText
@@ -169,7 +168,7 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe {
-                                        comment += (it.displayName + "(" + it.userName + ")" + "\n")
+                                        comment += ("\n" + it.displayName + "(" + it.userName + ")" + "\n")
                                         comment += ("\t" + comment1.text + "\n")
                                     }
                     }
@@ -196,14 +195,14 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
                     problemName = problem.title
                     problemScore = " " + problem.point.toString() + "点"
                     lastCommentIndex = problem.assumedSolution.comments.size
-                    problem.assumedSolution.comments.forEach { it ->
+                    problem.assumedSolution.comments.forEach { comment1 ->
                         client
-                                .getUser(it.authorId)
+                                .getUser(comment1.authorId)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe {
-                                    comment += (it.displayName + "(" + it.userName + ")" + "\n")
-                                    comment += ("\t" + problem.text + "\n")
+                                    comment += ("\n" + it.displayName + "(" + it.userName + ")" + "\n")
+                                    comment += ("\t" + comment1.text + "\n")
                                 }
                     }
                     client

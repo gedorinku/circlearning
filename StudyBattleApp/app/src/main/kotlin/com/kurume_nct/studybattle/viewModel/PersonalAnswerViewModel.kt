@@ -175,7 +175,7 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe {
-                                    everyoneComment += (it.displayName + "(" + it.userName + ")" + "\n")
+                                    everyoneComment += ("\n" + it.displayName + "(" + it.userName + ")" + "\n")
                                     everyoneComment += ("\t" + comment.text + "\n")
                                 }
                     }
@@ -244,7 +244,7 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe {
-                                        everyoneComment += (it.displayName + "(" + it.userName + ")" + "\n")
+                                        everyoneComment += ("\n" + it.displayName + "(" + it.userName + ")" + "\n")
                                         everyoneComment += ("\t" + comment.text + "\n")
                                     }
                     }

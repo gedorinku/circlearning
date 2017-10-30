@@ -103,7 +103,8 @@
                     android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:text="@{FinalScoring.everyoneComment}"
-                    android:textColor="@color/material_drawer_dark_selected" />
+                    android:textColor="@color/material_drawer_dark_selected"
+                    android:textSize="18sp" />
 
                 <EditText
                     android:id="@+id/your_comment_edit_text"
