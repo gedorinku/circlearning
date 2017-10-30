@@ -238,7 +238,7 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe {
                             everyoneComment += (it.displayName + "(" + it.userName + ")" + "\n")
-                            everyoneComment += (comment.text + "\n")
+                            everyoneComment += ("\t" +comment.text + "\n")
                         }
         }
         lastCommentIndex = solution.comments.size

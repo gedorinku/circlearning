@@ -238,22 +238,29 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
                 }
     }
 
-    fun refreshComment(boolean: Boolean){
+    fun refreshComment(boolean: Boolean) {
         val unitPer = context.applicationContext as UnitPersonal
         val client = ServerClient(unitPer.authenticationKey)
-        solution.comments.forEachIndexed { index, comment ->
-            if(lastCommentIndex <= index)
-                client
-                        .getUser(comment.authorId)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe {
-                            everyoneComment += (it.displayName + "(" + it.userName + ")" + "\n")
-                            everyoneComment += (comment.text + "\n")
-                        }
-        }
+        client
+                .getSolution(callback.getSolutionId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    it.comments.forEachIndexed { index, comment ->
+                        if (lastCommentIndex <= index)
+                            client
+                                    .getUser(comment.authorId)
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe {
+                                        everyoneComment += (it.displayName + "(" + it.userName + ")" + "\n")
+                                        everyoneComment += ("\t" +comment.text + "\n")
+                                    }
+                    }
+
+                }
         lastCommentIndex = solution.comments.size
-        if(boolean)callback.finishedRefresh()
+        if (boolean) callback.finishedRefresh()
     }
 
     private fun failAction() {
