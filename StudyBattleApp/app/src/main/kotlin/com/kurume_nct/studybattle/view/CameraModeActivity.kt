@@ -143,12 +143,6 @@ class CameraModeActivity : Activity() {
 
         getItemData()
 
-        unitPer.itemCount.run {
-            if (bomb <= 0) dialogView.bombButton17.visibility = View.INVISIBLE
-            if (card <= 0) dialogView.cardButton16.visibility = View.INVISIBLE
-            if (magicHand <= 0) dialogView.handButton12.visibility = View.INVISIBLE
-        }
-
         dialog = AlertDialog.Builder(this)
                 .setView(dialogView.root)
                 .create()
@@ -275,7 +269,25 @@ class CameraModeActivity : Activity() {
     }
 
     private fun getItemData() {
-        ToolClass(this).onRefreshItemData()
+        ServerClient(unitPer.authenticationKey)
+                .getMyItems(unitPer.nowGroup.id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    it.forEach {
+                        when(it.id){
+                            1 -> unitPer.itemCount.bomb = it.count
+                            2 -> unitPer.itemCount.shield= it.count
+                            3 -> unitPer.itemCount.card = it.count
+                            4 -> unitPer.itemCount.magicHand = it.count
+                        }
+                    }
+                    unitPer.itemCount.run {
+                        if (bomb <= 0) dialogView.bombButton17.visibility = View.INVISIBLE
+                        if (card <= 0) dialogView.cardButton16.visibility = View.INVISIBLE
+                        if (magicHand <= 0) dialogView.handButton12.visibility = View.INVISIBLE
+                    }
+                }
     }
 
     private fun sadDialog() {
