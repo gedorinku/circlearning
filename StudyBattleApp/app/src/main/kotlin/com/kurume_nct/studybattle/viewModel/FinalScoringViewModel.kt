@@ -245,7 +245,8 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
                 .getSolution(callback.getSolutionId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
+                .subscribe ({
+                    solution = it
                     it.comments.forEachIndexed { index, comment ->
                         if (lastCommentIndex <= index)
                             client
@@ -257,10 +258,14 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
                                         everyoneComment += ("\t" +comment.text + "\n")
                                     }
                     }
+                    lastCommentIndex = solution.comments.size
+                    if (boolean) callback.finishedRefresh()
+                },{
+                    it.printStackTrace()
+                    Toast.makeText(context, "ネット環境の確認をお願いします。", Toast.LENGTH_SHORT).show()
+                    if (boolean) callback.finishedRefresh()
+                })
 
-                }
-        lastCommentIndex = solution.comments.size
-        if (boolean) callback.finishedRefresh()
     }
 
     private fun failAction() {

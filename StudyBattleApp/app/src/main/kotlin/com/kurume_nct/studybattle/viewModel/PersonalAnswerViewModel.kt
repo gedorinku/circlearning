@@ -8,6 +8,7 @@ import android.databinding.BindingAdapter
 import android.net.Uri
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
@@ -227,24 +228,35 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                 }
     }
 
-    fun refreshComment(boolean: Boolean){
+    fun refreshComment(boolean: Boolean) {
         val unitPer = context.applicationContext as UnitPersonal
         val client = ServerClient(unitPer.authenticationKey)
-        solution.comments.forEachIndexed { index, comment ->
-            if(index >= lastCommentIndex)
-                client
-                        .getUser(comment.authorId)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe {
-                            everyoneComment += (it.displayName + "(" + it.userName + ")" + "\n")
-                            everyoneComment += ("\t" +comment.text + "\n")
-                        }
-        }
-        lastCommentIndex = solution.comments.size
-
-        if(boolean)callback.finishedRefresh()
+        client
+                .getSolution(solution.id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    solution = it
+                    solution.comments.forEachIndexed { index, comment ->
+                        if (index >= lastCommentIndex)
+                            client
+                                    .getUser(comment.authorId)
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe {
+                                        everyoneComment += (it.displayName + "(" + it.userName + ")" + "\n")
+                                        everyoneComment += ("\t" + comment.text + "\n")
+                                    }
+                    }
+                    lastCommentIndex = solution.comments.size
+                    if (boolean) callback.finishedRefresh()
+                }, {
+                    it.printStackTrace()
+                    Toast.makeText(context, "ネット環境の確認をお願いします。", Toast.LENGTH_SHORT).show()
+                    if (boolean) callback.finishedRefresh()
+                })
     }
+
 
     interface Callback {
 

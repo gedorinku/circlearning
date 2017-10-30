@@ -9,6 +9,7 @@ import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
@@ -160,7 +161,7 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
                 .getProblem(callback.getProblemId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
+                .subscribe ({
                     it.assumedSolution.comments.forEachIndexed { index, comment1 ->
                         if (index >= lastCommentIndex)
                             client
@@ -174,7 +175,11 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
                     }
                     lastCommentIndex = it.assumedSolution.comments.size
                     if(boolean)callback.finishedRefresh()
-                }
+                },{
+                    it.printStackTrace()
+                    Toast.makeText(context, "ネット環境の確認をお願いします。", Toast.LENGTH_SHORT).show()
+                    if (boolean) callback.finishedRefresh()
+                })
     }
 
     fun onInitDataSet() {
