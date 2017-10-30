@@ -19,35 +19,52 @@ class ItemInfoViewModel(private val context: Context, private val callback: Call
     val unitPer: UnitPersonal = context.applicationContext as UnitPersonal
 
     @Bindable
-    var magicCount = "×" + unitPer.itemCount.magicHand.toString()
+    var magicCount = "×0"
+        get
         set(value) {
             field = value
             notifyPropertyChanged(BR.magicCount)
         }
 
     @Bindable
-    var bombCount = "×" + unitPer.itemCount.bomb.toString()
+    var bombCount = "×0"
+        get
         set(value) {
             field = value
             notifyPropertyChanged(BR.bombCount)
         }
 
     @Bindable
-    var cardCount = "×" + unitPer.itemCount.card.toString()
+    var cardCount = "×0"
+        get
         set(value) {
             field = value
             notifyPropertyChanged(BR.cardCount)
         }
 
     @Bindable
-    var shieldCount = "×" + unitPer.itemCount.shield.toString()
+    var shieldCount = "×0"
+        get
         set(value) {
             field = value
             notifyPropertyChanged(BR.shieldCount)
         }
 
-    fun onCreate(){
-        ToolClass(context).onRefreshItemData()
+    fun onCreate() {
+        ServerClient(unitPer.authenticationKey)
+                .getMyItems(unitPer.nowGroup.id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    it.forEach {
+                        when (it.id) {
+                            1 -> bombCount = "×" + it.count.toString()
+                            2 -> shieldCount = "×" + it.count.toString()
+                            3 -> cardCount = "×" + it.count.toString()
+                            4 -> magicCount = "×" + it.count.toString()
+                        }
+                    }
+                }
     }
 
     interface Callback {

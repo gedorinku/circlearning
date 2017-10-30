@@ -12,13 +12,13 @@ import com.kurume_nct.studybattle.viewModel.ItemInfoViewModel
 
 class ItemInfoActivity : AppCompatActivity(), ItemInfoViewModel.Callback {
 
-    lateinit var binding : ActivityItemInfoBinding
+    lateinit var binding: ActivityItemInfoBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("i'm ", javaClass.name)
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_item_info)
-        binding.viewModel = ItemInfoViewModel(this,this)
-        binding.viewModel.onCreate()
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_item_info)
+        binding.viewModelItem = ItemInfoViewModel(this, this)
+        binding.viewModelItem.onCreate()
     }
 }

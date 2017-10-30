@@ -9,10 +9,11 @@
             type="com.kurume_nct.studybattle.viewModel.AnswerViewModel" />
     </data>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_answer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
 
         <ScrollView
             android:layout_width="match_parent"
@@ -74,8 +75,8 @@
                     android:layout_marginBottom="32dp"
                     android:layout_marginTop="5dp"
                     android:background="@color/md_blue_grey_200"
-                    android:scaleType="centerCrop"
                     android:onClick="@{viewModel.onClickProblemImage}"
+                    android:scaleType="centerCrop"
                     app:AnswerImageLoad="@{viewModel.problemUri}" />
 
                 <TextView
@@ -94,11 +95,9 @@
                     android:layout_height="200dp"
                     android:layout_marginBottom="32dp"
                     android:background="@color/md_blue_grey_200"
-                    android:scaleType="centerCrop"
                     android:onClick="@{viewModel.onClickAnswerImage}"
+                    android:scaleType="centerCrop"
                     app:AnswerImageLoad="@{viewModel.answerUri}" />
-
-
 
 
                 <LinearLayout
@@ -127,7 +126,8 @@
                         android:layout_marginRight="16dp"
                         android:layout_weight="1"
                         android:text="@{viewModel.comment}"
-                        android:textColor="@color/material_drawer_dark_selected" />
+                        android:textColor="@color/material_drawer_dark_selected"
+                        android:textSize="18sp" />
 
                     <EditText
                         android:id="@+id/your_comment_edit_text"
@@ -173,5 +173,5 @@
             </LinearLayout>
         </ScrollView>
 
-    </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </layout>

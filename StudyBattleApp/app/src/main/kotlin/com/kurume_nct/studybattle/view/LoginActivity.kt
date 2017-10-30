@@ -38,8 +38,10 @@ class LoginActivity : AppCompatActivity(), LoginViewModel.Callback {
 
     private fun toMain2Activity() {
         val intent = Intent(this, Main2Activity::class.java)
-        startActivity(intent)
-        finish()
+        if (unitPer.authenticationKey != "0") {
+            startActivity(intent)
+            finish()
+        }
     }
 
     override fun onLogin(authentication: String) {
@@ -51,6 +53,7 @@ class LoginActivity : AppCompatActivity(), LoginViewModel.Callback {
     override fun toRegisterActivity() {
         val intent = Intent(this, RegistrationActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
     override fun stopButton() {

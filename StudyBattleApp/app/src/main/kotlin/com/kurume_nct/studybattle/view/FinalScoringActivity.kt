@@ -34,7 +34,12 @@ class FinalScoringActivity : AppCompatActivity(), FinalScoringViewModel.Callback
             Log.d("soputionId", "適切ではない")
             finish()
         }
-        binding.finalScoring.getInitData()
+        binding.apply{
+            finalScoring.getInitData()
+            swipeRefreshFinal.setOnRefreshListener {
+                finalScoring.refreshComment(true)
+            }
+        }
     }
 
     override fun getSolutionId() = solution
@@ -42,6 +47,10 @@ class FinalScoringActivity : AppCompatActivity(), FinalScoringViewModel.Callback
     override fun onReset() {
         setResult(FINAL_SCORING_CODE)
         finish()
+    }
+
+    override fun finishedRefresh() {
+        binding.swipeRefreshFinal.isRefreshing = false
     }
 
     override fun enableEditText(boolean: Boolean) {

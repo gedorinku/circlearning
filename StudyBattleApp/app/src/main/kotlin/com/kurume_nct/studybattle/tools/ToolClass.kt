@@ -28,7 +28,7 @@ class ToolClass(val context: Context) {
         return Uri.parse(sb.toString())
     }
 
-    fun onRefreshItemData(){
+    /*fun onRefreshItemData(){
         ServerClient(unitPer.authenticationKey)
                 .getMyItems(unitPer.nowGroup.id)
                 .subscribeOn(Schedulers.io())
@@ -43,5 +43,5 @@ class ToolClass(val context: Context) {
                         }
                     }
                 }
-    }
+    }*/
 }
