@@ -187,8 +187,8 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe {
                                     everyoneComment += (it.displayName + "(" + it.userName + ")" + "\n")
+                                    everyoneComment += ("\t" + comment.text + "\n")
                                 }
-                        everyoneComment += (comment.text + "\n")
                     }
 
                     client

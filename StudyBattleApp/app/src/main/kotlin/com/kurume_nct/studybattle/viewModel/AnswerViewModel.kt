@@ -170,7 +170,7 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe {
                                         comment += (it.displayName + "(" + it.userName + ")" + "\n")
-                                        comment += (comment1.text + "\n")
+                                        comment += ("\t" + comment1.text + "\n")
                                     }
                     }
                     lastCommentIndex = it.assumedSolution.comments.size

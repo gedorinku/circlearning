@@ -176,8 +176,8 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe {
                                     everyoneComment += (it.displayName + "(" + it.userName + ")" + "\n")
+                                    everyoneComment += ("\t" + comment.text + "\n")
                                 }
-                        everyoneComment += (comment.text + "\n")
                     }
                     client
                             .getImageById(it.imageIds[0])
