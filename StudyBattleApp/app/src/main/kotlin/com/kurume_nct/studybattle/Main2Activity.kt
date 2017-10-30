@@ -49,6 +49,7 @@ class Main2Activity : AppCompatActivity() {
     private var tabLayout: TabLayout? = null
     private lateinit var mainPagerAdapter: MainPagerAdapter
     private lateinit var userIcon: Uri
+    private var stopButton = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +64,7 @@ class Main2Activity : AppCompatActivity() {
 
         toolbar?.inflateMenu(R.menu.toolbar_menu)
 
+        stopButton = true
         listenPermission()
         getUserInformation()
 
@@ -70,14 +72,8 @@ class Main2Activity : AppCompatActivity() {
 
     }
 
-   /* override fun onStart() {
-        super.onStart()
-        fab = findViewById(R.id.fab)
-        listenPermission()
-        getUserInformation()
-    }*/
-
     private fun getUserInformation() {
+        stopButton = true
         progressDialog = ProgressDialogTool(this).makeDialog()
         progressDialog.show()
         Log.d("getUserInfo", "")
@@ -93,8 +89,11 @@ class Main2Activity : AppCompatActivity() {
                     getMyGroup()
                 }, {
                     if (progressDialog.isShowing) progressDialog.dismiss()
-                    //TODO　アプリ再起動
-                    Toast.makeText(this, "Userの情報取得に失敗しました." + "アプリを再起動します", Toast.LENGTH_SHORT).show()
+                    stopButton = false
+                    Toast.makeText(this, "Loginしなおしてください", Toast.LENGTH_SHORT).show()
+                    Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 })
     }
 
@@ -163,7 +162,9 @@ class Main2Activity : AppCompatActivity() {
                 }, {
                     if (progressDialog.isShowing) progressDialog.dismiss()
                     Log.d("Groupの情報を取得するのに失敗", "")
-                    Toast.makeText(this, "アプリを立ち上げなおしてください", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Groupの情報がありません", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, LoginActivity::class.java))
+                    finish()
                 })
     }
 
@@ -172,6 +173,7 @@ class Main2Activity : AppCompatActivity() {
         initOnTabLayout()
         onNavigationDrawer(userIcon)
         onToolBar()
+        stopButton = false
         Log.d(unitPer.myInfomation.id.toString(), "ユーザーID")
     }
 
@@ -184,7 +186,8 @@ class Main2Activity : AppCompatActivity() {
     private fun onToolBar() {
 
         fab.setOnClickListener {
-            startActivity(Intent(this, CreateProblemActivity::class.java))
+            if (!stopButton)
+                startActivity(Intent(this, CreateProblemActivity::class.java))
         }
 
         if (toolbar == null) toolbar = findViewById(R.id.toolbar) as Toolbar
@@ -194,14 +197,16 @@ class Main2Activity : AppCompatActivity() {
         toolbar?.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.to_item -> {
-                    startActivity(Intent(this, ItemInfoActivity::class.java))
+                    if (!stopButton)
+                        startActivity(Intent(this, ItemInfoActivity::class.java))
                 }
                 R.id.to_ranking -> {
-                    startActivity(Intent(this, RankingActivity::class.java))
+                    if (!stopButton)
+                        startActivity(Intent(this, RankingActivity::class.java))
                 }
                 R.id.to_change_member -> {
                     val intent = Intent(this, GroupSetChangeActivity::class.java)
-                    startActivityForResult(intent, 0)
+                    if (!stopButton) startActivityForResult(intent, 0)
                 }
             }
             false
@@ -273,11 +278,15 @@ class Main2Activity : AppCompatActivity() {
                     //positionが1indexなので注意。
                     if (position == unitPer.myGroupList.size) {
                         intent = Intent(this, CreateGroupActivity::class.java)
-                        startActivity(intent)
+                        if (!stopButton) startActivity(intent)
                     } else {
-                        unitPer.nowGroup = unitPer.myGroupList[position - 1]
-                        onToolBar()
-                        onTabLayout()
+                        if (!stopButton) {
+                            unitPer.nowGroup = unitPer.myGroupList[position - 1]
+                            onToolBar()
+                            onTabLayout()
+                        } else {
+                            Toast.makeText(this, "処理中です。少し待ってもう一度お試しください。", Toast.LENGTH_SHORT).show()
+                        }
                     }
                     false
                 }

@@ -259,18 +259,19 @@ class CameraModeActivity : Activity() {
                             )
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                }.subscribe({
-            randomItem = it.itemId
-            progress.dismiss()
-            val intent = Intent(this, LotteryActivity::class.java)
-            intent.putExtra("item", randomItem)
-            startActivity(intent)
-            finish()
-        }, {
-            progress.dismiss()
-            it.printStackTrace()
-            Toast.makeText(this, "解答提出に失敗しました。ネット環境を確認してください。", Toast.LENGTH_SHORT).show()
-        })
+                }
+                .subscribe({
+                    randomItem = it.itemId
+                    progress.dismiss()
+                    val intent = Intent(this, LotteryActivity::class.java)
+                    intent.putExtra("item", randomItem)
+                    startActivity(intent)
+                    finish()
+                }, {
+                    progress.dismiss()
+                    it.printStackTrace()
+                    Toast.makeText(this, "解答提出に失敗しました。ネット環境を確認してください。", Toast.LENGTH_SHORT).show()
+                })
     }
 
     private fun getItemData() {
@@ -535,18 +536,21 @@ class CameraModeActivity : Activity() {
                 .openProblem(problemId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
+                .subscribe ({
                     actionSignal = it.openAction
                     when (actionSignal) {
                         ProblemOpenAction.NONE -> {
-                            Toast.makeText(this, "爆弾はついてません", Toast.LENGTH_SHORT)
+                            Log.d("爆弾はついてません", "at make solution.")
                         }
                         else -> {
                             onBombDialog()
                         }
                     }
 
-                }
+                },{
+                    Toast.makeText(this, "bombがついているかわかりませんでした" , Toast.LENGTH_SHORT).show()
+                    it.printStackTrace()
+                })
     }
 
 }
