@@ -225,6 +225,7 @@ interface Server {
             @Query("groupId") groupId: Int
     ): Observable<Ranking>
 
+    @FormUrlEncoded
     @POST("/comment/create")
     fun createComment(
             @Field("authenticationKey") authenticationKey: String,
