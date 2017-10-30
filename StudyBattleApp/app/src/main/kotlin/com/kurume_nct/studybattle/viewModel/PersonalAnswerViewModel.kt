@@ -40,7 +40,7 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
         @JvmStatic
         fun setIconImage(view: ImageView, uri: Uri?) {
             if (uri == null) {
-                Glide.with(view).load(R.drawable.no_image).into(view)//loadの中にresourceを入れたらtestできる
+                //Glide.with(view).load(R).into(view)//loadの中にresourceを入れたらtestできる
             } else {
                 Glide.with(view).load(uri).into(view)
             }
@@ -91,7 +91,7 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
         }
 
     @Bindable
-    var imageClickable = false
+    var imageClickable = true
         set(value) {
             field = value
             notifyPropertyChanged(BR.imageClickAble)
@@ -204,7 +204,6 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
         } else {
             callback.enableEditText(true)
             commentButtonText = addText
-            writeNow = true
             true
         }
     }

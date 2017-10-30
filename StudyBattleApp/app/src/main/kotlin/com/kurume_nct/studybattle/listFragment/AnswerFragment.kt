@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -44,13 +45,11 @@ class AnswerFragment : Fragment() {
     private val FIN_ANS = 3
     private val CHECK_ANS_FALSE = 5
 
-    fun newInstance(fin: Int, problemId: Int, problemUrl: String, problemTitle: String): AnswerFragment {
+    fun newInstance(fin: Int, problemId: Int): AnswerFragment {
         val fragment = AnswerFragment()
         val args = Bundle()
         args.putInt("fin", fin)//true -> all finished problem
         args.putInt("problemId", problemId)
-        args.putString("url", problemUrl)
-        args.putString("title", problemTitle)
         fragment.arguments = args
         return fragment
     }
@@ -63,12 +62,8 @@ class AnswerFragment : Fragment() {
         client = ServerClient(unitPer.authenticationKey)
         unitPer = activity.application as UnitPersonal
         problemId = arguments.getInt("problemId")
-        var title = ""
-        var url = ""
         arguments.apply {
             fin = getInt("fin")
-            title = getString("title")
-            url = getString("url")
         }
         binding = FragmentAnswerListBinding.inflate(inflater, container, false)
         listAdapter = AnswerRecyclerViewAdapter(context, solutionList, { position: Int ->
@@ -76,7 +71,6 @@ class AnswerFragment : Fragment() {
                 CHECK_ANS -> {
                     val intent = Intent(context, ScoringActivity::class.java)
                     intent.putExtra("solutionId", solutionList[position].solution.id)
-                    Log.d("解答のIDは", solutionList[position].solution.id.toString())
                     intent.putExtra("position", position)
                     startActivity(intent)
                 }
@@ -84,15 +78,11 @@ class AnswerFragment : Fragment() {
                     val intent = Intent(context, PersonalAnswerActivity::class.java)
                     intent.putExtra("solutionId", solutionList[position].solution.id)
                     intent.putExtra("fin", false)
-                    intent.putExtra("url", url)
-                    intent.putExtra("title", title)
                     startActivity(intent)
                 }
                 YET_FINAL_ANS -> {
                     val intent = Intent(context, FinalScoringActivity::class.java)
                     intent.putExtra("solutionId", solutionList[position].solution.id)
-                    intent.putExtra("url", url)
-                    intent.putExtra("title", title)
                     //startActivityForResult(intent, position)
                     startActivity(intent)
                 }
@@ -100,19 +90,20 @@ class AnswerFragment : Fragment() {
                     val intent = Intent(context, PersonalAnswerActivity::class.java)
                     intent.putExtra("solutionId", solutionList[position].solution.id)
                     intent.putExtra("fin", true)
-                    intent.putExtra("url", url)
-                    intent.putExtra("title", title)
                     startActivity(intent)
                 }
             }
         })
         binding.answersList.adapter = listAdapter
-        binding.answersList.layoutManager = GridLayoutManager(binding.answersList.context, mColumnCount)
+        binding.answersList.layoutManager = GridLayoutManager(binding.answersList.context, mColumnCount) as RecyclerView.LayoutManager?
         getProblemData()
         return binding.root
     }
 
-    private fun getProblemData() {
+    fun getProblemData() {
+        val solutionListSize = solutionList.size
+        solutionList.clear()
+        listAdapter.notifyItemRangeRemoved(0, solutionListSize)
         client
                 .getProblem(problemId)
                 .flatMap {

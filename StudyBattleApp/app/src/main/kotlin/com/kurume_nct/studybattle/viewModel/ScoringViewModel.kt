@@ -106,6 +106,7 @@ class ScoringViewModel(val context: Context, val callback: Callback) : BaseObser
         setInit()
                 .getSolution(callback.getSolution())
                 .flatMap {
+                    solution = it.id
                     if (it.judged) {
                         if (radioCorrect) radioCorrect = true
                         else radioMiss = true
@@ -147,7 +148,7 @@ class ScoringViewModel(val context: Context, val callback: Callback) : BaseObser
     fun sendData(correct: Boolean) {
         setInit()
                 .judgeSolution(solution, correct)
-                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     callback.onFinish()

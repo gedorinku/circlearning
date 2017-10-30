@@ -43,12 +43,10 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
     }
 
     override fun enableEditText(boolean: Boolean) {
-        binding.commentEdit.visibility.let {
-            if (boolean) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
+        if (boolean)
+            binding.commentEdit.visibility = View.VISIBLE
+        else {
+            binding.commentEdit.visibility = View.GONE
         }
     }
 
