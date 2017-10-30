@@ -75,7 +75,7 @@ class Main2Activity : AppCompatActivity() {
     private fun getUserInformation() {
         stopButton = true
         progressDialog = ProgressDialogTool(this).makeDialog()
-        progressDialog.show()
+        if(!progressDialog.isShowing)progressDialog.show()
         Log.d("getUserInfo", "")
         val client = ServerClient(unitPer.authenticationKey)
         client
@@ -91,6 +91,7 @@ class Main2Activity : AppCompatActivity() {
                     if (progressDialog.isShowing) progressDialog.dismiss()
                     stopButton = false
                     Toast.makeText(this, "Loginしなおしてください", Toast.LENGTH_SHORT).show()
+                    unitPer.deleteFile()
                     Intent(this, LoginActivity::class.java)
                     startActivity(intent)
                     finish()
@@ -163,6 +164,7 @@ class Main2Activity : AppCompatActivity() {
                     if (progressDialog.isShowing) progressDialog.dismiss()
                     Log.d("Groupの情報を取得するのに失敗", "")
                     Toast.makeText(this, "Groupの情報がありません", Toast.LENGTH_SHORT).show()
+                    unitPer.deleteFile()
                     startActivity(Intent(this, LoginActivity::class.java))
                     finish()
                 })
