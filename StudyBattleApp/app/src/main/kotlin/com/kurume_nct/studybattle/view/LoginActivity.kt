@@ -51,6 +51,7 @@ class LoginActivity : AppCompatActivity(), LoginViewModel.Callback {
     override fun toRegisterActivity() {
         val intent = Intent(this, RegistrationActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
     override fun stopButton() {
