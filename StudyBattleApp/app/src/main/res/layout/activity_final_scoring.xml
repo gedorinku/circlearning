@@ -30,7 +30,7 @@
                     android:layout_weight="1"
                     android:background="@color/md_cyan_500"
                     android:gravity="center"
-                    android:text="みんなで答え合わせ"
+                    android:text="答え合わせ"
                     android:textColor="@color/md_dark_primary_text"
                     android:textSize="24sp" />
 
