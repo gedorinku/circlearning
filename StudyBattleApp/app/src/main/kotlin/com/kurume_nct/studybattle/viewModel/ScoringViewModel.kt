@@ -103,10 +103,6 @@ class ScoringViewModel(val context: Context, val callback: Callback) : BaseObser
     }
 
     fun onCreate() {
-        callback.getProblem().apply {
-            problemName = first
-            problemUrl = second
-        }
         setInit()
                 .getSolution(callback.getSolution())
                 .flatMap {
@@ -114,6 +110,7 @@ class ScoringViewModel(val context: Context, val callback: Callback) : BaseObser
                         if (radioCorrect) radioCorrect = true
                         else radioMiss = true
                     }
+                    if(it.imageCount > 0)
                     setInit()
                             .getImageById(it.imageIds[0])
                             .subscribeOn(Schedulers.io())
@@ -122,13 +119,29 @@ class ScoringViewModel(val context: Context, val callback: Callback) : BaseObser
                                 answerUrl = it.url
                             }
                     setInit()
+                            .getProblem(it.problemId)
+                            .flatMap {
+                                problemName = it.title
+                                setInit()
+                                        .getImageById(it.imageIds[0])
+                            }
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                problemUrl = it.url
+                            },{
+                                it.printStackTrace()
+                            })
+                    setInit()
                             .getUser(it.authorId)
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
+                .subscribe ({
                     solver = it.displayName + "(" + it.userName + ")"
-                }
+                },{
+                    it.printStackTrace()
+                })
     }
 
     fun sendData(correct: Boolean) {

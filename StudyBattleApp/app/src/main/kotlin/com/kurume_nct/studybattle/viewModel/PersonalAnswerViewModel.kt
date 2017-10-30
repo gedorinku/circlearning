@@ -148,6 +148,9 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                             solution = it
                         }
                     }
+                    if(solution.judged){
+
+                    }
                     //solutionが見つからないと爆発する。
                     client.apply {
                         getUser(solution.authorId)
@@ -268,5 +271,6 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
 
         fun finishedRefresh()
 
+        //fun getFin(): Int
     }
 }

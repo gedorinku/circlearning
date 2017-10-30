@@ -70,19 +70,15 @@ class AnswerFragment : Fragment() {
             title = getString("title")
             url = getString("url")
         }
-
-        getProblemData()
-
         binding = FragmentAnswerListBinding.inflate(inflater, container, false)
         listAdapter = AnswerRecyclerViewAdapter(context, solutionList, { position: Int ->
             when (fin) {
                 CHECK_ANS -> {
                     val intent = Intent(context, ScoringActivity::class.java)
                     intent.putExtra("solutionId", solutionList[position].solution.id)
+                    Log.d("解答のIDは", solutionList[position].solution.id.toString())
                     intent.putExtra("position", position)
-                    intent.putExtra("url", url)
-                    intent.putExtra("title", title)
-                    startActivityForResult(intent, position)
+                    startActivity(intent)
                 }
                 YET_ANS -> {
                     val intent = Intent(context, PersonalAnswerActivity::class.java)
@@ -97,7 +93,8 @@ class AnswerFragment : Fragment() {
                     intent.putExtra("solutionId", solutionList[position].solution.id)
                     intent.putExtra("url", url)
                     intent.putExtra("title", title)
-                    startActivityForResult(intent, position)
+                    //startActivityForResult(intent, position)
+                    startActivity(intent)
                 }
                 FIN_ANS -> {
                     val intent = Intent(context, PersonalAnswerActivity::class.java)
@@ -111,6 +108,7 @@ class AnswerFragment : Fragment() {
         })
         binding.answersList.adapter = listAdapter
         binding.answersList.layoutManager = GridLayoutManager(binding.answersList.context, mColumnCount)
+        getProblemData()
         return binding.root
     }
 
@@ -130,6 +128,7 @@ class AnswerFragment : Fragment() {
                 .toList()
                 .subscribe { it ->
                     it.forEachIndexed { index, user -> solutionList[index].name = user.displayName }
+                    listAdapter.notifyItemRangeInserted(0,solutionList.size)
                 }
     }
 
