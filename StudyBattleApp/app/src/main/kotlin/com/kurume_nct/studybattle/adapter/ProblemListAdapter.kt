@@ -16,9 +16,6 @@ class ProblemListAdapter(context: Context, val list: MutableList<Problem>, val c
     : RecyclerView.Adapter<ProblemListAdapter.ProblemListHolder>(){
 
     override fun onBindViewHolder(holder: ProblemListHolder, position: Int) {
-        if(list[position].text == ""){
-            //holder.binding.setVariable()
-        }
         holder.binding.setVariable(BR.Item, list[position])
     }
 
@@ -43,7 +40,5 @@ class ProblemListAdapter(context: Context, val list: MutableList<Problem>, val c
     }
 
     override fun getItemCount(): Int = list.size
-
-    fun itemId(position: Int) = list[position].id
 
 }

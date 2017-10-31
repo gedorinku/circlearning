@@ -54,8 +54,6 @@ class MainListFragment(val callback: Callback) : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         tabId = arguments.getInt("id")
-        /*unitPersonal = activity.application as UnitPersonal
-        onRefreshList()*/
     }
 
     fun onRefreshList() {
