@@ -71,6 +71,7 @@ dependencies {
     kapt 'com.android.databinding:compiler:2.3.3'
 
     compile 'com.google.firebase:firebase-core:11.0.4'
+    compile 'com.google.firebase:firebase-crash:11.0.4'
 
 }
 
