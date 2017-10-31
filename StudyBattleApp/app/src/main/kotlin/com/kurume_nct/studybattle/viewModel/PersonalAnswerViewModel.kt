@@ -78,7 +78,7 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
         }
 
     @Bindable
-    var correctPersonal = "正解"
+    var correctPersonal = ""
         set(value) {
             field = value
             notifyPropertyChanged(BR.correctPersonal)

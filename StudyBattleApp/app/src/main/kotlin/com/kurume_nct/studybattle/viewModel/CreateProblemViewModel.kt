@@ -163,8 +163,6 @@ class CreateProblemViewModel(private val context: Context, private val callback:
         val dialogClass = ProgressDialogTool(context)
         val dialog = dialogClass.makeDialog()
         dialog.show()
-        val toast = Toast.makeText(context, "問題作成中・・・⏰", Toast.LENGTH_SHORT)
-        toast.show()
         callback.onNotClickableButtons()
 
         val client = ServerClient(callback.getKey())
@@ -208,7 +206,6 @@ class CreateProblemViewModel(private val context: Context, private val callback:
                                         })
                             }, {
                                 dialog.dismiss()
-                                toast.cancel()
                                 callback.onClickableButtons()
                                 it.printStackTrace()
                             })
