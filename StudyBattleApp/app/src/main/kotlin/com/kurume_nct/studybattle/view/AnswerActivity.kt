@@ -30,10 +30,10 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
         super.onCreate(savedInstanceState)
         Log.d("i'm ", javaClass.name)
         unit = application as UnitPersonal
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_answer)
-        binding.viewModel = AnswerViewModel(this, this)
         mFin = intent.getIntExtra("fin", 0)
         mProblemId = intent.getIntExtra("problemId", -1)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_answer)
+        binding.viewModel = AnswerViewModel(this, this)
 
         if (mProblemId == -1) {
             Log.d("ProblemId", "ばぐ")

@@ -76,6 +76,7 @@ class AnswerFragment : Fragment() {
                 }
                 YET_ANS -> {
                     val intent = Intent(context, PersonalAnswerActivity::class.java)
+                    intent.putExtra("switch", "s")
                     intent.putExtra("solutionId", solutionList[position].solution.id)
                     intent.putExtra("fin", false)
                     startActivity(intent)
@@ -88,6 +89,7 @@ class AnswerFragment : Fragment() {
                 }
                 FIN_ANS -> {
                     val intent = Intent(context, PersonalAnswerActivity::class.java)
+                    intent.putExtra("switch", "s")
                     intent.putExtra("solutionId", solutionList[position].solution.id)
                     intent.putExtra("fin", true)
                     startActivity(intent)

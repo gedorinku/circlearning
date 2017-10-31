@@ -70,7 +70,7 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:text="@{viewModel.solver}"
-                    android:textSize="13sp" />
+                    android:textSize="18sp" />
 
                 <ImageButton
                     android:id="@+id/problem_image_at_score"

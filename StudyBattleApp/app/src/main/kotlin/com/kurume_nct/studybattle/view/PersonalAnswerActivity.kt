@@ -15,6 +15,7 @@ import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.ActivityPersonalAnswerBinding
 import com.kurume_nct.studybattle.model.Problem
+import com.kurume_nct.studybattle.model.Solution
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.viewModel.PersonalAnswerViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -24,8 +25,10 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
 
     private lateinit var binding: ActivityPersonalAnswerBinding
     private lateinit var unitPer: UnitPersonal
+    private var switch = ""
     private var problemId = 0
     private var situationId = false
+    private var otherSolution: Solution = Solution()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,9 +36,24 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
         binding = DataBindingUtil.setContentView(this, R.layout.activity_personal_answer)
         binding.personalAnswer = PersonalAnswerViewModel(this, this)
         unitPer = application as UnitPersonal
-        problemId = intent.getIntExtra("problemId", 0)
+        switch = intent.getStringExtra("switch")
         situationId = intent.getBooleanExtra("fin", false)
-        binding.personalAnswer.getInitData()
+        if(switch == "s"){
+            ServerClient(unitPer.authenticationKey)
+                    .getSolution(intent.getIntExtra("solutionId", -1))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        otherSolution = it
+                        problemId = it.problemId
+                        binding.personalAnswer.getInitData()
+                    },{
+                        Log.d("po","つらい")
+                    })
+        }else{
+            problemId = intent.getIntExtra("problemId", 0)
+            binding.personalAnswer.getInitData()
+        }
         binding.apply {
             commentEdit.visibility = View.GONE
             swipeRefreshPersonal.setOnRefreshListener {
@@ -61,6 +79,10 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
     override fun judgeYet() {
         binding.currentPersonalText.visibility = View.GONE
     }
+
+    override fun getSolution(): Solution = otherSolution
+
+    override fun getSwitch(): String = switch
 
     override fun changeColor() {
         binding.currentPersonalText.setTextColor(Color.BLUE)

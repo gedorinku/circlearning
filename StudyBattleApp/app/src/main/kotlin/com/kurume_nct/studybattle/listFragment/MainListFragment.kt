@@ -185,12 +185,14 @@ class MainListFragment(val callback: Callback) : Fragment() {
                         }
                         resources.getInteger(R.integer.SUBMIT_YET) -> {
                             intent = Intent(context, PersonalAnswerActivity::class.java)
+                            intent.putExtra("switch", "p")
                             intent.putExtra("fin", false)
                             intent.putExtra("problemId", problemList[position].id)
                             startActivity(intent)
                         }
                         resources.getInteger(R.integer.SUBMIT_FIN) -> {
                             intent = Intent(context, PersonalAnswerActivity::class.java)
+                            intent.putExtra("switch", "p")
                             intent.putExtra("fin", true)
                             intent.putExtra("problemId", problemList[position].id)
                             startActivity(intent)

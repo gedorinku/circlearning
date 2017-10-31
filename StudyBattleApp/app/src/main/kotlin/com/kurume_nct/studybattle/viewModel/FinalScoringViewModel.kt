@@ -28,7 +28,6 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
 
     private var url = ""
     private var problemUrl = ""
-    private var problemTitle = ""
     private var writeNow = false
     private val addText = "+コメントを追加"
     private val confirmText = "+コメントを送信"
@@ -47,6 +46,13 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
                 Glide.with(view).load(uri).into(view)
             }
         }
+    }
+
+    @Bindable
+    var problemTitle = ""
+    set(value) {
+        field = value
+        notifyPropertyChanged(BR.problemTitle)
     }
 
     @Bindable
@@ -74,7 +80,7 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
         }
 
     @Bindable
-    var correctPersonal = "正解"
+    var correctPersonal = ""
         set(value) {
             field = value
             notifyPropertyChanged(BR.correctPersonal)
@@ -153,11 +159,15 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
                 .getSolution(callback.getSolutionId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .flatMap {
+                .subscribe({
                     solution = it
                     if (it.accepted) {
+                        correctPersonal = "正解"
                         correct = true
                         radioCorrect = true
+                    } else {
+                        correctPersonal = "間違え"
+                        callback.changeTextColor()
                     }
                     client.apply {
                         getUser(it.authorId)
@@ -191,16 +201,18 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
                                 }
                     }
 
-                    client
-                            .getImageById(it.imageIds[0])
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                }
-                .subscribe({
-                    url = it.url
-                    personalAnswerUri = Uri.parse(url)
-                    imageClickAble = true
+                    if (it.imageCount > 0)
+                        client
+                                .getImageById(it.imageIds[0])
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe {
+                                    url = it.url
+                                    personalAnswerUri = Uri.parse(url)
+                                    imageClickAble = true
+                                }
                 }, {
+                    it.printStackTrace()
                     failAction()
                 })
     }
@@ -245,7 +257,7 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
                 .getSolution(callback.getSolutionId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe ({
+                .subscribe({
                     solution = it
                     it.comments.forEachIndexed { index, comment ->
                         if (lastCommentIndex <= index)
@@ -255,12 +267,12 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe {
                                         everyoneComment += ("\n" + it.displayName + "(" + it.userName + ")" + "\n")
-                                        everyoneComment += ("\t" +comment.text + "\n")
+                                        everyoneComment += ("\t" + comment.text + "\n")
                                     }
                     }
                     lastCommentIndex = solution.comments.size
                     if (boolean) callback.finishedRefresh()
-                },{
+                }, {
                     it.printStackTrace()
                     Toast.makeText(context, "ネット環境の確認をお願いします。", Toast.LENGTH_SHORT).show()
                     if (boolean) callback.finishedRefresh()
@@ -283,5 +295,7 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
         fun enableEditText(boolean: Boolean)
 
         fun finishedRefresh()
+
+        fun changeTextColor()
     }
 }

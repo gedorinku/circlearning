@@ -144,9 +144,13 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap {
                     //find owner solution.
-                    it.solutions.forEach {
-                        if (it.authorId == unitPer.myInfomation.id) {
-                            solution = it
+                    if ("s" == callback.getSwitch()) {
+                        solution = callback.getSolution()
+                    } else {
+                        it.solutions.forEach {
+                            if (it.authorId == unitPer.myInfomation.id) {
+                                solution = it
+                            }
                         }
                     }
                     if (!solution.judged) {
@@ -163,19 +167,19 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                                 .subscribe {
                                     ansCreatorName = it.displayName + "(" + it.userName + ")"
                                 }
-                        if(solution.imageCount > 0)
-                        client
-                                .getImageById(solution.imageIds[0])
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe ({
-                                    url = it.url
-                                    personalAnswerUri = Uri.parse(url)
-                                    imageClickable = true
-                                    Log.d("解答のimage", "は存。")
-                                },{
-                                    Log.d("解答のimage", "は存在します。")
-                                })
+                        if (solution.imageCount > 0)
+                            client
+                                    .getImageById(solution.imageIds[0])
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe({
+                                        url = it.url
+                                        personalAnswerUri = Uri.parse(url)
+                                        imageClickable = true
+                                        Log.d("解答のimage", "は存。")
+                                    }, {
+                                        Log.d("解答のimage", "は存在します。")
+                                    })
                         else
                             Log.d("解答のimage", "は存在しないです。")
                     }
@@ -198,7 +202,8 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                     problemUrl = it.url
                     personalProblemUri = Uri.parse(problemUrl)
                 }, {
-                    callback.onFinish()
+                    //callback.onFinish()
+                    it.printStackTrace()
                 })
     }
 
@@ -279,6 +284,10 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
         fun judgeYet()
 
         fun changeColor()
-        //fun getFin(): Int
+
+        fun getSwitch(): String
+
+        fun getSolution(): Solution
+
     }
 }
