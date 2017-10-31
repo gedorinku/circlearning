@@ -176,14 +176,15 @@ interface Server {
             @Query("problemId") problemId: Int
     ): Observable<ProblemOpenResponse>
 
-    @FormUrlEncoded
     @POST("/solution/create")
+    @Headers(
+            "Accept: application/JSON",
+            "Content-type: application/JSON",
+            "Data-Type: JSON",
+            "Script-Charset: utf-8"
+    )
     fun createSolution(
-            @Field("authenticationKey") authenticationKey: String,
-            @Field("text") text: String,
-            @Field("problemId") problemId: Int,
-            @Field("imageIds[]") imageIds: IntArray,
-            @Field("attachedItemId") attachedItemId: Int
+            @Body body: String
     ): Observable<IDResponse>
 
     @FormUrlEncoded

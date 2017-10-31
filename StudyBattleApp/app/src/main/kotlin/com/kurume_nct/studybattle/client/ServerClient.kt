@@ -199,7 +199,16 @@ class ServerClient(authenticationKey: String = "") {
 
     fun createSolution(
             text: String, problemId: Int, imageIds: List<Int>, item: Item
-    ): Observable<IDResponse> = server.createSolution(authenticationKey, text, problemId, imageIds.toIntArray(), item.id)
+    ): Observable<IDResponse> {
+        val gson = Gson()
+        val values = mapOf("authenticationKey" to authenticationKey,
+                "text" to text,
+                "problemId" to problemId,
+                "imageIds" to imageIds,
+                "attachedItemId" to item.id)
+        val body = gson.toJson(values)
+        return server.createSolution(body)
+    }
 
     fun getSolution(solution: Solution) = getSolution(solution.id)
 
