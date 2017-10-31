@@ -69,6 +69,9 @@ dependencies {
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0-RC1'
     kapt 'com.android.databinding:compiler:2.3.3'
+
+    compile 'com.google.firebase:firebase-core:11.0.4'
+
 }
 
-
+apply plugin: 'com.google.gms.google-services'
