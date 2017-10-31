@@ -27,21 +27,4 @@ class ToolClass(val context: Context) {
         sb.append(context.resources.getResourceEntryName(drawableResId))
         return Uri.parse(sb.toString())
     }
-
-    /*fun onRefreshItemData(){
-        ServerClient(unitPer.authenticationKey)
-                .getMyItems(unitPer.nowGroup.id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    it.forEach {
-                        when(it.id){
-                            1 -> unitPer.itemCount.bomb = it.count
-                            2 -> unitPer.itemCount.shield= it.count
-                            3 -> unitPer.itemCount.card = it.count
-                            4 -> unitPer.itemCount.magicHand = it.count
-                        }
-                    }
-                }
-    }*/
 }

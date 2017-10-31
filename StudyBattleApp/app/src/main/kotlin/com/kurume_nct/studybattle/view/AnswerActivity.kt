@@ -40,10 +40,12 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
             onError()
         }
 
+        val fragment = AnswerFragment().newInstance(mFin, mProblemId)
+
         supportFragmentManager.beginTransaction()
-                .replace(R.id.answers_fragment,
-                        AnswerFragment().newInstance(mFin, mProblemId, problemTitle, problemUrl))
+                .replace(R.id.answers_fragment,fragment)
                 .commit()
+
         if (mFin != 3) {
             binding.problemScoreAnsText.visibility = View.GONE
         }
@@ -54,6 +56,7 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
 
         binding.swipeRefreshAnswer.setOnRefreshListener {
             binding.viewModel.refreshComment(true)
+            fragment.getProblemData()
         }
 
     }

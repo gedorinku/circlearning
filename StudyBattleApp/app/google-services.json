@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "977541838723",
+    "firebase_url": "https://cirlearning-1554b.firebaseio.com",
+    "project_id": "cirlearning-1554b",
+    "storage_bucket": "cirlearning-1554b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:977541838723:android:476942f6998bb985",
+        "android_client_info": {
+          "package_name": "com.kurume_nct.study_battle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "977541838723-dndd5iu3m9h4p9cvie1hp1lftle73ak4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kurume_nct.study_battle",
+            "certificate_hash": "18ed5703265c070f9e2ec1f69e9c6ec2e998c883"
+          }
+        },
+        {
+          "client_id": "977541838723-b8dcgdum62gnt1eudh4sglrfv5ivjnro.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2FioA8zcxLC0zGXZI4CQ53UnZT52EO38"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "977541838723-b8dcgdum62gnt1eudh4sglrfv5ivjnro.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
