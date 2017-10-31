@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.kurume_nct.studybattle.model.*
 import io.reactivex.Observable
+import io.reactivex.Single
 import okhttp3.*
 import org.joda.time.DateTime
 import org.joda.time.Duration
@@ -94,30 +95,35 @@ class ServerClient(authenticationKey: String = "") {
 
     fun getJoinedGroups() = server.getJoinedGroups(authenticationKey)
 
-    fun uploadImage(inputStream: InputStream, type: String): Observable<Image> {
-        val bytes = inputStream.use {
-            val buffer = mutableListOf<Byte>()
-            while (true) {
-                val temp = it.read()
-                if (temp == -1) {
-                    break
+    fun uploadImage(inputStream: InputStream, type: String): Observable<Image> =
+            Single.fromCallable {
+                val bytes = inputStream.use {
+                    val buffer = mutableListOf<Byte>()
+                    while (true) {
+                        val temp = it.read()
+                        if (temp == -1) {
+                            break
+                        }
+                        buffer.add(temp.toByte())
+                    }
+                    buffer.toByteArray()
                 }
-                buffer.add(temp.toByte())
-            }
-            buffer.toByteArray()
-        }
 
-        val fileExtension = type.substring("image/".length)
-        val imagePart = MultipartBody.Part.create(
-                Headers.of(mapOf("Content-Disposition" to "form-data; name=\"image\"; filename=\"hoge.$fileExtension\"")),
-                RequestBody.create(
-                        MediaType.parse(type),
-                        bytes
+                val fileExtension = type.substring("image/".length)
+                val imagePart = MultipartBody.Part.create(
+                        Headers.of(mapOf("Content-Disposition" to "form-data; name=\"image\"; filename=\"hoge.$fileExtension\"")),
+                        RequestBody.create(
+                                MediaType.parse(type),
+                                bytes
+                        )
                 )
-        )
 
-        return server.uploadImage(imagePart)
-    }
+                imagePart
+            }
+                    .toObservable()
+                    .flatMap {
+                        server.uploadImage(it)
+                    }
 
     fun uploadImage(uri: Uri, context: Context): Observable<Image> {
         val contentResolver = context.contentResolver
