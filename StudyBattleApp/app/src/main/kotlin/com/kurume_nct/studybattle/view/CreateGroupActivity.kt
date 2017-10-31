@@ -39,33 +39,35 @@ class CreateGroupActivity : AppCompatActivity(), CreateGroupViewModel.Callback {
     }
 
     private fun createGroup() {
+        val toast = Toast.makeText(this, "グループ名が適切ではありません", Toast.LENGTH_LONG)
         val client = ServerClient(unitPer.authenticationKey)
         if (!binding.createGroupUnit.groupName.matches("^{2,20}".toRegex())) {
-            Toast.makeText(this, "グループ名が適切ではありません", Toast.LENGTH_LONG).show()
+            toast.show()
             binding.button10.isClickable = true
+        } else {
+            client
+                    .createGroup(binding.createGroupUnit.groupName)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        unitPer.myGroupList.add(it)
+                        for (user in fragment.getPeopleList()) {
+                            client
+                                    .attachToGroup(it, user)
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe { Log.d(user.displayName, it.toString()) }
+                        }
+                        val intent = Intent(this, Main2Activity::class.java)
+                        Toast.makeText(this, "グループの作成に成功", Toast.LENGTH_SHORT).show()
+                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                        startActivity(intent)
+                    }, {
+                        it.printStackTrace()
+                        binding.button10.isClickable = true
+                        Toast.makeText(this, "グループの作成に失敗", Toast.LENGTH_SHORT).show()
+                    })
         }
-        client
-                .createGroup(binding.createGroupUnit.groupName)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    unitPer.myGroupList.add(it)
-                    for (user in fragment.getPeopleList()) {
-                        client
-                                .attachToGroup(it,user)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe {Log.d(user.displayName, it.toString())}
-                    }
-                    val intent = Intent(this, Main2Activity::class.java)
-                    Toast.makeText(this, "グループの作成に成功", Toast.LENGTH_SHORT).show()
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    startActivity(intent)
-                }, {
-                    it.printStackTrace()
-                    binding.button10.isClickable = true
-                    Toast.makeText(this, "グループの作成に失敗", Toast.LENGTH_SHORT).show()
-                })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -92,7 +92,7 @@ class Main2Activity : AppCompatActivity() {
                     stopButton = false
                     Toast.makeText(this, "Loginしなおしてください", Toast.LENGTH_SHORT).show()
                     unitPer.deleteFile()
-                    Intent(this, LoginActivity::class.java)
+                    if(unitPer.authenticationKey == "0")Intent(this, LoginActivity::class.java)
                     startActivity(intent)
                     finish()
                 })
@@ -165,7 +165,7 @@ class Main2Activity : AppCompatActivity() {
                     Log.d("Groupの情報を取得するのに失敗", "")
                     Toast.makeText(this, "Groupの情報がありません", Toast.LENGTH_SHORT).show()
                     unitPer.deleteFile()
-                    startActivity(Intent(this, LoginActivity::class.java))
+                    if(unitPer.authenticationKey == "0")startActivity(Intent(this, LoginActivity::class.java))
                     finish()
                 })
     }
