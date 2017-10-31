@@ -72,10 +72,11 @@ class AnswerFragment : Fragment() {
                     val intent = Intent(context, ScoringActivity::class.java)
                     intent.putExtra("solutionId", solutionList[position].solution.id)
                     intent.putExtra("position", position)
-                    startActivity(intent)
+                    startActivityForResult(intent, 0)
                 }
                 YET_ANS -> {
                     val intent = Intent(context, PersonalAnswerActivity::class.java)
+                    intent.putExtra("switch", "s")
                     intent.putExtra("solutionId", solutionList[position].solution.id)
                     intent.putExtra("fin", false)
                     startActivity(intent)
@@ -83,11 +84,11 @@ class AnswerFragment : Fragment() {
                 YET_FINAL_ANS -> {
                     val intent = Intent(context, FinalScoringActivity::class.java)
                     intent.putExtra("solutionId", solutionList[position].solution.id)
-                    //startActivityForResult(intent, position)
-                    startActivity(intent)
+                    startActivityForResult(intent, position)
                 }
                 FIN_ANS -> {
                     val intent = Intent(context, PersonalAnswerActivity::class.java)
+                    intent.putExtra("switch", "s")
                     intent.putExtra("solutionId", solutionList[position].solution.id)
                     intent.putExtra("fin", true)
                     startActivity(intent)
@@ -119,18 +120,13 @@ class AnswerFragment : Fragment() {
                 .toList()
                 .subscribe { it ->
                     it.forEachIndexed { index, user -> solutionList[index].name = user.displayName }
-                    listAdapter.notifyItemRangeInserted(0,solutionList.size)
+                    listAdapter.notifyItemRangeInserted(0, solutionList.size)
                 }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (data == null) return
-        when (resultCode) {
-            CHECK_ANS_FALSE -> {
-                //refresh list
-            }
-        }
+        getProblemData()
     }
 
     override fun onAttach(context: Context?) {

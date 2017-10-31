@@ -30,10 +30,10 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
         super.onCreate(savedInstanceState)
         Log.d("i'm ", javaClass.name)
         unit = application as UnitPersonal
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_answer)
-        binding.viewModel = AnswerViewModel(this, this)
         mFin = intent.getIntExtra("fin", 0)
         mProblemId = intent.getIntExtra("problemId", -1)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_answer)
+        binding.viewModel = AnswerViewModel(this, this)
 
         if (mProblemId == -1) {
             Log.d("ProblemId", "ばぐ")
@@ -72,6 +72,7 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
 
     override fun onError() {
         Toast.makeText(this, "問題の取得に失敗しました", Toast.LENGTH_SHORT).show()
+        setResult(0)
         finish()
     }
 
@@ -81,5 +82,10 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
 
     override fun finishedRefresh() {
         binding.swipeRefreshAnswer.isRefreshing = false
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        setResult(0)
     }
 }

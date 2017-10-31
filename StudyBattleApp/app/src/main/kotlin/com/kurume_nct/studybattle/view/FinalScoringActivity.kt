@@ -2,6 +2,7 @@ package com.kurume_nct.studybattle.view
 
 import android.content.Context
 import android.databinding.DataBindingUtil
+import android.graphics.Color
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -34,7 +35,7 @@ class FinalScoringActivity : AppCompatActivity(), FinalScoringViewModel.Callback
             Log.d("soputionId", "適切ではない")
             finish()
         }
-        binding.apply{
+        binding.apply {
             finalScoring.getInitData()
             swipeRefreshFinal.setOnRefreshListener {
                 finalScoring.refreshComment(true)
@@ -54,10 +55,14 @@ class FinalScoringActivity : AppCompatActivity(), FinalScoringViewModel.Callback
     }
 
     override fun enableEditText(boolean: Boolean) {
-        if(boolean){
+        if (boolean) {
             binding.yourCommentEditText.visibility = View.VISIBLE
-        }else{
+        } else {
             binding.yourCommentEditText.visibility = View.GONE
         }
+    }
+
+    override fun changeTextColor() {
+        binding.currentPersonalText.setTextColor(Color.BLUE)
     }
 }

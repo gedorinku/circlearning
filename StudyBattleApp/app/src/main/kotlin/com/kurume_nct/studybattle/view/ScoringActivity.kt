@@ -40,7 +40,7 @@ class ScoringActivity : AppCompatActivity(), ScoringViewModel.Callback {
     override fun getSolution() = solutionId
 
     override fun onFinish() {
-        //setResult(5, intent)
+        setResult(5)
         finish()
     }
 }

@@ -122,6 +122,7 @@ public class LotteryActivity extends Activity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                setResult(0);
                 finish();
             }
         }, 2500);
