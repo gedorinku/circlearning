@@ -138,6 +138,11 @@ class MadeCollectYetActivity : AppCompatActivity() {
         return hour.toString() + "時間" + min.toString() + "分"
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        setResult(0)
+    }
+
     private fun setUpPicture(uri: Uri) {
         Glide.with(this).load(uri).into(binding.problemImageView)
     }

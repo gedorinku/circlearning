@@ -262,6 +262,8 @@ class CameraModeActivity : Activity() {
                     val intent = Intent(this, LotteryActivity::class.java)
                     intent.putExtra("item", randomItem)
                     startActivity(intent)
+                    //todo
+                    setResult(0)
                     finish()
                 }, {
                     progress.dismiss()
@@ -302,9 +304,11 @@ class CameraModeActivity : Activity() {
                     val passAlert = AlertDialog.Builder(this)
                     val passView = this.layoutInflater.inflate(R.layout.dialog_pass_sad, null)
                     passView.setOnClickListener {
+                        setResult(0)
                         finish()
                     }
                     passAlert.setOnDismissListener {
+                        setResult(0)
                         finish()
                     }
                     passAlert.setView(passView)

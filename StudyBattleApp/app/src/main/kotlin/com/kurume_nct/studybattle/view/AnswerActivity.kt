@@ -72,6 +72,7 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
 
     override fun onError() {
         Toast.makeText(this, "問題の取得に失敗しました", Toast.LENGTH_SHORT).show()
+        setResult(0)
         finish()
     }
 
@@ -81,5 +82,10 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
 
     override fun finishedRefresh() {
         binding.swipeRefreshAnswer.isRefreshing = false
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        setResult(0)
     }
 }

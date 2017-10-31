@@ -21,4 +21,9 @@ class ItemInfoActivity : AppCompatActivity(), ItemInfoViewModel.Callback {
         binding.viewModelItem = ItemInfoViewModel(this, this)
         binding.viewModelItem.onCreate()
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        setResult(0)
+    }
 }

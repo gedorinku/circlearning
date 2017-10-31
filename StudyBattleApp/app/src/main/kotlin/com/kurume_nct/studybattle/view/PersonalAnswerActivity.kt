@@ -62,6 +62,11 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
         }
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        setResult(0)
+    }
+
     override fun enableEditText(boolean: Boolean) {
         if (boolean)
             binding.commentEdit.visibility = View.VISIBLE
@@ -89,6 +94,7 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
     }
 
     override fun onFinish() {
+        setResult(0)
         finish()
     }
 }
