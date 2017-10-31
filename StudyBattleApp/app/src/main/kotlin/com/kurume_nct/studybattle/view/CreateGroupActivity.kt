@@ -41,10 +41,6 @@ class CreateGroupActivity : AppCompatActivity(), CreateGroupViewModel.Callback {
     private fun createGroup() {
         val toast = Toast.makeText(this, "グループ名が適切ではありません", Toast.LENGTH_LONG)
         val client = ServerClient(unitPer.authenticationKey)
-        if (!binding.createGroupUnit.groupName.matches("^{2,20}".toRegex())) {
-            toast.show()
-            binding.button10.isClickable = true
-        } else {
             client
                     .createGroup(binding.createGroupUnit.groupName)
                     .subscribeOn(Schedulers.io())
@@ -65,9 +61,8 @@ class CreateGroupActivity : AppCompatActivity(), CreateGroupViewModel.Callback {
                     }, {
                         it.printStackTrace()
                         binding.button10.isClickable = true
-                        Toast.makeText(this, "グループの作成に失敗", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "グループ名を変えてもう一度試してみてください", Toast.LENGTH_SHORT).show()
                     })
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
