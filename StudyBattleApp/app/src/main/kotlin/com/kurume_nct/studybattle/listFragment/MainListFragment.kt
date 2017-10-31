@@ -1,5 +1,6 @@
 package com.kurume_nct.studybattle.listFragment
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -23,6 +24,7 @@ import io.reactivex.rxkotlin.mergeAll
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
 
+@SuppressLint("ValidFragment")
 class MainListFragment(val callback: Callback) : Fragment() {
 
     lateinit var binding: FragmentProblemListBinding
@@ -52,8 +54,8 @@ class MainListFragment(val callback: Callback) : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         tabId = arguments.getInt("id")
-        unitPersonal = activity.application as UnitPersonal
-        onRefreshList()
+        /*unitPersonal = activity.application as UnitPersonal
+        onRefreshList()*/
     }
 
     fun onRefreshList() {
@@ -119,6 +121,12 @@ class MainListFragment(val callback: Callback) : Fragment() {
                         Log.d(it.size.toString(), "isNotEmpty" + unitPersonal.nowGroup.id.toString())
                         callback.onStopSwipeRefresh()
                 }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        unitPersonal = activity.application as UnitPersonal
+        onRefreshList()
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
