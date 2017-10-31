@@ -1,7 +1,14 @@
 package com.kurume_nct.studybattle.client
 
+import android.content.ContentUris
 import android.content.Context
+import android.database.Cursor
 import android.net.Uri
+import android.os.Build
+import android.os.Environment
+import android.provider.DocumentsContract
+import android.provider.MediaStore
+import android.util.Log
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -9,16 +16,16 @@ import com.kurume_nct.studybattle.model.*
 import io.reactivex.Observable
 import io.reactivex.Single
 import okhttp3.*
+import okhttp3.logging.HttpLoggingInterceptor
 import org.joda.time.DateTime
 import org.joda.time.Duration
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
 import java.io.InputStream
 import java.lang.reflect.Type
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 
 
 /**
@@ -126,8 +133,18 @@ class ServerClient(authenticationKey: String = "") {
                     }
 
     fun uploadImage(uri: Uri, context: Context): Observable<Image> {
+        val file = File(getPathFromUri(context, uri))
         val contentResolver = context.contentResolver
-        return uploadImage(contentResolver.openInputStream(uri), contentResolver.getType(uri))
+        val type = contentResolver.getType(uri)
+        val imagePart = MultipartBody.Part.create(
+                Headers.of(mapOf("Content-Disposition" to "form-data; name=\"image\"; filename=\"hoge\"")),
+                RequestBody.create(
+                        MediaType.parse(type),
+                        file
+                )
+        )
+
+        return server.uploadImage(imagePart)
     }
 
     fun getImageById(id: Int) = server.getImageById(id)
@@ -237,6 +254,68 @@ class ServerClient(authenticationKey: String = "") {
 
     fun createComment(solutionId: Int, text: String, imageIds: List<Int>, replyTo: Int = 0)
             = server.createComment(authenticationKey, solutionId, text, imageIds.toIntArray(), replyTo)
+
+
+    private fun getPathFromUri(context: Context, uri: Uri): String? {
+        val isAfterKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
+        // DocumentProvider
+        Log.e(javaClass.simpleName, "uri:" + uri.authority)
+        if (isAfterKitKat && DocumentsContract.isDocumentUri(context, uri)) {
+            when {
+                "com.android.externalstorage.documents" == uri.authority -> {// ExternalStorageProvider
+                    val docId = DocumentsContract.getDocumentId(uri)
+                    val split = docId.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                    val type = split[0]
+                    return if ("primary".equals(type, ignoreCase = true)) {
+                        """${Environment.getExternalStorageDirectory()}/${split[1]}"""
+                    } else {
+                        """/stroage/$type/${split[1]}"""
+                    }
+                }
+                "com.android.providers.downloads.documents" == uri.authority -> {// DownloadsProvider
+                    val id = DocumentsContract.getDocumentId(uri)
+                    val contentUri = ContentUris.withAppendedId(
+                            Uri.parse("content://downloads/public_downloads"), java.lang.Long.valueOf(id)!!)
+                    return getDataColumn(context, contentUri, null, null)
+                }
+                "com.android.providers.media.documents" == uri.authority -> {// MediaProvider
+                    val docId = DocumentsContract.getDocumentId(uri)
+                    val split = docId.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                    val type = split[0]
+                    var contentUri: Uri? = null
+                    contentUri = MediaStore.Files.getContentUri("external")
+                    val selection = "_id=?"
+                    val selectionArgs = arrayOf(split[1])
+                    return getDataColumn(context, contentUri, selection, selectionArgs)
+                }
+                else -> {
+                }
+            }
+        } else if ("content".equals(uri.scheme, ignoreCase = true)) {//MediaStore
+            return getDataColumn(context, uri, null, null)
+        } else if ("file".equals(uri.scheme, ignoreCase = true)) {// File
+            return uri.path
+        }
+        return null
+    }
+
+    private fun getDataColumn(context: Context, uri: Uri?, selection: String?,
+                      selectionArgs: Array<String>?): String? {
+        var cursor: Cursor? = null
+        val projection = arrayOf(MediaStore.Files.FileColumns.DATA)
+        try {
+            cursor = context.contentResolver.query(
+                    uri!!, projection, selection, selectionArgs, null)
+            if (cursor != null && cursor.moveToFirst()) {
+                val cindex = cursor.getColumnIndexOrThrow(projection[0])
+                return cursor.getString(cindex)
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close()
+        }
+        return null
+    }
 }
 
 private class StringConverterFactory : Converter.Factory() {
