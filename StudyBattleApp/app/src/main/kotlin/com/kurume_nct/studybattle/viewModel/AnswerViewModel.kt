@@ -9,6 +9,7 @@ import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
@@ -31,7 +32,6 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
     private var writeScoreNow = false
     private val addText = "+コメントを追加"
     private val confirmText = "+コメントを送信"
-    private lateinit var problem: Problem
     private var solutionId = 0
     private var replyTo = 0
     private var lastCommentIndex = 0
@@ -146,23 +146,39 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
                 ).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    comment = ""
                     callback.visibilityEditText(false)
                     yourComment = ""
                     scoreCommentButtonText = addText
-                    problem.assumedSolution.comments.forEachIndexed { index, comment1 ->
+                    refreshComment(false)
+                }
+    }
+
+    fun refreshComment(boolean: Boolean){
+        val unitPer = context.applicationContext as UnitPersonal
+        val client = ServerClient(unitPer.authenticationKey)
+        client
+                .getProblem(callback.getProblemId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe ({
+                    it.assumedSolution.comments.forEachIndexed { index, comment1 ->
                         if (index >= lastCommentIndex)
                             client
                                     .getUser(comment1.authorId)
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe {
-                                        comment += (it.displayName + "(" + it.userName + ")" + "\n")
-                                        comment += (comment1.text + "\n")
+                                        comment += ("\n" + it.displayName + "(" + it.userName + ")" + "\n")
+                                        comment += ("\t" + comment1.text + "\n")
                                     }
                     }
-                    lastCommentIndex = problem.assumedSolution.comments.size
-                }
+                    lastCommentIndex = it.assumedSolution.comments.size
+                    if(boolean)callback.finishedRefresh()
+                },{
+                    it.printStackTrace()
+                    Toast.makeText(context, "ネット環境の確認をお願いします。", Toast.LENGTH_SHORT).show()
+                    if (boolean) callback.finishedRefresh()
+                })
     }
 
     fun onInitDataSet() {
@@ -173,32 +189,31 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    replyTo = it.ownerId
-                    solutionId = it.assumedSolution.id
-                    problem = it
+                    problem ->
+                    replyTo = problem.ownerId
+                    solutionId = problem.assumedSolution.id
                     problemName = problem.title
                     problemScore = " " + problem.point.toString() + "点"
-                    lastCommentIndex = it.assumedSolution.comments.size
-
-                    it.assumedSolution.comments.forEach { it ->
+                    lastCommentIndex = problem.assumedSolution.comments.size
+                    problem.assumedSolution.comments.forEach { comment1 ->
                         client
-                                .getUser(it.authorId)
+                                .getUser(comment1.authorId)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe {
-                                    comment += (it.displayName + "(" + it.userName + ")" + "\n")
+                                    comment += ("\n" + it.displayName + "(" + it.userName + ")" + "\n")
+                                    comment += ("\t" + comment1.text + "\n")
                                 }
-                        comment += (it.text + "\n")
                     }
                     client
-                            .getUser(it.ownerId)
+                            .getUser(problem.ownerId)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe {
                                 masterName = " 作成者:" + it.displayName
                             }
                     client
-                            .getImageById(it.imageIds[0])
+                            .getImageById(problem.imageIds[0])
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe {
@@ -206,7 +221,7 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
                                 problemUri = Uri.parse(it.url)
                             }
                     client
-                            .getImageById(it.assumedSolution.imageIds[0])
+                            .getImageById(problem.assumedSolution.imageIds[0])
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({
@@ -225,5 +240,6 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
         fun onError()
         fun getFin(): Int
         fun getProblemId(): Int
+        fun finishedRefresh()
     }
 }

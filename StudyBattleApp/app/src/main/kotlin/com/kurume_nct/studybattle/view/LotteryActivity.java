@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -41,7 +42,8 @@ public class LotteryActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lottery);
 
-        itemNumber = getIntent().getIntExtra("item", 0);
+        itemNumber = getIntent().getIntExtra("item", 278);
+        Log.d("item", String.valueOf(itemNumber));
 
         card1 = (ImageView) findViewById(R.id.card1);
         card2 = (ImageView) findViewById(R.id.card2);
@@ -93,19 +95,19 @@ public class LotteryActivity extends Activity {
         Drawable drawable = typedArray.getDrawable(i);
         item.setImageDrawable(drawable);
         item.setVisibility(View.VISIBLE);
-        if (i == 0) {
+        if (i == 1) {
             text1.setText("爆弾GET！");
             lotteried.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.bomb));
             lottery_text.setImageBitmap(bmp4);
-        } else if (i == 1) {
+        } else if (i == 3) {
             text1.setText("2倍カードGET!");
             lotteried.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.card));
             lottery_text.setImageBitmap(bmp4);
-        } else if (i == 2) {
+        } else if (i == 4) {
             text1.setText("マジックハンドGET！");
             lotteried.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.magichand));
             lottery_text.setImageBitmap(bmp4);
-        } else if (i == 3) {
+        } else if (i == 2) {
             text1.setText("シールドGET!");
             lotteried.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.shield));
             lottery_text.setImageBitmap(bmp4);

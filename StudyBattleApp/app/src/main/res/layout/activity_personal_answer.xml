@@ -9,11 +9,11 @@
             type="com.kurume_nct.studybattle.viewModel.PersonalAnswerViewModel" />
     </data>
 
-    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/normalback"
-        tools:context="com.kurume_nct.studybattle.view.PersonalAnswerActivity">
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_personal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
 
         <ScrollView
             android:layout_width="match_parent"
@@ -114,7 +114,8 @@
                     android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:text="@{PersonalAnswer.everyoneComment}"
-                    android:textColor="@color/material_drawer_dark_selected" />
+                    android:textColor="@color/material_drawer_dark_selected"
+                    android:textSize="18sp" />
 
                 <EditText
                     android:id="@+id/comment_edit"
@@ -144,5 +145,5 @@
             </LinearLayout>
         </ScrollView>
 
-    </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </layout>

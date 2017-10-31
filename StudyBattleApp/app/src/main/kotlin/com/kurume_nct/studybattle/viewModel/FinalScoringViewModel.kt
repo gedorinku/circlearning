@@ -186,9 +186,9 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe {
-                                    everyoneComment += (it.displayName + "(" + it.userName + ")" + "\n")
+                                    everyoneComment += ("\n" + it.displayName + "(" + it.userName + ")" + "\n")
+                                    everyoneComment += ("\t" + comment.text + "\n")
                                 }
-                        everyoneComment += (comment.text + "\n")
                     }
 
                     client
@@ -231,23 +231,41 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
                 ).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    everyoneComment = ""
                     callback.enableEditText(false)
                     yourComment = ""
                     commentButtonText = addText
-                    solution.comments.forEachIndexed { index, comment ->
-                        if(lastCommentIndex <= index)
-                        client
-                                .getUser(comment.authorId)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe {
-                                    everyoneComment += (it.displayName + "(" + it.userName + ")" + "\n")
-                                    everyoneComment += (comment.text + "\n")
-                                }
+                    refreshComment(false)
+                }
+    }
+
+    fun refreshComment(boolean: Boolean) {
+        val unitPer = context.applicationContext as UnitPersonal
+        val client = ServerClient(unitPer.authenticationKey)
+        client
+                .getSolution(callback.getSolutionId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe ({
+                    solution = it
+                    it.comments.forEachIndexed { index, comment ->
+                        if (lastCommentIndex <= index)
+                            client
+                                    .getUser(comment.authorId)
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe {
+                                        everyoneComment += ("\n" + it.displayName + "(" + it.userName + ")" + "\n")
+                                        everyoneComment += ("\t" +comment.text + "\n")
+                                    }
                     }
                     lastCommentIndex = solution.comments.size
-                }
+                    if (boolean) callback.finishedRefresh()
+                },{
+                    it.printStackTrace()
+                    Toast.makeText(context, "ネット環境の確認をお願いします。", Toast.LENGTH_SHORT).show()
+                    if (boolean) callback.finishedRefresh()
+                })
+
     }
 
     private fun failAction() {
@@ -264,5 +282,6 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
 
         fun enableEditText(boolean: Boolean)
 
+        fun finishedRefresh()
     }
 }

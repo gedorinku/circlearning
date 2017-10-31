@@ -51,6 +51,11 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
         binding.yourCommentEditText.visibility = View.GONE
 
         binding.viewModel.onInitDataSet()
+
+        binding.swipeRefreshAnswer.setOnRefreshListener {
+            binding.viewModel.refreshComment(true)
+        }
+
     }
 
     //ship code
@@ -70,4 +75,8 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
     override fun getFin() = mFin
 
     override fun getProblemId() = mProblemId
+
+    override fun finishedRefresh() {
+        binding.swipeRefreshAnswer.isRefreshing = false
+    }
 }

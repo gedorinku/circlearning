@@ -143,12 +143,6 @@ class CameraModeActivity : Activity() {
 
         getItemData()
 
-        unitPer.itemCount.run {
-            if (bomb <= 0) dialogView.bombButton17.visibility = View.INVISIBLE
-            if (card <= 0) dialogView.cardButton16.visibility = View.INVISIBLE
-            if (magicHand <= 0) dialogView.handButton12.visibility = View.INVISIBLE
-        }
-
         dialog = AlertDialog.Builder(this)
                 .setView(dialogView.root)
                 .create()
@@ -259,22 +253,41 @@ class CameraModeActivity : Activity() {
                             )
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                }.subscribe({
-            randomItem = it.itemId
-            progress.dismiss()
-            val intent = Intent(this, LotteryActivity::class.java)
-            intent.putExtra("item", randomItem)
-            startActivity(intent)
-            finish()
-        }, {
-            progress.dismiss()
-            it.printStackTrace()
-            Toast.makeText(this, "解答提出に失敗しました。ネット環境を確認してください。", Toast.LENGTH_SHORT).show()
-        })
+                }
+                .subscribe({
+                    randomItem = it.itemId
+                    progress.dismiss()
+                    val intent = Intent(this, LotteryActivity::class.java)
+                    intent.putExtra("item", randomItem)
+                    startActivity(intent)
+                    finish()
+                }, {
+                    progress.dismiss()
+                    it.printStackTrace()
+                    Toast.makeText(this, "解答提出に失敗しました。ネット環境を確認してください。", Toast.LENGTH_SHORT).show()
+                })
     }
 
     private fun getItemData() {
-        ToolClass(this).onRefreshItemData()
+        ServerClient(unitPer.authenticationKey)
+                .getMyItems(unitPer.nowGroup.id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    it.forEach {
+                        when(it.id){
+                            1 -> unitPer.itemCount.bomb = it.count
+                            2 -> unitPer.itemCount.shield= it.count
+                            3 -> unitPer.itemCount.card = it.count
+                            4 -> unitPer.itemCount.magicHand = it.count
+                        }
+                    }
+                    unitPer.itemCount.run {
+                        if (bomb <= 0) dialogView.bombButton17.visibility = View.INVISIBLE
+                        if (card <= 0) dialogView.cardButton16.visibility = View.INVISIBLE
+                        if (magicHand <= 0) dialogView.handButton12.visibility = View.INVISIBLE
+                    }
+                }
     }
 
     private fun sadDialog() {
@@ -535,18 +548,21 @@ class CameraModeActivity : Activity() {
                 .openProblem(problemId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
+                .subscribe ({
                     actionSignal = it.openAction
                     when (actionSignal) {
                         ProblemOpenAction.NONE -> {
-                            Toast.makeText(this, "爆弾はついてません", Toast.LENGTH_SHORT)
+                            Log.d("爆弾はついてません", "at make solution.")
                         }
                         else -> {
                             onBombDialog()
                         }
                     }
 
-                }
+                },{
+                    Toast.makeText(this, "bombがついているかわかりませんでした" , Toast.LENGTH_SHORT).show()
+                    it.printStackTrace()
+                })
     }
 
 }
