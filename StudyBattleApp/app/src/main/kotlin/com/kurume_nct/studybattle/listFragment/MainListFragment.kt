@@ -68,12 +68,12 @@ class MainListFragment(val callback: Callback) : Fragment() {
                         .firstOrError()
 
             resources.getInteger(R.integer.ANSWER_YET) ->
-                //TODO
-                Single.just(emptyList())
+                client.getMyChallengePhaseProblems(groupId)
+                        .firstOrError()
 
             resources.getInteger(R.integer.ANSWER_FIN) ->
-                //TODO
-                Single.just(emptyList())
+                client.getJudgedProblems(groupId)
+                        .firstOrError()
 
             resources.getInteger(R.integer.MADE_COLLECT_YET) ->
                 client.getMyCollectingProblems(groupId)
@@ -84,8 +84,8 @@ class MainListFragment(val callback: Callback) : Fragment() {
                         .firstOrError()
 
             resources.getInteger(R.integer.MADE_FINAL_JUDGE_YET) ->
-                //TODO
-                Single.just(emptyList())
+                client.getChallengePhaseProblems(groupId)
+                        .firstOrError()
 
             resources.getInteger(R.integer.MADE_FIN) ->
                 client.getMyJudgedProblems(groupId)
