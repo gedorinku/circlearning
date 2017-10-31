@@ -162,10 +162,10 @@ class CameraModeActivity : Activity() {
             dialog.dismiss()
         }
         dialogView.handButton12.setOnClickListener {
-            if (putItemId != 3) {
+            if (putItemId != 2) {
                 Glide.with(this).load(R.drawable.framecardm).into(submitItemImageButton)
             }
-            putItemId = 3
+            putItemId = 2
             dialog.dismiss()
         }
         dialogView.removeItemButton19.setOnClickListener {
@@ -230,6 +230,7 @@ class CameraModeActivity : Activity() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap {
                     val imageId = it.id
+                    Log.d(putItemId.toString(), "つけるアイテム")
                     client
                             .createSolution(
                                     text = "解答提出",
@@ -255,7 +256,8 @@ class CameraModeActivity : Activity() {
                             .observeOn(AndroidSchedulers.mainThread())
                 }
                 .subscribe({
-                    randomItem = it.itemId
+                    randomItem = it.receivedItemId
+                    Log.d(randomItem.toString(), "アイテムの種類")
                     progress.dismiss()
                     val intent = Intent(this, LotteryActivity::class.java)
                     intent.putExtra("item", randomItem)

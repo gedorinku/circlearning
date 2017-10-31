@@ -1,7 +1,9 @@
 package com.kurume_nct.studybattle.view
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.databinding.DataBindingUtil
+import android.graphics.Color
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -55,6 +57,14 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
     }
 
     override fun getProblemId() = problemId
+
+    override fun judgeYet() {
+        binding.currentPersonalText.visibility = View.GONE
+    }
+
+    override fun changeColor() {
+        binding.currentPersonalText.setTextColor(Color.BLUE)
+    }
 
     override fun onFinish() {
         finish()

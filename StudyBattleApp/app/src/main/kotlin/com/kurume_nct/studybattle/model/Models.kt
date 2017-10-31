@@ -21,7 +21,7 @@ data class Image(
         val fileName: String = "")
 
 //TODO これやめたい
-data class IDResponse(val id: Int, val itemId: Int)
+data class IDResponse(val id: Int, val receivedItemId: Int)
 
 data class Problem(
         val id: Int = 0,

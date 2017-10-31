@@ -6,6 +6,7 @@ import android.databinding.BaseObservable
 import android.databinding.Bindable
 import android.databinding.BindingAdapter
 import android.net.Uri
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -148,8 +149,11 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                             solution = it
                         }
                     }
-                    if(solution.judged){
-
+                    if (!solution.judged) {
+                        callback.judgeYet()
+                    } else if (!solution.accepted) {
+                        correctPersonal = "間違え"
+                        callback.changeColor()
                     }
                     //solutionが見つからないと爆発する。
                     client.apply {
@@ -159,17 +163,21 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                                 .subscribe {
                                     ansCreatorName = it.displayName + "(" + it.userName + ")"
                                 }
-                        getProblem(solution.problemId)
-                                .flatMap {
-                                    problemTitle = it.title
-                                    client.getImageById(it.imageIds[0])
-                                }
+                        if(solution.imageCount > 0)
+                        client
+                                .getImageById(solution.imageIds[0])
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe {
-                                    problemUrl = it.url
-                                    personalProblemUri = Uri.parse(problemUrl)
-                                }
+                                .subscribe ({
+                                    url = it.url
+                                    personalAnswerUri = Uri.parse(url)
+                                    imageClickable = true
+                                    Log.d("解答のimage", "は存。")
+                                },{
+                                    Log.d("解答のimage", "は存在します。")
+                                })
+                        else
+                            Log.d("解答のimage", "は存在しないです。")
                     }
                     lastCommentIndex = solution.comments.size
                     solution.comments.forEach { comment ->
@@ -182,15 +190,13 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                                     everyoneComment += ("\t" + comment.text + "\n")
                                 }
                     }
-                    client
-                            .getImageById(it.imageIds[0])
+                    client.getImageById(it.imageIds[0])
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                 }
                 .subscribe({
-                    url = it.url
-                    personalAnswerUri = Uri.parse(url)
-                    imageClickable = true
+                    problemUrl = it.url
+                    personalProblemUri = Uri.parse(problemUrl)
                 }, {
                     callback.onFinish()
                 })
@@ -270,6 +276,9 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
 
         fun finishedRefresh()
 
+        fun judgeYet()
+
+        fun changeColor()
         //fun getFin(): Int
     }
 }
