@@ -22,7 +22,6 @@ import io.reactivex.schedulers.Schedulers
 class ScoringActivity : AppCompatActivity(), ScoringViewModel.Callback {
 
     lateinit var binding: ActivityScoringBinding
-    lateinit var unitPer: UnitPersonal
     private var solutionId = 0
     private var problemUrl = ""
     private var problemTitle = ""
@@ -31,11 +30,9 @@ class ScoringActivity : AppCompatActivity(), ScoringViewModel.Callback {
         super.onCreate(savedInstanceState)
         Log.d("i'm ", javaClass.name)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_scoring)
-        binding.viewModel = ScoringViewModel(this, this)
-        unitPer = UnitPersonal()
         solutionId = intent.getIntExtra("solutionId", 0)
-        problemTitle = intent.getStringExtra("title")
-        problemUrl = intent.getStringExtra("url")
+        binding.viewModel = ScoringViewModel(this, this)
+        binding.viewModel.onCreate()
     }
 
     override fun getProblem(): Pair<String, String> = Pair(problemTitle, problemUrl)
@@ -43,7 +40,7 @@ class ScoringActivity : AppCompatActivity(), ScoringViewModel.Callback {
     override fun getSolution() = solutionId
 
     override fun onFinish() {
-        setResult(5, intent)
+        //setResult(5, intent)
         finish()
     }
 }

@@ -149,6 +149,7 @@
                         android:layout_weight="1"
                         android:ems="10"
                         android:inputType="textPersonName"
+                        android:singleLine="false"
                         android:text="@={viewModel.yourComment}" />
 
                     <Button

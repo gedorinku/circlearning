@@ -1,5 +1,6 @@
 package com.kurume_nct.studybattle.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -17,6 +18,7 @@ import com.kurume_nct.studybattle.model.User
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
+@SuppressLint("ValidFragment")
 /**
  * Created by hanah on 10/2/2017.
  */

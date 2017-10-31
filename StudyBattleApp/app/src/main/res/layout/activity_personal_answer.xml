@@ -45,7 +45,10 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_weight="1"
-                    android:textSize="21sp" />
+                    android:text="@{PersonalAnswer.problemTitle}"
+                    android:textColor="@color/material_drawer_dark_selected"
+                    android:textSize="18sp" />
+
 
                 <ImageButton
                     android:id="@+id/problem_image"
@@ -80,6 +83,8 @@
                     android:layout_weight="1"
                     android:text="@{PersonalAnswer.correctPersonal}"
                     android:textSize="21sp" />
+                    android:textColor="@color/accent" />
+
 
                 <ImageButton
                     android:id="@+id/imageView13"
