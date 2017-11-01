@@ -10,7 +10,7 @@
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabs"
-        android:layout_width="368dp"
+        android:layout_width="0dp"
         android:layout_height="50dp"
         android:background="@color/md_cyan_300"
         app:tabIndicatorColor="@color/tabSelectedColor"
