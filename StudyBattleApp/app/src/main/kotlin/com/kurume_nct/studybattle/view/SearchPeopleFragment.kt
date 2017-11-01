@@ -74,7 +74,7 @@ class SearchPeopleFragment(val callback: Callback, val context: SelectMainPeople
                         val size = list.size
                         list.clear()
                         listAdapter.notifyItemRangeRemoved(0, size)
-                        listFilter(it.toMutableList())
+                        list.addAll(listFilter(it.toMutableList()))
                         listAdapter.notifyItemRangeInserted(0, list.size)
                         searching = false
                     }
@@ -83,14 +83,14 @@ class SearchPeopleFragment(val callback: Callback, val context: SelectMainPeople
         }
     }
 
-    private lateinit var filterSet: MutableSet<User>
-    private fun listFilter(newList: MutableList<User>){
-        filterSet = context.getPeopleList().toMutableSet()
-        filterSet.addAll(unitPer.nowGroup.members.toMutableSet())
-        filterSet.add(unitPer.myInfomation)
-        val size = filterSet.size
-        filterSet.addAll(newList)
-        list.addAll(filterSet.toMutableList().subList(size, filterSet.size))
+
+    private fun listFilter(newList: MutableList<User>) : MutableList<User>{
+        val filter = context.getPeopleList().toMutableList()
+        filter.addAll(unitPer.nowGroup.members.toMutableList())
+        filter.add(unitPer.myInfomation)
+        return newList.apply {
+            removeAll(filter)
+        }
     }
 
     private fun onDeletePeople(position: Int) {
