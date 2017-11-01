@@ -148,7 +148,7 @@
                         android:layout_marginRight="16dp"
                         android:layout_weight="1"
                         android:ems="10"
-                        android:inputType="textPersonName"
+                        android:inputType="none"
                         android:singleLine="false"
                         android:text="@={viewModel.yourComment}" />
 
