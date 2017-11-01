@@ -14,7 +14,7 @@ import okio.Okio
  */
 /**
  * RequestBodyのファクトリ関数です。
- * RequestBodyはCompanion objectを持たないので、拡張関数にできるつらい
+ * RequestBodyはCompanion objectを持たないので、拡張関数にできずつらい
  */
 fun createRequestBody(contentType: MediaType?, uri: Uri, context: Context): RequestBody {
     val projection = arrayOf(MediaStore.MediaColumns.SIZE)
