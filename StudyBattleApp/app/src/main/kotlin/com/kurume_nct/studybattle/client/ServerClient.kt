@@ -253,7 +253,15 @@ class ServerClient(authenticationKey: String = "") {
     fun getRanking(groupId: Int) = server.getRanking(authenticationKey, groupId)
 
     fun createComment(solutionId: Int, text: String, imageIds: List<Int>, replyTo: Int = 0)
-            = server.createComment(authenticationKey, solutionId, text, imageIds.toIntArray(), replyTo)
+            : Observable<IDResponse> {
+        val values = mapOf("authenticationKey" to authenticationKey,
+                "solutionId" to solutionId,
+                "text" to text,
+                "imageIds" to imageIds,
+                "replyTo" to replyTo)
+        val json = Gson().toJson(values)
+        return server.createComment(json)
+    }
 
 
     private fun getPathFromUri(context: Context, uri: Uri): String? {
@@ -300,7 +308,7 @@ class ServerClient(authenticationKey: String = "") {
     }
 
     private fun getDataColumn(context: Context, uri: Uri?, selection: String?,
-                      selectionArgs: Array<String>?): String? {
+                              selectionArgs: Array<String>?): String? {
         var cursor: Cursor? = null
         val projection = arrayOf(MediaStore.Files.FileColumns.DATA)
         try {
