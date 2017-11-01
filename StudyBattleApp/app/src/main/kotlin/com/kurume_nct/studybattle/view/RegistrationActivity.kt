@@ -8,9 +8,11 @@ import android.content.pm.PackageManager
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.FileProvider
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Toast
@@ -20,6 +22,9 @@ import com.kurume_nct.studybattle.databinding.ActivityRegistrationBinding
 import com.kurume_nct.studybattle.databinding.DialogCameraStrageChooseBinding
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
 import com.kurume_nct.studybattle.viewModel.RegistrationViewModel
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
+import java.io.File
 
 /**
  * A login screen that offers login via email/password.
@@ -191,15 +196,18 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
 
     private fun cameraStart() {
         //camera
-        val photoName = System.currentTimeMillis().toString() + ".jpg"
-        val contentValues = ContentValues()
-        contentValues.put(MediaStore.Images.Media.TITLE, photoName)
-        contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-        val uri = contentResolver
-                .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
-
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
+        val cameraFolder = File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), ""
+        )
+        cameraFolder.mkdir()
+        val fileName = DateTimeFormat.forPattern("ddHHmmss").print(DateTime.now())
+        val path = cameraFolder.path + "/" + fileName + ".jpg"
+        val uri = FileProvider
+                .getUriForFile(this, application.packageName + ".provider", File(path))
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+            putExtra(MediaStore.EXTRA_OUTPUT, uri)
+        }
+        binding.userEntity.imageUri = uri
         startActivityForResult(intent, 114)
     }
 

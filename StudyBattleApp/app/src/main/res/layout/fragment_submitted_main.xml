@@ -10,7 +10,7 @@
         <ScrollView
             android:layout_width="368dp"
             android:layout_height="wrap_content"
-            android:scrollbarStyle="insideInset"
+            android:scrollbarStyle="outsideOverlay"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="33dp">
 

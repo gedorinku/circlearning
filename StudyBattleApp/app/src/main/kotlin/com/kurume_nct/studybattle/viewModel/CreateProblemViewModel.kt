@@ -5,12 +5,14 @@ import android.databinding.BaseObservable
 import android.databinding.Bindable
 import android.databinding.BindingAdapter
 import android.net.Uri
+import android.os.Environment
 import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import android.provider.MediaStore
+import android.support.v4.content.FileProvider
 import android.util.Log
 import android.widget.Toast
 import com.kurume_nct.studybattle.client.ServerClient
@@ -22,6 +24,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.joda.time.DateTime
 import org.joda.time.Duration
+import org.joda.time.format.DateTimeFormat
+import java.io.File
 
 
 /**
@@ -29,8 +33,6 @@ import org.joda.time.Duration
  */
 class CreateProblemViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
 
-    private var pUri: Uri
-    private var aUri: Uri
     private var checkCount: Boolean = false
     private var termOne: Double
     val termExtra = "(解答回収期間より)"
@@ -39,8 +41,8 @@ class CreateProblemViewModel(private val context: Context, private val callback:
 
     init {
         termOne = 24.0
-        pUri = ToolClass(context).convertUrlFromDrawableResId(R.drawable.plus)
-        aUri = ToolClass(context).convertUrlFromDrawableResId(R.drawable.plus)
+       /* pUri = null*//*ToolClass(context).convertUrlFromDrawableResId(R.drawable.plus)*//*
+        aUri = null*//*ToolClass(context).convertUrlFromDrawableResId(R.drawable.plus)*/
     }
 
     companion object {
@@ -48,9 +50,10 @@ class CreateProblemViewModel(private val context: Context, private val callback:
         @JvmStatic
         fun setCreateImage(view: ImageView, uri: Uri?) {
             if (uri == null) {
-                Glide.with(view).load(R.drawable.group).into(view)
+                Glide.with(view).load(R.drawable.plus).into(view)
+            }else {
+                Glide.with(view).load(uri).into(view)
             }
-            Glide.with(view).load(uri).into(view)
         }
     }
 
@@ -73,7 +76,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
         }
 
     @Bindable
-    var problemUri = pUri
+    var problemUri: Uri? = null
         get
         set(value) {
             field = value
@@ -93,35 +96,12 @@ class CreateProblemViewModel(private val context: Context, private val callback:
     }
 
     @Bindable
-    var answerUri = aUri
+    var answerUri: Uri? = null
         get
         set(value) {
             field = value
             notifyPropertyChanged(BR.answerUri)
         }
-
-    fun onGetImage(camera: Int, pro: Int) {
-        when (camera) {
-            0 -> {
-                val intent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
-                callback.startActivityForResult(intent, pro)
-            }
-            1 -> {
-                //camera
-                val photoName = System.currentTimeMillis().toString() + ".jpg"
-                val contentValues = ContentValues()
-                contentValues.put(MediaStore.Images.Media.TITLE, photoName)
-                contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-                val uri = context.contentResolver
-                        .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
-
-                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
-                callback.startActivityForResult(intent, pro)
-                //Toast.makeText(context, "shushi~!!", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
 
     fun onClickProblemImage(view: View) {
         callback.alertDialog(1)
@@ -130,7 +110,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
     }
 
     fun onClickAnswerImage(view: View) {
-        callback.alertDialog(0)
+        callback.alertDialog(2)
         Log.d("click ", "answerImage....")
     }
 
@@ -138,13 +118,11 @@ class CreateProblemViewModel(private val context: Context, private val callback:
         if (data == null) return
         when (requestCode) {
             1 -> {
-                pUri = data.data
-                problemUri = pUri
+                problemUri = data.data
                 callback.onClickableButtons()
             }
-            0 -> {
-                aUri = data.data
-                answerUri = aUri
+            2 -> {
+                answerUri = data.data
                 callback.onClickableButtons()
             }
         }
@@ -152,7 +130,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
 
     fun onClickFinish(view: View) {
         val a = ToolClass(context).convertUrlFromDrawableResId(R.drawable.group)
-        if (problemUri == a || answerUri == a || problemName.isEmpty() || problemName.isBlank() || termForOne.isBlank()) {
+        if (problemUri == null || answerUri == null || problemName.isEmpty() || problemName.isBlank() || termForOne.isBlank()) {
             Toast.makeText(context, "入力に不備があります(`・ω・´)", Toast.LENGTH_SHORT).show()
         } else {
             sendData()
@@ -167,12 +145,12 @@ class CreateProblemViewModel(private val context: Context, private val callback:
 
         val client = ServerClient(callback.getKey())
         client
-                .uploadImage(problemUri, context)
+                .uploadImage(problemUri!!, context)
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     problemImageId = it.id
                     client
-                            .uploadImage(answerUri, context)
+                            .uploadImage(answerUri!!, context)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({

@@ -3,6 +3,7 @@ package com.kurume_nct.studybattle.view
 import com.kurume_nct.studybattle.R
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
@@ -40,6 +41,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.joda.time.DateTime
 import org.joda.time.Duration
+import org.joda.time.format.DateTimeFormat
 
 import java.io.File
 import java.io.IOException
@@ -220,12 +222,11 @@ class CameraModeActivity : Activity() {
 
     private fun sendProblemServer() {
         val client = ServerClient(unitPer.authenticationKey)
-        val uri: Uri = answerUri!!
         var randomItem = 0
 
         progress.show()
         client
-                .uploadImage(uri, this)
+                .uploadImage(answerUri!!, this)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap {
@@ -368,6 +369,7 @@ class CameraModeActivity : Activity() {
         if (requestCode == RESULT_CAMERA) {
             //カメラ撮影の処理
             if (cameraUri != null) {
+                answerUri = cameraUri
                 submitImageButton.setImageURI(cameraUri)
                 registerDatabase(filePath)
             } else {
@@ -403,14 +405,12 @@ class CameraModeActivity : Activity() {
         cameraFolder.mkdirs()
 
         // 保存ファイル名
-        val fileName = SimpleDateFormat("ddHHmmss").format(Date())
+        val fileName = DateTimeFormat.forPattern("ddHHmmss").print(DateTime.now())
         filePath = cameraFolder.path + "/" + fileName + ".jpg"
         Log.d("debug", "filePath:" + filePath!!)
 
-
         // capture画像のファイルパス
         cameraFile = File(filePath!!)
-        //        cameraUri = Uri.fromFile(cameraFile);
         cameraUri = FileProvider.getUriForFile(this@CameraModeActivity, applicationContext.packageName + ".provider", cameraFile)
 
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)

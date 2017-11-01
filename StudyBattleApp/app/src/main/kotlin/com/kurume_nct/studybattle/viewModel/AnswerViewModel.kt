@@ -140,7 +140,7 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
         client
                 .createComment(
                         solutionId = solutionId,
-                        text = yourComment,
+                        text = ("\n" + unitPer.myInfomation.displayName + "(" + unitPer.myInfomation.userName + ")" + "\n\t") + yourComment,
                         imageIds = listOf(),
                         replyTo = replyTo
                 ).subscribeOn(Schedulers.io())
@@ -163,14 +163,7 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
                 .subscribe ({
                     it.assumedSolution.comments.forEachIndexed { index, comment1 ->
                         if (index >= lastCommentIndex)
-                            client
-                                    .getUser(comment1.authorId)
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe {
-                                        comment += ("\n" + it.displayName + "(" + it.userName + ")" + "\n")
-                                        comment += ("\t" + comment1.text + "\n")
-                                    }
+                            comment += (comment1.text + "\n")
                     }
                     lastCommentIndex = it.assumedSolution.comments.size
                     if(boolean)callback.finishedRefresh()
@@ -196,14 +189,7 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
                     problemScore = " " + problem.point.toString() + "点"
                     lastCommentIndex = problem.assumedSolution.comments.size
                     problem.assumedSolution.comments.forEach { comment1 ->
-                        client
-                                .getUser(comment1.authorId)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe {
-                                    comment += ("\n" + it.displayName + "(" + it.userName + ")" + "\n")
-                                    comment += ("\t" + comment1.text + "\n")
-                                }
+                        comment += (comment1.text + "\n")
                     }
                     client
                             .getUser(problem.ownerId)

@@ -20,6 +20,7 @@ import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.tools.ImageViewActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.CountDownLatch
 
 /**
  * Created by hanah on 9/30/2017.
@@ -185,14 +186,7 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                     }
                     lastCommentIndex = solution.comments.size
                     solution.comments.forEach { comment ->
-                        client
-                                .getUser(comment.authorId)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe {
-                                    everyoneComment += ("\n" + it.displayName + "(" + it.userName + ")" + "\n")
-                                    everyoneComment += ("\t" + comment.text + "\n")
-                                }
+                        everyoneComment += (comment.text + "\n")
                     }
                     client.getImageById(it.imageIds[0])
                             .subscribeOn(Schedulers.io())
@@ -228,7 +222,7 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
         client
                 .createComment(
                         solutionId = solution.id,
-                        text = yourComment,
+                        text = ("\n" + unitPer.myInfomation.displayName + "(" + unitPer.myInfomation.userName + ")" + "\n\t") + yourComment,
                         imageIds = listOf(),
                         replyTo = replyTo
                 ).subscribeOn(Schedulers.io())
@@ -252,14 +246,7 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                     solution = it
                     solution.comments.forEachIndexed { index, comment ->
                         if (index >= lastCommentIndex)
-                            client
-                                    .getUser(comment.authorId)
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe {
-                                        everyoneComment += ("\n" + it.displayName + "(" + it.userName + ")" + "\n")
-                                        everyoneComment += ("\t" + comment.text + "\n")
-                                    }
+                            everyoneComment += (comment.text + "\n")
                     }
                     lastCommentIndex = solution.comments.size
                     if (boolean) callback.finishedRefresh()
