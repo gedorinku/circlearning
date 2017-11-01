@@ -226,13 +226,14 @@ interface Server {
             @Query("groupId") groupId: Int
     ): Observable<Ranking>
 
-    @FormUrlEncoded
     @POST("/comment/create")
+    @Headers(
+            "Accept: application/JSON",
+            "Content-type: application/JSON",
+            "Data-Type: JSON",
+            "Script-Charset: utf-8"
+    )
     fun createComment(
-            @Field("authenticationKey") authenticationKey: String,
-            @Field("solutionId") solutionId: Int,
-            @Field("text") text: String,
-            @Field("imageIds[]") imageIds: IntArray,
-            @Field("replyTo") replyTo: Int
+            @Body body: String
     ): Observable<IDResponse>
 }
