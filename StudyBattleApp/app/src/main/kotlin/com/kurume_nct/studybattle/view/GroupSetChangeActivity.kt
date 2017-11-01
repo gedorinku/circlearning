@@ -49,7 +49,7 @@ class GroupSetChangeActivity : AppCompatActivity(), GroupSetChangeViewModel.Call
                     .subscribe {}
             Log.d(it.displayName,"追加された")
         }
-        setResult(1)
+        //setResult(1)
         finish()
     }
 
