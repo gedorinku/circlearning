@@ -190,17 +190,7 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
                     }
 
                     lastCommentIndex = solution.comments.size
-                    solution.comments.forEach { comment ->
-                        client
-                                .getUser(comment.authorId)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe {
-                                    everyoneComment += ("\n" + it.displayName + "(" + it.userName + ")" + "\n")
-                                    everyoneComment += ("\t" + comment.text + "\n")
-                                }
-                    }
-
+                    refreshComment(false)
                     if (it.imageCount > 0)
                         client
                                 .getImageById(it.imageIds[0])
@@ -237,7 +227,7 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
         client
                 .createComment(
                         solutionId = solution.id,
-                        text = yourComment,
+                        text = ("\n" + unitPer.myInfomation.displayName + "(" + unitPer.myInfomation.userName + ")" + "\n\t") + yourComment,
                         imageIds = listOf(),
                         replyTo = replyTo
                 ).subscribeOn(Schedulers.io())
@@ -261,14 +251,7 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
                     solution = it
                     it.comments.forEachIndexed { index, comment ->
                         if (lastCommentIndex <= index)
-                            client
-                                    .getUser(comment.authorId)
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe {
-                                        everyoneComment += ("\n" + it.displayName + "(" + it.userName + ")" + "\n")
-                                        everyoneComment += ("\t" + comment.text + "\n")
-                                    }
+                            everyoneComment += (comment.text + "\n")
                     }
                     lastCommentIndex = solution.comments.size
                     if (boolean) callback.finishedRefresh()
