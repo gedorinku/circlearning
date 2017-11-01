@@ -5,12 +5,14 @@ import android.databinding.BaseObservable
 import android.databinding.Bindable
 import android.databinding.BindingAdapter
 import android.net.Uri
+import android.os.Environment
 import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import android.provider.MediaStore
+import android.support.v4.content.FileProvider
 import android.util.Log
 import android.widget.Toast
 import com.kurume_nct.studybattle.client.ServerClient
@@ -22,6 +24,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.joda.time.DateTime
 import org.joda.time.Duration
+import org.joda.time.format.DateTimeFormat
+import java.io.File
 
 
 /**
@@ -99,29 +103,6 @@ class CreateProblemViewModel(private val context: Context, private val callback:
             notifyPropertyChanged(BR.answerUri)
         }
 
-    fun onGetImage(camera: Int, pro: Int) {
-        when (camera) {
-            0 -> {
-                val intent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
-                callback.startActivityForResult(intent, pro)
-            }
-            1 -> {
-                //camera
-                val photoName = System.currentTimeMillis().toString() + ".jpg"
-                val contentValues = ContentValues()
-                contentValues.put(MediaStore.Images.Media.TITLE, photoName)
-                contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-                val uri = context.contentResolver
-                        .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
-
-                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
-                callback.startActivityForResult(intent, pro)
-                //Toast.makeText(context, "shushi~!!", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
     fun onClickProblemImage(view: View) {
         callback.alertDialog(1)
         Log.d("click ", "problemImage....")
@@ -129,7 +110,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
     }
 
     fun onClickAnswerImage(view: View) {
-        callback.alertDialog(0)
+        callback.alertDialog(2)
         Log.d("click ", "answerImage....")
     }
 
@@ -140,7 +121,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
                 problemUri = data.data
                 callback.onClickableButtons()
             }
-            0 -> {
+            2 -> {
                 answerUri = data.data
                 callback.onClickableButtons()
             }

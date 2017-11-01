@@ -400,7 +400,7 @@ class CameraModeActivity : Activity() {
     private fun cameraIntent() {
         // 保存先のフォルダーを作成
         val cameraFolder = File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "circlearning"
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), ""
         )
         cameraFolder.mkdirs()
 

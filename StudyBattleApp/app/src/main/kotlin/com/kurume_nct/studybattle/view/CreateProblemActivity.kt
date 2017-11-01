@@ -9,6 +9,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,7 +24,10 @@ import com.kurume_nct.studybattle.listFragment.DurationFragment
 import com.kurume_nct.studybattle.viewModel.CreateProblemViewModel
 import org.joda.time.Duration
 import android.support.v4.app.ActivityCompat
+import android.support.v4.content.FileProvider
 import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
+import java.io.File
 
 
 class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callback, DatePickerDialog.OnDateSetListener {
@@ -125,7 +130,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
                 cameraBeforeCheck()
             }
             strageButton.setOnClickListener {
-                binding.createView.onGetImage(0, prob)
+                onGetImage(0, prob)
             }
         }
         dialog = AlertDialog.Builder(this)
@@ -145,7 +150,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         )
         when (permission) {
             PackageManager.PERMISSION_GRANTED -> {
-                binding.createView.onGetImage(1, prob)
+                onGetImage(1, prob)
             }
             PackageManager.PERMISSION_DENIED -> {
                 ActivityCompat.requestPermissions(
@@ -162,10 +167,39 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         when (requestCode) {
             PERMISSION_CAMERA_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    binding.createView.onGetImage(1, prob)
+                    onGetImage(1, prob)
                 } else {
                     cameraBeforeCheck()
                 }
+            }
+        }
+    }
+
+    fun onGetImage(camera: Int, pro: Int) {
+        when (camera) {
+            0 -> {
+                val intent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
+                startActivityForResult(intent, pro)
+            }
+            1 -> {
+                //camera
+                val cameraFolder = File(
+                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), ""
+                )
+                cameraFolder.mkdir()
+                val fileName = DateTimeFormat.forPattern("ddHHmmss").print(DateTime.now())
+                val path = cameraFolder.path + "/" + fileName + ".jpg"
+                val uri = FileProvider
+                        .getUriForFile(this, application.packageName + ".provider", File(path))
+                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+                    putExtra(MediaStore.EXTRA_OUTPUT, uri)
+                }
+                if(pro == 1){
+                    binding.createView.problemUri = uri
+                }else{
+                    binding.createView.answerUri = uri
+                }
+                startActivityForResult(intent, pro)
             }
         }
     }
