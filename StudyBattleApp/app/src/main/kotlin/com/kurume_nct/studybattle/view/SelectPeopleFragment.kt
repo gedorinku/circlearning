@@ -1,5 +1,6 @@
 package com.kurume_nct.studybattle.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -12,6 +13,7 @@ import com.kurume_nct.studybattle.adapter.SelectedPeopleAdapter
 import com.kurume_nct.studybattle.databinding.FragmentJoinperopleListBinding
 import com.kurume_nct.studybattle.model.User
 
+@SuppressLint("ValidFragment")
 class SelectPeopleFragment(val callback: Callback) : Fragment() {
 
     private lateinit var binding: FragmentJoinperopleListBinding
