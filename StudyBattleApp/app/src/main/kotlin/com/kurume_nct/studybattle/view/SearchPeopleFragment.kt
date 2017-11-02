@@ -28,11 +28,13 @@ class SearchPeopleFragment(val callback: Callback, val context: SelectMainPeople
     private lateinit var listAdapter: JoinPeopleAdapter
     private lateinit var unitPer: UnitPersonal
     private var searching = false
+    private var includeMember = true
 
     companion object {
-        fun newInstance(callback: Callback, context: SelectMainPeopleFragment): SearchPeopleFragment {
+        fun newInstance(includeMember: Boolean, callback: Callback, context: SelectMainPeopleFragment): SearchPeopleFragment {
             val fragment = SearchPeopleFragment(callback, context)
             val args = Bundle()
+            args.putBoolean("includeMember", includeMember)
             fragment.arguments = args
             return fragment
         }
@@ -42,6 +44,7 @@ class SearchPeopleFragment(val callback: Callback, val context: SelectMainPeople
                               savedInstanceState: Bundle?): View? {
 
         unitPer = activity.application as UnitPersonal
+        includeMember = arguments.getBoolean("includeMember")
 
         binding = FragmentChoosePeoplelistBinding.inflate(inflater, container, false)
         //onListReset()
@@ -85,8 +88,10 @@ class SearchPeopleFragment(val callback: Callback, val context: SelectMainPeople
 
 
     private fun listFilter(newList: MutableList<User>) : MutableList<User>{
+        includeMember = arguments.getBoolean("includeMember")
         val filter = context.getPeopleList().toMutableList()
-        filter.addAll(unitPer.nowGroup.members.toMutableList())
+        Log.d("フィッシュ", includeMember.toString())
+        if(!includeMember)filter.addAll(unitPer.nowGroup.members.toMutableList())
         filter.add(unitPer.myInfomation)
         return newList.apply {
             removeAll(filter)

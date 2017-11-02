@@ -30,7 +30,7 @@ class CreateGroupActivity : AppCompatActivity(), CreateGroupViewModel.Callback {
         binding.createGroupUnit = CreateGroupViewModel(this, this)
         unitPer = application as UnitPersonal
 
-        fragment = SelectMainPeopleFragment().newInstance(0)
+        fragment = SelectMainPeopleFragment().newInstance(true)
 
         supportFragmentManager.beginTransaction()
                 .replace(R.id.select_people_conteiner, fragment)

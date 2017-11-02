@@ -29,7 +29,7 @@ class GroupSetChangeActivity : AppCompatActivity(), GroupSetChangeViewModel.Call
         super.onCreate(savedInstanceState)
         Log.d("i'm ", javaClass.name)
 
-        fragment = SelectMainPeopleFragment().newInstance(3)
+        fragment = SelectMainPeopleFragment().newInstance(false)
 
         unitPersonal = application as UnitPersonal
 
