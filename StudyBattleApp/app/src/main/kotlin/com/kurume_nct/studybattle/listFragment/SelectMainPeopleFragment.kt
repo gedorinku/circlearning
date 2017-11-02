@@ -24,9 +24,10 @@ class SelectMainPeopleFragment : Fragment(), SelectPeopleFragment.Callback, Sear
     private lateinit var searchFragment: SearchPeopleFragment
     private lateinit var selectFragment: SelectPeopleFragment
 
-    fun newInstance(callId: Int): SelectMainPeopleFragment {
+    fun newInstance(includeMember: Boolean): SelectMainPeopleFragment {
         val fragment = SelectMainPeopleFragment()
         val args = Bundle()
+        args.putBoolean("includeMember", includeMember)
         fragment.arguments = args
         return fragment
     }
@@ -35,7 +36,8 @@ class SelectMainPeopleFragment : Fragment(), SelectPeopleFragment.Callback, Sear
         binding = FragmentSelectPeopleBinding.inflate(inflater, container, false)
         binding.selectPeopleUnit = SelectMainPeopleViewModel(context)
 
-        searchFragment = SearchPeopleFragment.newInstance(this, this)
+        val includeMember = arguments.getBoolean("includeMember")
+        searchFragment = SearchPeopleFragment.newInstance(includeMember ,this, this)
         selectFragment = SelectPeopleFragment.newInstance(this)
 
         activity.supportFragmentManager.beginTransaction()
@@ -60,6 +62,11 @@ class SelectMainPeopleFragment : Fragment(), SelectPeopleFragment.Callback, Sear
         })
 
         return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
     }
 
     fun getPeopleList(): MutableList<User> = selectFragment.getPeopleList()
