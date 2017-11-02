@@ -189,8 +189,8 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
                                 }
                     }
 
-                    lastCommentIndex = solution.comments.size
                     refreshComment(false)
+                    lastCommentIndex = solution.comments.size
                     if (it.imageCount > 0)
                         client
                                 .getImageById(it.imageIds[0])
@@ -260,7 +260,6 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
                     Toast.makeText(context, "ネット環境の確認をお願いします。", Toast.LENGTH_SHORT).show()
                     if (boolean) callback.finishedRefresh()
                 })
-
     }
 
     private fun failAction() {

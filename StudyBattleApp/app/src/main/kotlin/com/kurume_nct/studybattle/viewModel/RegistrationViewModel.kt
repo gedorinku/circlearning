@@ -28,19 +28,19 @@ import java.io.BufferedInputStream
  */
 class RegistrationViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
 
-
-    private var uri: Uri
     var iconId: Int
 
     init {
         iconId = 0
-        uri = ToolClass(context).convertUrlFromDrawableResId(R.drawable.plus)
     }
 
     companion object {
         @BindingAdapter("loadImageFirstIcon")
         @JvmStatic
-        fun setIconImage(view: ImageView, uri: Uri) {
+        fun setIconImage(view: ImageView, uri: Uri?) {
+            if(uri == null){
+                Glide.with(view).load(R.drawable.plus).into(view)
+            }
             Glide.with(view).load(uri).into(view)
         }
     }
@@ -72,7 +72,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
     var loginButtonText = "登録"
 
     @Bindable
-    var imageUri: Uri = uri
+    var imageUri: Uri? = null
         set(value) {
             field = value
             notifyPropertyChanged(BR.imageUri)
@@ -88,6 +88,8 @@ class RegistrationViewModel(private val context: Context, private val callback: 
         } else if (!userNameRegister.matches("^[a-zA-Z0-9_]{2,20}".toRegex())) {
             Toast.makeText(context, "ユーザー名に不適切な文字が含まれています。", Toast.LENGTH_LONG).show()
             userNameRegister = ""
+        } else if (imageUri == null) {
+            Toast.makeText(context, "アイコン画像を選択してください。", Toast.LENGTH_LONG).show()
         } else {
             val progress = ProgressDialogTool(context).makeDialog()
             progress.show()
@@ -96,7 +98,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
             Log.d("開始", "Register")
             val client = ServerClient()
             client
-                    .uploadImage(imageUri, context)
+                    .uploadImage(imageUri!!, context)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
@@ -124,8 +126,7 @@ class RegistrationViewModel(private val context: Context, private val callback: 
     }
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        uri = data.data
-        imageUri = uri
+        imageUri = data.data
         callback.enableButton()
     }
 

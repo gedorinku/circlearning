@@ -479,6 +479,7 @@ class CameraModeActivity : Activity() {
     }
 
     private var actionSignal = ProblemOpenAction.NONE
+
     private fun onBombDialog() {
         val dialog1 = Dialog(this)
         val image = ImageView(this)
