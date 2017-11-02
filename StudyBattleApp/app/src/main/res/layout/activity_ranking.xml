@@ -124,7 +124,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="先週のスコア"
+                    android:text="累計スコア"
                     android:textAlignment="center"
                     android:textColor="@color/md_green_500"
                     android:textSize="17sp" />
