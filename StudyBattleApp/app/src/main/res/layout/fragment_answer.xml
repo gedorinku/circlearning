@@ -4,7 +4,7 @@
     <data>
         <variable
             name="eveAnswer"
-            type="com.kurume_nct.studybattle.model.ListSolution"/>
+            type="com.kurume_nct.studybattle.model.Solution"/>
     </data>
 
     <LinearLayout
@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@{eveAnswer.name}"
+            android:text="@{eveAnswer.author.displayName}"
             android:textAlignment="center" />
 
         <ImageView
@@ -26,7 +26,7 @@
             android:layout_width="120dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            android:background="@{eveAnswer.solution.accepted ? @drawable/checkframe : (eveAnswer.solution.judged ? @drawable/batuframe : @drawable/madaframe)}" />
+            android:background="@{eveAnswer.accepted ? @drawable/checkframe : (eveAnswer.judged ? @drawable/batuframe : @drawable/madaframe)}" />
 
     </LinearLayout>
 </layout>

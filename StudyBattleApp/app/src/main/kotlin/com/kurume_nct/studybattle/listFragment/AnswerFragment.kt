@@ -11,10 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.kurume_nct.studybattle.adapter.AnswerRecyclerViewAdapter
-import com.kurume_nct.studybattle.client.Server
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.FragmentAnswerListBinding
-import com.kurume_nct.studybattle.model.ListSolution
 import com.kurume_nct.studybattle.model.Solution
 import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.view.AnswerActivity
@@ -22,10 +20,8 @@ import com.kurume_nct.studybattle.view.FinalScoringActivity
 import com.kurume_nct.studybattle.view.PersonalAnswerActivity
 import com.kurume_nct.studybattle.view.ScoringActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.mergeAll
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
-import java.text.FieldPosition
 
 
 class AnswerFragment : Fragment() {
@@ -33,7 +29,7 @@ class AnswerFragment : Fragment() {
     private var mColumnCount = 3
     private lateinit var mContext: Context
     private lateinit var listAdapter: AnswerRecyclerViewAdapter
-    private val solutionList: MutableList<ListSolution> = mutableListOf()
+    private val solutionList: MutableList<Solution> = mutableListOf()
     private var fin: Int = 0
     lateinit var binding: FragmentAnswerListBinding
     lateinit var unitPer: UnitPersonal
@@ -70,26 +66,26 @@ class AnswerFragment : Fragment() {
             when (fin) {
                 CHECK_ANS -> {
                     val intent = Intent(context, ScoringActivity::class.java)
-                    intent.putExtra("solutionId", solutionList[position].solution.id)
+                    intent.putExtra("solutionId", solutionList[position].id)
                     intent.putExtra("position", position)
                     startActivityForResult(intent, 0)
                 }
                 YET_ANS -> {
                     val intent = Intent(context, PersonalAnswerActivity::class.java)
                     intent.putExtra("switch", "s")
-                    intent.putExtra("solutionId", solutionList[position].solution.id)
+                    intent.putExtra("solutionId", solutionList[position].id)
                     intent.putExtra("fin", false)
                     startActivity(intent)
                 }
                 YET_FINAL_ANS -> {
                     val intent = Intent(context, FinalScoringActivity::class.java)
-                    intent.putExtra("solutionId", solutionList[position].solution.id)
+                    intent.putExtra("solutionId", solutionList[position].id)
                     startActivityForResult(intent, position)
                 }
                 FIN_ANS -> {
                     val intent = Intent(context, PersonalAnswerActivity::class.java)
                     intent.putExtra("switch", "s")
-                    intent.putExtra("solutionId", solutionList[position].solution.id)
+                    intent.putExtra("solutionId", solutionList[position].id)
                     intent.putExtra("fin", true)
                     startActivity(intent)
                 }
@@ -110,16 +106,13 @@ class AnswerFragment : Fragment() {
                 .flatMap {
                     it.solutions.toObservable()
                 }
-                .map {
-                    solutionList.add(ListSolution(it, ""))
-                    client.getUser(it.authorId)
-                }
-                .mergeAll()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .toList()
                 .subscribe { it ->
-                    it.forEachIndexed { index, user -> solutionList[index].name = user.displayName }
+                    //solutionList[it.second].name = it.first.displayName
+                    //listAdapter.notifyItemChanged(it.second)
+                    solutionList.addAll(it)
                     listAdapter.notifyItemRangeInserted(0, solutionList.size)
                 }
     }

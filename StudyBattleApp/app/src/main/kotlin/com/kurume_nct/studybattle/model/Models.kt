@@ -71,6 +71,7 @@ data class Solution(
         val id: Int = 0,
         val text: String = "sample",
         val authorId: Int = 0,
+        val author: User = User(),
         val problemId: Int = 0,
         val imageCount: Int = 0,
         val imageIds: List<Int> = emptyList(),
