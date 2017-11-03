@@ -87,7 +87,7 @@ class MainListFragment(val callback: Callback) : Fragment() {
                         .firstOrError()
 
             resources.getInteger(R.integer.MADE_FINAL_JUDGE_YET) ->
-                client.getChallengePhaseProblems(groupId)
+                client.getMyChallengePhaseProblems(groupId)
                         .firstOrError()
 
             resources.getInteger(R.integer.MADE_FIN) ->
