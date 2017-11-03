@@ -18,8 +18,8 @@ class SubmittedMainFragment : Fragment(), MainListFragment.Callback {
     lateinit var mContext: Main2Activity
     lateinit var binding: FragmentSubmittedMainBinding
     var refreshCounter = 0
-    lateinit var fragmentYet: MainListFragment
-    lateinit var fragmentFin: MainListFragment
+    private var fragmentYet: MainListFragment? = null
+    private var fragmentFin: MainListFragment? = null
 
     fun newInstance() = SubmittedMainFragment()
 
@@ -55,8 +55,8 @@ class SubmittedMainFragment : Fragment(), MainListFragment.Callback {
     }
 
     fun onRefresh(){
-        fragmentYet.onRefreshList()
-        fragmentFin.onRefreshList()
+        if(fragmentYet != null)fragmentYet!!.onRefreshList()
+        if(fragmentFin != null)fragmentFin!!.onRefreshList()
     }
 
     override fun onStopSwipeRefresh() {

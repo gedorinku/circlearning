@@ -18,10 +18,10 @@ class MadeMainFragment : Fragment(), MainListFragment.Callback {
     lateinit var mContent: Main2Activity
     lateinit var binding: FragmentMadeMainBinding
     var refreshCounter = 0
-    lateinit var fragmentCollectYet: MainListFragment
-    lateinit var fragmentFinalJudgeYet: MainListFragment
-    lateinit var fragmentJudgeYet: MainListFragment
-    lateinit var fragmentFin: MainListFragment
+    private var fragmentCollectYet: MainListFragment? = null
+    private var fragmentFinalJudgeYet: MainListFragment? = null
+    private var fragmentJudgeYet: MainListFragment? = null
+    private var fragmentFin: MainListFragment? = null
 
     fun newInstance() = MadeMainFragment()
 
@@ -63,17 +63,16 @@ class MadeMainFragment : Fragment(), MainListFragment.Callback {
             onRefresh()
         }
 
-        //binding.swipeRefreshFragmentMade.setColorSchemeResources(R.color.md_yellow_400, R.color.md_blue_A700, R.color.md_red_A700)
         binding.swipeRefreshFragmentMade.setColorSchemeResources(R.color.md_red_A700)
 
         return binding.root
     }
 
     fun onRefresh(){
-        fragmentCollectYet.onRefreshList()
-        fragmentJudgeYet.onRefreshList()
-        fragmentFin.onRefreshList()
-        fragmentFinalJudgeYet.onRefreshList()
+        if(fragmentCollectYet != null)fragmentCollectYet!!.onRefreshList()
+        if(fragmentJudgeYet != null)fragmentJudgeYet!!.onRefreshList()
+        if(fragmentFin != null)fragmentFin!!.onRefreshList()
+        if(fragmentFinalJudgeYet != null)fragmentFinalJudgeYet!!.onRefreshList()
     }
 
     override fun onStopSwipeRefresh() {
@@ -83,7 +82,6 @@ class MadeMainFragment : Fragment(), MainListFragment.Callback {
             refreshCounter = 0
         }
     }
-
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)

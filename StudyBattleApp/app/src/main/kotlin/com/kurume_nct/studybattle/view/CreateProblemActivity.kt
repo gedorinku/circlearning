@@ -99,7 +99,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         val today = DateTime.now()
-        val settingDate = DateTime(year, month + 1, dayOfMonth, today.hourOfDay, today.minuteOfHour , today.secondOfMinute) + Duration.standardMinutes(10)
+        val settingDate = DateTime(year, month + 1, dayOfMonth, today.hourOfDay, today.minuteOfHour, today.secondOfMinute) + Duration.standardMinutes(10)
         duration = Duration(today, settingDate)
         val gup = duration.standardMinutes
         Log.d(gup.toString() + "時間", settingDate.toString())
@@ -108,8 +108,8 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
             it.day =
                     year.toString() + "年" + (month + 1).toString() + "月" + dayOfMonth.toString() + "日"
             it.termForOne =
-                    (gup / 60 /unitPer.nowGroup.members.size).toString() + "時間" +
-                            ((gup / unitPer.nowGroup.members.size) % 60).toString() + "分" + it.termExtra
+                    (gup / 60 / maxOf(unitPer.nowGroup.members.size - 1, 1)).toString() + "時間" +
+                            ((gup / maxOf(unitPer.nowGroup.members.size - 1, 1)) % 60).toString() + "分" + it.termExtra
         }
         Log.d(binding.createView.day, "change")
     }
@@ -194,9 +194,9 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
                 val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
                     putExtra(MediaStore.EXTRA_OUTPUT, uri)
                 }
-                if(pro == 1){
+                if (pro == 1) {
                     binding.createView.problemUri = uri
-                }else{
+                } else {
                     binding.createView.answerUri = uri
                 }
                 startActivityForResult(intent, pro)

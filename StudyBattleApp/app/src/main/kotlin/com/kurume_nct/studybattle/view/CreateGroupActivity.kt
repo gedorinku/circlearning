@@ -35,7 +35,6 @@ class CreateGroupActivity : AppCompatActivity(), CreateGroupViewModel.Callback {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.select_people_conteiner, fragment)
                 .commit()
-
     }
 
     private fun createGroup() {

@@ -62,6 +62,7 @@ class MainListFragment(val callback: Callback) : Fragment() {
     }
 
     fun onRefreshList() {
+
         client = ServerClient(unitPersonal.authenticationKey)
         val groupId = unitPersonal.nowGroup.id
 
