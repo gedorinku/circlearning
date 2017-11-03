@@ -2,12 +2,14 @@ package com.kurume_nct.studybattle.view
 
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.widget.Toast
+import com.kurume_nct.studybattle.Main2Activity
 import com.kurume_nct.studybattle.viewModel.GroupSetChangeViewModel
 
 import com.kurume_nct.studybattle.R
@@ -49,7 +51,6 @@ class GroupSetChangeActivity : AppCompatActivity(), GroupSetChangeViewModel.Call
                     .subscribe {}
             Log.d(it.displayName,"追加された")
         }
-        setResult(1)
         finish()
     }
 

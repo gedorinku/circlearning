@@ -208,7 +208,7 @@ class Main2Activity : AppCompatActivity() {
                 }
                 R.id.to_change_member -> {
                     val intent = Intent(this, GroupSetChangeActivity::class.java)
-                    if (!stopButton) startActivity(intent)
+                    if (!stopButton) startActivityForResult(intent, 0)
                 }
             }
             false
