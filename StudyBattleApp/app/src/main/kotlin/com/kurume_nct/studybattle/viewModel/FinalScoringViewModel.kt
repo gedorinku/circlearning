@@ -190,7 +190,6 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
                     }
 
                     refreshComment(false)
-                    lastCommentIndex = solution.comments.size
                     if (it.imageCount > 0)
                         client
                                 .getImageById(it.imageIds[0])
