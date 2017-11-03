@@ -33,12 +33,12 @@ class LoginActivity : AppCompatActivity(), LoginViewModel.Callback {
         if (unitPer.authenticationKey != "0") {
             toMain2Activity()
         }
-
     }
 
     private fun toMain2Activity() {
         val intent = Intent(this, Main2Activity::class.java)
         if (unitPer.authenticationKey != "0") {
+            Log.d(unitPer.authenticationKey, "ログイン")
             startActivity(intent)
             finish()
         }
