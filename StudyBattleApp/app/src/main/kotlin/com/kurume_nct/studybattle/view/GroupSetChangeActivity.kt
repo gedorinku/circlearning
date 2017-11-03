@@ -42,6 +42,10 @@ class GroupSetChangeActivity : AppCompatActivity(), GroupSetChangeViewModel.Call
                 .commit()
     }
 
+    override fun onStart() {
+        super.onStart()
+    }
+
     override fun onChange() {
         fragment.getPeopleList().forEach {
             ServerClient(unitPersonal.authenticationKey)

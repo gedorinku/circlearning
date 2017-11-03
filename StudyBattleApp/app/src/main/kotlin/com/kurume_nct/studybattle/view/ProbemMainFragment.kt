@@ -17,7 +17,7 @@ class ProbemMainFragment : Fragment(), MainListFragment.Callback {
 
     private lateinit var mContext: Main2Activity
     private lateinit var binding: FragmentProbemMainBinding
-    private lateinit var fragment: MainListFragment
+    private var fragment: MainListFragment? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -43,7 +43,7 @@ class ProbemMainFragment : Fragment(), MainListFragment.Callback {
     }
 
     fun onRefresh(){
-        fragment.onRefreshList()
+        if(fragment != null)fragment!!.onRefreshList()
     }
 
     override fun onStopSwipeRefresh() {

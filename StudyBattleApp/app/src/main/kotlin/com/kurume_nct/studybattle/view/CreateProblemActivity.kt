@@ -109,7 +109,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
                     year.toString() + "年" + (month + 1).toString() + "月" + dayOfMonth.toString() + "日"
             it.termForOne =
                     (gup / 60 / maxOf(unitPer.nowGroup.members.size - 1, 1)).toString() + "時間" +
-                            ((gup / (unitPer.nowGroup.members.size - 1)) % 60).toString() + "分" + it.termExtra
+                            ((gup / maxOf(unitPer.nowGroup.members.size - 1, 1)) % 60).toString() + "分" + it.termExtra
         }
         Log.d(binding.createView.day, "change")
     }
