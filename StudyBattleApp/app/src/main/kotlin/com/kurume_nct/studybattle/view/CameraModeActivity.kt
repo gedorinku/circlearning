@@ -414,7 +414,7 @@ class CameraModeActivity : Activity() {
         cameraUri = FileProvider.getUriForFile(this@CameraModeActivity, applicationContext.packageName + ".provider", cameraFile)
 
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraUri)
+        //intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraUri)
         startActivityForResult(intent, RESULT_CAMERA)
     }
 

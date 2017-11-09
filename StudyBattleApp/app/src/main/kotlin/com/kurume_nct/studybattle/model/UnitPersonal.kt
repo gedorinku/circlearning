@@ -21,7 +21,7 @@ class UnitPersonal : Application(){
     private lateinit var prefer: SharedPreferences
     var myGroupCount: Int
     var myGroupList: MutableList<Group>
-    var authenticationKey: String = "0"
+    var authenticationKey = "0"
 
     init {
         nowGroup = Group()
@@ -37,6 +37,7 @@ class UnitPersonal : Application(){
     }
 
     fun writeFile(){
+        prefer = getSharedPreferences(packageName + ".txt", Context.MODE_PRIVATE)
         val edit = prefer.edit()
         edit.putString("key", authenticationKey)
         edit.commit()
@@ -44,6 +45,7 @@ class UnitPersonal : Application(){
 
     fun deleteFile(){
         prefer = getSharedPreferences(packageName + ".txt", Context.MODE_PRIVATE)
+        authenticationKey = "0"
         prefer.edit().clear().commit()
     }
 
