@@ -1,5 +1,6 @@
 package com.kurume_nct.studybattle.model
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
@@ -14,21 +15,13 @@ import android.support.annotation.RawRes
  */
 class UnitPersonal : Application(){
 
-    //var userName : String
     var myInfomation: User = User()
-    var nowGroup : Group
-    var itemCount : HunachiItem
+    var nowGroup : Group = Group()
+    var itemCount : HunachiItem = HunachiItem()
     private lateinit var prefer: SharedPreferences
-    var myGroupCount: Int
-    var myGroupList: MutableList<Group>
+    var myGroupCount: Int = 0
+    var myGroupList: MutableList<Group> = mutableListOf()
     var authenticationKey = "0"
-
-    init {
-        nowGroup = Group()
-        myGroupCount = 0
-        itemCount = HunachiItem()
-        myGroupList = mutableListOf()
-    }
 
     override fun onCreate() {
         super.onCreate()
@@ -36,6 +29,7 @@ class UnitPersonal : Application(){
         authenticationKey = prefer.getString("key", "0")
     }
 
+    @SuppressLint("ApplySharedPref")
     fun writeFile(){
         prefer = getSharedPreferences(packageName + ".txt", Context.MODE_PRIVATE)
         val edit = prefer.edit()
@@ -43,13 +37,11 @@ class UnitPersonal : Application(){
         edit.commit()
     }
 
+    @SuppressLint("ApplySharedPref")
     fun deleteFile(){
         prefer = getSharedPreferences(packageName + ".txt", Context.MODE_PRIVATE)
         authenticationKey = "0"
         prefer.edit().clear().commit()
     }
 
-    override fun onTerminate() {
-        super.onTerminate()
-    }
 }

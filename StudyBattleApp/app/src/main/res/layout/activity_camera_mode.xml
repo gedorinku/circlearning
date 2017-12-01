@@ -63,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="5.90"
-                android:text="TextView"
+                android:text="n時間"
                 android:textAlignment="textStart"
                 android:textColor="@color/material_drawer_accent"
                 android:textSize="18sp" />
