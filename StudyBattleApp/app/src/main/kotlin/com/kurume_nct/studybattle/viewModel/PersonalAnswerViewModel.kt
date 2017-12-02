@@ -29,7 +29,6 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
 
     private var url = ""
     private var problemUrl = ""
-    private lateinit var problem: Problem
     private var writeNow = false
     private val addText = "+コメントを追加"
     private val comfierText = "+コメントを送信"
@@ -145,6 +144,7 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap {
                     //find owner solution.
+                    problemTitle = it.title
                     if ("s" == callback.getSwitch()) {
                         solution = callback.getSolution()
                     } else {
@@ -159,6 +159,8 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                     } else if (!solution.accepted) {
                         correctPersonal = "間違え"
                         callback.changeColor()
+                    }else{
+                        correctPersonal = "正解"
                     }
                     //solutionが見つからないと爆発する。
                     client.apply {
