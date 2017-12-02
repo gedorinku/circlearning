@@ -33,20 +33,12 @@ import java.io.File
  */
 class CreateProblemViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
 
-    private var checkCount: Boolean = false
-    private var termOne: Double
     val termExtra = "(解答回収期間より)"
     var problemImageId = 0
     var answerImageId = 0
 
-    init {
-        termOne = 24.0
-       /* pUri = null*//*ToolClass(context).convertUrlFromDrawableResId(R.drawable.plus)*//*
-        aUri = null*//*ToolClass(context).convertUrlFromDrawableResId(R.drawable.plus)*/
-    }
-
     companion object {
-        @BindingAdapter("loadProblem")
+        @BindingAdapter("loadImage")
         @JvmStatic
         fun setCreateImage(view: ImageView, uri: Uri?) {
             if (uri == null) {
@@ -84,7 +76,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
         }
 
     @Bindable
-    var day = "5日"
+    var day = "回収日が設定されていません"
         get
         set(value) {
             field = value
@@ -197,25 +189,15 @@ class CreateProblemViewModel(private val context: Context, private val callback:
     private fun dateTime(): DateTime = DateTime.now()
 
     interface Callback {
-
         fun userInformation(): User
-
         fun getKey(): String
-
         fun startActivityForResult(intent: Intent, requestCode: Int)
-
         fun getCreateData(title: String)
-
         fun alertDialog(pro: Int)
-
         fun onDateDialog()
-
         fun getDuration(): Duration
-
         fun getGroupId(): Int
-
         fun onClickableButtons()
-
         fun onNotClickableButtons()
     }
 }

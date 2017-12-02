@@ -18,8 +18,8 @@ class ItemInfoActivity : AppCompatActivity(), ItemInfoViewModel.Callback {
         super.onCreate(savedInstanceState)
         Log.d("i'm ", javaClass.name)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_item_info)
-        binding.viewModelItem = ItemInfoViewModel(this, this)
-        binding.viewModelItem.onCreate()
+        binding.viewModel = ItemInfoViewModel(this, this)
+        binding.viewModel.onCreate()
     }
 
     override fun onBackPressed() {

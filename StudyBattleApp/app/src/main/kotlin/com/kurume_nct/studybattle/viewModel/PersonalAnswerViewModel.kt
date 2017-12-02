@@ -29,7 +29,6 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
 
     private var url = ""
     private var problemUrl = ""
-    private lateinit var problem: Problem
     private var writeNow = false
     private val addText = "+コメントを追加"
     private val comfierText = "+コメントを送信"
@@ -38,11 +37,11 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
     private var replyTo = 0
 
     companion object {
-        @BindingAdapter("loadImagePersonal")
+        @BindingAdapter("loadImage")
         @JvmStatic
         fun setIconImage(view: ImageView, uri: Uri?) {
             if (uri == null) {
-                //Glide.with(view).load(R).into(view)//loadの中にresourceを入れたらtestできる
+                Glide.with(view).load(R.drawable.no_image).into(view)
             } else {
                 Glide.with(view).load(uri).into(view)
             }
@@ -55,6 +54,13 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
             field = value
             notifyPropertyChanged(BR.problemTitle)
         }
+
+    @Bindable
+    var writer = ""
+    set(value) {
+        field = value
+        notifyPropertyChanged(BR.writer)
+    }
 
     @Bindable
     var personalProblemUri: Uri? = null
@@ -145,6 +151,8 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap {
                     //find owner solution.
+                    problemTitle = it.title
+                    writer = "by. " + it.assumedSolution.author.displayName
                     if ("s" == callback.getSwitch()) {
                         solution = callback.getSolution()
                     } else {
@@ -159,6 +167,8 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                     } else if (!solution.accepted) {
                         correctPersonal = "間違え"
                         callback.changeColor()
+                    }else{
+                        correctPersonal = "正解"
                     }
                     //solutionが見つからないと爆発する。
                     client.apply {
@@ -196,7 +206,7 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                     problemUrl = it.url
                     personalProblemUri = Uri.parse(problemUrl)
                 }, {
-                    //callback.onFinish()
+                    callback.onFinish()
                     it.printStackTrace()
                 })
     }
@@ -259,22 +269,13 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
 
 
     interface Callback {
-
         fun enableEditText(boolean: Boolean)
-
         fun getProblemId(): Int
-
         fun onFinish()
-
         fun finishedRefresh()
-
         fun judgeYet()
-
         fun changeColor()
-
         fun getSwitch(): String
-
         fun getSolution(): Solution
-
     }
 }

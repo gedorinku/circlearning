@@ -49,14 +49,14 @@ class SearchPeopleFragment(val callback: Callback, val context: SelectMainPeople
         binding = FragmentChoosePeoplelistBinding.inflate(inflater, container, false)
         //onListReset()
 
-        listAdapter = JoinPeopleAdapter(activity, list, { position ->
+        listAdapter = JoinPeopleAdapter(list, { position ->
             Log.d(list[position].displayName, position.toString())
             callback.chooseChange(list[position])
             onDeletePeople(position)
         })
 
         binding.list.adapter = listAdapter
-        binding.list.layoutManager = LinearLayoutManager(binding.list.context) as RecyclerView.LayoutManager?
+        binding.list.layoutManager = LinearLayoutManager(binding.list.context)
 
         return binding.root
     }

@@ -92,7 +92,7 @@ class AnswerFragment : Fragment() {
             }
         })
         binding.answersList.adapter = listAdapter
-        binding.answersList.layoutManager = GridLayoutManager(binding.answersList.context, mColumnCount) as RecyclerView.LayoutManager?
+        binding.answersList.layoutManager = GridLayoutManager(binding.answersList.context, mColumnCount)
         getProblemData()
         return binding.root
     }

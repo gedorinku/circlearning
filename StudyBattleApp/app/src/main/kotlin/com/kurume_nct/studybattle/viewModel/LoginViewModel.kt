@@ -18,10 +18,7 @@ import io.reactivex.schedulers.Schedulers
  */
 class LoginViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
 
-    lateinit var iconUri: Uri
-    var iconId: Int = 0
     lateinit var displayName: String
-    private lateinit var authenticationKey: String
 
     @Bindable
     var name = ""
@@ -66,15 +63,10 @@ class LoginViewModel(private val context: Context, private val callback: Callbac
 
 
     interface Callback {
-
         fun getKey(): String
-
         fun stopButton()
-
         fun clickableButton()
-
         fun onLogin(authentication: String)
-
         fun toRegisterActivity()
     }
 }

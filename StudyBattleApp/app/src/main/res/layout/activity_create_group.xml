@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
-            name="CreateGroupUnit"
+            name="viewModel"
             type="com.kurume_nct.studybattle.viewModel.CreateGroupViewModel"/>
     </data>
 
@@ -58,7 +58,7 @@
                     android:inputType="textPersonName"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
-                    android:text="@={CreateGroupUnit.groupName}"
+                    android:text="@={viewModel.groupName}"
                     android:textColor="@color/material_drawer_primary_text"
                     android:textSize="17sp" />
 
@@ -92,7 +92,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_weight="1"
                     android:background="@drawable/red_button_t"
-                    android:onClick="@{CreateGroupUnit.onClickMakeGroup}"
+                    android:onClick="@{viewModel.onClickMakeGroup}"
                     android:text="グループ作成"
                     android:textColor="@color/material_drawer_background"
                     android:textSize="15sp" />

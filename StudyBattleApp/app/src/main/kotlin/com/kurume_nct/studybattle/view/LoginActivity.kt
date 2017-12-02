@@ -25,7 +25,7 @@ class LoginActivity : AppCompatActivity(), LoginViewModel.Callback {
         Log.d("i'm ", javaClass.name)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
-        binding.userLogin = LoginViewModel(this, this)
+        binding.viewModel = LoginViewModel(this, this)
         unitPer = application as UnitPersonal
         progress = ProgressDialogTool(this).makeDialog()
 

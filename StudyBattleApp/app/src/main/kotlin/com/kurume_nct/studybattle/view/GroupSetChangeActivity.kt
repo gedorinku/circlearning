@@ -36,7 +36,7 @@ class GroupSetChangeActivity : AppCompatActivity(), GroupSetChangeViewModel.Call
         unitPersonal = application as UnitPersonal
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_group_set_change)
-        binding.groupSetView = GroupSetChangeViewModel(this, this)
+        binding.viewModel = GroupSetChangeViewModel(this, this)
         supportFragmentManager.beginTransaction()
                 .add(R.id.fragment_search_list, fragment)
                 .commit()
@@ -79,7 +79,7 @@ class GroupSetChangeActivity : AppCompatActivity(), GroupSetChangeViewModel.Call
         builder.setTitle("本当に今のグループから抜けてもいいですか？")
         builder.setMessage("このグループ内でのデータが完全に消える可能性があります")
         builder.setNegativeButton("いいえ", null)
-        builder.setPositiveButton("はい", DialogInterface.OnClickListener {
+        builder.setPositiveButton("はい", {
             dialog, which -> getOutGroup()
         })
         builder.create().show()

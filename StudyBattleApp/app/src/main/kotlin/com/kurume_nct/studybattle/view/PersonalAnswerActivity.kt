@@ -34,7 +34,7 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
         super.onCreate(savedInstanceState)
         Log.d("i'm ", javaClass.name)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_personal_answer)
-        binding.personalAnswer = PersonalAnswerViewModel(this, this)
+        binding.viewModel = PersonalAnswerViewModel(this, this)
         unitPer = application as UnitPersonal
         switch = intent.getStringExtra("switch")
         situationId = intent.getBooleanExtra("fin", false)
@@ -46,18 +46,18 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
                     .subscribe({
                         otherSolution = it
                         problemId = it.problemId
-                        binding.personalAnswer.getInitData()
+                        binding.viewModel.getInitData()
                     },{
                         Log.d("po","つらい")
                     })
         }else{
             problemId = intent.getIntExtra("problemId", 0)
-            binding.personalAnswer.getInitData()
+            binding.viewModel.getInitData()
         }
         binding.apply {
             commentEdit.visibility = View.GONE
             swipeRefreshPersonal.setOnRefreshListener {
-                personalAnswer.refreshComment(true)
+                viewModel.refreshComment(true)
             }
         }
     }

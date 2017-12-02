@@ -188,16 +188,10 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
                     problemName = problem.title
                     problemScore = " " + problem.point.toString() + "点"
                     lastCommentIndex = problem.assumedSolution.comments.size
+                    masterName = "by. " + problem.assumedSolution.author.displayName
                     problem.assumedSolution.comments.forEach { comment1 ->
                         comment += (comment1.text + "\n")
                     }
-                    client
-                            .getUser(problem.ownerId)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe {
-                                masterName = " 作成者:" + it.displayName
-                            }
                     client
                             .getImageById(problem.imageIds[0])
                             .subscribeOn(Schedulers.io())

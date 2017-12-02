@@ -1,6 +1,5 @@
 package com.kurume_nct.studybattle.adapter
 
-import android.content.Context
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.support.v7.widget.RecyclerView
@@ -12,7 +11,7 @@ import com.kurume_nct.studybattle.R
 
 import com.kurume_nct.studybattle.model.User
 
-class JoinPeopleAdapter(context: Context, private val list: MutableList<User>, val callback: (Int) -> Unit) :
+class JoinPeopleAdapter(private val list: MutableList<User>, val callback: (Int) -> Unit) :
         RecyclerView.Adapter<JoinPeopleAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

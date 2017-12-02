@@ -77,7 +77,7 @@ class RankingListFragment : Fragment() {
                     it.printStackTrace()
                    grouplist.add(RankingUser(
                            displayName = "まだランキングが存在しないよ",
-                           icon = ToolClass(context).convertUrlFromDrawableResId(R.drawable.no_image)!!
+                           icon = ToolClass(context).convertUrlFromDrawableResId(R.drawable.no_image)
                    ))
                     listAdapter.notifyItemRangeInserted(0, grouplist.size)
                 })

@@ -28,14 +28,8 @@ import java.io.BufferedInputStream
  */
 class RegistrationViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
 
-    var iconId: Int
-
-    init {
-        iconId = 0
-    }
-
     companion object {
-        @BindingAdapter("loadImageFirstIcon")
+        @BindingAdapter("loadImage")
         @JvmStatic
         fun setIconImage(view: ImageView, uri: Uri?) {
             if(uri == null){
@@ -153,19 +147,12 @@ class RegistrationViewModel(private val context: Context, private val callback: 
     }
 
     interface Callback {
-
         fun enableButton()
-
         fun stopButton()
-
         fun toLoginActivity()
-
         fun onLogin()
-
         fun startActivityForResult(intent: Intent, requestCode: Int)
-
         fun alertDialog()
-
     }
 
 }
