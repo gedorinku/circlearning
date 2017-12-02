@@ -37,9 +37,7 @@ import org.joda.time.Duration
  */
 class CreateSolutionViewModel(val context: Context, val callback: Callback) : BaseObservable() {
 
-    private val RESULT_CAMERA = 1001
     private val RESULT_PICK_IMAGEFILE = 1000
-    private val REQUEST_PERMISSION = 1002
     lateinit var dialogView: DialogItemSelectBinding
     private lateinit var unitPer: UnitPersonal
     private lateinit var dialog: AlertDialog
@@ -113,6 +111,7 @@ class CreateSolutionViewModel(val context: Context, val callback: Callback) : Ba
     var itemImageClickable = false
         set(value) {
             field = value
+            notifyPropertyChanged(BR.itemImageClickable)
         }
 
     fun onClickItemImage(view: View) {
@@ -123,12 +122,16 @@ class CreateSolutionViewModel(val context: Context, val callback: Callback) : Ba
         if (answerUri != null) {
             Toast.makeText(context, "写真を追加してください", Toast.LENGTH_SHORT).show()
         } else {
-            //todo go next
+            sendAnswerServer()
         }
     }
 
     @Bindable
     var submitable = false
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.submitable)
+        }
 
     fun onClickPass(view: View) {
         onSadDialog()
@@ -174,7 +177,7 @@ class CreateSolutionViewModel(val context: Context, val callback: Callback) : Ba
         dialogSetting()
     }
 
-    private fun dialogSetting(){
+    private fun dialogSetting() {
         val tool = ToolClass(context)
         dialogView = DataBindingUtil.inflate(
                 LayoutInflater.from(context), R.layout.dialog_item_select, null, false)
@@ -222,9 +225,9 @@ class CreateSolutionViewModel(val context: Context, val callback: Callback) : Ba
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     it.forEach {
-                        when(it.id){
+                        when (it.id) {
                             1 -> unitPer.itemCount.bomb = it.count
-                            2 -> unitPer.itemCount.shield= it.count
+                            2 -> unitPer.itemCount.shield = it.count
                             3 -> unitPer.itemCount.card = it.count
                             4 -> unitPer.itemCount.magicHand = it.count
                         }
@@ -293,7 +296,7 @@ class CreateSolutionViewModel(val context: Context, val callback: Callback) : Ba
         }
     }
 
-    private fun sendProblemServer() {
+    private fun sendAnswerServer() {
         val progress = ProgressDialog(context)
         val client = ServerClient(unitPer.authenticationKey)
         var randomItem: Int
