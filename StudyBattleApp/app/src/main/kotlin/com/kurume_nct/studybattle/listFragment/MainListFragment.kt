@@ -145,7 +145,7 @@ class MainListFragment(val callback: Callback) : Fragment() {
                         Toast.makeText(mContext, "新しい問題を取得中...📚", Toast.LENGTH_LONG).show()
                         assignedProblem()
                     } else {
-                        intent = Intent(context, CameraModeActivity::class.java)
+                        intent = Intent(context, CreateSolutionActivity::class.java)
                         intent.putExtra("problemId", problemList[position].id)
                         startActivityForResult(intent, 0)
                     }

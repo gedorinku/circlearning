@@ -3,13 +3,11 @@ package com.kurume_nct.studybattle.view
 import com.kurume_nct.studybattle.R
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.ContentValues
-import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Build
@@ -34,9 +32,6 @@ import com.kurume_nct.studybattle.databinding.*
 import com.kurume_nct.studybattle.model.*
 import com.kurume_nct.studybattle.tools.ImageViewActivity
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
-import com.kurume_nct.studybattle.tools.ToolClass
-import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.joda.time.DateTime
@@ -45,12 +40,10 @@ import org.joda.time.format.DateTimeFormat
 
 import java.io.File
 import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.Date
 
 //by kirby and hunachi, converted to kotlin by hunachi
 
-class CameraModeActivity : Activity() {
+class CreateSolutionActivity : Activity() {
 
     private val RESULT_CAMERA = 1001
     private val RESULT_PICK_IMAGEFILE = 1000
@@ -82,7 +75,7 @@ class CameraModeActivity : Activity() {
         unitPer = application as UnitPersonal
         progress = ProgressDialogTool(this).makeDialog()
 
-        setContentView(R.layout.activity_camera_mode)
+        setContentView(R.layout.activity_create_solution)
         // 宣言
         submitImageButton = findViewById(R.id.submit_image_button) as ImageButton
         submitItemImageButton = findViewById(R.id.submit_item_image_button) as ImageButton
@@ -411,7 +404,7 @@ class CameraModeActivity : Activity() {
 
         // capture画像のファイルパス
         cameraFile = File(filePath!!)
-        cameraUri = FileProvider.getUriForFile(this@CameraModeActivity, applicationContext.packageName + ".provider", cameraFile)
+        cameraUri = FileProvider.getUriForFile(this@CreateSolutionActivity, applicationContext.packageName + ".provider", cameraFile)
 
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         //intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraUri)
@@ -442,7 +435,7 @@ class CameraModeActivity : Activity() {
     private fun requestLocationPermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            ActivityCompat.requestPermissions(this@CameraModeActivity,
+            ActivityCompat.requestPermissions(this@CreateSolutionActivity,
                     arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_PERMISSION)
 
         } else {
@@ -472,7 +465,7 @@ class CameraModeActivity : Activity() {
     // アンドロイドのデータベースへ登録する関数
     private fun registerDatabase(file: String?) {
         val contentValues = ContentValues()
-        val contentResolver = this@CameraModeActivity.contentResolver
+        val contentResolver = this@CreateSolutionActivity.contentResolver
         contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
         contentValues.put("_data", file)
         contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)

@@ -46,7 +46,7 @@
             android:name=".view.LotteryActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.CameraModeActivity"
+            android:name=".view.CreateSolutionActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.ItemInfoActivity"
