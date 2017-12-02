@@ -118,7 +118,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.772"
             android:onClick="@{viewModel.onClickChangeIconImage}"
-            app:loadImageFirstIcon="@{viewModel.imageUri}"
+            app:loadImage="@{viewModel.imageUri}"
             app:srcCompat="@drawable/plus" />
 
         <Button

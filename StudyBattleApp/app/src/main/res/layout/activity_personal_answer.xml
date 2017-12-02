@@ -62,7 +62,7 @@
                     android:clickable="@{viewModel.imageClickable}"
                     android:onClick="@{viewModel.onClickProblemView}"
                     android:scaleType="centerCrop"
-                    app:loadImagePersonal="@{viewModel.personalProblemUri}" />
+                    app:loadImage="@{viewModel.personalProblemUri}" />
 
                 <TextView
                     android:id="@+id/textView37"
@@ -98,7 +98,7 @@
                     android:clickable="@{viewModel.imageClickable}"
                     android:onClick="@{viewModel.onClickImageView}"
                     android:scaleType="centerCrop"
-                    app:loadImagePersonal="@{viewModel.personalAnswerUri}" />
+                    app:loadImage="@{viewModel.personalAnswerUri}" />
 
                 <TextView
                     android:id="@+id/textView"

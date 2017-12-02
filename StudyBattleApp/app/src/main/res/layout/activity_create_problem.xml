@@ -71,7 +71,7 @@
                     android:background="@color/md_blue_grey_200"
                     android:onClick="@{viewModel.onClickProblemImage}"
                     android:scaleType="centerCrop"
-                    app:loadProblem="@{viewModel.problemUri}"
+                    app:loadImage="@{viewModel.problemUri}"
                     app:srcCompat="@drawable/plus"
                     tools:ignore="ContentDescription" />
 
@@ -167,7 +167,7 @@
                     android:background="@color/md_blue_grey_200"
                     android:onClick="@{viewModel.onClickAnswerImage}"
                     android:scaleType="centerCrop"
-                    app:loadProblem="@{viewModel.answerUri}"
+                    app:loadImage="@{viewModel.answerUri}"
                     app:srcCompat="@drawable/plus" />
 
                 <Button

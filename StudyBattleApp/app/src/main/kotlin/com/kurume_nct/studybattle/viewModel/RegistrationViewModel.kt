@@ -29,7 +29,7 @@ import java.io.BufferedInputStream
 class RegistrationViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
 
     companion object {
-        @BindingAdapter("loadImageFirstIcon")
+        @BindingAdapter("loadImage")
         @JvmStatic
         fun setIconImage(view: ImageView, uri: Uri?) {
             if(uri == null){

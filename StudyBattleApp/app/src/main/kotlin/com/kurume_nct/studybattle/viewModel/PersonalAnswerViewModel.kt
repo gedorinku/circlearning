@@ -38,11 +38,11 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
     private var replyTo = 0
 
     companion object {
-        @BindingAdapter("loadImagePersonal")
+        @BindingAdapter("loadImage")
         @JvmStatic
         fun setIconImage(view: ImageView, uri: Uri?) {
             if (uri == null) {
-                //Glide.with(view).load(R).into(view)//loadの中にresourceを入れたらtestできる
+                Glide.with(view).load(R.drawable.no_image).into(view)
             } else {
                 Glide.with(view).load(uri).into(view)
             }
