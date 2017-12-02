@@ -79,7 +79,7 @@ class GroupSetChangeActivity : AppCompatActivity(), GroupSetChangeViewModel.Call
         builder.setTitle("本当に今のグループから抜けてもいいですか？")
         builder.setMessage("このグループ内でのデータが完全に消える可能性があります")
         builder.setNegativeButton("いいえ", null)
-        builder.setPositiveButton("はい", DialogInterface.OnClickListener {
+        builder.setPositiveButton("はい", {
             dialog, which -> getOutGroup()
         })
         builder.create().show()

@@ -56,7 +56,7 @@ class SearchPeopleFragment(val callback: Callback, val context: SelectMainPeople
         })
 
         binding.list.adapter = listAdapter
-        binding.list.layoutManager = LinearLayoutManager(binding.list.context) as RecyclerView.LayoutManager?
+        binding.list.layoutManager = LinearLayoutManager(binding.list.context)
 
         return binding.root
     }

@@ -48,6 +48,7 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 
+//by kirby and hunachi, converted to kotlin by hunachi
 
 class CameraModeActivity : Activity() {
 
@@ -222,7 +223,7 @@ class CameraModeActivity : Activity() {
 
     private fun sendProblemServer() {
         val client = ServerClient(unitPer.authenticationKey)
-        var randomItem = 0
+        var randomItem: Int
 
         progress.show()
         client
