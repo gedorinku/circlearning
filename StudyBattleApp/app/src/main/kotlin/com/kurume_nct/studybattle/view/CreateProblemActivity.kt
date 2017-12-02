@@ -47,10 +47,10 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         super.onCreate(savedInstanceState)
         Log.d("i'm ", javaClass.name)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_problem)
-        binding.createView = CreateProblemViewModel(this, this)
+        binding.viewModel = CreateProblemViewModel(this, this)
 
         unitPer = application as UnitPersonal
-        binding.createView.creatorName = "Made by " + unitPer.myInfomation.displayName
+        binding.viewModel.creatorName = "Made by " + unitPer.myInfomation.displayName
 
         binding.termHourForOne.isEnabled = false
 
@@ -61,8 +61,10 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         DataSetting()
     }
 
+
+    //TODO move to mv
     private fun DataSetting() {
-        binding.createView.let {
+        binding.viewModel.let {
             it.day = "回収日が設定されていません"
         }
     }
@@ -74,7 +76,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
             onClickableButtons()
             return
         }
-        binding.createView.onActivityResult(requestCode, resultCode, data)
+        binding.viewModel.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun getCreateData(title: String) {
@@ -104,14 +106,16 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         val gup = duration.standardMinutes
         Log.d(gup.toString() + "時間", settingDate.toString())
         binding.termHourForOne.isEnabled = true
-        binding.createView.let {
+
+        //TODO move to mv
+        binding.viewModel.let {
             it.day =
                     year.toString() + "年" + (month + 1).toString() + "月" + dayOfMonth.toString() + "日"
             it.termForOne =
                     (gup / 60 / maxOf(unitPer.nowGroup.members.size - 1, 1)).toString() + "時間" +
                             ((gup / maxOf(unitPer.nowGroup.members.size - 1, 1)) % 60).toString() + "分" + it.termExtra
         }
-        Log.d(binding.createView.day, "change")
+        Log.d(binding.viewModel.day, "change")
     }
 
     override fun alertDialog(pro: Int) {
@@ -175,6 +179,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         }
     }
 
+    //todo mode to mv
     fun onGetImage(camera: Int, pro: Int) {
         when (camera) {
             0 -> {
@@ -195,9 +200,9 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
                     putExtra(MediaStore.EXTRA_OUTPUT, uri)
                 }
                 if (pro == 1) {
-                    binding.createView.problemUri = uri
+                    binding.viewModel.problemUri = uri
                 } else {
-                    binding.createView.answerUri = uri
+                    binding.viewModel.answerUri = uri
                 }
                 startActivityForResult(intent, pro)
             }

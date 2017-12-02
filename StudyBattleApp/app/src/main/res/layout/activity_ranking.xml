@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="Ranking"
+            name="viewModel"
             type="com.kurume_nct.studybattle.viewModel.RankingViewModel" />
     </data>
 
@@ -102,7 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal"
-                    android:text="@{Ranking.myNowScore}"
+                    android:text="@{viewModel.myNowScore}"
                     android:textAlignment="center"
                     android:textSize="30sp" />
 
@@ -134,7 +134,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="@{Ranking.myAllScore}"
+                    android:text="@{viewModel.myAllScore}"
                     android:textAlignment="center"
                     android:textSize="30sp" />
             </LinearLayout>

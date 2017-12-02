@@ -43,7 +43,7 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
         Log.d("i'm ", javaClass.name)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_registration)
-        binding.userEntity = RegistrationViewModel(this, this)
+        binding.viewModel = RegistrationViewModel(this, this)
         unitPer = application as UnitPersonal
 
         dialogSetting()
@@ -73,7 +73,7 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
             Log.d("ほげほげ", resultCode.toString() )
             return
         }
-        binding.userEntity.onActivityResult(requestCode, resultCode, data)
+        binding.viewModel.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun stopButton() {
@@ -207,7 +207,7 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
             putExtra(MediaStore.EXTRA_OUTPUT, uri)
         }
-        binding.userEntity.imageUri = uri
+        binding.viewModel.imageUri = uri
         startActivityForResult(intent, 114)
     }
 

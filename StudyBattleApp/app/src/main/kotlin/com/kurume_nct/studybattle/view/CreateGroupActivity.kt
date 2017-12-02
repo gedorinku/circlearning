@@ -27,7 +27,7 @@ class CreateGroupActivity : AppCompatActivity(), CreateGroupViewModel.Callback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_group)
-        binding.createGroupUnit = CreateGroupViewModel(this, this)
+        binding.viewModel = CreateGroupViewModel(this, this)
         unitPer = application as UnitPersonal
 
         fragment = SelectMainPeopleFragment().newInstance(true)
@@ -37,11 +37,14 @@ class CreateGroupActivity : AppCompatActivity(), CreateGroupViewModel.Callback {
                 .commit()
     }
 
+
+    //TODO move to mv
     private fun createGroup() {
         val toast = Toast.makeText(this, "グループ名が適切ではありません", Toast.LENGTH_LONG)
         val client = ServerClient(unitPer.authenticationKey)
             client
-                    .createGroup(binding.createGroupUnit.groupName)
+                    .createGroup(binding.viewModel
+                            .groupName)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({

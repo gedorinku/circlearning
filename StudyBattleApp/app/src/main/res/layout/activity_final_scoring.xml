@@ -5,7 +5,7 @@
     <data>
 
         <variable
-            name="FinalScoring"
+            name="viewModel"
             type="com.kurume_nct.studybattle.viewModel.FinalScoringViewModel" />
     </data>
 
@@ -40,7 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@{FinalScoring.problemTitle}"
+                    android:text="@{viewModel.problemTitle}"
                     android:textColor="@color/md_black_1000"
                     android:textSize="18sp" />
 
@@ -53,17 +53,17 @@
                     android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:background="@color/md_blue_grey_200"
-                    android:clickable="@{FinalScoring.imageClickAble}"
-                    android:onClick="@{FinalScoring.onClickProblemView}"
+                    android:clickable="@{viewModel.imageClickAble}"
+                    android:onClick="@{viewModel.onClickProblemView}"
                     android:scaleType="centerCrop"
-                    app:loadImageFinalScoring="@{FinalScoring.personalProblemUri}" />
+                    app:loadImageFinalScoring="@{viewModel.personalProblemUri}" />
 
                 <TextView
                     android:id="@+id/textView37"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@{FinalScoring.ansCreatorName}"
+                    android:text="@{viewModel.ansCreatorName}"
                     android:textSize="18sp" />
 
                 <TextView
@@ -71,7 +71,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@{FinalScoring.correctPersonal}"
+                    android:text="@{viewModel.correctPersonal}"
                     android:textColor="@color/material_drawer_accent"
                     android:textSize="18sp" />
 
@@ -84,10 +84,10 @@
                     android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:background="@color/md_blue_grey_200"
-                    android:clickable="@{FinalScoring.imageClickAble}"
-                    android:onClick="@{FinalScoring.onClickImageView}"
+                    android:clickable="@{viewModel.imageClickAble}"
+                    android:onClick="@{viewModel.onClickImageView}"
                     android:scaleType="centerCrop"
-                    app:loadImageFinalScoring="@{FinalScoring.personalAnswerUri}" />
+                    app:loadImageFinalScoring="@{viewModel.personalAnswerUri}" />
 
                 <TextView
                     android:id="@+id/textView41"
@@ -107,7 +107,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_weight="1"
-                    android:text="@{FinalScoring.everyoneComment}"
+                    android:text="@{viewModel.everyoneComment}"
                     android:textColor="@color/material_drawer_dark_selected"
                     android:textSize="18sp" />
 
@@ -120,7 +120,7 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:inputType="none"
-                    android:text="@={FinalScoring.yourComment}" />
+                    android:text="@={viewModel.yourComment}" />
 
                 <Button
                     android:id="@+id/add_normal_comment_button"
@@ -131,7 +131,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:background="@drawable/green_button__t"
-                    android:onClick="@{FinalScoring.onClickComment}"
+                    android:onClick="@{viewModel.onClickComment}"
                     android:text="+コメントを追加"
                     android:textColor="@color/material_drawer_dark_header_selection_text"
                     android:textSize="15sp" />
@@ -163,7 +163,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:checked="@={FinalScoring.radioCorrect}"
+                        android:checked="@={viewModel.radioCorrect}"
                         android:text="正解"
                         android:textAlignment="center"
                         android:textSize="15sp" />
@@ -173,7 +173,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"
-                        android:checked="@={!FinalScoring.radioCorrect}"
+                        android:checked="@={!viewModel.radioCorrect}"
                         android:foregroundGravity="center"
                         android:text="間違え"
                         android:textSize="15sp" />
@@ -187,7 +187,7 @@
                     android:layout_marginBottom="32dp"
                     android:layout_weight="1"
                     android:background="@drawable/red_button_t"
-                    android:onClick="@{FinalScoring.onClickResetButton}"
+                    android:onClick="@{viewModel.onClickResetButton}"
                     android:text="変更"
                     android:textColor="@color/material_drawer_dark_header_selection_text"
                     android:textSize="15sp" />

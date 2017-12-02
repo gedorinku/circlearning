@@ -29,16 +29,18 @@ class FinalScoringActivity : AppCompatActivity(), FinalScoringViewModel.Callback
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_final_scoring)
-        binding.finalScoring = FinalScoringViewModel(this, this)
+        binding.viewModel = FinalScoringViewModel(this, this)
         solution = intent.getIntExtra("solutionId", -1)
         if (solution == -1) {
             Log.d("soputionId", "適切ではない")
             finish()
         }
+
+        //todo move to mv
         binding.apply {
-            finalScoring.getInitData()
+            viewModel.getInitData()
             swipeRefreshFinal.setOnRefreshListener {
-                finalScoring.refreshComment(true)
+                viewModel.refreshComment(true)
             }
         }
     }

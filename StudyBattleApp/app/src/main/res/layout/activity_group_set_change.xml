@@ -4,7 +4,7 @@
     <data>
 
         <variable
-            name="GroupSetView"
+            name="viewModel"
             type="com.kurume_nct.studybattle.viewModel.GroupSetChangeViewModel" />
     </data>
 
@@ -74,7 +74,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="32dp"
                     android:background="@drawable/green_button__t"
-                    android:onClick="@{GroupSetView.onClickChangeInfo}"
+                    android:onClick="@{viewModel.onClickChangeInfo}"
                     android:text="追加する"
                     android:textColor="@color/material_drawer_background"
                     android:textSize="15sp" />
@@ -87,7 +87,7 @@
                     android:layout_marginTop="16dp"
                     android:background="@android:color/transparent"
                     android:gravity="center"
-                    android:onClick="@{GroupSetView.onClickGoodbyeInfo}"
+                    android:onClick="@{viewModel.onClickGoodbyeInfo}"
                     android:text="グループから退出"
                     android:textColor="@color/colorPrimary"
                     android:textSize="15sp" />

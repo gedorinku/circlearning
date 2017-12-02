@@ -13,12 +13,7 @@ import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.databinding.GroupObjectBinding
-import com.kurume_nct.studybattle.model.Person_
-import com.kurume_nct.studybattle.model.Ranking
 import com.kurume_nct.studybattle.model.RankingUser
-import com.mikepenz.google_material_typeface_library.GoogleMaterial
-import retrofit2.http.Url
-import javax.microedition.khronos.opengles.GL
 
 /**
  * Created by hanah on 9/22/2017.

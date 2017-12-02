@@ -147,17 +147,17 @@ class Main2Activity : AppCompatActivity() {
                         getIconBitmap()
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe { it ->
-                                    val xSize = it.width
-                                    val ySize = it.height
-                                    var bitmap = it
+                                .subscribe { bitmap ->
+                                    val xSize = bitmap.width
+                                    val ySize = bitmap.height
+                                    var userIcon = bitmap
                                     Log.d("size", "変更")
                                     if (xSize > ySize)
-                                        bitmap = Bitmap.createBitmap(bitmap, (xSize - ySize) / 2, 0, ySize, ySize, null, false)
+                                        userIcon = Bitmap.createBitmap(userIcon, (xSize - ySize) / 2, 0, ySize, ySize, null, false)
                                     else if (ySize > xSize)
-                                        bitmap = Bitmap.createBitmap(bitmap, 0, (ySize - xSize) / 2, xSize, xSize, null, false)
+                                        userIcon = Bitmap.createBitmap(userIcon, 0, (ySize - xSize) / 2, xSize, xSize, null, false)
 
-                                    viewSetup(bitmap)
+                                    viewSetup(userIcon)
                                 }
                     }
                 }, {
@@ -265,7 +265,7 @@ class Main2Activity : AppCompatActivity() {
                                 .withIcon(userIcon)
                                 .withIdentifier(acountCount)
                 )
-                .withOnAccountHeaderListener(AccountHeader.OnAccountHeaderListener { view, profile, currentProfile ->
+                .withOnAccountHeaderListener({ view, profile, currentProfile ->
                     false
                 })
                 .build()

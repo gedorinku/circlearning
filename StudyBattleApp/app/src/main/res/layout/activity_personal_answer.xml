@@ -5,7 +5,7 @@
     <data>
 
         <variable
-            name="PersonalAnswer"
+            name="viewModel"
             type="com.kurume_nct.studybattle.viewModel.PersonalAnswerViewModel" />
     </data>
 
@@ -45,7 +45,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_weight="1"
-                    android:text="@{PersonalAnswer.problemTitle}"
+                    android:text="@{viewModel.problemTitle}"
                     android:textColor="@color/material_drawer_dark_selected"
                     android:textSize="18sp" />
 
@@ -59,10 +59,10 @@
                     android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:background="@color/md_blue_grey_200"
-                    android:clickable="@{PersonalAnswer.imageClickable}"
-                    android:onClick="@{PersonalAnswer.onClickProblemView}"
+                    android:clickable="@{viewModel.imageClickable}"
+                    android:onClick="@{viewModel.onClickProblemView}"
                     android:scaleType="centerCrop"
-                    app:loadImagePersonal="@{PersonalAnswer.personalProblemUri}" />
+                    app:loadImagePersonal="@{viewModel.personalProblemUri}" />
 
                 <TextView
                     android:id="@+id/textView37"
@@ -71,7 +71,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_weight="1"
-                    android:text="@{PersonalAnswer.ansCreatorName}" />
+                    android:text="@{viewModel.ansCreatorName}" />
 
                 <TextView
                     android:id="@+id/current_personal_text"
@@ -81,7 +81,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_weight="1"
-                    android:text="@{PersonalAnswer.correctPersonal}"
+                    android:text="@{viewModel.correctPersonal}"
                     android:textSize="21sp" />
                     android:textColor="@color/accent" />
 
@@ -95,10 +95,10 @@
                     android:layout_marginRight="16dp"
                     android:layout_weight="1"
                     android:background="@color/md_blue_grey_200"
-                    android:clickable="@{PersonalAnswer.imageClickable}"
-                    android:onClick="@{PersonalAnswer.onClickImageView}"
+                    android:clickable="@{viewModel.imageClickable}"
+                    android:onClick="@{viewModel.onClickImageView}"
                     android:scaleType="centerCrop"
-                    app:loadImagePersonal="@{PersonalAnswer.personalAnswerUri}" />
+                    app:loadImagePersonal="@{viewModel.personalAnswerUri}" />
 
                 <TextView
                     android:id="@+id/textView"
@@ -118,7 +118,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_weight="1"
-                    android:text="@{PersonalAnswer.everyoneComment}"
+                    android:text="@{viewModel.everyoneComment}"
                     android:textColor="@color/material_drawer_dark_selected"
                     android:textSize="18sp" />
 
@@ -131,7 +131,7 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:inputType="none"
-                    android:text="@={PersonalAnswer.yourComment}" />
+                    android:text="@={viewModel.yourComment}" />
 
                 <Button
                     android:id="@+id/add_comment_button"
@@ -142,8 +142,8 @@
                     android:layout_marginTop="32dp"
                     android:layout_weight="1"
                     android:background="@drawable/green_button__t"
-                    android:onClick="@{PersonalAnswer.onClickComment}"
-                    android:text="@{PersonalAnswer.commentButtonText}"
+                    android:onClick="@{viewModel.onClickComment}"
+                    android:text="@{viewModel.commentButtonText}"
                     android:textColor="@color/material_drawer_dark_header_selection_text"
                     android:textSize="15sp" />
 

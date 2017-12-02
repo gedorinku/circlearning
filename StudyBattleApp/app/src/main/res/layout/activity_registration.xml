@@ -5,7 +5,7 @@
 
     <data>
         <variable
-            name="userEntity"
+            name="viewModel"
             type="com.kurume_nct.studybattle.viewModel.RegistrationViewModel" />
     </data>
 
@@ -45,7 +45,7 @@
             android:hint="@string/hint_input_user_name"
             android:inputType="textPersonName"
             android:singleLine="true"
-            android:text="@={userEntity.userNameRegister}"
+            android:text="@={viewModel.userNameRegister}"
             android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.493"
@@ -66,7 +66,7 @@
             android:foregroundGravity="center"
             android:hint="@string/displayNameHint"
             android:singleLine="true"
-            android:text="@={userEntity.displayName}"
+            android:text="@={viewModel.displayName}"
             android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.493"
@@ -88,7 +88,7 @@
             android:hint="@string/hint_input_user_password"
             android:inputType="textPassword"
             android:singleLine="true"
-            android:text="@={userEntity.userPassword}"
+            android:text="@={viewModel.userPassword}"
             android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.493"
@@ -117,8 +117,8 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.772"
-            android:onClick="@{userEntity.onClickChangeIconImage}"
-            app:loadImageFirstIcon="@{userEntity.imageUri}"
+            android:onClick="@{viewModel.onClickChangeIconImage}"
+            app:loadImageFirstIcon="@{viewModel.imageUri}"
             app:srcCompat="@drawable/plus" />
 
         <Button
@@ -134,8 +134,8 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/red_button_t"
             android:foregroundGravity="center"
-            android:onClick="@{userEntity.onClickLoginButton}"
-            android:text="@{userEntity.loginButtonText}"
+            android:onClick="@{viewModel.onClickLoginButton}"
+            android:text="@{viewModel.loginButtonText}"
             android:textColor="#ffffff"
             android:textSize="15sp"
             app:layout_constraintBottom_toTopOf="@+id/button3"
@@ -151,7 +151,7 @@
             android:layout_height="wrap_content"
             android:foregroundGravity="center"
             android:gravity="center"
-            android:onClick="@{userEntity.onClicktoLoginButton}"
+            android:onClick="@{viewModel.onClicktoLoginButton}"
             android:text="ログインはこちら"
             android:textColor="@color/colorPrimary"
             android:textSize="15sp"
