@@ -36,7 +36,6 @@ class FinalScoringActivity : AppCompatActivity(), FinalScoringViewModel.Callback
             finish()
         }
 
-        //todo move to mv
         binding.apply {
             viewModel.getInitData()
             swipeRefreshFinal.setOnRefreshListener {

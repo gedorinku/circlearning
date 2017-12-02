@@ -84,7 +84,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
         }
 
     @Bindable
-    var day = "5日"
+    var day = "回収日が設定されていません"
         get
         set(value) {
             field = value

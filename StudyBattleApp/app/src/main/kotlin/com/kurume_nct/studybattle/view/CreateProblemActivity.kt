@@ -58,16 +58,8 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
                 .replace(R.id.directions_container, DurationFragment().newInstance())
                 .commit()
 
-        DataSetting()
     }
 
-
-    //TODO move to mv
-    private fun DataSetting() {
-        binding.viewModel.let {
-            it.day = "回収日が設定されていません"
-        }
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -107,7 +99,6 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         Log.d(gup.toString() + "時間", settingDate.toString())
         binding.termHourForOne.isEnabled = true
 
-        //TODO move to mv
         binding.viewModel.let {
             it.day =
                     year.toString() + "年" + (month + 1).toString() + "月" + dayOfMonth.toString() + "日"

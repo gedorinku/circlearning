@@ -263,7 +263,6 @@ class CameraModeActivity : Activity() {
                     val intent = Intent(this, LotteryActivity::class.java)
                     intent.putExtra("item", randomItem)
                     startActivity(intent)
-                    //todo
                     setResult(0)
                     finish()
                 }, {
