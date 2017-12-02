@@ -136,8 +136,7 @@ class ServerClient(authenticationKey: String = "") {
 
     fun uploadImage(uri: Uri, context: Context): Observable<Image> {
         val contentResolver = context.contentResolver
-        val type = MediaType.parse(contentResolver.getType(uri))
-        val requestBody = createRequestBody(type, uri, context)
+        val requestBody = createRequestBody(uri, context)
         val imagePart = MultipartBody.Part.create(
                 Headers.of(mapOf("Content-Disposition" to "form-data; name=\"image\"; filename=\"hoge\"")),
                 requestBody
