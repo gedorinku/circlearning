@@ -24,7 +24,7 @@ class ServerClientTest {
         val displayName = "里中チエ"
         val userName = generateTestUserName()
         val password = generateTestUserPassword()
-        val client = ServerClient()
+        val client = ServerClient("http://localhost:8080")
 
         @JvmStatic
         @BeforeClass

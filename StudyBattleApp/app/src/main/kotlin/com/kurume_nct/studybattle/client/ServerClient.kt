@@ -32,7 +32,7 @@ import java.lang.reflect.Type
 /**
  * Created by hanah on 7/31/2017.
  */
-class ServerClient(authenticationKey: String = "") {
+class ServerClient(authenticationKey: String = "", baseUrl: String = "http://studybattle.dip.jp:8080") {
 
     private val server: Server
 
@@ -49,7 +49,7 @@ class ServerClient(authenticationKey: String = "") {
         httpClient.addInterceptor(logging)
 
         val retrofit = Retrofit.Builder()
-                .baseUrl("http://studybattle.dip.jp:8080")
+                .baseUrl(baseUrl)
                 .addConverterFactory(StringConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
