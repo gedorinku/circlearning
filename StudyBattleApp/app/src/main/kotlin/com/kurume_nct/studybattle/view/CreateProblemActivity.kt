@@ -170,7 +170,6 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         }
     }
 
-    //todo mode to mv
     fun onGetImage(camera: Int, pro: Int) {
         when (camera) {
             0 -> {
