@@ -38,12 +38,24 @@ class CreateSolutionViewModel(context: Context) : BaseObservable() {
 
     @Bindable
     var timeRemaining = ""
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.timeRemaining)
+        }
 
     @Bindable
     var writer = ""
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.writer)
+        }
 
     @Bindable
     var problemUri: Uri? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.problemUri)
+        }
 
     fun onClickProblemImage(view: View) {
 
@@ -51,6 +63,10 @@ class CreateSolutionViewModel(context: Context) : BaseObservable() {
 
     @Bindable
     var answerUri: Uri? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.answerUri)
+        }
 
     fun onClickAnswerImage(view: View) {
 
@@ -58,6 +74,10 @@ class CreateSolutionViewModel(context: Context) : BaseObservable() {
 
     @Bindable
     var itemImageUri: Uri? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.itemImageUri)
+        }
 
     fun onClickItemImage(view: View) {
 
