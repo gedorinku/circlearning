@@ -24,7 +24,8 @@ class ServerClientTest {
         val displayName = "里中チエ"
         val userName = generateTestUserName()
         val password = generateTestUserPassword()
-        val client = ServerClient(baseUrl = "http://localhost:8080")
+        const val baseUrl = "http://localhost:8080"
+        val client = ServerClient(baseUrl = baseUrl)
 
         @JvmStatic
         @BeforeClass
@@ -151,7 +152,7 @@ class ServerClientTest {
         }()
 
         val origin = hashContent(classLoader.getResourceAsStream(fileName))
-        val upload = hashContent(URL(image.url).openStream())
+        val upload = hashContent(URL("$baseUrl/image/${image.fileName}").openStream())
         assertEquals(origin, upload)
 
         val image2 = {
