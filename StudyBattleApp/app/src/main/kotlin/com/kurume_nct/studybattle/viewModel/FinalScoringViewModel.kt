@@ -268,15 +268,10 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
     }
 
     interface Callback {
-
         fun getSolutionId(): Int
-
         fun onReset()
-
         fun enableEditText(boolean: Boolean)
-
         fun finishedRefresh()
-
         fun changeTextColor()
     }
 }

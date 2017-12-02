@@ -156,13 +156,9 @@ class ScoringViewModel(val context: Context, val callback: Callback) : BaseObser
     }
 
     interface Callback {
-
         fun getProblem(): Pair<String, String> //title url
-
         fun getSolution(): Int
-
         fun onFinish()
-
     }
 
 }

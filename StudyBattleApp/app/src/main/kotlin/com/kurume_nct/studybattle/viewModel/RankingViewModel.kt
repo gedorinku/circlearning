@@ -48,6 +48,6 @@ class RankingViewModel(private val context: Context, private val callback: Callb
     }
 
     interface Callback {
-
+        //none
     }
 }

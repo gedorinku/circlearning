@@ -259,22 +259,13 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
 
 
     interface Callback {
-
         fun enableEditText(boolean: Boolean)
-
         fun getProblemId(): Int
-
         fun onFinish()
-
         fun finishedRefresh()
-
         fun judgeYet()
-
         fun changeColor()
-
         fun getSwitch(): String
-
         fun getSolution(): Solution
-
     }
 }

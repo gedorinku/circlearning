@@ -66,15 +66,10 @@ class LoginViewModel(private val context: Context, private val callback: Callbac
 
 
     interface Callback {
-
         fun getKey(): String
-
         fun stopButton()
-
         fun clickableButton()
-
         fun onLogin(authentication: String)
-
         fun toRegisterActivity()
     }
 }

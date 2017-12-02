@@ -197,25 +197,15 @@ class CreateProblemViewModel(private val context: Context, private val callback:
     private fun dateTime(): DateTime = DateTime.now()
 
     interface Callback {
-
         fun userInformation(): User
-
         fun getKey(): String
-
         fun startActivityForResult(intent: Intent, requestCode: Int)
-
         fun getCreateData(title: String)
-
         fun alertDialog(pro: Int)
-
         fun onDateDialog()
-
         fun getDuration(): Duration
-
         fun getGroupId(): Int
-
         fun onClickableButtons()
-
         fun onNotClickableButtons()
     }
 }
