@@ -8,6 +8,4 @@ machine:
     - study-battle-server/configure.sh
     - study-battle-server/gradlew -p study-battle-server build
     - nohup study-battle-server/gradlew -p study-battle-server run &
-    - sleep 2s
-    - disown %1
 
