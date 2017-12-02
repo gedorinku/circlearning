@@ -96,7 +96,7 @@
                     tools:ignore="HardcodedText" />
             </LinearLayout>
 
-            <ImageButton
+            <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginLeft="16dp"
@@ -104,7 +104,6 @@
                 android:background="@color/md_blue_grey_200"
                 android:scaleType="centerCrop"
                 app:loadImage="@{viewModel.problemUri}"
-                android:onClick="@{viewModel.onClickProblemImage}"
                 tools:ignore="ContentDescription" />
 
             <LinearLayout
@@ -122,7 +121,6 @@
             </LinearLayout>
 
             <ImageButton
-                android:id="@+id/submit_image_button"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginBottom="32dp"
@@ -131,6 +129,7 @@
                 android:background="@color/md_blue_grey_200"
                 android:scaleType="centerCrop"
                 app:loadImage="@{viewModel.answerUri}"
+                android:clickable="@{viewModel.answerImageClickable}"
                 android:onClick="@{viewModel.onClickAnswerImage}"
                 tools:ignore="ContentDescription" />
 
@@ -158,6 +157,7 @@
                 android:paddingRight="8dp"
                 android:scaleType="fitXY"
                 app:loadImage="@{viewModel.itemImageUri}"
+                android:clickable="@{viewModel.itemImageClickable}"
                 android:onClick="@{viewModel.onClickItemImage}"
                 tools:ignore="ContentDescription,InefficientWeight" />
 
@@ -172,6 +172,7 @@
                 android:background="@drawable/red_button_t"
                 android:text="提出"
                 android:onClick="@{viewModel.onClickSubmit}"
+                android:clickable="@{viewModel.itemImageClickable}"
                 android:textColor="#ffffff"
                 android:textSize="20sp"
                 tools:ignore="HardcodedText,RtlHardcoded" />
