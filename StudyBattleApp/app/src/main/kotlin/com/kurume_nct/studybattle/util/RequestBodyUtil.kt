@@ -16,15 +16,20 @@ import okio.Okio
  * RequestBodyのファクトリ関数です。
  * RequestBodyはCompanion objectを持たないので、拡張関数にできずつらい
  */
-fun createRequestBody(contentType: MediaType?, uri: Uri, context: Context): RequestBody {
+fun createRequestBody(uri: Uri, context: Context): RequestBody {
+    val contentResolver = context.contentResolver
+    val contentType = MediaType.parse(contentResolver.getType(uri))
+
     val projection = arrayOf(MediaStore.MediaColumns.SIZE)
-    val length = context.contentResolver.query(uri, projection, null, null, null)?.use {
-        if (it.moveToFirst()) {
-            it.getLong(0)
-        } else {
-            null
-        }
-    } ?: throw IllegalArgumentException("残念ながらuriからファイルサイズを取得できません")
+    val length = contentResolver
+            .query(uri, projection, null, null, null)
+            ?.use {
+                if (it.moveToFirst()) {
+                    it.getLong(0)
+                } else {
+                    null
+                }
+            } ?: throw IllegalArgumentException("uriからファイルサイズを取得できません")
 
     return object : RequestBody() {
 
@@ -33,9 +38,11 @@ fun createRequestBody(contentType: MediaType?, uri: Uri, context: Context): Requ
         override fun contentType(): MediaType? = contentType
 
         override fun writeTo(sink: BufferedSink) {
-            Okio.source(context.contentResolver.openInputStream(uri)).use {
-                sink.writeAll(it)
-            }
+            Okio
+                    .source(context.contentResolver.openInputStream(uri))
+                    .use {
+                        sink.writeAll(it)
+                    }
         }
 
     }
