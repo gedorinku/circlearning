@@ -56,6 +56,13 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
         }
 
     @Bindable
+    var writer = ""
+    set(value) {
+        field = value
+        notifyPropertyChanged(BR.writer)
+    }
+
+    @Bindable
     var personalProblemUri: Uri? = null
         set(value) {
             field = value
@@ -145,6 +152,7 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                 .flatMap {
                     //find owner solution.
                     problemTitle = it.title
+                    writer = "by. " + it.assumedSolution.author.displayName
                     if ("s" == callback.getSwitch()) {
                         solution = callback.getSolution()
                     } else {
@@ -198,7 +206,7 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                     problemUrl = it.url
                     personalProblemUri = Uri.parse(problemUrl)
                 }, {
-                    //callback.onFinish()
+                    callback.onFinish()
                     it.printStackTrace()
                 })
     }
