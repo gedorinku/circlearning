@@ -29,15 +29,14 @@ class UnitPersonal : Application(){
         authenticationKey = prefer.getString("key", "0")
     }
 
-    @SuppressLint("ApplySharedPref")
     fun writeFile(){
         prefer = getSharedPreferences(packageName + ".txt", Context.MODE_PRIVATE)
-        val edit = prefer.edit()
-        edit.putString("key", authenticationKey)
-        edit.commit()
+        prefer.edit().apply {
+            putString("key", authenticationKey)
+            commit()
+        }
     }
 
-    @SuppressLint("ApplySharedPref")
     fun deleteFile(){
         prefer = getSharedPreferences(packageName + ".txt", Context.MODE_PRIVATE)
         authenticationKey = "0"
