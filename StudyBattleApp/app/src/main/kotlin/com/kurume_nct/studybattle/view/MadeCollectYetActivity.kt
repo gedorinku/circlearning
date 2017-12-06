@@ -6,8 +6,6 @@ import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.ActionMenuView
 import android.widget.Toast
 import com.bumptech.glide.Glide
 
@@ -15,7 +13,6 @@ import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.ActivityMadeCollectYetBinding
 import com.kurume_nct.studybattle.model.UnitPersonal
-import com.kurume_nct.studybattle.tools.ImageViewActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 

@@ -1,4 +1,4 @@
-package com.kurume_nct.studybattle.tools
+package com.kurume_nct.studybattle.view
 
 import android.databinding.DataBindingUtil
 import android.net.Uri

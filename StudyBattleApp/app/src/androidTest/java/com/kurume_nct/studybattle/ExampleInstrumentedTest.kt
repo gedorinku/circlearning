@@ -22,6 +22,6 @@ import org.junit.Assert.*
  // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
 
-assertEquals("com.kurume_nct.studybattle", appContext.getPackageName())
+assertEquals("", appContext.getPackageName())
 }
 }

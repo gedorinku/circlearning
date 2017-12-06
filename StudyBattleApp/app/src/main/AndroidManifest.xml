@@ -82,7 +82,7 @@
             android:name=".view.FinalScoringActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".tools.ImageViewActivity"
+            android:name=".view.ImageViewActivity"
             android:screenOrientation="portrait" />
     </application>
 

@@ -6,10 +6,8 @@ import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
-import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -17,20 +15,13 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.FileProvider
 import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
 import android.widget.*
-import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.*
 import com.kurume_nct.studybattle.model.*
-import com.kurume_nct.studybattle.tools.ImageViewActivity
-import com.kurume_nct.studybattle.tools.ProgressDialogTool
 import com.kurume_nct.studybattle.viewModel.CreateSolutionViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -38,7 +29,6 @@ import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 
 import java.io.File
-import java.io.IOException
 
 //by kirby and hunachi, converted to kotlin by hunachi
 

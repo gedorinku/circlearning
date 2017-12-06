@@ -6,7 +6,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.kurume_nct.studybattle.tools.ImageViewActivity">
+        tools:context="com.kurume_nct.studybattle.view.ImageViewActivity">
 
         <ImageView
             android:id="@+id/imageView17"
