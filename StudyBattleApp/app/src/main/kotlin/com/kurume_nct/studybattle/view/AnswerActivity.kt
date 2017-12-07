@@ -19,8 +19,6 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
     private var mFin: Int = 0
     lateinit var usersObject: UsersObject
     private var mProblemId = -1
-    private var problemTitle = ""
-    private var problemUrl = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

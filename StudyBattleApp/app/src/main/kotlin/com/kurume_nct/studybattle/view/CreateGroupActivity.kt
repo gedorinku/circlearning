@@ -39,7 +39,7 @@ class CreateGroupActivity : AppCompatActivity(), CreateGroupViewModel.Callback {
 
     override fun makeGroup() {
         binding.apply {
-            button10.isClickable = false
+            onMakeGroupButton.isClickable = false
             viewModel.createGroup()
         }
     }
@@ -54,7 +54,7 @@ class CreateGroupActivity : AppCompatActivity(), CreateGroupViewModel.Callback {
     }
 
     override fun onError() {
-        binding.button10.isClickable = true
+        binding.onMakeGroupButton.isClickable = true
         Toast.makeText(this, "グループ名を変えてもう一度試してみてください", Toast.LENGTH_SHORT).show()
     }
 
