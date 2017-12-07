@@ -23,18 +23,21 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("i'm ", javaClass.name)
+
         usersObject = application as UsersObject
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_answer)
+
         mFin = intent.getIntExtra("fin", 0)
         mProblemId = intent.getIntExtra("problemId", -1)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_answer)
-        binding.viewModel = AnswerViewModel(this, this)
-
-        if (mProblemId == -1) {
-            Log.d("ProblemId", "ばぐ")
-            onError()
-        }
 
         val fragment = AnswerFragment().newInstance(mFin, mProblemId)
+
+        binding.viewModel = AnswerViewModel(this, this)
+
+        /*問題のidが分からなかった*/
+        if (mProblemId == -1) {
+            onError()
+        }
 
         supportFragmentManager.beginTransaction()
                 .replace(R.id.answers_fragment,fragment)

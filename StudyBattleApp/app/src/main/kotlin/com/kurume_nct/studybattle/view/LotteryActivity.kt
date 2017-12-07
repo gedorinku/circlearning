@@ -45,6 +45,7 @@ class LotteryActivity : Activity() {
             load(R.drawable.lotterycard).into(binding.cardLeft)
             load(R.drawable.lotterycard).into(binding.cardCenter)
             load(R.drawable.lotterycard).into(binding.cardRight)
+            load(R.drawable.abc_list_selector_background_transition_holo_light).into(binding.electedItemImage)
         }
 
         binding.apply {
@@ -70,32 +71,36 @@ class LotteryActivity : Activity() {
             Bomb -> {
                 binding.apply {
                     lotteryText.text = "爆弾GET！"
+                    chooseImageView.setImageResource(R.drawable.bomb)
                     electedItemImage.setImageResource(R.drawable.bomb)
-                    electedItemTextImage.visibility = View.VISIBLE
                 }
             }
             DoubleScoreCard -> {
                 binding.apply {
                     lotteryText.text = "2倍カードGET!"
+                    chooseImageView.setImageResource(R.drawable.card)
                     electedItemImage.setImageResource(R.drawable.card)
                 }
             }
             MagicHand -> {
                 binding.apply {
                     lotteryText.text = "マジックハンドGET！"
+                    chooseImageView.setImageResource(R.drawable.magichand)
                     electedItemImage.setImageResource(R.drawable.magichand)
                 }
             }
             Shield -> {
                 binding.apply {
                     lotteryText.text = "シールドGET!"
-                    electedItemImage.setImageResource(R.drawable.magichand)
+                    chooseImageView.setImageResource(R.drawable.shield)
+                    electedItemImage.setImageResource(R.drawable.shield)
                 }
             }
         /*itemNumber == Air*/
             else -> {
                 binding.apply {
                     lotteryText.text = "アイテム獲得ならず....."
+                    chooseImageView.setImageResource(R.drawable.hazure)
                     electedItemImage.setImageResource(R.drawable.gagan)
                 }
             }
