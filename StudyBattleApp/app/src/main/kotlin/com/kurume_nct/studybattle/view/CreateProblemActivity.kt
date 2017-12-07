@@ -34,13 +34,13 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
 
     private lateinit var binding: ActivityCreateProblemBinding
     private lateinit var usersObject: UsersObject
-    private var isProblem: Int
+    private var isProblem: Boolean
     private lateinit var dialog: AlertDialog
     private val PERMISSION_CAMERA_CODE = 1
     private lateinit var duration: Duration
 
     init {
-        isProblem = -1
+        isProblem = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,7 +83,9 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         }
         thxAlert.setView(thxView)
         val alert = thxAlert.create()
-        alert.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alert.apply {
+            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
         alert.show()
     }
 
@@ -109,7 +111,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         Log.d(binding.viewModel.day, "change")
     }
 
-    override fun alertDialog(problem: Int) {
+    override fun alertDialog(problem: Boolean) {
         onNotClickableButtons()
         isProblem = problem
         Log.d(isProblem.toString(), " dialogs.")
@@ -125,7 +127,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
                 cameraBeforeCheck()
             }
             strageButton.setOnClickListener {
-                onGetImage(0, isProblem)
+                onGetImage(camera = false, problem = isProblem)
             }
         }
         dialog = AlertDialog.Builder(this)
@@ -145,7 +147,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         )
         when (permission) {
             PackageManager.PERMISSION_GRANTED -> {
-                onGetImage(1, isProblem)
+                onGetImage(camera = true, problem = isProblem)
             }
             PackageManager.PERMISSION_DENIED -> {
                 ActivityCompat.requestPermissions(
@@ -162,7 +164,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         when (requestCode) {
             PERMISSION_CAMERA_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    onGetImage(1, isProblem)
+                    onGetImage(camera = true, problem = isProblem)
                 } else {
                     cameraBeforeCheck()
                 }
@@ -170,13 +172,16 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         }
     }
 
-    fun onGetImage(camera: Int, pro: Int) {
+    /*ありえん所に拡張関数*/
+    fun Boolean.toInt() = if (this) 1 else 0
+
+    private fun onGetImage(camera: Boolean, problem: Boolean) {
         when (camera) {
-            0 -> {
+            false -> {
                 val intent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
-                startActivityForResult(intent, pro)
+                startActivityForResult(intent, problem.toInt())
             }
-            1 -> {
+            true -> {
                 //camera
                 val cameraFolder = File(
                         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), ""
@@ -189,12 +194,12 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
                 val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
                     putExtra(MediaStore.EXTRA_OUTPUT, uri)
                 }
-                if (pro == 1) {
+                if (problem) {
                     binding.viewModel.problemUri = uri
                 } else {
                     binding.viewModel.answerUri = uri
                 }
-                startActivityForResult(intent, pro)
+                startActivityForResult(intent, problem.toInt())
             }
         }
     }

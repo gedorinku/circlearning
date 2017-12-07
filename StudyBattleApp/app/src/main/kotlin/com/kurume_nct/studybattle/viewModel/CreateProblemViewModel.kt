@@ -96,13 +96,13 @@ class CreateProblemViewModel(private val context: Context, private val callback:
         }
 
     fun onClickProblemImage(view: View) {
-        callback.alertDialog(1)
+        callback.alertDialog(true)
         Log.d("click ", "problemImage....")
         //using alert screen ans to do to choice photo or image
     }
 
     fun onClickAnswerImage(view: View) {
-        callback.alertDialog(2)
+        callback.alertDialog(false)
         Log.d("click ", "answerImage....")
     }
 
@@ -113,7 +113,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
                 problemUri = data.data
                 callback.onClickableButtons()
             }
-            2 -> {
+            0 -> {
                 answerUri = data.data
                 callback.onClickableButtons()
             }
@@ -193,7 +193,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
         fun getKey(): String
         fun startActivityForResult(intent: Intent, requestCode: Int)
         fun getCreateData(title: String)
-        fun alertDialog(problem: Int)
+        fun alertDialog(problem: Boolean)
         fun onDateDialog()
         fun getDuration(): Duration
         fun getGroupId(): Int
