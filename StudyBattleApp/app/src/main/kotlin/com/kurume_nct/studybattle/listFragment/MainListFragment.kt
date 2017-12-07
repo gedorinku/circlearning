@@ -16,7 +16,7 @@ import com.kurume_nct.studybattle.adapter.ProblemListAdapter
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.FragmentProblemListBinding
 import com.kurume_nct.studybattle.model.Problem
-import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.model.UsersObject
 import com.kurume_nct.studybattle.view.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.mergeAll
@@ -31,7 +31,7 @@ class MainListFragment(val callback: Callback) : Fragment() {
     private val problemList = mutableListOf<Problem>()
     lateinit var mContext: Context
     private lateinit var client: ServerClient
-    private lateinit var unitPersonal: UnitPersonal
+    private lateinit var usersObject: UsersObject
 
     lateinit var listAdapter: ProblemListAdapter
 
@@ -62,8 +62,8 @@ class MainListFragment(val callback: Callback) : Fragment() {
 
     fun onRefreshList() {
 
-        client = ServerClient(unitPersonal.authenticationKey)
-        val groupId = unitPersonal.nowGroup.id
+        client = ServerClient(usersObject.authenticationKey)
+        val groupId = usersObject.nowGroup.id
 
         when (tabId) {
             resources.getInteger(R.integer.HAVE_PROBLEM) ->
@@ -121,14 +121,14 @@ class MainListFragment(val callback: Callback) : Fragment() {
                             problemList.add(Problem(title = "　＋　新しい問題を追加で取得する"))
                         }
                         listAdapter.notifyItemRangeInserted(0, it.size)
-                        Log.d(it.size.toString(), "isNotEmpty" + unitPersonal.nowGroup.id.toString())
+                        Log.d(it.size.toString(), "isNotEmpty" + usersObject.nowGroup.id.toString())
                         callback.onStopSwipeRefresh()
                 }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        unitPersonal = activity.application as UnitPersonal
+        usersObject = activity.application as UsersObject
         onRefreshList()
     }
 
@@ -214,9 +214,9 @@ class MainListFragment(val callback: Callback) : Fragment() {
     }
 
     fun assignedProblem() {
-        val client = ServerClient(unitPersonal.authenticationKey)
+        val client = ServerClient(usersObject.authenticationKey)
         client
-                .requestNewProblem(unitPersonal.nowGroup)
+                .requestNewProblem(usersObject.nowGroup)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

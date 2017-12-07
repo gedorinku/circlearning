@@ -39,8 +39,7 @@ class CreateSolutionActivity : Activity(), CreateSolutionViewModel.Callback {
     private val REQUEST_PERMISSION = 1002
     private var problemUrl = ""
     private var filePath: String? = null
-    private lateinit var dialog: AlertDialog
-    private lateinit var unitPer: UnitPersonal
+    private lateinit var usersObject: UsersObject
     private var problemId = 0
 
     lateinit var binding: ActivityCreateSolutionBinding
@@ -48,7 +47,7 @@ class CreateSolutionActivity : Activity(), CreateSolutionViewModel.Callback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        unitPer = application as UnitPersonal
+        usersObject = application as UsersObject
 
         // 宣言
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_solution)
@@ -234,7 +233,7 @@ class CreateSolutionActivity : Activity(), CreateSolutionViewModel.Callback {
     }
 
     private fun openProblemServer() {
-        ServerClient(unitPer.authenticationKey)
+        ServerClient(usersObject.authenticationKey)
                 .openProblem(problemId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

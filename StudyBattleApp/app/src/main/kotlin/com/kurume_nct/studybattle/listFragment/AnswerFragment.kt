@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +13,7 @@ import com.kurume_nct.studybattle.adapter.AnswerRecyclerViewAdapter
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.FragmentAnswerListBinding
 import com.kurume_nct.studybattle.model.Solution
-import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.model.UsersObject
 import com.kurume_nct.studybattle.view.AnswerActivity
 import com.kurume_nct.studybattle.view.FinalScoringActivity
 import com.kurume_nct.studybattle.view.PersonalAnswerActivity
@@ -32,7 +31,7 @@ class AnswerFragment : Fragment() {
     private val solutionList: MutableList<Solution> = mutableListOf()
     private var fin: Int = 0
     lateinit var binding: FragmentAnswerListBinding
-    lateinit var unitPer: UnitPersonal
+    lateinit var usersObject: UsersObject
     lateinit var client: ServerClient
     private var problemId = 0
     private val CHECK_ANS = 0
@@ -54,9 +53,9 @@ class AnswerFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         Log.d("i'm ", javaClass.name)
 
-        unitPer = context.applicationContext as UnitPersonal
-        client = ServerClient(unitPer.authenticationKey)
-        unitPer = activity.application as UnitPersonal
+        usersObject = context.applicationContext as UsersObject
+        client = ServerClient(usersObject.authenticationKey)
+        usersObject = activity.application as UsersObject
         problemId = arguments.getInt("problemId")
         arguments.apply {
             fin = getInt("fin")

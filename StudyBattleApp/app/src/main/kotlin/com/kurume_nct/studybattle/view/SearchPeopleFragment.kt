@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,7 @@ import com.kurume_nct.studybattle.adapter.JoinPeopleAdapter
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.FragmentChoosePeoplelistBinding
 import com.kurume_nct.studybattle.listFragment.SelectMainPeopleFragment
-import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.model.UsersObject
 import com.kurume_nct.studybattle.model.User
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -26,7 +25,7 @@ class SearchPeopleFragment(val callback: Callback, val context: SelectMainPeople
     private lateinit var binding: FragmentChoosePeoplelistBinding
     private val list = mutableListOf<User>()
     private lateinit var listAdapter: JoinPeopleAdapter
-    private lateinit var unitPer: UnitPersonal
+    private lateinit var usersObject: UsersObject
     private var searching = false
     private var includeMember = true
 
@@ -43,7 +42,7 @@ class SearchPeopleFragment(val callback: Callback, val context: SelectMainPeople
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        unitPer = activity.application as UnitPersonal
+        usersObject = activity.application as UsersObject
         includeMember = arguments.getBoolean("includeMember")
 
         binding = FragmentChoosePeoplelistBinding.inflate(inflater, container, false)
@@ -67,7 +66,7 @@ class SearchPeopleFragment(val callback: Callback, val context: SelectMainPeople
         if (str.isNotBlank()) {
             val size = list.size
             listAdapter.notifyItemRangeRemoved(0, size)
-            val client = ServerClient(unitPer.authenticationKey)
+            val client = ServerClient(usersObject.authenticationKey)
             client
                     .searchUsers(str)
                     .subscribeOn(Schedulers.io())
@@ -90,9 +89,8 @@ class SearchPeopleFragment(val callback: Callback, val context: SelectMainPeople
     private fun listFilter(newList: MutableList<User>) : MutableList<User>{
         includeMember = arguments.getBoolean("includeMember")
         val filter = context.getPeopleList().toMutableList()
-        Log.d("フィッシュ", includeMember.toString())
-        if(!includeMember)filter.addAll(unitPer.nowGroup.members.toMutableList())
-        filter.add(unitPer.myInfomation)
+        if(!includeMember)filter.addAll(usersObject.nowGroup.members.toMutableList())
+        filter.add(usersObject.user)
         return newList.apply {
             removeAll(filter)
         }

@@ -3,18 +3,12 @@ package com.kurume_nct.studybattle.tools
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
-import android.widget.Toast
-import com.kurume_nct.studybattle.client.ServerClient
-import com.kurume_nct.studybattle.model.UnitPersonal
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.kurume_nct.studybattle.model.UsersObject
 
 /**
  * Created by hanah on 9/30/2017.
  */
 class ToolClass(val context: Context) {
-
-    val unitPer: UnitPersonal = context.applicationContext as UnitPersonal
 
     fun convertUrlFromDrawableResId(drawableResId: Int): Uri {
         val sb = StringBuilder()

@@ -17,7 +17,7 @@ import android.view.LayoutInflater
 import android.widget.*
 
 import com.kurume_nct.studybattle.R
-import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.model.UsersObject
 import com.kurume_nct.studybattle.databinding.ActivityCreateProblemBinding
 import com.kurume_nct.studybattle.databinding.DialogCameraStrageChooseBinding
 import com.kurume_nct.studybattle.listFragment.DurationFragment
@@ -33,14 +33,14 @@ import java.io.File
 class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callback, DatePickerDialog.OnDateSetListener {
 
     private lateinit var binding: ActivityCreateProblemBinding
-    private lateinit var unitPer: UnitPersonal
-    private var prob: Int
+    private lateinit var usersObject: UsersObject
+    private var isProblem: Int
     private lateinit var dialog: AlertDialog
     private val PERMISSION_CAMERA_CODE = 1
     private lateinit var duration: Duration
 
     init {
-        prob = -1
+        isProblem = -1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,8 +49,8 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_problem)
         binding.viewModel = CreateProblemViewModel(this, this)
 
-        unitPer = application as UnitPersonal
-        binding.viewModel.creatorName = "Made by " + unitPer.myInfomation.displayName
+        usersObject = application as UsersObject
+        binding.viewModel.creatorName = "Made by " + usersObject.user.displayName
 
         binding.termHourForOne.isEnabled = false
 
@@ -103,16 +103,16 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
             it.day =
                     year.toString() + "年" + (month + 1).toString() + "月" + dayOfMonth.toString() + "日"
             it.termForOne =
-                    (gup / 60 / maxOf(unitPer.nowGroup.members.size - 1, 1)).toString() + "時間" +
-                            ((gup / maxOf(unitPer.nowGroup.members.size - 1, 1)) % 60).toString() + "分" + it.termExtra
+                    (gup / 60 / maxOf(usersObject.nowGroup.members.size - 1, 1)).toString() + "時間" +
+                            ((gup / maxOf(usersObject.nowGroup.members.size - 1, 1)) % 60).toString() + "分" + it.termExtra
         }
         Log.d(binding.viewModel.day, "change")
     }
 
-    override fun alertDialog(pro: Int) {
+    override fun alertDialog(problem: Int) {
         onNotClickableButtons()
-        prob = pro
-        Log.d(prob.toString(), " dialogs.")
+        isProblem = problem
+        Log.d(isProblem.toString(), " dialogs.")
         dialogSetting()
     }
 
@@ -125,7 +125,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
                 cameraBeforeCheck()
             }
             strageButton.setOnClickListener {
-                onGetImage(0, prob)
+                onGetImage(0, isProblem)
             }
         }
         dialog = AlertDialog.Builder(this)
@@ -145,7 +145,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         )
         when (permission) {
             PackageManager.PERMISSION_GRANTED -> {
-                onGetImage(1, prob)
+                onGetImage(1, isProblem)
             }
             PackageManager.PERMISSION_DENIED -> {
                 ActivityCompat.requestPermissions(
@@ -162,7 +162,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         when (requestCode) {
             PERMISSION_CAMERA_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    onGetImage(1, prob)
+                    onGetImage(1, isProblem)
                 } else {
                     cameraBeforeCheck()
                 }
@@ -220,10 +220,10 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
 
     override fun getDuration() = duration
 
-    override fun getGroupId() = unitPer.nowGroup.id
+    override fun getGroupId() = usersObject.nowGroup.id
 
-    override fun userInformation() = unitPer.myInfomation
+    override fun userInformation() = usersObject.user
 
-    override fun getKey() = unitPer.authenticationKey
+    override fun getKey() = usersObject.authenticationKey
 
 }

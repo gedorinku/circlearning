@@ -1,17 +1,15 @@
 package com.kurume_nct.studybattle.viewModel
 
 import android.content.Context
-import android.content.Intent
 import android.databinding.BaseObservable
 import android.databinding.Bindable
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.kurume_nct.studybattle.BR
-import com.kurume_nct.studybattle.Main2Activity
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.listFragment.SelectMainPeopleFragment
-import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.model.UsersObject
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -39,7 +37,7 @@ class CreateGroupViewModel(val context: Context, val callback: Callback): BaseOb
     }
 
     fun createGroup() {
-        val unitPer: UnitPersonal = context.applicationContext as UnitPersonal
+        val unitPer: UsersObject = context.applicationContext as UsersObject
         val toast = Toast.makeText(context, "グループ名が適切ではありません", Toast.LENGTH_LONG)
         val client = ServerClient(unitPer.authenticationKey)
         client

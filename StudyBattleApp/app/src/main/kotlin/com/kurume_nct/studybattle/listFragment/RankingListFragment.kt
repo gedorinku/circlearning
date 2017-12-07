@@ -5,12 +5,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.util.AndroidException
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.kurume_nct.studybattle.R
 
 import com.kurume_nct.studybattle.adapter.PictureListAdapter
@@ -18,9 +16,7 @@ import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.GroupListBinding
 import com.kurume_nct.studybattle.model.*
 import com.kurume_nct.studybattle.tools.ToolClass
-import com.mikepenz.google_material_typeface_library.GoogleMaterial
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
 
 
@@ -29,7 +25,7 @@ class RankingListFragment : Fragment() {
     private lateinit var binding: GroupListBinding
     val grouplist = mutableListOf<RankingUser>()
     lateinit var listAdapter: PictureListAdapter
-    private lateinit var unitPer: UnitPersonal
+    private lateinit var usersObject: UsersObject
     private var activityId = 0
 
     fun newInstance(id: Int): RankingListFragment {
@@ -45,7 +41,7 @@ class RankingListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         Log.d("i'm ", javaClass.name)
-        unitPer =  context.applicationContext as UnitPersonal
+        usersObject =  context.applicationContext as UsersObject
         binding = GroupListBinding.inflate(inflater, container, false)
         listAdapter = PictureListAdapter(context, grouplist)
         binding.groupList2.adapter = listAdapter
@@ -56,9 +52,9 @@ class RankingListFragment : Fragment() {
 
     fun addListInstance() {
         grouplist.clear()
-        val client = ServerClient(unitPer.authenticationKey)
+        val client = ServerClient(usersObject.authenticationKey)
         client
-                .getRanking(unitPer.nowGroup.id)
+                .getRanking(usersObject.nowGroup.id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({

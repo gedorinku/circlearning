@@ -13,9 +13,9 @@ import android.support.annotation.RawRes
 /**
  * Created by hanah on 9/24/2017.
  */
-class UnitPersonal : Application(){
+class UsersObject : Application(){
 
-    var myInfomation: User = User()
+    var user: User = User()
     var nowGroup : Group = Group()
     var itemCount : HunachiItem = HunachiItem()
     private lateinit var prefer: SharedPreferences

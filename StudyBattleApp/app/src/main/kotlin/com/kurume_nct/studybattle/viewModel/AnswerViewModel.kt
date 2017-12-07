@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.client.ServerClient
-import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.model.UsersObject
 import com.kurume_nct.studybattle.view.ImageViewActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -134,12 +134,12 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
     }
 
     private fun sendComment() {
-        val unitPer = context.applicationContext as UnitPersonal
+        val unitPer = context.applicationContext as UsersObject
         val client = ServerClient(unitPer.authenticationKey)
         client
                 .createComment(
                         solutionId = solutionId,
-                        text = ("\n" + unitPer.myInfomation.displayName + "(" + unitPer.myInfomation.userName + ")" + "\n\t") + yourComment,
+                        text = ("\n" + unitPer.user.displayName + "(" + unitPer.user.userName + ")" + "\n\t") + yourComment,
                         imageIds = listOf(),
                         replyTo = replyTo
                 ).subscribeOn(Schedulers.io())
@@ -153,7 +153,7 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
     }
 
     fun refreshComment(boolean: Boolean){
-        val unitPer = context.applicationContext as UnitPersonal
+        val unitPer = context.applicationContext as UsersObject
         val client = ServerClient(unitPer.authenticationKey)
         client
                 .getProblem(callback.getProblemId())
@@ -174,7 +174,7 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
     }
 
     fun onInitDataSet() {
-        val unitPer = context.applicationContext as UnitPersonal
+        val unitPer = context.applicationContext as UsersObject
         val client = ServerClient(unitPer.authenticationKey)
         client
                 .getProblem(callback.getProblemId())

@@ -7,7 +7,6 @@ import android.util.Log
 
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.databinding.ActivityItemInfoBinding
-import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.viewModel.ItemInfoViewModel
 
 class ItemInfoActivity : AppCompatActivity(), ItemInfoViewModel.Callback {

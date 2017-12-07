@@ -1,27 +1,18 @@
 package com.kurume_nct.studybattle.view
 
 import android.app.Activity
-import android.content.Intent
-import android.content.pm.ActivityInfo
-import android.content.res.Resources
-import android.content.res.TypedArray
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.Drawable
-import android.media.Image
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 
 import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.R
-import com.kurume_nct.studybattle.client.Server
-import com.kurume_nct.studybattle.client.ServerClient
-import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.model.UsersObject
 
 //by kirby, converted to kotlin by huna
 
@@ -34,7 +25,7 @@ class LotteryActivity : Activity() {
     private lateinit var lottery_text: ImageView
     private lateinit var text1: TextView
     private lateinit var bmp4: Bitmap
-    private lateinit var unitPer: UnitPersonal
+    private lateinit var usersObject: UsersObject
     private var itemNumber = 0
 
 
@@ -51,7 +42,7 @@ class LotteryActivity : Activity() {
         text1 = findViewById(R.id.lottery_text) as TextView
         lotteried = findViewById(R.id.lotteried_item) as ImageView
         lottery_text = findViewById(R.id.lottery_item_text) as ImageView
-        unitPer = application as UnitPersonal
+        usersObject = application as UsersObject
 
         Glide.with(this).load(R.drawable.lotterycard).into(card1)
         Glide.with(this).load(R.drawable.lotterycard).into(card2)

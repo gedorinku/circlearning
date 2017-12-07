@@ -39,7 +39,7 @@ class CreateSolutionViewModel(val context: Context, val callback: Callback) : Ba
 
     private val RESULT_PICK_IMAGEFILE = 1000
     lateinit var dialogView: DialogItemSelectBinding
-    private lateinit var unitPer: UnitPersonal
+    private lateinit var usersObject: UsersObject
     private lateinit var dialog: AlertDialog
     private var putItemId = 0
 
@@ -139,10 +139,10 @@ class CreateSolutionViewModel(val context: Context, val callback: Callback) : Ba
 
     fun onCreateView() {
         problemUri = ToolClass(context).convertUrlFromDrawableResId(R.drawable.plus)
-        unitPer = context.applicationContext as UnitPersonal
+        usersObject = context.applicationContext as UsersObject
         val progressDialog = ProgressDialogTool(context).makeDialog()
         progressDialog.show()
-        val client = ServerClient(unitPer.authenticationKey)
+        val client = ServerClient(usersObject.authenticationKey)
         client
                 .getProblem(callback.onGetProblemId())
                 .subscribeOn(Schedulers.io())
@@ -219,20 +219,20 @@ class CreateSolutionViewModel(val context: Context, val callback: Callback) : Ba
     }
 
     private fun getItemData() {
-        ServerClient(unitPer.authenticationKey)
-                .getMyItems(unitPer.nowGroup.id)
+        ServerClient(usersObject.authenticationKey)
+                .getMyItems(usersObject.nowGroup.id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     it.forEach {
                         when (it.id) {
-                            1 -> unitPer.itemCount.bomb = it.count
-                            2 -> unitPer.itemCount.shield = it.count
-                            3 -> unitPer.itemCount.card = it.count
-                            4 -> unitPer.itemCount.magicHand = it.count
+                            1 -> usersObject.itemCount.bomb = it.count
+                            2 -> usersObject.itemCount.shield = it.count
+                            3 -> usersObject.itemCount.card = it.count
+                            4 -> usersObject.itemCount.magicHand = it.count
                         }
                     }
-                    unitPer.itemCount.run {
+                    usersObject.itemCount.run {
                         if (bomb <= 0) dialogView.bombButton17.visibility = View.INVISIBLE
                         if (card <= 0) dialogView.cardButton16.visibility = View.INVISIBLE
                         if (magicHand <= 0) dialogView.handButton12.visibility = View.INVISIBLE
@@ -278,7 +278,7 @@ class CreateSolutionViewModel(val context: Context, val callback: Callback) : Ba
 
     private fun onSadDialog() {
         //send data📩
-        ServerClient(unitPer.authenticationKey)
+        ServerClient(usersObject.authenticationKey)
                 .passProblem(callback.onGetProblemId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -298,7 +298,7 @@ class CreateSolutionViewModel(val context: Context, val callback: Callback) : Ba
 
     private fun sendAnswerServer() {
         val progress = ProgressDialog(context)
-        val client = ServerClient(unitPer.authenticationKey)
+        val client = ServerClient(usersObject.authenticationKey)
         var randomItem: Int
 
         progress.show()

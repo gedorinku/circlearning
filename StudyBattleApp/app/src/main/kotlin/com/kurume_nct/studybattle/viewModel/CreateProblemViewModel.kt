@@ -193,7 +193,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
         fun getKey(): String
         fun startActivityForResult(intent: Intent, requestCode: Int)
         fun getCreateData(title: String)
-        fun alertDialog(pro: Int)
+        fun alertDialog(problem: Int)
         fun onDateDialog()
         fun getDuration(): Duration
         fun getGroupId(): Int

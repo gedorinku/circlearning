@@ -4,30 +4,26 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import com.kurume_nct.studybattle.Main2Activity
 
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.listFragment.SelectMainPeopleFragment
-import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.ActivityCreateGroupBinding
-import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.model.UsersObject
 import com.kurume_nct.studybattle.viewModel.CreateGroupViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 class CreateGroupActivity : AppCompatActivity(), CreateGroupViewModel.Callback {
 
     private lateinit var binding: ActivityCreateGroupBinding
-    private lateinit var unitPer: UnitPersonal
+    private lateinit var usersObject: UsersObject
     private lateinit var fragment: SelectMainPeopleFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_group)
         binding.viewModel = CreateGroupViewModel(this, this)
-        unitPer = application as UnitPersonal
+        usersObject = application as UsersObject
 
         fragment = SelectMainPeopleFragment().newInstance(true)
 

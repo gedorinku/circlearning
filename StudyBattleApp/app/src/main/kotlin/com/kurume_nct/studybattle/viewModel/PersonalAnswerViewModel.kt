@@ -15,7 +15,7 @@ import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.Solution
-import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.model.UsersObject
 import com.kurume_nct.studybattle.view.ImageViewActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -141,7 +141,7 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
     }
 
     fun getInitData() {
-        val unitPer = context.applicationContext as UnitPersonal
+        val unitPer = context.applicationContext as UsersObject
         val client = ServerClient(unitPer.authenticationKey)
         client
                 .getProblem(callback.getProblemId())
@@ -155,7 +155,7 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                         solution = callback.getSolution()
                     } else {
                         it.solutions.forEach {
-                            if (it.authorId == unitPer.myInfomation.id) {
+                            if (it.authorId == unitPer.user.id) {
                                 solution = it
                             }
                         }
@@ -225,12 +225,12 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
         //Hate
         replyTo = solution.authorId
 
-        val unitPer = context.applicationContext as UnitPersonal
+        val unitPer = context.applicationContext as UsersObject
         val client = ServerClient(unitPer.authenticationKey)
         client
                 .createComment(
                         solutionId = solution.id,
-                        text = ("\n" + unitPer.myInfomation.displayName + "(" + unitPer.myInfomation.userName + ")" + "\n\t") + yourComment,
+                        text = ("\n" + unitPer.user.displayName + "(" + unitPer.user.userName + ")" + "\n\t") + yourComment,
                         imageIds = listOf(),
                         replyTo = replyTo
                 ).subscribeOn(Schedulers.io())
@@ -244,7 +244,7 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
     }
 
     fun refreshComment(boolean: Boolean) {
-        val unitPer = context.applicationContext as UnitPersonal
+        val unitPer = context.applicationContext as UsersObject
         val client = ServerClient(unitPer.authenticationKey)
         client
                 .getSolution(solution.id)
