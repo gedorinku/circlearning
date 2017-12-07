@@ -45,13 +45,12 @@ class LotteryActivity : Activity() {
             load(R.drawable.lotterycard).into(binding.cardLeft)
             load(R.drawable.lotterycard).into(binding.cardCenter)
             load(R.drawable.lotterycard).into(binding.cardRight)
-            load(R.drawable.abc_list_selector_background_transition_holo_light).into(binding.electedItemImage)
         }
 
         binding.apply {
             cardLeft.setOnClickListener { onOpeningCard(binding.cardLeft) }
             cardCenter.setOnClickListener { onOpeningCard(binding.cardCenter) }
-            cardLeft.setOnClickListener { onOpeningCard(binding.cardRight) }
+            cardRight.setOnClickListener { onOpeningCard(binding.cardRight) }
             electedItemImage.setOnClickListener { setResult(0); finish() }
         }
 
