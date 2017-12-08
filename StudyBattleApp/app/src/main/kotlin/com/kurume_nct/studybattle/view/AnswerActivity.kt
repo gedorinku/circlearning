@@ -16,7 +16,7 @@ import com.kurume_nct.studybattle.model.UsersObject
 class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
 
     lateinit var binding: ActivityAnswerBinding
-    private var mFin: Int = 0
+    private var hasFinish: Int = 0
     lateinit var usersObject: UsersObject
     private var mProblemId = -1
 
@@ -27,10 +27,10 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
         usersObject = application as UsersObject
         binding = DataBindingUtil.setContentView(this, R.layout.activity_answer)
 
-        mFin = intent.getIntExtra("fin", 0)
+        hasFinish = intent.getIntExtra("fin", 0)
         mProblemId = intent.getIntExtra("problemId", -1)
 
-        val fragment = AnswerFragment().newInstance(mFin, mProblemId)
+        val fragment = AnswerFragment().newInstance(hasFinish, mProblemId)
 
         binding.viewModel = AnswerViewModel(this, this)
 
@@ -43,7 +43,7 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
                 .replace(R.id.answers_fragment,fragment)
                 .commit()
 
-        if (mFin != 3) {
+        if (hasFinish != 3) {
             binding.problemScoreAnsText.visibility = View.GONE
         }
 
@@ -73,7 +73,7 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
         finish()
     }
 
-    override fun getFin() = mFin
+    override fun getFin() = hasFinish
 
     override fun getProblemId() = mProblemId
 

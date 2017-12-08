@@ -15,8 +15,8 @@ class DurationFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         Log.d("i'm ", javaClass.name)
-        val unitPer = context.applicationContext as UsersObject
-        val peopleCount = unitPer.nowGroup.members.size
+        val usersObject = context.applicationContext as UsersObject
+        val peopleCount = usersObject.nowGroup.members.size
         val c = Calendar.getInstance()
         val cYear = c[Calendar.YEAR]
         val cMonth = c[Calendar.MONTH]
