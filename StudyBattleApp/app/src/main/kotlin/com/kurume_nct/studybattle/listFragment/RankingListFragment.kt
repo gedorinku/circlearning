@@ -1,5 +1,6 @@
 package com.kurume_nct.studybattle.listFragment
 
+import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -15,7 +16,6 @@ import com.kurume_nct.studybattle.adapter.PictureListAdapter
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.GroupListBinding
 import com.kurume_nct.studybattle.model.*
-import com.kurume_nct.studybattle.tools.ToolClass
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -73,7 +73,7 @@ class RankingListFragment : Fragment() {
                     it.printStackTrace()
                    grouplist.add(RankingUser(
                            displayName = "まだランキングが存在しないよ",
-                           icon = ToolClass(context).convertUrlFromDrawableResId(R.drawable.no_image)
+                           icon = null
                    ))
                     listAdapter.notifyItemRangeInserted(0, grouplist.size)
                 })
@@ -83,5 +83,6 @@ class RankingListFragment : Fragment() {
         super.onAttach(context)
         mContext = context
     }
+
 
 }

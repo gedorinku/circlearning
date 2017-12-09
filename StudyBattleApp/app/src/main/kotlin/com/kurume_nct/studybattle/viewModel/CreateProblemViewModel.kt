@@ -5,27 +5,21 @@ import android.databinding.BaseObservable
 import android.databinding.Bindable
 import android.databinding.BindingAdapter
 import android.net.Uri
-import android.os.Environment
 import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
-import android.provider.MediaStore
-import android.support.v4.content.FileProvider
 import android.util.Log
 import android.widget.Toast
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.Solution
 import com.kurume_nct.studybattle.model.User
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
-import com.kurume_nct.studybattle.tools.ToolClass
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.joda.time.DateTime
 import org.joda.time.Duration
-import org.joda.time.format.DateTimeFormat
-import java.io.File
 
 
 /**
@@ -121,7 +115,6 @@ class CreateProblemViewModel(private val context: Context, private val callback:
     }
 
     fun onClickFinish(view: View) {
-        val a = ToolClass(context).convertUrlFromDrawableResId(R.drawable.group)
         if (problemUri == null || answerUri == null || problemName.isEmpty() || problemName.isBlank() || termForOne.isBlank()) {
             Toast.makeText(context, "入力に不備があります(`・ω・´)", Toast.LENGTH_SHORT).show()
         } else {

@@ -3,6 +3,7 @@ package com.kurume_nct.studybattle.viewModel
 import android.Manifest
 import android.app.AlertDialog
 import android.app.ProgressDialog
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -26,7 +27,6 @@ import com.kurume_nct.studybattle.databinding.DialogCameraStrageChooseBinding
 import com.kurume_nct.studybattle.databinding.DialogItemSelectBinding
 import com.kurume_nct.studybattle.model.*
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
-import com.kurume_nct.studybattle.tools.ToolClass
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.joda.time.DateTime
@@ -138,7 +138,6 @@ class CreateSolutionViewModel(val context: Context, val callback: Callback) : Ba
     }
 
     fun onCreateView() {
-        problemUri = ToolClass(context).convertUrlFromDrawableResId(R.drawable.plus)
         usersObject = context.applicationContext as UsersObject
         val progressDialog = ProgressDialogTool(context).makeDialog()
         progressDialog.show()
@@ -178,7 +177,6 @@ class CreateSolutionViewModel(val context: Context, val callback: Callback) : Ba
     }
 
     private fun dialogSetting() {
-        val tool = ToolClass(context)
         dialogView = DataBindingUtil.inflate(
                 LayoutInflater.from(context), R.layout.dialog_item_select, null, false)
 
@@ -190,28 +188,28 @@ class CreateSolutionViewModel(val context: Context, val callback: Callback) : Ba
 
         dialogView.bombButton17.setOnClickListener {
             if (putItemId != 0) {
-                itemImageUri = tool.convertUrlFromDrawableResId(R.drawable.framecardb)
+                itemImageUri = convertUrlFromDrawableResId(R.drawable.framecardb)
             }
             putItemId = 0
             dialog.dismiss()
         }
         dialogView.cardButton16.setOnClickListener {
             if (putItemId != 1) {
-                itemImageUri = tool.convertUrlFromDrawableResId(R.drawable.framecardc)
+                itemImageUri = convertUrlFromDrawableResId(R.drawable.framecardc)
             }
             putItemId = 1
             dialog.dismiss()
         }
         dialogView.handButton12.setOnClickListener {
             if (putItemId != 2) {
-                itemImageUri = tool.convertUrlFromDrawableResId(R.drawable.framecardm)
+                itemImageUri = convertUrlFromDrawableResId(R.drawable.framecardm)
             }
             putItemId = 2
             dialog.dismiss()
         }
         dialogView.removeItemButton19.setOnClickListener {
             if (putItemId != -1) {
-                itemImageUri = tool.convertUrlFromDrawableResId(R.drawable.hatena)
+                itemImageUri = convertUrlFromDrawableResId(R.drawable.hatena)
             }
             putItemId = -1
             dialog.dismiss()
@@ -342,6 +340,18 @@ class CreateSolutionViewModel(val context: Context, val callback: Callback) : Ba
                     it.printStackTrace()
                     Toast.makeText(context, "解答提出に失敗しました。ネット環境を確認してください。", Toast.LENGTH_SHORT).show()
                 })
+    }
+
+    fun convertUrlFromDrawableResId(drawableResId: Int): Uri {
+        val sb = StringBuilder()
+        sb.append(ContentResolver.SCHEME_ANDROID_RESOURCE)
+        sb.append("://")
+        sb.append(context.resources.getResourcePackageName(drawableResId))
+        sb.append("/")
+        sb.append(context.resources.getResourceTypeName(drawableResId))
+        sb.append("/")
+        sb.append(context.resources.getResourceEntryName(drawableResId))
+        return Uri.parse(sb.toString())
     }
 
 
