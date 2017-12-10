@@ -1,5 +1,6 @@
 package com.kurume_nct.studybattle.model
 
+import android.net.Uri
 import com.google.gson.annotations.SerializedName
 import org.joda.time.DateTime
 import org.joda.time.Duration
@@ -117,3 +118,11 @@ data class Ranking(val myWeekScore: Int = 0,
                    val myLastWeekScore: Int = 0,
                    val myTotalScore: Int = 0,
                    val ranking: List<Pair<User, Int>> = emptyList())
+
+data class RankingUser(
+        var score: String = "",
+        var displayName: String = "",
+        var userName: String = "",
+        var medal: Int = 0,
+        var icon: Uri?
+)
