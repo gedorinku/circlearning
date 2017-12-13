@@ -133,7 +133,6 @@ class Main2Activity : AppCompatActivity() {
                         Log.d("list", "group追加")
                     }
                     usersObject.myGroupList = groups
-                    usersObject.myGroupCount = usersObject.myGroupList.size
                     Log.d(usersObject.myGroupCount.toString(), "個あります")
                     if (usersObject.myGroupCount == 0) {
                         //join or create group
