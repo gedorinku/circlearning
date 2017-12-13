@@ -19,7 +19,8 @@ class UsersObject : Application(){
     var nowGroup : Group = Group()
     var itemCount : HunachiItem = HunachiItem()
     private lateinit var prefer: SharedPreferences
-    var myGroupCount: Int = 0
+    val myGroupCount: Int
+        get() = myGroupList.size
     var myGroupList: MutableList<Group> = mutableListOf()
     var authenticationKey = "0"
 
