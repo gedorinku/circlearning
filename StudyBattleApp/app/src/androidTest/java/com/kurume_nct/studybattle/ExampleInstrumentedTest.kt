@@ -15,13 +15,13 @@ import org.junit.Assert.*
  * @see [Testing documentation](http://d.android.com/tools/testing)
  */
 @RunWith(AndroidJUnit4::class)
- class ExampleInstrumentedTest {
-@Test
-@Throws(Exception::class)
- fun useAppContext() {
- // Context of the app under test.
+class ExampleInstrumentedTest {
+    @Test
+    @Throws(Exception::class)
+    fun useAppContext() {
+        // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
 
-assertEquals("", appContext.getPackageName())
-}
+        assertEquals("com.kurume_nct.studybattle", appContext.getPackageName())
+    }
 }
