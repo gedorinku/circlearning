@@ -7,6 +7,8 @@ machine:
     - git clone git@github.com:gedorinku/study-battle-server.git
     - study-battle-server/configure.sh
     - study-battle-server/gradlew -p study-battle-server build
+
+test:
+  pre:
     - nohup study-battle-server/gradlew -p study-battle-server run &
-    - sleep 5s
 
