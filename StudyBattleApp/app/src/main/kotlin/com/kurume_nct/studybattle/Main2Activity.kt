@@ -89,7 +89,6 @@ class Main2Activity : AppCompatActivity() {
                     stopButton = false
                     Toast.makeText(this, "Loginしなおしてください", Toast.LENGTH_SHORT).show()
                     usersObject.deleteFile()
-                    if(usersObject.authenticationKey == "0")Intent(this, LoginActivity::class.java)
                     startActivity(intent)
                     finish()
                 })
