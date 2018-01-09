@@ -176,31 +176,28 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
     fun Boolean.toInt() = if (this) 1 else 0
 
     private fun onGetImage(camera: Boolean, problem: Boolean) {
-        when (camera) {
-            false -> {
-                val intent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
-                startActivityForResult(intent, problem.toInt())
+        if (!camera) {
+            val intent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
+            startActivityForResult(intent, problem.toInt())
+        } else {
+            /*camera*/
+            val cameraFolder = File(
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), ""
+            )
+            cameraFolder.mkdir()
+            val fileName = DateTimeFormat.forPattern("ddHHmmss").print(DateTime.now())
+            val path = cameraFolder.path + "/" + fileName + ".jpg"
+            val uri = FileProvider
+                    .getUriForFile(this, application.packageName + ".provider", File(path))
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+                putExtra(MediaStore.EXTRA_OUTPUT, uri)
             }
-            true -> {
-                //camera
-                val cameraFolder = File(
-                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), ""
-                )
-                cameraFolder.mkdir()
-                val fileName = DateTimeFormat.forPattern("ddHHmmss").print(DateTime.now())
-                val path = cameraFolder.path + "/" + fileName + ".jpg"
-                val uri = FileProvider
-                        .getUriForFile(this, application.packageName + ".provider", File(path))
-                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
-                    putExtra(MediaStore.EXTRA_OUTPUT, uri)
-                }
-                if (problem) {
-                    binding.viewModel.problemUri = uri
-                } else {
-                    binding.viewModel.answerUri = uri
-                }
-                startActivityForResult(intent, problem.toInt())
+            if (problem) {
+                binding.viewModel.problemUri = uri
+            } else {
+                binding.viewModel.answerUri = uri
             }
+            startActivityForResult(intent, problem.toInt())
         }
     }
 
