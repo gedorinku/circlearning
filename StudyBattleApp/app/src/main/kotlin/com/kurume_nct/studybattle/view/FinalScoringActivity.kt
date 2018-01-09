@@ -1,24 +1,15 @@
 package com.kurume_nct.studybattle.view
 
-import android.content.Context
 import android.databinding.DataBindingUtil
 import android.graphics.Color
-import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.AndroidException
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 
 import com.kurume_nct.studybattle.R
-import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.ActivityFinalScoringBinding
-import com.kurume_nct.studybattle.model.Solution
-import com.kurume_nct.studybattle.model.UnitPersonal
 import com.kurume_nct.studybattle.viewModel.FinalScoringViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 class FinalScoringActivity : AppCompatActivity(), FinalScoringViewModel.Callback {
 
@@ -29,16 +20,17 @@ class FinalScoringActivity : AppCompatActivity(), FinalScoringViewModel.Callback
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_final_scoring)
-        binding.finalScoring = FinalScoringViewModel(this, this)
+        binding.viewModel = FinalScoringViewModel(this, this)
         solution = intent.getIntExtra("solutionId", -1)
         if (solution == -1) {
             Log.d("soputionId", "適切ではない")
             finish()
         }
+
         binding.apply {
-            finalScoring.getInitData()
+            viewModel.getInitData()
             swipeRefreshFinal.setOnRefreshListener {
-                finalScoring.refreshComment(true)
+                viewModel.refreshComment(true)
             }
         }
     }

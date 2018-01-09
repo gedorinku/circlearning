@@ -12,8 +12,8 @@ import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.client.ServerClient
-import com.kurume_nct.studybattle.model.UnitPersonal
-import com.kurume_nct.studybattle.tools.ImageViewActivity
+import com.kurume_nct.studybattle.model.UsersObject
+import com.kurume_nct.studybattle.view.ImageViewActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -98,7 +98,7 @@ class ScoringViewModel(val context: Context, val callback: Callback) : BaseObser
     }
 
     fun setInit(): ServerClient {
-        val unitPer = context.applicationContext as UnitPersonal
+        val unitPer = context.applicationContext as UsersObject
         return ServerClient(unitPer.authenticationKey)
     }
 
@@ -156,13 +156,9 @@ class ScoringViewModel(val context: Context, val callback: Callback) : BaseObser
     }
 
     interface Callback {
-
         fun getProblem(): Pair<String, String> //title url
-
         fun getSolution(): Int
-
         fun onFinish()
-
     }
 
 }

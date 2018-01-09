@@ -1,8 +1,6 @@
 package com.kurume_nct.studybattle.view
 
 import android.app.AlertDialog
-import android.app.ProgressDialog
-import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.databinding.DataBindingUtil
@@ -17,10 +15,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Toast
 import com.kurume_nct.studybattle.R
-import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.model.UsersObject
 import com.kurume_nct.studybattle.databinding.ActivityRegistrationBinding
 import com.kurume_nct.studybattle.databinding.DialogCameraStrageChooseBinding
-import com.kurume_nct.studybattle.tools.ProgressDialogTool
 import com.kurume_nct.studybattle.viewModel.RegistrationViewModel
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
@@ -32,7 +29,7 @@ import java.io.File
 class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback {
 
     lateinit var binding: ActivityRegistrationBinding
-    lateinit var unitPer: UnitPersonal
+    lateinit var usersObject: UsersObject
     lateinit var dialog: AlertDialog
     private val STORAGE_CODE = 1
     private val CAMERA_STORAGE_CODE = 2
@@ -43,13 +40,13 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
         Log.d("i'm ", javaClass.name)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_registration)
-        binding.userEntity = RegistrationViewModel(this, this)
-        unitPer = application as UnitPersonal
+        binding.viewModel = RegistrationViewModel(this, this)
+        usersObject = application as UsersObject
 
         dialogSetting()
 
         //skip not beginner
-        if (unitPer.authenticationKey != "0") {
+        if (usersObject.authenticationKey != "0") {
             onLogin()
         }
     }
@@ -73,7 +70,7 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
             Log.d("ほげほげ", resultCode.toString() )
             return
         }
-        binding.userEntity.onActivityResult(requestCode, resultCode, data)
+        binding.viewModel.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun stopButton() {
@@ -207,7 +204,7 @@ class RegistrationActivity : AppCompatActivity(), RegistrationViewModel.Callback
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
             putExtra(MediaStore.EXTRA_OUTPUT, uri)
         }
-        binding.userEntity.imageUri = uri
+        binding.viewModel.imageUri = uri
         startActivityForResult(intent, 114)
     }
 

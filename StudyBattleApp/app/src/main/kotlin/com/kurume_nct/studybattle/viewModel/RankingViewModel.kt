@@ -3,13 +3,10 @@ package com.kurume_nct.studybattle.viewModel
 import android.content.Context
 import android.databinding.BaseObservable
 import android.databinding.Bindable
-import android.net.Uri
 import android.util.Log
-import android.widget.Toast
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.client.ServerClient
-import com.kurume_nct.studybattle.model.RankingUser
-import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.model.UsersObject
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -33,7 +30,7 @@ class RankingViewModel(private val context: Context, private val callback: Callb
         }
 
     fun onGetScore() {
-        val unitPer = context.applicationContext as UnitPersonal
+        val unitPer = context.applicationContext as UsersObject
         val client = ServerClient(unitPer.authenticationKey)
         client
                 .getRanking(unitPer.nowGroup.id)
@@ -48,6 +45,6 @@ class RankingViewModel(private val context: Context, private val callback: Callb
     }
 
     interface Callback {
-
+        //none
     }
 }

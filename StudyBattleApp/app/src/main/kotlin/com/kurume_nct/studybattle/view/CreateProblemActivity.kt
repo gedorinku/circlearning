@@ -17,7 +17,7 @@ import android.view.LayoutInflater
 import android.widget.*
 
 import com.kurume_nct.studybattle.R
-import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.model.UsersObject
 import com.kurume_nct.studybattle.databinding.ActivityCreateProblemBinding
 import com.kurume_nct.studybattle.databinding.DialogCameraStrageChooseBinding
 import com.kurume_nct.studybattle.listFragment.DurationFragment
@@ -33,24 +33,24 @@ import java.io.File
 class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callback, DatePickerDialog.OnDateSetListener {
 
     private lateinit var binding: ActivityCreateProblemBinding
-    private lateinit var unitPer: UnitPersonal
-    private var prob: Int
+    private lateinit var usersObject: UsersObject
+    private var isProblem: Boolean
     private lateinit var dialog: AlertDialog
     private val PERMISSION_CAMERA_CODE = 1
     private lateinit var duration: Duration
 
     init {
-        prob = -1
+        isProblem = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("i'm ", javaClass.name)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_problem)
-        binding.createView = CreateProblemViewModel(this, this)
+        binding.viewModel = CreateProblemViewModel(this, this)
 
-        unitPer = application as UnitPersonal
-        binding.createView.creatorName = "Made by " + unitPer.myInfomation.displayName
+        usersObject = application as UsersObject
+        binding.viewModel.creatorName = "Made by " + usersObject.user.displayName
 
         binding.termHourForOne.isEnabled = false
 
@@ -58,14 +58,8 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
                 .replace(R.id.directions_container, DurationFragment().newInstance())
                 .commit()
 
-        DataSetting()
     }
 
-    private fun DataSetting() {
-        binding.createView.let {
-            it.day = "回収日が設定されていません"
-        }
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -74,7 +68,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
             onClickableButtons()
             return
         }
-        binding.createView.onActivityResult(requestCode, resultCode, data)
+        binding.viewModel.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun getCreateData(title: String) {
@@ -89,7 +83,9 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         }
         thxAlert.setView(thxView)
         val alert = thxAlert.create()
-        alert.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alert.apply {
+            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
         alert.show()
     }
 
@@ -104,20 +100,21 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         val gup = duration.standardMinutes
         Log.d(gup.toString() + "時間", settingDate.toString())
         binding.termHourForOne.isEnabled = true
-        binding.createView.let {
+
+        binding.viewModel.let {
             it.day =
                     year.toString() + "年" + (month + 1).toString() + "月" + dayOfMonth.toString() + "日"
             it.termForOne =
-                    (gup / 60 / maxOf(unitPer.nowGroup.members.size - 1, 1)).toString() + "時間" +
-                            ((gup / maxOf(unitPer.nowGroup.members.size - 1, 1)) % 60).toString() + "分" + it.termExtra
+                    (gup / 60 / maxOf(usersObject.nowGroup.members.size - 1, 1)).toString() + "時間" +
+                            ((gup / maxOf(usersObject.nowGroup.members.size - 1, 1)) % 60).toString() + "分" + it.termExtra
         }
-        Log.d(binding.createView.day, "change")
+        Log.d(binding.viewModel.day, "change")
     }
 
-    override fun alertDialog(pro: Int) {
+    override fun alertDialog(problem: Boolean) {
         onNotClickableButtons()
-        prob = pro
-        Log.d(prob.toString(), " dialogs.")
+        isProblem = problem
+        Log.d(isProblem.toString(), " dialogs.")
         dialogSetting()
     }
 
@@ -130,7 +127,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
                 cameraBeforeCheck()
             }
             strageButton.setOnClickListener {
-                onGetImage(0, prob)
+                onGetImage(camera = false, problem = isProblem)
             }
         }
         dialog = AlertDialog.Builder(this)
@@ -150,7 +147,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         )
         when (permission) {
             PackageManager.PERMISSION_GRANTED -> {
-                onGetImage(1, prob)
+                onGetImage(camera = true, problem = isProblem)
             }
             PackageManager.PERMISSION_DENIED -> {
                 ActivityCompat.requestPermissions(
@@ -167,7 +164,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         when (requestCode) {
             PERMISSION_CAMERA_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    onGetImage(1, prob)
+                    onGetImage(camera = true, problem = isProblem)
                 } else {
                     cameraBeforeCheck()
                 }
@@ -175,32 +172,32 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         }
     }
 
-    fun onGetImage(camera: Int, pro: Int) {
-        when (camera) {
-            0 -> {
-                val intent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
-                startActivityForResult(intent, pro)
+    /*ありえん所に拡張関数*/
+    fun Boolean.toInt() = if (this) 1 else 0
+
+    private fun onGetImage(camera: Boolean, problem: Boolean) {
+        if (!camera) {
+            val intent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
+            startActivityForResult(intent, problem.toInt())
+        } else {
+            /*camera*/
+            val cameraFolder = File(
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), ""
+            )
+            cameraFolder.mkdir()
+            val fileName = DateTimeFormat.forPattern("ddHHmmss").print(DateTime.now())
+            val path = cameraFolder.path + "/" + fileName + ".jpg"
+            val uri = FileProvider
+                    .getUriForFile(this, application.packageName + ".provider", File(path))
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+                putExtra(MediaStore.EXTRA_OUTPUT, uri)
             }
-            1 -> {
-                //camera
-                val cameraFolder = File(
-                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), ""
-                )
-                cameraFolder.mkdir()
-                val fileName = DateTimeFormat.forPattern("ddHHmmss").print(DateTime.now())
-                val path = cameraFolder.path + "/" + fileName + ".jpg"
-                val uri = FileProvider
-                        .getUriForFile(this, application.packageName + ".provider", File(path))
-                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
-                    putExtra(MediaStore.EXTRA_OUTPUT, uri)
-                }
-                if (pro == 1) {
-                    binding.createView.problemUri = uri
-                } else {
-                    binding.createView.answerUri = uri
-                }
-                startActivityForResult(intent, pro)
+            if (problem) {
+                binding.viewModel.problemUri = uri
+            } else {
+                binding.viewModel.answerUri = uri
             }
+            startActivityForResult(intent, problem.toInt())
         }
     }
 
@@ -225,10 +222,10 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
 
     override fun getDuration() = duration
 
-    override fun getGroupId() = unitPer.nowGroup.id
+    override fun getGroupId() = usersObject.nowGroup.id
 
-    override fun userInformation() = unitPer.myInfomation
+    override fun userInformation() = usersObject.user
 
-    override fun getKey() = unitPer.authenticationKey
+    override fun getKey() = usersObject.authenticationKey
 
 }

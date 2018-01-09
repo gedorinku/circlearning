@@ -1,7 +1,5 @@
 package com.kurume_nct.studybattle.adapter
 
-import android.content.Context
-import android.database.DataSetObserver
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.support.v7.widget.RecyclerView
@@ -12,7 +10,7 @@ import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.model.Problem
 
-class ProblemListAdapter(context: Context, val list: MutableList<Problem>, val callBack: (Int) -> Unit)
+class ProblemListAdapter(val list: MutableList<Problem>, val callBack: (Int) -> Unit)
     : RecyclerView.Adapter<ProblemListAdapter.ProblemListHolder>(){
 
     override fun onBindViewHolder(holder: ProblemListHolder, position: Int) {

@@ -9,7 +9,7 @@ import android.util.Log
 import com.kurume_nct.studybattle.Main2Activity
 
 import com.kurume_nct.studybattle.R
-import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.model.UsersObject
 import com.kurume_nct.studybattle.databinding.ActivityLoginBinding
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
 import com.kurume_nct.studybattle.viewModel.LoginViewModel
@@ -17,7 +17,7 @@ import com.kurume_nct.studybattle.viewModel.LoginViewModel
 class LoginActivity : AppCompatActivity(), LoginViewModel.Callback {
 
     private lateinit var binding: ActivityLoginBinding
-    lateinit var unitPer: UnitPersonal
+    lateinit var usersObject: UsersObject
     lateinit var progress: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,28 +25,28 @@ class LoginActivity : AppCompatActivity(), LoginViewModel.Callback {
         Log.d("i'm ", javaClass.name)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
-        binding.userLogin = LoginViewModel(this, this)
-        unitPer = application as UnitPersonal
+        binding.viewModel = LoginViewModel(this, this)
+        usersObject = application as UsersObject
         progress = ProgressDialogTool(this).makeDialog()
 
         //skip
-        if (unitPer.authenticationKey != "0") {
+        if (usersObject.authenticationKey != "0") {
             toMain2Activity()
         }
     }
 
     private fun toMain2Activity() {
         val intent = Intent(this, Main2Activity::class.java)
-        if (unitPer.authenticationKey != "0") {
-            Log.d(unitPer.authenticationKey, "ログイン")
+        if (usersObject.authenticationKey != "0") {
+            Log.d(usersObject.authenticationKey, "ログイン")
             startActivity(intent)
             finish()
         }
     }
 
     override fun onLogin(authentication: String) {
-        unitPer.authenticationKey = authentication
-        unitPer.writeFile()
+        usersObject.authenticationKey = authentication
+        usersObject.writeFile()
         toMain2Activity()
     }
 
@@ -72,6 +72,6 @@ class LoginActivity : AppCompatActivity(), LoginViewModel.Callback {
         }
     }
 
-    override fun getKey() = unitPer.authenticationKey
+    override fun getKey() = usersObject.authenticationKey
 
 }

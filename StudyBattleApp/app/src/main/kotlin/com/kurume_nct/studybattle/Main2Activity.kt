@@ -7,7 +7,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.support.design.widget.TabLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
@@ -18,12 +17,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
-import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.adapter.MainPagerAdapter
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.Group
-import com.kurume_nct.studybattle.model.UnitPersonal
-import com.kurume_nct.studybattle.tools.CustomViewActivity
+import com.kurume_nct.studybattle.model.UsersObject
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
 import com.kurume_nct.studybattle.view.*
 import com.mikepenz.google_material_typeface_library.GoogleMaterial
@@ -40,7 +37,7 @@ import java.net.URL
 
 class Main2Activity : AppCompatActivity() {
 
-    private lateinit var unitPer: UnitPersonal
+    private lateinit var usersObject: UsersObject
     private val REQUEST_PERMISSION_STRAGE = 1
     private lateinit var progressDialog: ProgressDialog
     private var toolbar: Toolbar? = null
@@ -60,7 +57,7 @@ class Main2Activity : AppCompatActivity() {
         viewPaper = findViewById(R.id.pager) as ViewPager
         tabLayout = findViewById(R.id.tabs) as TabLayout
 
-        unitPer = application as UnitPersonal
+        usersObject = application as UsersObject
 
         toolbar?.inflateMenu(R.menu.toolbar_menu)
 
@@ -68,32 +65,31 @@ class Main2Activity : AppCompatActivity() {
         listenPermission()
         getUserInformation()
 
-        Log.d(unitPer.nowGroup.name, unitPer.myInfomation.userName)
+        Log.d(usersObject.nowGroup.name, usersObject.user.userName)
 
     }
 
     private fun getUserInformation() {
         stopButton = true
         progressDialog = ProgressDialogTool(this).makeDialog()
-        if (!progressDialog.isShowing) progressDialog.show()
+        if(!progressDialog.isShowing)progressDialog.show()
         Log.d("getUserInfo", "")
-        val client = ServerClient(unitPer.authenticationKey)
+        val client = ServerClient(usersObject.authenticationKey)
         client
-                .verifyAuthentication(unitPer.authenticationKey)
+                .verifyAuthentication(usersObject.authenticationKey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     Log.d("userの情報を取得", "")
-                    unitPer.myInfomation = it
+                    usersObject.user = it
                     userIcon = Uri.parse(it.icon!!.url)
                     getMyGroup()
                 }, {
                     if (progressDialog.isShowing) progressDialog.dismiss()
                     stopButton = false
                     Toast.makeText(this, "Loginしなおしてください", Toast.LENGTH_SHORT).show()
-                    unitPer.deleteFile()
-                    Log.d(unitPer.authenticationKey, "メイン")
-                    startActivity(Intent(this, LoginActivity::class.java))
+                    usersObject.deleteFile()
+                    startActivity(intent)
                     finish()
                 })
     }
@@ -126,7 +122,7 @@ class Main2Activity : AppCompatActivity() {
         Log.d("getMyGroup", "")
 
         val groups = mutableListOf<Group>()
-        val client = ServerClient(unitPer.authenticationKey)
+        val client = ServerClient(usersObject.authenticationKey)
         client
                 .getJoinedGroups()
                 .subscribeOn(Schedulers.io())
@@ -136,14 +132,13 @@ class Main2Activity : AppCompatActivity() {
                         groups.add(i)
                         Log.d("list", "group追加")
                     }
-                    unitPer.myGroupList = groups
-                    unitPer.myGroupCount = unitPer.myGroupList.size
-                    Log.d(unitPer.myGroupCount.toString(), "個あります")
-                    if (unitPer.myGroupCount == 0) {
+                    usersObject.myGroupList = groups
+                    Log.d(usersObject.myGroupCount.toString(), "個あります")
+                    if (usersObject.myGroupCount == 0) {
                         //join or create group
                         startActivity(Intent(this, CreateGroupActivity::class.java))
                     } else {
-                        unitPer.nowGroup = unitPer.myGroupList[0]
+                        usersObject.nowGroup = usersObject.myGroupList[0]
                         getIconBitmap()
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
@@ -164,8 +159,8 @@ class Main2Activity : AppCompatActivity() {
                     if (progressDialog.isShowing) progressDialog.dismiss()
                     Log.d("Groupの情報を取得するのに失敗", "")
                     Toast.makeText(this, "Groupの情報がありません", Toast.LENGTH_SHORT).show()
-                    unitPer.deleteFile()
-                    if (unitPer.authenticationKey == "0") startActivity(Intent(this, LoginActivity::class.java))
+                    usersObject.deleteFile()
+                    if(usersObject.authenticationKey == "0")startActivity(Intent(this, LoginActivity::class.java))
                     finish()
                 })
     }
@@ -176,7 +171,7 @@ class Main2Activity : AppCompatActivity() {
         onNavigationDrawer(userIcon)
         onToolBar()
         stopButton = false
-        Log.d(unitPer.myInfomation.id.toString(), "ユーザーID")
+        Log.d(usersObject.user.id.toString(), "ユーザーID")
     }
 
     private fun getIconBitmap(): Single<Bitmap> = Single.fromCallable {
@@ -194,7 +189,7 @@ class Main2Activity : AppCompatActivity() {
 
         if (toolbar == null) toolbar = findViewById(R.id.toolbar) as Toolbar
 
-        toolbar?.title = unitPer.nowGroup.name
+        toolbar?.title = usersObject.nowGroup.name
 
         toolbar?.setOnMenuItemClickListener { item ->
             when (item.itemId) {
@@ -252,7 +247,7 @@ class Main2Activity : AppCompatActivity() {
     private fun onNavigationDrawer(userIcon: Bitmap) {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
 
-        unitPer.myGroupList.add(Group())
+        usersObject.myGroupList.add(Group())
         // Create the AccountHeader
         val acountCount: Long = 0
         val headerResult = AccountHeaderBuilder()
@@ -260,8 +255,8 @@ class Main2Activity : AppCompatActivity() {
                 .withHeaderBackground(R.color.md_red_A700)
                 .addProfiles(
                         ProfileDrawerItem()
-                                .withName(unitPer.myInfomation.displayName)
-                                .withEmail(unitPer.myInfomation.userName)
+                                .withName(usersObject.user.displayName)
+                                .withEmail(usersObject.user.userName)
                                 .withIcon(userIcon)
                                 .withIdentifier(acountCount)
                 )
@@ -278,12 +273,12 @@ class Main2Activity : AppCompatActivity() {
                 .withOnDrawerItemClickListener { view, position, drawerItem ->
                     val intent: Intent
                     //positionが1indexなので注意。
-                    if (position == unitPer.myGroupList.size) {
+                    if (position == usersObject.myGroupList.size) {
                         intent = Intent(this, CreateGroupActivity::class.java)
                         if (!stopButton) startActivity(intent)
                     } else {
                         if (!stopButton) {
-                            unitPer.nowGroup = unitPer.myGroupList[position - 1]
+                            usersObject.nowGroup = usersObject.myGroupList[position - 1]
                             onToolBar()
                             onTabLayout()
                         } else {
@@ -294,12 +289,12 @@ class Main2Activity : AppCompatActivity() {
                 }
                 .build()
         //Create the HunachiItem of list
-        Log.d(unitPer.myGroupCount.toString(), "すし")
-        (0 until unitPer.myGroupCount).forEach {
+        Log.d(usersObject.myGroupCount.toString(), "すし")
+        (0 until usersObject.myGroupCount).forEach {
             result
                     .addItem(PrimaryDrawerItem()
-                            .withIdentifier(unitPer.myGroupList[it].id.toLong())
-                            .withName(unitPer.myGroupList[it].name)
+                            .withIdentifier(usersObject.myGroupList[it].id.toLong())
+                            .withName(usersObject.myGroupList[it].name)
                             .withIcon(GoogleMaterial.Icon.gmd_people))
         }
         result
@@ -317,7 +312,7 @@ class Main2Activity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d("change", unitPer.nowGroup.name)
+        Log.d("change", usersObject.nowGroup.name)
     }
 }
 

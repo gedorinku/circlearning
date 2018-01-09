@@ -16,9 +16,9 @@ import com.kurume_nct.studybattle.adapter.ProblemListAdapter
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.FragmentProblemListBinding
 import com.kurume_nct.studybattle.model.Problem
-import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.model.SolutionStatus
+import com.kurume_nct.studybattle.model.UsersObject
 import com.kurume_nct.studybattle.view.*
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.mergeAll
 import io.reactivex.rxkotlin.toObservable
@@ -32,7 +32,7 @@ class MainListFragment(val callback: Callback) : Fragment() {
     private val problemList = mutableListOf<Problem>()
     lateinit var mContext: Context
     private lateinit var client: ServerClient
-    private lateinit var unitPersonal: UnitPersonal
+    private lateinit var usersObject: UsersObject
 
     lateinit var listAdapter: ProblemListAdapter
 
@@ -63,8 +63,8 @@ class MainListFragment(val callback: Callback) : Fragment() {
 
     fun onRefreshList() {
 
-        client = ServerClient(unitPersonal.authenticationKey)
-        val groupId = unitPersonal.nowGroup.id
+        client = ServerClient(usersObject.authenticationKey)
+        val groupId = usersObject.nowGroup.id
 
         when (tabId) {
             resources.getInteger(R.integer.HAVE_PROBLEM) ->
@@ -109,7 +109,7 @@ class MainListFragment(val callback: Callback) : Fragment() {
                         .mergeAll()
                         .toList()
 
-            else -> throw IllegalArgumentException(tabId.toString()) as Throwable
+            else -> throw IllegalArgumentException(tabId.toString())
         }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { it ->
@@ -122,14 +122,14 @@ class MainListFragment(val callback: Callback) : Fragment() {
                             problemList.add(Problem(title = "　＋　新しい問題を追加で取得する"))
                         }
                         listAdapter.notifyItemRangeInserted(0, it.size)
-                        Log.d(it.size.toString(), "isNotEmpty" + unitPersonal.nowGroup.id.toString())
+                        Log.d(it.size.toString(), "isNotEmpty" + usersObject.nowGroup.id.toString())
                         callback.onStopSwipeRefresh()
                 }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        unitPersonal = activity.application as UnitPersonal
+        usersObject = activity.application as UsersObject
         onRefreshList()
     }
 
@@ -138,75 +138,74 @@ class MainListFragment(val callback: Callback) : Fragment() {
         Log.d("i'm ", javaClass.name)
         //binding = DataBindingUtil.inflate(inflater, R.layout.fragment_problem_list,container,false)
         binding = FragmentProblemListBinding.inflate(inflater, container, false)
-        listAdapter = ProblemListAdapter(context, problemList,
-                { position: Int ->
-                    val intent: Intent
-                    when (tabId) {
-                        resources.getInteger(R.integer.HAVE_PROBLEM) -> {
-                            if (position == (listAdapter.itemCount - 1)) {
-                                Toast.makeText(mContext, "新しい問題を取得中...📚", Toast.LENGTH_LONG).show()
-                                assignedProblem()
-                            } else {
-                                intent = Intent(context, CameraModeActivity::class.java)
-                                intent.putExtra("problemId", problemList[position].id)
-                                startActivityForResult(intent, 0)
-                            }
-                        }
-                        resources.getInteger(R.integer.ANSWER_YET) -> {
-                            intent = Intent(context, AnswerActivity::class.java)
-                            intent.putExtra("problemId", problemList[position].id)
-                            intent.putExtra("fin", 1)
-                            startActivityForResult(intent, 0)
-                        }
-                        resources.getInteger(R.integer.ANSWER_FIN) -> {
-                            intent = Intent(context, AnswerActivity::class.java)
-                            intent.putExtra("problemId", problemList[position].id)
-                            intent.putExtra("fin", 3)
-                            startActivityForResult(intent, 0)
-                        }
-                        resources.getInteger(R.integer.MADE_COLLECT_YET) -> {
-                            intent = Intent(context, MadeCollectYetActivity::class.java)
-                            intent.putExtra("problemId", problemList[position].id)
-                            startActivityForResult(intent, 0)
-                        }
-                        resources.getInteger(R.integer.MADE_FIRST_JUDGE_YET) -> {
-                            intent = Intent(context, AnswerActivity::class.java)
-                            intent.putExtra("fin", 0)
-                            intent.putExtra("problemId", problemList[position].id)
-                            startActivityForResult(intent, 0)
-                        }
-                        resources.getInteger(R.integer.MADE_FINAL_JUDGE_YET) -> {
-                            intent = Intent(context,AnswerActivity::class.java)
-                            intent.putExtra("fin", 2)
-                            intent.putExtra("problemId", problemList[position].id)
-                            startActivityForResult(intent, 0)
-                        }
-                        resources.getInteger(R.integer.MADE_FIN) -> {
-                            intent = Intent(context, AnswerActivity::class.java)
-                            intent.putExtra("fin", 3)
-                            intent.putExtra("problemId", problemList[position].id)
-                            startActivityForResult(intent, 0)
-                        }
-                        resources.getInteger(R.integer.SUBMIT_YET) -> {
-                            intent = Intent(context, PersonalAnswerActivity::class.java)
-                            intent.putExtra("switch", "p")
-                            intent.putExtra("fin", false)
-                            intent.putExtra("problemId", problemList[position].id)
-                            startActivityForResult(intent, 0)
-                        }
-                        resources.getInteger(R.integer.SUBMIT_FIN) -> {
-                            intent = Intent(context, PersonalAnswerActivity::class.java)
-                            intent.putExtra("switch", "p")
-                            intent.putExtra("fin", true)
-                            intent.putExtra("problemId", problemList[position].id)
-                            startActivityForResult(intent, 0)
-                        }
-                        else -> {
-                            intent = Intent(context, ItemInfoActivity::class.java)
-                            startActivityForResult(intent, 0)
-                        }
+        listAdapter = ProblemListAdapter(problemList, { position: Int ->
+            val intent: Intent
+            when (tabId) {
+                resources.getInteger(R.integer.HAVE_PROBLEM) -> {
+                    if (position == (listAdapter.itemCount - 1)) {
+                        Toast.makeText(mContext, "新しい問題を取得中...📚", Toast.LENGTH_LONG).show()
+                        assignedProblem()
+                    } else {
+                        intent = Intent(context, CreateSolutionActivity::class.java)
+                        intent.putExtra("problemId", problemList[position].id)
+                        startActivityForResult(intent, 0)
                     }
-                })
+                }
+                resources.getInteger(R.integer.ANSWER_YET) -> {
+                    intent = Intent(context, AnswerActivity::class.java)
+                    intent.putExtra("problemId", problemList[position].id)
+                    intent.putExtra("fin", SolutionStatus.YET_ANSWER.statementId)
+                    startActivityForResult(intent, 0)
+                }
+                resources.getInteger(R.integer.ANSWER_FIN) -> {
+                    intent = Intent(context, AnswerActivity::class.java)
+                    intent.putExtra("problemId", problemList[position].id)
+                    intent.putExtra("fin", SolutionStatus.ALL_FINISH.statementId)
+                    startActivityForResult(intent, 0)
+                }
+                resources.getInteger(R.integer.MADE_COLLECT_YET) -> {
+                    intent = Intent(context, MadeCollectYetActivity::class.java)
+                    intent.putExtra("problemId", problemList[position].id)
+                    startActivityForResult(intent, 0)
+                }
+                resources.getInteger(R.integer.MADE_FIRST_JUDGE_YET) -> {
+                    intent = Intent(context, AnswerActivity::class.java)
+                    intent.putExtra("fin", SolutionStatus.YET_FIRST_JUDGE.statementId)
+                    intent.putExtra("problemId", problemList[position].id)
+                    startActivityForResult(intent, 0)
+                }
+                resources.getInteger(R.integer.MADE_FINAL_JUDGE_YET) -> {
+                    intent = Intent(context,AnswerActivity::class.java)
+                    intent.putExtra("fin", SolutionStatus.YET_FINAL_JUDGE.statementId)
+                    intent.putExtra("problemId", problemList[position].id)
+                    startActivityForResult(intent, 0)
+                }
+                resources.getInteger(R.integer.MADE_FIN) -> {
+                    intent = Intent(context, AnswerActivity::class.java)
+                    intent.putExtra("fin", SolutionStatus.ALL_FINISH.statementId)
+                    intent.putExtra("problemId", problemList[position].id)
+                    startActivityForResult(intent, 0)
+                }
+                resources.getInteger(R.integer.SUBMIT_YET) -> {
+                    intent = Intent(context, PersonalAnswerActivity::class.java)
+                    intent.putExtra("switch", "p")
+                    intent.putExtra("fin", false)
+                    intent.putExtra("problemId", problemList[position].id)
+                    startActivityForResult(intent, 0)
+                }
+                resources.getInteger(R.integer.SUBMIT_FIN) -> {
+                    intent = Intent(context, PersonalAnswerActivity::class.java)
+                    intent.putExtra("switch", "p")
+                    intent.putExtra("fin", true)
+                    intent.putExtra("problemId", problemList[position].id)
+                    startActivityForResult(intent, 0)
+                }
+                else -> {
+                    intent = Intent(context, ItemInfoActivity::class.java)
+                    startActivityForResult(intent, 0)
+                }
+            }
+        })
         if (tabId == 0) {
             problemList.add(Problem(title = "　＋　新しい問題を追加で取得する"))
         }
@@ -216,9 +215,9 @@ class MainListFragment(val callback: Callback) : Fragment() {
     }
 
     fun assignedProblem() {
-        val client = ServerClient(unitPersonal.authenticationKey)
+        val client = ServerClient(usersObject.authenticationKey)
         client
-                .requestNewProblem(unitPersonal.nowGroup)
+                .requestNewProblem(usersObject.nowGroup)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

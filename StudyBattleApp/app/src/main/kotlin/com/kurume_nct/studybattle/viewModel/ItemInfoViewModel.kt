@@ -3,11 +3,9 @@ package com.kurume_nct.studybattle.viewModel
 import android.content.Context
 import android.databinding.BaseObservable
 import android.databinding.Bindable
-import android.widget.Toast
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.client.ServerClient
-import com.kurume_nct.studybattle.model.UnitPersonal
-import com.kurume_nct.studybattle.tools.ToolClass
+import com.kurume_nct.studybattle.model.UsersObject
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -16,11 +14,10 @@ import io.reactivex.schedulers.Schedulers
  */
 class ItemInfoViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
 
-    val unitPer: UnitPersonal = context.applicationContext as UnitPersonal
+    val usersObject: UsersObject = context.applicationContext as UsersObject
 
     @Bindable
     var magicCount = "×0"
-        get
         set(value) {
             field = value
             notifyPropertyChanged(BR.magicCount)
@@ -28,7 +25,6 @@ class ItemInfoViewModel(private val context: Context, private val callback: Call
 
     @Bindable
     var bombCount = "×0"
-        get
         set(value) {
             field = value
             notifyPropertyChanged(BR.bombCount)
@@ -36,7 +32,6 @@ class ItemInfoViewModel(private val context: Context, private val callback: Call
 
     @Bindable
     var cardCount = "×0"
-        get
         set(value) {
             field = value
             notifyPropertyChanged(BR.cardCount)
@@ -44,15 +39,14 @@ class ItemInfoViewModel(private val context: Context, private val callback: Call
 
     @Bindable
     var shieldCount = "×0"
-        get
         set(value) {
             field = value
             notifyPropertyChanged(BR.shieldCount)
         }
 
     fun onCreate() {
-        ServerClient(unitPer.authenticationKey)
-                .getMyItems(unitPer.nowGroup.id)
+        ServerClient(usersObject.authenticationKey)
+                .getMyItems(usersObject.nowGroup.id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {

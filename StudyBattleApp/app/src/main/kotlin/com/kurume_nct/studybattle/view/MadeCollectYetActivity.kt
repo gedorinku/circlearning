@@ -6,16 +6,13 @@ import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.ActionMenuView
 import android.widget.Toast
 import com.bumptech.glide.Glide
 
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.ActivityMadeCollectYetBinding
-import com.kurume_nct.studybattle.model.UnitPersonal
-import com.kurume_nct.studybattle.tools.ImageViewActivity
+import com.kurume_nct.studybattle.model.UsersObject
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -23,7 +20,7 @@ class MadeCollectYetActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMadeCollectYetBinding
     private var problemId = 0
-    private lateinit var unitPer: UnitPersonal
+    private lateinit var usersObject: UsersObject
     private var url = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +29,7 @@ class MadeCollectYetActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_made_collect_yet)
         problemId = intent.getIntExtra("problemId", 0)
         checkProblem(problemId)
-        unitPer = application as UnitPersonal
+        usersObject = application as UsersObject
         getProblemInfo()
         binding.problemImageView.apply {
             setOnClickListener {
@@ -52,7 +49,7 @@ class MadeCollectYetActivity : AppCompatActivity() {
     }
 
     private fun getProblemInfo() {
-        val client = ServerClient(unitPer.authenticationKey)
+        val client = ServerClient(usersObject.authenticationKey)
         client
                 .getProblem(problemId)
                 .subscribeOn(Schedulers.io())
