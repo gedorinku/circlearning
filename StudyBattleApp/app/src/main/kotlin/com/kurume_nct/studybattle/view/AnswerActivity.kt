@@ -11,6 +11,7 @@ import com.kurume_nct.studybattle.viewModel.AnswerViewModel
 
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.databinding.ActivityAnswerBinding
+import com.kurume_nct.studybattle.model.SolutionStatus
 import com.kurume_nct.studybattle.model.UsersObject
 
 class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
