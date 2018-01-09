@@ -16,6 +16,7 @@ import com.kurume_nct.studybattle.adapter.ProblemListAdapter
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.FragmentProblemListBinding
 import com.kurume_nct.studybattle.model.Problem
+import com.kurume_nct.studybattle.model.SolutionStatus
 import com.kurume_nct.studybattle.model.UsersObject
 import com.kurume_nct.studybattle.view.*
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -153,13 +154,13 @@ class MainListFragment(val callback: Callback) : Fragment() {
                 resources.getInteger(R.integer.ANSWER_YET) -> {
                     intent = Intent(context, AnswerActivity::class.java)
                     intent.putExtra("problemId", problemList[position].id)
-                    intent.putExtra("fin", 1)
+                    intent.putExtra("fin", SolutionStatus.YET_ANSWER.statementId)
                     startActivityForResult(intent, 0)
                 }
                 resources.getInteger(R.integer.ANSWER_FIN) -> {
                     intent = Intent(context, AnswerActivity::class.java)
                     intent.putExtra("problemId", problemList[position].id)
-                    intent.putExtra("fin", 3)
+                    intent.putExtra("fin", SolutionStatus.ALL_FINISH.statementId)
                     startActivityForResult(intent, 0)
                 }
                 resources.getInteger(R.integer.MADE_COLLECT_YET) -> {
@@ -169,19 +170,19 @@ class MainListFragment(val callback: Callback) : Fragment() {
                 }
                 resources.getInteger(R.integer.MADE_FIRST_JUDGE_YET) -> {
                     intent = Intent(context, AnswerActivity::class.java)
-                    intent.putExtra("fin", 0)
+                    intent.putExtra("fin", SolutionStatus.YET_FIRST_JUDGE.statementId)
                     intent.putExtra("problemId", problemList[position].id)
                     startActivityForResult(intent, 0)
                 }
                 resources.getInteger(R.integer.MADE_FINAL_JUDGE_YET) -> {
                     intent = Intent(context,AnswerActivity::class.java)
-                    intent.putExtra("fin", 2)
+                    intent.putExtra("fin", SolutionStatus.YET_FINAL_JUDGE.statementId)
                     intent.putExtra("problemId", problemList[position].id)
                     startActivityForResult(intent, 0)
                 }
                 resources.getInteger(R.integer.MADE_FIN) -> {
                     intent = Intent(context, AnswerActivity::class.java)
-                    intent.putExtra("fin", 3)
+                    intent.putExtra("fin", SolutionStatus.ALL_FINISH.statementId)
                     intent.putExtra("problemId", problemList[position].id)
                     startActivityForResult(intent, 0)
                 }
