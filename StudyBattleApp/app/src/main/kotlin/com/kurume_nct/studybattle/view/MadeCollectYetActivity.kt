@@ -27,7 +27,7 @@ class MadeCollectYetActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         Log.d("i'm ", javaClass.name)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_made_collect_yet)
-        problemId = intent.getIntExtra("problemId", 0)
+        problemId = intent.getIntExtra("mProblemId", 0)
         checkProblem(problemId)
         usersObject = application as UsersObject
         getProblemInfo()

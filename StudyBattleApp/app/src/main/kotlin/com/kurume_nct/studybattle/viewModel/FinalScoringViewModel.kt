@@ -16,6 +16,7 @@ import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.Solution
 import com.kurume_nct.studybattle.model.UsersObject
+import com.kurume_nct.studybattle.view.FinalScoringActivity
 import com.kurume_nct.studybattle.view.ImageViewActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -23,7 +24,7 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by hanah on 10/16/2017.
  */
-class FinalScoringViewModel(val context: Context, val callback: Callback) : BaseObservable() {
+class FinalScoringViewModel(val context: FinalScoringActivity, val callback: Callback) : BaseObservable() {
 
     private var url = ""
     private var problemUrl = ""
@@ -142,7 +143,7 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
             val unitPer = context.applicationContext as UsersObject
             val client = ServerClient(unitPer.authenticationKey)
             client
-                    .judgeSolution(callback.getSolutionId(), radioCorrect)
+                    .judgeSolution(context.mSolutionId, radioCorrect)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
@@ -155,7 +156,7 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
         val unitPer = context.applicationContext as UsersObject
         val client = ServerClient(unitPer.authenticationKey)
         client
-                .getSolution(callback.getSolutionId())
+                .getSolution(context.mSolutionId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -242,7 +243,7 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
         val unitPer = context.applicationContext as UsersObject
         val client = ServerClient(unitPer.authenticationKey)
         client
-                .getSolution(callback.getSolutionId())
+                .getSolution(context.mSolutionId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -267,7 +268,6 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
     }
 
     interface Callback {
-        fun getSolutionId(): Int
         fun onReset()
         fun enableEditText(boolean: Boolean)
         fun finishedRefresh()

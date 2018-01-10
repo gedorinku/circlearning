@@ -6,13 +6,14 @@ import android.databinding.Bindable
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.UsersObject
+import com.kurume_nct.studybattle.view.ItemInfoActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by hanah on 9/25/2017.
  */
-class ItemInfoViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
+class ItemInfoViewModel(private val context: ItemInfoActivity, private val callback: Callback) : BaseObservable() {
 
     val usersObject: UsersObject = context.applicationContext as UsersObject
 

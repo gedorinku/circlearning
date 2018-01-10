@@ -14,28 +14,31 @@ import com.kurume_nct.studybattle.viewModel.FinalScoringViewModel
 class FinalScoringActivity : AppCompatActivity(), FinalScoringViewModel.Callback {
 
     private lateinit var binding: ActivityFinalScoringBinding
-    private var solution = 0
+    var mSolutionId = 0
     private val FINAL_SCORING_CODE = 10
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_final_scoring)
-        binding.viewModel = FinalScoringViewModel(this, this)
-        solution = intent.getIntExtra("solutionId", -1)
-        if (solution == -1) {
-            Log.d("soputionId", "適切ではない")
+
+        mSolutionId = intent.getIntExtra("mSolutionId", -1)
+        if (mSolutionId == -1) {
+            Log.d("solutionId", "inadequate")
             finish()
         }
 
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_final_scoring)
+
         binding.apply {
+            viewModel = FinalScoringViewModel(
+                    this@FinalScoringActivity,
+                    this@FinalScoringActivity
+            )
             viewModel.getInitData()
             swipeRefreshFinal.setOnRefreshListener {
                 viewModel.refreshComment(true)
             }
         }
     }
-
-    override fun getSolutionId() = solution
 
     override fun onReset() {
         setResult(FINAL_SCORING_CODE)
@@ -47,11 +50,7 @@ class FinalScoringActivity : AppCompatActivity(), FinalScoringViewModel.Callback
     }
 
     override fun enableEditText(boolean: Boolean) {
-        if (boolean) {
-            binding.yourCommentEditText.visibility = View.VISIBLE
-        } else {
-            binding.yourCommentEditText.visibility = View.GONE
-        }
+        binding.yourCommentEditText.visibility = if (boolean) View.VISIBLE else View.GONE
     }
 
     override fun changeTextColor() {

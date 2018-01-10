@@ -8,13 +8,14 @@ import android.widget.Toast
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.client.ServerClient
+import com.kurume_nct.studybattle.view.LoginActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by hanah on 8/11/2017.
  */
-class LoginViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
+class LoginViewModel(private val context: LoginActivity, private val callback: Callback) : BaseObservable() {
 
     lateinit var displayName: String
 
@@ -40,7 +41,7 @@ class LoginViewModel(private val context: Context, private val callback: Callbac
             Toast.makeText(context, context.getString(R.string.errorLoginStatus), Toast.LENGTH_LONG).show()
         } else {
             callback.stopButton()
-            val client = ServerClient(callback.getKey())
+            val client = ServerClient(context.usersObject.authenticationKey)
             client
                     .login(name, password)
                     .subscribeOn(Schedulers.io())
@@ -61,7 +62,6 @@ class LoginViewModel(private val context: Context, private val callback: Callbac
 
 
     interface Callback {
-        fun getKey(): String
         fun stopButton()
         fun clickableButton()
         fun onLogin(authentication: String)

@@ -18,6 +18,7 @@ import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
+import com.kurume_nct.studybattle.view.RegistrationActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.io.BufferedInputStream
@@ -25,7 +26,7 @@ import java.io.BufferedInputStream
 /**
  * Created by hanah on 7/30/2017.
  */
-class RegistrationViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
+class RegistrationViewModel(private val context: RegistrationActivity, private val callback: Callback) : BaseObservable() {
 
     companion object {
         @BindingAdapter("loadImage")

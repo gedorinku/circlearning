@@ -14,13 +14,14 @@ import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.UsersObject
 import com.kurume_nct.studybattle.view.ImageViewActivity
+import com.kurume_nct.studybattle.view.ScoringActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by hanah on 10/22/2017.
  */
-class ScoringViewModel(val context: Context, val callback: Callback) : BaseObservable() {
+class ScoringViewModel(val context: ScoringActivity, val callback: Callback) : BaseObservable() {
 
     private var solution = 0
 
@@ -104,7 +105,7 @@ class ScoringViewModel(val context: Context, val callback: Callback) : BaseObser
 
     fun onCreate() {
         setInit()
-                .getSolution(callback.getSolution())
+                .getSolution(context.solutionId)
                 .flatMap {
                     solution = it.id
                     if (it.judged) {
@@ -156,8 +157,6 @@ class ScoringViewModel(val context: Context, val callback: Callback) : BaseObser
     }
 
     interface Callback {
-        fun getProblem(): Pair<String, String> //title url
-        fun getSolution(): Int
         fun onFinish()
     }
 

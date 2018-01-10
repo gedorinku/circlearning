@@ -20,35 +20,41 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
 
     private lateinit var binding: ActivityPersonalAnswerBinding
     private lateinit var usersObject: UsersObject
-    private var switch = ""
-    private var problemId = 0
-    private var situationId = false
-    private var otherSolution: Solution = Solution()
+    var mSwitch = ""
+    var mProblemId = 0
+    private var situationStatus = false
+    var otherSolution: Solution = Solution()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("i'm ", javaClass.name)
+
+        mSwitch = intent.getStringExtra("switch")
+        usersObject = application as UsersObject
+        situationStatus = intent.getBooleanExtra("fin", false)
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_personal_answer)
         binding.viewModel = PersonalAnswerViewModel(this, this)
-        usersObject = application as UsersObject
-        switch = intent.getStringExtra("switch")
-        situationId = intent.getBooleanExtra("fin", false)
-        if(switch == "s"){
+
+        val solutionId = intent.getIntExtra("mSolutionId", -1)
+
+        if(mSwitch == "s"){
             ServerClient(usersObject.authenticationKey)
-                    .getSolution(intent.getIntExtra("solutionId", -1))
+                    .getSolution(solutionId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
                         otherSolution = it
-                        problemId = it.problemId
+                        mProblemId = it.problemId
                         binding.viewModel.getInitData()
                     },{
                         Log.d("po","つらい")
                     })
         }else{
-            problemId = intent.getIntExtra("problemId", 0)
+            mProblemId = intent.getIntExtra("mProblemId", 0)
             binding.viewModel.getInitData()
         }
+
         binding.apply {
             commentEdit.visibility = View.GONE
             swipeRefreshPersonal.setOnRefreshListener {
@@ -63,27 +69,16 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
     }
 
     override fun enableEditText(boolean: Boolean) {
-        if (boolean)
-            binding.commentEdit.visibility = View.VISIBLE
-        else {
-            binding.commentEdit.visibility = View.GONE
-        }
+        binding.commentEdit.visibility = if (boolean) View.VISIBLE else View.GONE
     }
 
     override fun finishedRefresh() {
         binding.swipeRefreshPersonal.isRefreshing = false
     }
 
-    override fun getProblemId() = problemId
-
     override fun judgeYet() {
         binding.currentPersonalText.visibility = View.GONE
     }
-
-
-    override fun getSolution(): Solution = otherSolution
-
-    override fun getSwitch(): String = switch
 
     override fun changeColor() {
         binding.currentPersonalText.setTextColor(Color.BLUE)
