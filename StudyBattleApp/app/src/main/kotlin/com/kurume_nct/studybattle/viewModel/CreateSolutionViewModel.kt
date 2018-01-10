@@ -27,6 +27,7 @@ import com.kurume_nct.studybattle.databinding.DialogCameraStrageChooseBinding
 import com.kurume_nct.studybattle.databinding.DialogItemSelectBinding
 import com.kurume_nct.studybattle.model.*
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
+import com.kurume_nct.studybattle.view.CreateSolutionActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.joda.time.DateTime
@@ -35,7 +36,7 @@ import org.joda.time.Duration
 /**
  * 🍣 Created by hanah on 2017/12/02.
  */
-class CreateSolutionViewModel(val context: Context, val callback: Callback) : BaseObservable() {
+class CreateSolutionViewModel(val context: CreateSolutionActivity, val callback: Callback) : BaseObservable() {
 
     private val RESULT_PICK_IMAGEFILE = 1000
     lateinit var dialogView: DialogItemSelectBinding

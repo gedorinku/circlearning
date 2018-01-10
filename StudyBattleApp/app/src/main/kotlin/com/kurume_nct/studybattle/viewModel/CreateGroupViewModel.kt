@@ -10,13 +10,14 @@ import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.listFragment.SelectMainPeopleFragment
 import com.kurume_nct.studybattle.model.UsersObject
+import com.kurume_nct.studybattle.view.CreateGroupActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by hanah on 10/1/2017.
  */
-class CreateGroupViewModel(val context: Context, val callback: Callback): BaseObservable() {
+class CreateGroupViewModel(val context: CreateGroupActivity, val callback: Callback): BaseObservable() {
 
     @Bindable
     var groupName = ""
@@ -38,7 +39,7 @@ class CreateGroupViewModel(val context: Context, val callback: Callback): BaseOb
 
     fun createGroup() {
         val unitPer: UsersObject = context.applicationContext as UsersObject
-        val toast = Toast.makeText(context, "グループ名が適切ではありません", Toast.LENGTH_LONG)
+        //val toast = Toast.makeText(context, "グループ名が適切ではありません", Toast.LENGTH_LONG)
         val client = ServerClient(unitPer.authenticationKey)
         client
                 .createGroup(groupName)
@@ -46,7 +47,7 @@ class CreateGroupViewModel(val context: Context, val callback: Callback): BaseOb
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     unitPer.myGroupList.add(it)
-                    for (user in callback.getFragment().getPeopleList()) {
+                    for (user in context.fragment.getPeopleList()) {
                         client
                                 .attachToGroup(it, user)
                                 .subscribeOn(Schedulers.io())
@@ -62,7 +63,6 @@ class CreateGroupViewModel(val context: Context, val callback: Callback): BaseOb
 
     interface Callback{
         fun makeGroup()
-        fun getFragment(): SelectMainPeopleFragment
         fun onSuccess()
         fun onError()
     }

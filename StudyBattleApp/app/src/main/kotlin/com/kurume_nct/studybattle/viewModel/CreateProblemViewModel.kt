@@ -16,6 +16,7 @@ import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.Solution
 import com.kurume_nct.studybattle.model.User
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
+import com.kurume_nct.studybattle.view.CreateProblemActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.joda.time.DateTime
@@ -25,7 +26,7 @@ import org.joda.time.Duration
 /**
  * Created by hanah on 9/26/2017.
  */
-class CreateProblemViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
+class CreateProblemViewModel(private val context: CreateProblemActivity, private val callback: Callback) : BaseObservable() {
 
     val termExtra = "(解答回収期間より)"
     var problemImageId = 0
@@ -37,7 +38,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
         fun setCreateImage(view: ImageView, uri: Uri?) {
             if (uri == null) {
                 Glide.with(view).load(R.drawable.plus).into(view)
-            }else {
+            } else {
                 Glide.with(view).load(uri).into(view)
             }
         }
@@ -115,7 +116,14 @@ class CreateProblemViewModel(private val context: Context, private val callback:
     }
 
     fun onClickFinish(view: View) {
-        if (problemUri == null || answerUri == null || problemName.isEmpty() || problemName.isBlank() || termForOne.isBlank()) {
+        if (
+        problemUri == null ||
+                answerUri == null ||
+                problemName.isEmpty() ||
+                problemName.isBlank() ||
+                termForOne.isBlank() ||
+                context.mDuration == null
+                ) {
             Toast.makeText(context, "入力に不備があります(`・ω・´)", Toast.LENGTH_SHORT).show()
         } else {
             sendData()
@@ -128,7 +136,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
         dialog.show()
         callback.onNotClickableButtons()
 
-        val client = ServerClient(callback.getKey())
+        val client = ServerClient(context.usersObject.authenticationKey)
         client
                 .uploadImage(problemUri!!, context)
                 .subscribeOn(Schedulers.io())
@@ -146,11 +154,11 @@ class CreateProblemViewModel(private val context: Context, private val callback:
                                                 text = "ごめんなさい",
                                                 imageIds = listOf(problemImageId),
                                                 startsAt = dateTime(),
-                                                duration = callback.getDuration(),
-                                                groupId = callback.getGroupId(),
+                                                duration = context.mDuration!!,/*null checked*/
+                                                groupId = context.usersObject.nowGroup.id,
                                                 assumedSolution = Solution(
                                                         text = "お寿司と焼き肉の戦い。",
-                                                        authorId = callback.userInformation().id,
+                                                        authorId = context.usersObject.user.id,
                                                         imageCount = 1,
                                                         imageIds = listOf(answerImageId)
                                                 )
@@ -182,14 +190,10 @@ class CreateProblemViewModel(private val context: Context, private val callback:
     private fun dateTime(): DateTime = DateTime.now()
 
     interface Callback {
-        fun userInformation(): User
-        fun getKey(): String
         fun startActivityForResult(intent: Intent, requestCode: Int)
         fun getCreateData(title: String)
         fun alertDialog(problem: Boolean)
         fun onDateDialog()
-        fun getDuration(): Duration
-        fun getGroupId(): Int
         fun onClickableButtons()
         fun onNotClickableButtons()
     }
