@@ -156,7 +156,7 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
         val unitPer = context.applicationContext as UsersObject
         val client = ServerClient(unitPer.authenticationKey)
         client
-                .getProblem(callback.getProblemId())
+                .getProblem(callback.problemId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
@@ -177,7 +177,7 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
         val unitPer = context.applicationContext as UsersObject
         val client = ServerClient(unitPer.authenticationKey)
         client
-                .getProblem(callback.getProblemId())
+                .getProblem(callback.problemId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -217,8 +217,8 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
     interface Callback {
         fun visibilityEditText(boolean: Boolean)
         fun onError()
-        fun getFin(): Int
-        fun getProblemId(): Int
+        fun solutionStatus(): Int
+        fun problemId(): Int
         fun finishedRefresh()
     }
 }

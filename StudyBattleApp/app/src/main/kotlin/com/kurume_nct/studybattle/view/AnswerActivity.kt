@@ -17,9 +17,9 @@ import com.kurume_nct.studybattle.model.UsersObject
 class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
 
     lateinit var binding: ActivityAnswerBinding
-    private var solutionStatus = SolutionStatus.NON_STATUS
+    var solutionStatus = SolutionStatus.NON_STATUS
     lateinit var usersObject: UsersObject
-    private var mProblemId = -1
+    var mProblemId = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,9 +74,9 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
         finish()
     }
 
-    override fun getFin() = solutionStatus.statementId
+    override fun solutionStatus() = solutionStatus.statementId
 
-    override fun getProblemId() = mProblemId
+    override fun problemId() = mProblemId
 
     override fun finishedRefresh() {
         binding.swipeRefreshAnswer.isRefreshing = false
