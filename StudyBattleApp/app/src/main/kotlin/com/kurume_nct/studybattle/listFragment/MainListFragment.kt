@@ -147,57 +147,57 @@ class MainListFragment(val callback: Callback) : Fragment() {
                         assignedProblem()
                     } else {
                         intent = Intent(context, CreateSolutionActivity::class.java)
-                        intent.putExtra("problemId", problemList[position].id)
+                        intent.putExtra("mProblemId", problemList[position].id)
                         startActivityForResult(intent, 0)
                     }
                 }
                 resources.getInteger(R.integer.ANSWER_YET) -> {
                     intent = Intent(context, AnswerActivity::class.java)
-                    intent.putExtra("problemId", problemList[position].id)
+                    intent.putExtra("mProblemId", problemList[position].id)
                     intent.putExtra("fin", SolutionStatus.YET_ANSWER.statementId)
                     startActivityForResult(intent, 0)
                 }
                 resources.getInteger(R.integer.ANSWER_FIN) -> {
                     intent = Intent(context, AnswerActivity::class.java)
-                    intent.putExtra("problemId", problemList[position].id)
+                    intent.putExtra("mProblemId", problemList[position].id)
                     intent.putExtra("fin", SolutionStatus.ALL_FINISH.statementId)
                     startActivityForResult(intent, 0)
                 }
                 resources.getInteger(R.integer.MADE_COLLECT_YET) -> {
                     intent = Intent(context, MadeCollectYetActivity::class.java)
-                    intent.putExtra("problemId", problemList[position].id)
+                    intent.putExtra("mProblemId", problemList[position].id)
                     startActivityForResult(intent, 0)
                 }
                 resources.getInteger(R.integer.MADE_FIRST_JUDGE_YET) -> {
                     intent = Intent(context, AnswerActivity::class.java)
                     intent.putExtra("fin", SolutionStatus.YET_FIRST_JUDGE.statementId)
-                    intent.putExtra("problemId", problemList[position].id)
+                    intent.putExtra("mProblemId", problemList[position].id)
                     startActivityForResult(intent, 0)
                 }
                 resources.getInteger(R.integer.MADE_FINAL_JUDGE_YET) -> {
                     intent = Intent(context,AnswerActivity::class.java)
                     intent.putExtra("fin", SolutionStatus.YET_FINAL_JUDGE.statementId)
-                    intent.putExtra("problemId", problemList[position].id)
+                    intent.putExtra("mProblemId", problemList[position].id)
                     startActivityForResult(intent, 0)
                 }
                 resources.getInteger(R.integer.MADE_FIN) -> {
                     intent = Intent(context, AnswerActivity::class.java)
                     intent.putExtra("fin", SolutionStatus.ALL_FINISH.statementId)
-                    intent.putExtra("problemId", problemList[position].id)
+                    intent.putExtra("mProblemId", problemList[position].id)
                     startActivityForResult(intent, 0)
                 }
                 resources.getInteger(R.integer.SUBMIT_YET) -> {
                     intent = Intent(context, PersonalAnswerActivity::class.java)
                     intent.putExtra("switch", "p")
                     intent.putExtra("fin", false)
-                    intent.putExtra("problemId", problemList[position].id)
+                    intent.putExtra("mProblemId", problemList[position].id)
                     startActivityForResult(intent, 0)
                 }
                 resources.getInteger(R.integer.SUBMIT_FIN) -> {
                     intent = Intent(context, PersonalAnswerActivity::class.java)
                     intent.putExtra("switch", "p")
                     intent.putExtra("fin", true)
-                    intent.putExtra("problemId", problemList[position].id)
+                    intent.putExtra("mProblemId", problemList[position].id)
                     startActivityForResult(intent, 0)
                 }
                 else -> {

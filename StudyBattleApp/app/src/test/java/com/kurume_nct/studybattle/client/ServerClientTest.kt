@@ -219,7 +219,7 @@ class ServerClientTest {
                 .assertNoTimeout()
                 .values()[0]
 
-       // assertEquals(solutionText, solution.text)
-        //assertEquals(problem.id, solution.problemId)
+       // assertEquals(solutionText, mSolutionId.text)
+        //assertEquals(problem.id, mSolutionId.mProblemId)
     }
 }
