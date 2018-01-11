@@ -33,11 +33,11 @@ import java.io.File
 class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callback, DatePickerDialog.OnDateSetListener {
 
     private lateinit var binding: ActivityCreateProblemBinding
-    lateinit var usersObject: UsersObject
+    private lateinit var usersObject: UsersObject
     private var isProblem: Boolean
     private lateinit var dialog: AlertDialog
     private val PERMISSION_CAMERA_CODE = 1
-    var mDuration: Duration? = null
+    private lateinit var duration: Duration
 
     init {
         isProblem = false
@@ -96,19 +96,17 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         val today = DateTime.now()
         val settingDate = DateTime(year, month + 1, dayOfMonth, today.hourOfDay, today.minuteOfHour, today.secondOfMinute) + Duration.standardMinutes(10)
-        mDuration = Duration(today, settingDate)
-        val gup = mDuration?.standardMinutes
+        duration = Duration(today, settingDate)
+        val gup = duration.standardMinutes
         Log.d(gup.toString() + "時間", settingDate.toString())
         binding.termHourForOne.isEnabled = true
 
         binding.viewModel.let {
             it.day =
                     year.toString() + "年" + (month + 1).toString() + "月" + dayOfMonth.toString() + "日"
-            if (gup != null) {
-                it.termForOne =
-                        (gup / 60 / maxOf(usersObject.nowGroup.members.size - 1, 1)).toString() + "時間" +
-                                ((gup / maxOf(usersObject.nowGroup.members.size - 1, 1)) % 60).toString() + "分" + it.termExtra
-            }
+            it.termForOne =
+                    (gup / 60 / maxOf(usersObject.nowGroup.members.size - 1, 1)).toString() + "時間" +
+                            ((gup / maxOf(usersObject.nowGroup.members.size - 1, 1)) % 60).toString() + "分" + it.termExtra
         }
         Log.d(binding.viewModel.day, "change")
     }
@@ -221,5 +219,13 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
             button6.isClickable = false
         }
     }
+
+    override fun getDuration() = duration
+
+    override fun getGroupId() = usersObject.nowGroup.id
+
+    override fun userInformation() = usersObject.user
+
+    override fun getKey() = usersObject.authenticationKey
 
 }

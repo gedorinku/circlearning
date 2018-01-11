@@ -52,7 +52,7 @@ class CreateSolutionActivity : Activity(), CreateSolutionViewModel.Callback {
         // 宣言
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_solution)
 
-        problemId = intent.getIntExtra("mProblemId", 0)
+        problemId = intent.getIntExtra("problemId", 0)
         if (problemId == 0) {
             Toast.makeText(this, "やり直してください", Toast.LENGTH_SHORT).show()
             finish()
@@ -241,7 +241,7 @@ class CreateSolutionActivity : Activity(), CreateSolutionViewModel.Callback {
                     actionSignal = it.openAction
                     when (actionSignal) {
                         ProblemOpenAction.NONE -> {
-                            Log.d("爆弾はついてません", "at make mSolutionId.")
+                            Log.d("爆弾はついてません", "at make solution.")
                         }
                         else -> {
                             onBombDialog()
