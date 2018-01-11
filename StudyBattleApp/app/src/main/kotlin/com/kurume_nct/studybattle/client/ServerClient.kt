@@ -225,7 +225,7 @@ class ServerClient(authenticationKey: String = "") {
         val gson = Gson()
         val values = mapOf("authenticationKey" to authenticationKey,
                 "text" to text,
-                "mProblemId" to problemId,
+                "problemId" to problemId,
                 "imageIds" to imageIds,
                 "attachedItemId" to item.id)
         val body = gson.toJson(values)
@@ -254,7 +254,7 @@ class ServerClient(authenticationKey: String = "") {
     fun createComment(solutionId: Int, text: String, imageIds: List<Int>, replyTo: Int = 0)
             : Observable<IDResponse> {
         val values = mapOf("authenticationKey" to authenticationKey,
-                "mSolutionId" to solutionId,
+                "solutionId" to solutionId,
                 "text" to text,
                 "imageIds" to imageIds,
                 "replyTo" to replyTo)

@@ -167,7 +167,7 @@ interface Server {
     @GET("/problem/pass")
     fun passProblem(
             @Query("authenticationKey") authenticationKey: String,
-            @Query("mProblemId") problemId: Int
+            @Query("problemId") problemId: Int
     ): Observable<Unit>
 
     @GET("/problem/open")
@@ -176,7 +176,7 @@ interface Server {
             @Query("problemId") problemId: Int
     ): Observable<ProblemOpenResponse>
 
-    @POST("/mSolutionId/create")
+    @POST("/solution/create")
     @Headers(
             "Accept: application/JSON",
             "Content-type: application/JSON",
@@ -188,14 +188,14 @@ interface Server {
     ): Observable<IDResponse>
 
     @FormUrlEncoded
-    @POST("/mSolutionId/{id}")
+    @POST("/solution/{id}")
     fun getSolution(
             @Field("authenticationKey") authenticationKey: String,
             @Path("id") id: Int
     ): Observable<Solution>
 
     @FormUrlEncoded
-    @POST("/mSolutionId/judge")
+    @POST("/solution/judge")
     fun judgeSolution(
             @Field("authenticationKey") authenticationKey: String,
             @Field("id") id: Int,

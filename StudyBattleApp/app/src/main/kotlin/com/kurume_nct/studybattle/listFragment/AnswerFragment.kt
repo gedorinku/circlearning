@@ -44,7 +44,7 @@ class AnswerFragment : Fragment() {
         val fragment = AnswerFragment()
         val args = Bundle()
         args.putInt("fin", fin)//true -> all finished problem
-        args.putInt("mProblemId", problemId)
+        args.putInt("problemId", problemId)
         fragment.arguments = args
         return fragment
     }
@@ -56,7 +56,7 @@ class AnswerFragment : Fragment() {
         usersObject = context.applicationContext as UsersObject
         client = ServerClient(usersObject.authenticationKey)
         usersObject = activity.application as UsersObject
-        problemId = arguments.getInt("mProblemId")
+        problemId = arguments.getInt("problemId")
         arguments.apply {
             fin = getInt("fin")
         }
@@ -65,26 +65,26 @@ class AnswerFragment : Fragment() {
             when (fin) {
                 CHECK_ANS -> {
                     val intent = Intent(context, ScoringActivity::class.java)
-                    intent.putExtra("mSolutionId", solutionList[position].id)
+                    intent.putExtra("solutionId", solutionList[position].id)
                     intent.putExtra("position", position)
                     startActivityForResult(intent, 0)
                 }
                 YET_ANS -> {
                     val intent = Intent(context, PersonalAnswerActivity::class.java)
                     intent.putExtra("switch", "s")
-                    intent.putExtra("mSolutionId", solutionList[position].id)
+                    intent.putExtra("solutionId", solutionList[position].id)
                     intent.putExtra("fin", false)
                     startActivity(intent)
                 }
                 YET_FINAL_ANS -> {
                     val intent = Intent(context, FinalScoringActivity::class.java)
-                    intent.putExtra("mSolutionId", solutionList[position].id)
+                    intent.putExtra("solutionId", solutionList[position].id)
                     startActivityForResult(intent, position)
                 }
                 FIN_ANS -> {
                     val intent = Intent(context, PersonalAnswerActivity::class.java)
                     intent.putExtra("switch", "s")
-                    intent.putExtra("mSolutionId", solutionList[position].id)
+                    intent.putExtra("solutionId", solutionList[position].id)
                     intent.putExtra("fin", true)
                     startActivity(intent)
                 }

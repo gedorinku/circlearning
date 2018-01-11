@@ -29,7 +29,7 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_answer)
 
         solutionStatus = SolutionStatus.status(intent.getIntExtra("fin", 0))
-        mProblemId = intent.getIntExtra("mProblemId", -1)
+        mProblemId = intent.getIntExtra("problemId", -1)
 
         val fragment = AnswerFragment().newInstance(solutionStatus.statementId, mProblemId)
 
