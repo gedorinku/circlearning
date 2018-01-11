@@ -173,7 +173,7 @@ interface Server {
     @GET("/problem/open")
     fun openProblem(
             @Query("authenticationKey") authenticationKey: String,
-            @Query("problemId") problemId: Int
+            @Query("mProblemId") problemId: Int
     ): Observable<ProblemOpenResponse>
 
     @POST("/solution/create")
