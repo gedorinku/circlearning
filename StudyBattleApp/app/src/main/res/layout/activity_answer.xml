@@ -58,7 +58,7 @@
                         android:layout_weight="1"
                         android:text="@{viewModel.masterName}"
                         android:textColor="?android:attr/textColorHint"
-                        android:textSize="18sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/problem_score_ans_text"

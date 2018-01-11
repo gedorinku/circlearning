@@ -1,128 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:baselineAligned="false"
-    android:background="@drawable/normalback"
-    android:orientation="vertical"
-    tools:layout_editor_absoluteY="81dp"
-    tools:layout_editor_absoluteX="0dp">
-
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+<layout>
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/normalback"
+        android:baselineAligned="false"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp">
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="81dp">
 
-        <TextView
-            android:id="@+id/lottery_name_text"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:background="@color/md_cyan_300"
-            android:gravity="center"
-            android:text="アイテム抽選会"
-            android:textColor="@color/md_dark_primary_text"
-            android:textSize="24sp"
-            tools:ignore="HardcodedText"
-            tools:layout_editor_absoluteX="68dp"
-            tools:layout_editor_absoluteY="28dp" />
-
-        <TextView
-            android:id="@+id/lottery_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:layout_marginTop="16dp"
-            android:gravity="center_horizontal"
-            android:text="☆好きなカードを一枚選んでね☆"
-            android:textSize="17sp"
-            tools:ignore="HardcodedText"
-            tools:layout_conversion_absoluteHeight="23dp"
-            tools:layout_conversion_absoluteWidth="411dp"
-            tools:layout_conversion_absoluteX="0dp"
-            tools:layout_conversion_absoluteY="65dp"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="65dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="8dp">
 
-            <ImageView
-                android:id="@+id/card1"
-                android:layout_width="200dp"
-                android:layout_height="150dp"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/lotterycard"
-                tools:ignore="ContentDescription,NestedWeights,RtlHardcoded"
-                tools:layout_conversion_absoluteHeight="256dp"
-                tools:layout_conversion_absoluteWidth="137dp"
+            <TextView
+                android:id="@+id/lottery_name_text"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="@color/md_cyan_300"
+                android:gravity="center"
+                android:text="アイテム抽選会"
+                android:textColor="@color/md_dark_primary_text"
+                android:textSize="24sp"
+                tools:ignore="HardcodedText"
+                tools:layout_editor_absoluteX="68dp"
+                tools:layout_editor_absoluteY="28dp" />
+
+            <TextView
+                android:id="@+id/lottery_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:layout_marginTop="16dp"
+                android:gravity="center_horizontal"
+                android:text="☆好きなカードを一枚選んでね☆"
+                android:textSize="17sp"
+                tools:ignore="HardcodedText"
+                tools:layout_conversion_absoluteHeight="23dp"
+                tools:layout_conversion_absoluteWidth="411dp"
                 tools:layout_conversion_absoluteX="0dp"
-                tools:layout_conversion_absoluteY="88dp"
+                tools:layout_conversion_absoluteY="65dp"
                 tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="88dp" />
+                tools:layout_editor_absoluteY="65dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="8dp">
+
+                <ImageView
+                    android:id="@+id/card_left"
+                    android:layout_width="200dp"
+                    android:layout_height="150dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/lotterycard"
+                    tools:ignore="ContentDescription,NestedWeights,RtlHardcoded"
+                    tools:layout_conversion_absoluteHeight="256dp"
+                    tools:layout_conversion_absoluteWidth="137dp"
+                    tools:layout_conversion_absoluteX="0dp"
+                    tools:layout_conversion_absoluteY="88dp"
+                    tools:layout_editor_absoluteX="0dp"
+                    tools:layout_editor_absoluteY="88dp" />
+
+                <ImageView
+                    android:id="@+id/card_center"
+                    android:layout_width="200dp"
+                    android:layout_height="150dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/lotterycard"
+                    tools:ignore="ContentDescription,NestedWeights"
+                    tools:layout_conversion_absoluteHeight="256dp"
+                    tools:layout_conversion_absoluteWidth="137dp"
+                    tools:layout_conversion_absoluteX="137dp"
+                    tools:layout_conversion_absoluteY="88dp"
+                    tools:layout_editor_absoluteX="137dp"
+                    tools:layout_editor_absoluteY="88dp" />
+
+                <ImageView
+                    android:id="@+id/card_right"
+                    android:layout_width="200dp"
+                    android:layout_height="150dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/lotterycard"
+                    tools:ignore="ContentDescription,NestedWeights"
+                    tools:layout_conversion_absoluteHeight="256dp"
+                    tools:layout_conversion_absoluteWidth="137dp"
+                    tools:layout_conversion_absoluteX="274dp"
+                    tools:layout_conversion_absoluteY="88dp"
+                    tools:layout_editor_absoluteX="274dp"
+                    tools:layout_editor_absoluteY="88dp" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <ImageButton
+                android:id="@+id/elected_item_image"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/bomb"
+                tools:ignore="ContentDescription,InefficientWeight" />
 
             <ImageView
-                android:id="@+id/card2"
-                android:layout_width="200dp"
-                android:layout_height="150dp"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/lotterycard"
-                tools:ignore="ContentDescription,NestedWeights"
-                tools:layout_conversion_absoluteHeight="256dp"
-                tools:layout_conversion_absoluteWidth="137dp"
-                tools:layout_conversion_absoluteX="137dp"
-                tools:layout_conversion_absoluteY="88dp"
-                tools:layout_editor_absoluteX="137dp"
-                tools:layout_editor_absoluteY="88dp" />
-
-            <ImageView
-                android:id="@+id/card3"
-                android:layout_width="200dp"
-                android:layout_height="150dp"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/lotterycard"
-                tools:ignore="ContentDescription,NestedWeights"
-                tools:layout_conversion_absoluteHeight="256dp"
-                tools:layout_conversion_absoluteWidth="137dp"
-                tools:layout_conversion_absoluteX="274dp"
-                tools:layout_conversion_absoluteY="88dp"
-                tools:layout_editor_absoluteX="274dp"
-                tools:layout_editor_absoluteY="88dp" />
+                android:id="@+id/elected_item_text_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/text_itemget"
+                tools:ignore="ContentDescription" />
         </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <ImageView
-            android:id="@+id/lotteried_item"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/bomb"
-            tools:ignore="ContentDescription,InefficientWeight" />
-
-        <ImageView
-            android:id="@+id/lottery_item_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/text_itemget"
-            tools:ignore="ContentDescription" />
-
-    </LinearLayout>
-
-
-</ScrollView>
+    </ScrollView>
+</layout>

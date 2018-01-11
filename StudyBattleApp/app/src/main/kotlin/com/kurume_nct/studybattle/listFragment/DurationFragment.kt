@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.util.Log
 import android.widget.DatePicker
-import com.kurume_nct.studybattle.model.UnitPersonal
+import com.kurume_nct.studybattle.model.UsersObject
 import com.kurume_nct.studybattle.view.CreateProblemActivity
 import java.util.*
 
@@ -15,8 +15,8 @@ class DurationFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         Log.d("i'm ", javaClass.name)
-        val unitPer = context.applicationContext as UnitPersonal
-        val peopleCount = unitPer.nowGroup.members.size
+        val usersObject = context.applicationContext as UsersObject
+        val peopleCount = usersObject.nowGroup.members.size
         val c = Calendar.getInstance()
         val cYear = c[Calendar.YEAR]
         val cMonth = c[Calendar.MONTH]

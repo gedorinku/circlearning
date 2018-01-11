@@ -1,7 +1,6 @@
 package com.kurume_nct.studybattle.view
 
 import android.databinding.DataBindingUtil
-import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,42 +10,41 @@ import com.kurume_nct.studybattle.listFragment.AnswerFragment
 import com.kurume_nct.studybattle.viewModel.AnswerViewModel
 
 import com.kurume_nct.studybattle.R
-import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.ActivityAnswerBinding
-import com.kurume_nct.studybattle.model.UnitPersonal
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.kurume_nct.studybattle.model.SolutionStatus
+import com.kurume_nct.studybattle.model.UsersObject
 
 class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
 
     lateinit var binding: ActivityAnswerBinding
-    private var mFin: Int = 0
-    lateinit var unit: UnitPersonal
-    private var mProblemId = -1
-    private var problemTitle = ""
-    private var problemUrl = ""
+    var solutionStatus = SolutionStatus.NON_STATUS
+    lateinit var usersObject: UsersObject
+    var mProblemId = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("i'm ", javaClass.name)
-        unit = application as UnitPersonal
-        mFin = intent.getIntExtra("fin", 0)
-        mProblemId = intent.getIntExtra("problemId", -1)
+
+        usersObject = application as UsersObject
         binding = DataBindingUtil.setContentView(this, R.layout.activity_answer)
+
+        solutionStatus = SolutionStatus.status(intent.getIntExtra("fin", 0))
+        mProblemId = intent.getIntExtra("problemId", -1)
+
+        val fragment = AnswerFragment().newInstance(solutionStatus.statementId, mProblemId)
+
         binding.viewModel = AnswerViewModel(this, this)
 
+        /*問題のidが分からなかった*/
         if (mProblemId == -1) {
-            Log.d("ProblemId", "ばぐ")
             onError()
         }
-
-        val fragment = AnswerFragment().newInstance(mFin, mProblemId)
 
         supportFragmentManager.beginTransaction()
                 .replace(R.id.answers_fragment,fragment)
                 .commit()
 
-        if (mFin != 3) {
+        if (solutionStatus != SolutionStatus.ALL_FINISH) {
             binding.problemScoreAnsText.visibility = View.GONE
         }
 
@@ -76,9 +74,9 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
         finish()
     }
 
-    override fun getFin() = mFin
+    override fun solutionStatus() = solutionStatus.statementId
 
-    override fun getProblemId() = mProblemId
+    override fun problemId() = mProblemId
 
     override fun finishedRefresh() {
         binding.swipeRefreshAnswer.isRefreshing = false

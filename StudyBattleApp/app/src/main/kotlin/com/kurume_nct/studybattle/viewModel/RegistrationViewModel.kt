@@ -18,7 +18,6 @@ import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
-import com.kurume_nct.studybattle.tools.ToolClass
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.io.BufferedInputStream
@@ -28,14 +27,8 @@ import java.io.BufferedInputStream
  */
 class RegistrationViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
 
-    var iconId: Int
-
-    init {
-        iconId = 0
-    }
-
     companion object {
-        @BindingAdapter("loadImageFirstIcon")
+        @BindingAdapter("loadImage")
         @JvmStatic
         fun setIconImage(view: ImageView, uri: Uri?) {
             if(uri == null){
@@ -140,32 +133,13 @@ class RegistrationViewModel(private val context: Context, private val callback: 
         return Bitmap.createScaledBitmap(bitmap, 100, 100, false)
     }
 
-    private fun convertUrlFromDrawableResId(context: Context, drawableResId: Int): Uri? {
-        val sb = StringBuilder()
-        sb.append(ContentResolver.SCHEME_ANDROID_RESOURCE)
-        sb.append("://")
-        sb.append(context.resources.getResourcePackageName(drawableResId))
-        sb.append("/")
-        sb.append(context.resources.getResourceTypeName(drawableResId))
-        sb.append("/")
-        sb.append(context.resources.getResourceEntryName(drawableResId))
-        return Uri.parse(sb.toString())
-    }
-
     interface Callback {
-
         fun enableButton()
-
         fun stopButton()
-
         fun toLoginActivity()
-
         fun onLogin()
-
         fun startActivityForResult(intent: Intent, requestCode: Int)
-
         fun alertDialog()
-
     }
 
 }

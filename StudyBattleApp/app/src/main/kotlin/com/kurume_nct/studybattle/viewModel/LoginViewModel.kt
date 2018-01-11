@@ -3,13 +3,11 @@ package com.kurume_nct.studybattle.viewModel
 import android.content.Context
 import android.databinding.BaseObservable
 import android.databinding.Bindable
-import android.net.Uri
 import android.view.View
 import android.widget.Toast
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.client.ServerClient
-import com.kurume_nct.studybattle.model.UnitPersonal
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -18,10 +16,7 @@ import io.reactivex.schedulers.Schedulers
  */
 class LoginViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
 
-    lateinit var iconUri: Uri
-    var iconId: Int = 0
     lateinit var displayName: String
-    private lateinit var authenticationKey: String
 
     @Bindable
     var name = ""
@@ -66,15 +61,10 @@ class LoginViewModel(private val context: Context, private val callback: Callbac
 
 
     interface Callback {
-
         fun getKey(): String
-
         fun stopButton()
-
         fun clickableButton()
-
         fun onLogin(authentication: String)
-
         fun toRegisterActivity()
     }
 }

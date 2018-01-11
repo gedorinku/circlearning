@@ -14,9 +14,8 @@ import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.client.ServerClient
-import com.kurume_nct.studybattle.model.Problem
-import com.kurume_nct.studybattle.model.UnitPersonal
-import com.kurume_nct.studybattle.tools.ImageViewActivity
+import com.kurume_nct.studybattle.model.UsersObject
+import com.kurume_nct.studybattle.view.ImageViewActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -135,12 +134,12 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
     }
 
     private fun sendComment() {
-        val unitPer = context.applicationContext as UnitPersonal
+        val unitPer = context.applicationContext as UsersObject
         val client = ServerClient(unitPer.authenticationKey)
         client
                 .createComment(
                         solutionId = solutionId,
-                        text = ("\n" + unitPer.myInfomation.displayName + "(" + unitPer.myInfomation.userName + ")" + "\n\t") + yourComment,
+                        text = ("\n" + unitPer.user.displayName + "(" + unitPer.user.userName + ")" + "\n\t") + yourComment,
                         imageIds = listOf(),
                         replyTo = replyTo
                 ).subscribeOn(Schedulers.io())
@@ -154,10 +153,10 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
     }
 
     fun refreshComment(boolean: Boolean){
-        val unitPer = context.applicationContext as UnitPersonal
+        val unitPer = context.applicationContext as UsersObject
         val client = ServerClient(unitPer.authenticationKey)
         client
-                .getProblem(callback.getProblemId())
+                .getProblem(callback.problemId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
@@ -175,10 +174,10 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
     }
 
     fun onInitDataSet() {
-        val unitPer = context.applicationContext as UnitPersonal
+        val unitPer = context.applicationContext as UsersObject
         val client = ServerClient(unitPer.authenticationKey)
         client
-                .getProblem(callback.getProblemId())
+                .getProblem(callback.problemId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -188,16 +187,10 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
                     problemName = problem.title
                     problemScore = " " + problem.point.toString() + "点"
                     lastCommentIndex = problem.assumedSolution.comments.size
+                    masterName = "by. " + problem.assumedSolution.author.displayName
                     problem.assumedSolution.comments.forEach { comment1 ->
                         comment += (comment1.text + "\n")
                     }
-                    client
-                            .getUser(problem.ownerId)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe {
-                                masterName = " 作成者:" + it.displayName
-                            }
                     client
                             .getImageById(problem.imageIds[0])
                             .subscribeOn(Schedulers.io())
@@ -224,8 +217,8 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
     interface Callback {
         fun visibilityEditText(boolean: Boolean)
         fun onError()
-        fun getFin(): Int
-        fun getProblemId(): Int
+        fun solutionStatus(): Int
+        fun problemId(): Int
         fun finishedRefresh()
     }
 }
