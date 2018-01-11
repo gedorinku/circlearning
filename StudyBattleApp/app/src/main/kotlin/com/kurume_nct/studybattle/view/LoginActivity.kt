@@ -24,11 +24,10 @@ class LoginActivity : AppCompatActivity(), LoginViewModel.Callback {
         super.onCreate(savedInstanceState)
         Log.d("i'm ", javaClass.name)
 
-        usersObject = application as UsersObject
-        progress = ProgressDialogTool(this).makeDialog()
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         binding.viewModel = LoginViewModel(this, this)
+        usersObject = application as UsersObject
+        progress = ProgressDialogTool(this).makeDialog()
 
         //skip
         if (usersObject.authenticationKey != "0") {
@@ -59,7 +58,7 @@ class LoginActivity : AppCompatActivity(), LoginViewModel.Callback {
 
     override fun stopButton() {
         progress.show()
-        binding.apply {
+        binding.run {
             button2.isClickable = false
             button5.isClickable = false
         }
@@ -67,10 +66,12 @@ class LoginActivity : AppCompatActivity(), LoginViewModel.Callback {
 
     override fun clickableButton() {
         progress.dismiss()
-        binding.apply {
+        binding.run {
             button2.isClickable = true
             button5.isClickable = true
         }
     }
+
+    override fun getKey() = usersObject.authenticationKey
 
 }

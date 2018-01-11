@@ -17,14 +17,13 @@ import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.Solution
 import com.kurume_nct.studybattle.model.UsersObject
 import com.kurume_nct.studybattle.view.ImageViewActivity
-import com.kurume_nct.studybattle.view.PersonalAnswerActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by hanah on 9/30/2017.
  */
-class PersonalAnswerViewModel(val context: PersonalAnswerActivity, val callback: Callback) : BaseObservable() {
+class PersonalAnswerViewModel(val context: Context, val callback: Callback) : BaseObservable() {
 
     private var url = ""
     private var problemUrl = ""
@@ -145,15 +144,15 @@ class PersonalAnswerViewModel(val context: PersonalAnswerActivity, val callback:
         val unitPer = context.applicationContext as UsersObject
         val client = ServerClient(unitPer.authenticationKey)
         client
-                .getProblem(context.mProblemId)
+                .getProblem(callback.getProblemId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap {
-                    //find owner mSolutionId.
+                    //find owner solution.
                     problemTitle = it.title
                     writer = "by. " + it.assumedSolution.author.displayName
-                    if ("s" == context.mSwitch) {
-                        solution = context.otherSolution
+                    if ("s" == callback.getSwitch()) {
+                        solution = callback.getSolution()
                     } else {
                         it.solutions.forEach {
                             if (it.authorId == unitPer.user.id) {
@@ -269,9 +268,12 @@ class PersonalAnswerViewModel(val context: PersonalAnswerActivity, val callback:
 
     interface Callback {
         fun enableEditText(boolean: Boolean)
+        fun getProblemId(): Int
         fun onFinish()
         fun finishedRefresh()
         fun judgeYet()
         fun changeColor()
+        fun getSwitch(): String
+        fun getSolution(): Solution
     }
 }

@@ -6,12 +6,11 @@ import android.databinding.Bindable
 import android.util.Log
 import android.view.View
 import com.kurume_nct.studybattle.BR
-import com.kurume_nct.studybattle.view.GroupSetChangeActivity
 
 /**
  * Created by hanah on 10/1/2017.
  */
-class GroupSetChangeViewModel(val context: GroupSetChangeActivity, val callback: Callback): BaseObservable() {
+class GroupSetChangeViewModel(val context: Context, val callback: Callback): BaseObservable() {
 
 
     @Bindable

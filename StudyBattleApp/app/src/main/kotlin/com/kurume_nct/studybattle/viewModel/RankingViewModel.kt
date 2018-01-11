@@ -7,14 +7,13 @@ import android.util.Log
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.UsersObject
-import com.kurume_nct.studybattle.view.RankingActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by hanah on 9/25/2017.
  */
-class RankingViewModel(private val context: RankingActivity, private val callback: Callback) : BaseObservable() {
+class RankingViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
 
     @Bindable
     var myNowScore = "0点"
