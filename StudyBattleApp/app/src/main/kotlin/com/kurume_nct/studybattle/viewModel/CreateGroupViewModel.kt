@@ -16,37 +16,42 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by hanah on 10/1/2017.
  */
-class CreateGroupViewModel(val context: Context, val callback: Callback): BaseObservable() {
+class CreateGroupViewModel(
+        private val context: Context,
+        private val callback: Callback,
+        private val fragment: SelectMainPeopleFragment
+) : BaseObservable() {
+
+    val usersObject = context.applicationContext as UsersObject
 
     @Bindable
     var groupName = ""
-    set(value) {
-        field = value
-        notifyPropertyChanged(BR.groupName)
-    }
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.groupName)
+        }
 
     @Bindable
     var peopleCount = "0"
-    set(value) {
-        field = value
-        notifyPropertyChanged(BR.peopleCount)
-    }
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.peopleCount)
+        }
 
-    fun onClickMakeGroup(view: View){
+    fun onClickMakeGroup(view: View) {
         callback.makeGroup()
     }
 
     fun createGroup() {
-        val unitPer: UsersObject = context.applicationContext as UsersObject
-        val toast = Toast.makeText(context, "グループ名が適切ではありません", Toast.LENGTH_LONG)
-        val client = ServerClient(unitPer.authenticationKey)
+        //val toast = Toast.makeText(context, "グループ名が適切ではありません", Toast.LENGTH_LONG)
+        val client = ServerClient(usersObject.authenticationKey)
         client
                 .createGroup(groupName)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    unitPer.myGroupList.add(it)
-                    for (user in callback.getFragment().getPeopleList()) {
+                    usersObject.myGroupList.add(it)
+                    for (user in fragment.getPeopleList()) {
                         client
                                 .attachToGroup(it, user)
                                 .subscribeOn(Schedulers.io())
@@ -60,9 +65,8 @@ class CreateGroupViewModel(val context: Context, val callback: Callback): BaseOb
                 })
     }
 
-    interface Callback{
+    interface Callback {
         fun makeGroup()
-        fun getFragment(): SelectMainPeopleFragment
         fun onSuccess()
         fun onError()
     }

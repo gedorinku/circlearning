@@ -35,11 +35,15 @@ import org.joda.time.Duration
 /**
  * 🍣 Created by hanah on 2017/12/02.
  */
-class CreateSolutionViewModel(val context: Context, val callback: Callback) : BaseObservable() {
+class CreateSolutionViewModel(
+        private val context: Context,
+        private val callback: Callback,
+        private val problemId: Int
+) : BaseObservable() {
 
     private val RESULT_PICK_IMAGEFILE = 1000
     lateinit var dialogView: DialogItemSelectBinding
-    private lateinit var usersObject: UsersObject
+    private val usersObject = context.applicationContext as UsersObject
     private lateinit var dialog: AlertDialog
     private var putItemId = 0
 
@@ -92,9 +96,6 @@ class CreateSolutionViewModel(val context: Context, val callback: Callback) : Ba
 
     @Bindable
     var answerImageClickable = false
-        set(value) {
-            field = value
-        }
 
     fun onClickAnswerImage(view: View) {
         imageSetting()
@@ -138,12 +139,11 @@ class CreateSolutionViewModel(val context: Context, val callback: Callback) : Ba
     }
 
     fun onCreateView() {
-        usersObject = context.applicationContext as UsersObject
         val progressDialog = ProgressDialogTool(context).makeDialog()
         progressDialog.show()
         val client = ServerClient(usersObject.authenticationKey)
         client
-                .getProblem(callback.onGetProblemId())
+                .getProblem(problemId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap {
@@ -277,7 +277,7 @@ class CreateSolutionViewModel(val context: Context, val callback: Callback) : Ba
     private fun onSadDialog() {
         //send data📩
         ServerClient(usersObject.authenticationKey)
-                .passProblem(callback.onGetProblemId())
+                .passProblem(problemId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
@@ -309,7 +309,7 @@ class CreateSolutionViewModel(val context: Context, val callback: Callback) : Ba
                     client
                             .createSolution(
                                     text = "解答提出",
-                                    problemId = callback.onGetProblemId(),
+                                    problemId = problemId,
                                     imageIds = listOf(imageId),
                                     item =
                                     when (putItemId) {
@@ -357,7 +357,6 @@ class CreateSolutionViewModel(val context: Context, val callback: Callback) : Ba
 
     interface Callback {
         fun onClickProblemImage()
-        fun onGetProblemId(): Int
         fun startActivityForResult(intent: Intent, requestId: Int)
         fun onSadDialog()
         fun cameraIntent()

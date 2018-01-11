@@ -25,7 +25,10 @@ import java.io.BufferedInputStream
 /**
  * Created by hanah on 7/30/2017.
  */
-class RegistrationViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
+class RegistrationViewModel(
+        private val context: Context,
+        private val callback: Callback
+) : BaseObservable() {
 
     companion object {
         @BindingAdapter("loadImage")

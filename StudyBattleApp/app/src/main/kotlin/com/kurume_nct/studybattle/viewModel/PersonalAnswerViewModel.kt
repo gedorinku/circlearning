@@ -23,16 +23,21 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by hanah on 9/30/2017.
  */
-class PersonalAnswerViewModel(val context: Context, val callback: Callback) : BaseObservable() {
+class PersonalAnswerViewModel(
+        val context: Context,
+        val callback: Callback,
+        private val problemId: Int,
+        private var solution: Solution?
+) : BaseObservable() {
 
     private var url = ""
     private var problemUrl = ""
     private var writeNow = false
     private val addText = "+コメントを追加"
     private val comfierText = "+コメントを送信"
-    private lateinit var solution: Solution
     private var lastCommentIndex = 0
     private var replyTo = 0
+    val usersObject = context.applicationContext as UsersObject
 
     companion object {
         @BindingAdapter("loadImage")
@@ -55,10 +60,10 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
 
     @Bindable
     var writer = ""
-    set(value) {
-        field = value
-        notifyPropertyChanged(BR.writer)
-    }
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.writer)
+        }
 
     @Bindable
     var personalProblemUri: Uri? = null
@@ -141,44 +146,36 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
     }
 
     fun getInitData() {
-        val unitPer = context.applicationContext as UsersObject
-        val client = ServerClient(unitPer.authenticationKey)
+        val client = ServerClient(usersObject.authenticationKey)
         client
-                .getProblem(callback.getProblemId())
+                .getProblem(problemId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap {
                     //find owner solution.
                     problemTitle = it.title
                     writer = "by. " + it.assumedSolution.author.displayName
-                    if ("s" == callback.getSwitch()) {
-                        solution = callback.getSolution()
-                    } else {
-                        it.solutions.forEach {
-                            if (it.authorId == unitPer.user.id) {
-                                solution = it
-                            }
+                    if (solution == null) solution = it.solutions.findLast { it.authorId == usersObject.user.id }
+                    when {
+                        solution?.judged == false -> callback.judgeYet()
+                        this.solution?.accepted == false -> {
+                            correctPersonal = "間違え"
+                            callback.changeColor()
                         }
-                    }
-                    if (!solution.judged) {
-                        callback.judgeYet()
-                    } else if (!solution.accepted) {
-                        correctPersonal = "間違え"
-                        callback.changeColor()
-                    }else{
-                        correctPersonal = "正解"
+                        else -> correctPersonal = "正解"
                     }
                     //solutionが見つからないと爆発する。
+                    if(solution != null)
                     client.apply {
-                        getUser(solution.authorId)
+                        getUser(solution!!.authorId)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe {
                                     ansCreatorName = it.displayName + "(" + it.userName + ")"
                                 }
-                        if (solution.imageCount > 0)
+                        if (solution!!.imageCount > 0)
                             client
-                                    .getImageById(solution.imageIds[0])
+                                    .getImageById(solution!!.imageIds[0])
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe({
@@ -189,11 +186,12 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                                     }, {
                                         Log.d("解答のimage", "は存在します。")
                                     })
-                        else
-                            Log.d("解答のimage", "は存在しないです。")
+                        else Log.d("解答のimage", "は存在しないです。")
+                    } else {
+                        Log.d("exception", "solution is not found.")
                     }
-                    lastCommentIndex = solution.comments.size
-                    solution.comments.forEach { comment ->
+                    lastCommentIndex = this.solution!!.comments.size
+                    this.solution!!.comments.forEach { comment ->
                         everyoneComment += (comment.text + "\n")
                     }
                     client.getImageById(it.imageIds[0])
@@ -222,14 +220,15 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
     }
 
     private fun sendComment() {
+        if(solution == null) return
         //Hate
-        replyTo = solution.authorId
+        replyTo = solution!!.authorId
 
         val unitPer = context.applicationContext as UsersObject
         val client = ServerClient(unitPer.authenticationKey)
         client
                 .createComment(
-                        solutionId = solution.id,
+                        solutionId = solution!!.id,
                         text = ("\n" + unitPer.user.displayName + "(" + unitPer.user.userName + ")" + "\n\t") + yourComment,
                         imageIds = listOf(),
                         replyTo = replyTo
@@ -244,19 +243,19 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
     }
 
     fun refreshComment(boolean: Boolean) {
-        val unitPer = context.applicationContext as UsersObject
-        val client = ServerClient(unitPer.authenticationKey)
+        if(solution == null) return
+        val client = ServerClient(usersObject.authenticationKey)
         client
-                .getSolution(solution.id)
+                .getSolution(solution!!.id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     solution = it
-                    solution.comments.forEachIndexed { index, comment ->
+                    solution!!.comments.forEachIndexed { index, comment ->
                         if (index >= lastCommentIndex)
                             everyoneComment += (comment.text + "\n")
                     }
-                    lastCommentIndex = solution.comments.size
+                    lastCommentIndex = solution!!.comments.size
                     if (boolean) callback.finishedRefresh()
                 }, {
                     it.printStackTrace()
@@ -268,12 +267,9 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
 
     interface Callback {
         fun enableEditText(boolean: Boolean)
-        fun getProblemId(): Int
         fun onFinish()
         fun finishedRefresh()
         fun judgeYet()
         fun changeColor()
-        fun getSwitch(): String
-        fun getSolution(): Solution
     }
 }

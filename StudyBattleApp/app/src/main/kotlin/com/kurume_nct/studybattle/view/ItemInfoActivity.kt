@@ -17,7 +17,7 @@ class ItemInfoActivity : AppCompatActivity(), ItemInfoViewModel.Callback {
         super.onCreate(savedInstanceState)
         Log.d("i'm ", javaClass.name)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_item_info)
-        binding.viewModel = ItemInfoViewModel(this, this)
+        binding.viewModel = ItemInfoViewModel(this)
         binding.viewModel.onCreate()
     }
 

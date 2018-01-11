@@ -16,20 +16,17 @@ import com.kurume_nct.studybattle.viewModel.CreateGroupViewModel
 class CreateGroupActivity : AppCompatActivity(), CreateGroupViewModel.Callback {
 
     private lateinit var binding: ActivityCreateGroupBinding
-    private lateinit var usersObject: UsersObject
-    private lateinit var fragment: SelectMainPeopleFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_group)
-        binding.viewModel = CreateGroupViewModel(this, this)
-        usersObject = application as UsersObject
 
-        fragment = SelectMainPeopleFragment().newInstance(true)
-
+        val fragment = SelectMainPeopleFragment().newInstance(true)
         supportFragmentManager.beginTransaction()
                 .replace(R.id.select_people_conteiner, fragment)
                 .commit()
+
+        binding.viewModel = CreateGroupViewModel(this, this, fragment = fragment)
     }
 
 
@@ -43,8 +40,6 @@ class CreateGroupActivity : AppCompatActivity(), CreateGroupViewModel.Callback {
             viewModel.createGroup()
         }
     }
-
-    override fun getFragment() = fragment
 
     override fun onSuccess() {
         val intent = Intent(this, Main2Activity::class.java)

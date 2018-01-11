@@ -71,7 +71,4 @@ class LoginActivity : AppCompatActivity(), LoginViewModel.Callback {
             button5.isClickable = true
         }
     }
-
-    override fun getKey() = usersObject.authenticationKey
-
 }

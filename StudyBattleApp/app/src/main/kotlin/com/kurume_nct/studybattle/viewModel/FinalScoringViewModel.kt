@@ -23,7 +23,11 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by hanah on 10/16/2017.
  */
-class FinalScoringViewModel(val context: Context, val callback: Callback) : BaseObservable() {
+class FinalScoringViewModel(
+        private val context: Context,
+        private val callback: Callback,
+        private val solutionId: Int
+) : BaseObservable() {
 
     private var url = ""
     private var problemUrl = ""
@@ -34,6 +38,7 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
     private lateinit var solution: Solution
     private var lastCommentIndex = 0
     private var replyTo = 0
+    private val usersObject = context.applicationContext as UsersObject
 
     companion object {
         @BindingAdapter("loadImageFinalScoring")
@@ -142,7 +147,7 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
             val unitPer = context.applicationContext as UsersObject
             val client = ServerClient(unitPer.authenticationKey)
             client
-                    .judgeSolution(callback.getSolutionId(), radioCorrect)
+                    .judgeSolution(solutionId, radioCorrect)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
@@ -152,10 +157,9 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
     }
 
     fun getInitData() {
-        val unitPer = context.applicationContext as UsersObject
-        val client = ServerClient(unitPer.authenticationKey)
+        val client = ServerClient(usersObject.authenticationKey)
         client
-                .getSolution(callback.getSolutionId())
+                .getSolution(solutionId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -219,13 +223,11 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
     private fun sendComment() {
 
         replyTo = solution.authorId
-
-        val unitPer = context.applicationContext as UsersObject
-        val client = ServerClient(unitPer.authenticationKey)
+        val client = ServerClient(usersObject.authenticationKey)
         client
                 .createComment(
                         solutionId = solution.id,
-                        text = ("\n" + unitPer.user.displayName + "(" + unitPer.user.userName + ")" + "\n\t") + yourComment,
+                        text = ("\n" + usersObject.user.displayName + "(" + usersObject.user.userName + ")" + "\n\t") + yourComment,
                         imageIds = listOf(),
                         replyTo = replyTo
                 ).subscribeOn(Schedulers.io())
@@ -242,7 +244,7 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
         val unitPer = context.applicationContext as UsersObject
         val client = ServerClient(unitPer.authenticationKey)
         client
-                .getSolution(callback.getSolutionId())
+                .getSolution(solutionId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -267,7 +269,6 @@ class FinalScoringViewModel(val context: Context, val callback: Callback) : Base
     }
 
     interface Callback {
-        fun getSolutionId(): Int
         fun onReset()
         fun enableEditText(boolean: Boolean)
         fun finishedRefresh()

@@ -17,9 +17,7 @@ import com.kurume_nct.studybattle.model.UsersObject
 class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
 
     lateinit var binding: ActivityAnswerBinding
-    var solutionStatus = SolutionStatus.NON_STATUS
     lateinit var usersObject: UsersObject
-    var mProblemId = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,15 +26,15 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
         usersObject = application as UsersObject
         binding = DataBindingUtil.setContentView(this, R.layout.activity_answer)
 
-        solutionStatus = SolutionStatus.status(intent.getIntExtra("fin", 0))
-        mProblemId = intent.getIntExtra("problemId", -1)
+        val solutionStatus = SolutionStatus.status(intent.getIntExtra("fin", 0))
+        val problemId = intent.getIntExtra("problemId", -1)
 
-        val fragment = AnswerFragment().newInstance(solutionStatus.statementId, mProblemId)
+        val fragment = AnswerFragment().newInstance(solutionStatus.statementId, problemId)
 
-        binding.viewModel = AnswerViewModel(this, this)
+        binding.viewModel = AnswerViewModel(this, this, problemId, solutionStatus)
 
         /*問題のidが分からなかった*/
-        if (mProblemId == -1) {
+        if (problemId == -1) {
             onError()
         }
 
@@ -73,10 +71,6 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
         setResult(0)
         finish()
     }
-
-    override fun solutionStatus() = solutionStatus.statementId
-
-    override fun problemId() = mProblemId
 
     override fun finishedRefresh() {
         binding.swipeRefreshAnswer.isRefreshing = false
