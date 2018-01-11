@@ -60,6 +60,7 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
     }
 
     //ship code
+
     override fun visibilityEditText(boolean: Boolean) =
             if (boolean)
                 binding.yourCommentEditText.visibility = View.VISIBLE
@@ -72,6 +73,10 @@ class AnswerActivity : AppCompatActivity(), AnswerViewModel.Callback {
         setResult(0)
         finish()
     }
+
+    override fun solutionStatus() = solutionStatus.statementId
+
+    override fun problemId() = mProblemId
 
     override fun finishedRefresh() {
         binding.swipeRefreshAnswer.isRefreshing = false
