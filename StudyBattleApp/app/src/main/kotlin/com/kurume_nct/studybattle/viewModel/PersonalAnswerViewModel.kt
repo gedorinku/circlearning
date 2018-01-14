@@ -6,7 +6,6 @@ import android.databinding.BaseObservable
 import android.databinding.Bindable
 import android.databinding.BindingAdapter
 import android.net.Uri
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -155,19 +154,22 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
     }
 
     private fun deploySolutionData(solutionId: Int) {
-        client.getSolution(solutionId)
+        client
+                .getSolution(solutionId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     solution = it
                     if (problem == Problem()) deployProblemData(it.problemId)
+                    else setupViewSolution()
                 }, {
                     callback.onError()
                 })
     }
 
     private fun deployProblemData(problemId: Int) {
-        client.getProblem(problemId)
+        client
+                .getProblem(problemId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -175,86 +177,55 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                     if (solution == Solution()) {
                         solution = it.solutions.last { solution.id == usersObject.user.id }
                         if (solution == Solution()) throw Exception()
-                    }
+                    } else setupViewProblem()
                 }, {
                     callback.onError()
                 })
     }
 
-    fun setupView(){
+    private fun setupViewProblem(){
         problem.let {
             problemTitle = it.title
             writer = "by. " + it.assumedSolution.author.displayName
         }
-    }
-
-    fun problemData() {
-        val client = ServerClient(usersObject.authenticationKey)
-        client.getProblem(callback.getProblemId())
+        client
+                .getImageById(problem.imageIds[0])
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .flatMap {
-                    //find owner solution.
-                    problemTitle = it.title
-                    writer = "by. " + it.assumedSolution.author.displayName
-                    if ("s" == callback.getSwitch()) {
-                        solution = callback.getSolution()
-                    } else {
-                        it.solutions.forEach {
-                            if (it.authorId == usersObject.user.id) {
-                                solution = it
-                            }
-                        }
-                    }
-                    if (!solution.judged) {
-                        callback.judgeYet()
-                    } else if (!solution.accepted) {
-                        correctPersonal = "間違え"
-                        callback.changeColor()
-                    } else {
-                        correctPersonal = "正解"
-                    }
-                    //solutionが見つからないと爆発する。
-                    client.apply {
-                        getUser(solution.authorId)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe {
-                                    ansCreatorName = it.displayName + "(" + it.userName + ")"
-                                }
-                        if (solution.imageCount > 0)
-                            client
-                                    .getImageById(solution.imageIds[0])
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe({
-                                        url = it.url
-                                        personalAnswerUri = Uri.parse(url)
-                                        imageClickable = true
-                                        Log.d("解答のimage", "は存。")
-                                    }, {
-                                        Log.d("解答のimage", "は存在します。")
-                                    })
-                        else
-                            Log.d("解答のimage", "は存在しないです。")
-                    }
-                    lastCommentIndex = solution.comments.size
-                    solution.comments.forEach { comment ->
-                        everyoneComment += (comment.text + "\n")
-                    }
-                    client.getImageById(it.imageIds[0])
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                }
                 .subscribe({
                     problemUrl = it.url
-                    personalProblemUri = Uri.parse(problemUrl)
-                }, {
-                    callback.onFinish()
-                    it.printStackTrace()
+                    personalProblemUri = Uri.parse(it.url)
+                },{
+                   callback.onError()
                 })
     }
 
+    private fun setupViewSolution() {
+        if (!solution.judged) {
+            callback.judgeYet()
+        } else if (!solution.accepted) {
+            correctPersonal = "間違え"
+            callback.changeColor()
+        } else {
+            correctPersonal = "正解"
+        }
+        client
+                .getImageById(problem.imageIds[0])
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    url = it.url
+                    personalAnswerUri = Uri.parse(url)
+                    imageClickable = true
+                }, {
+                    callback.onError()
+                })
+
+        lastCommentIndex = solution.comments.size
+        solution.comments.forEach { comment ->
+            everyoneComment += (comment.text + "\n")
+        }
+    }
 
     private fun onWriteComment() {
         writeNow = if (writeNow) {
