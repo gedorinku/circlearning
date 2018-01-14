@@ -25,7 +25,7 @@ import io.reactivex.schedulers.Schedulers
  */
 class PersonalAnswerViewModel(
         val context: Context,
-        val callback: Callback,
+        val callback: Callback
 ) : BaseObservable() {
 
     private var url = ""
