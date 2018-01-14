@@ -22,7 +22,6 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
     private lateinit var usersObject: UsersObject
     private var switch = ""
     private var problemId = 0
-    private var situationId = false
     private var otherSolution: Solution = Solution()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +31,6 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
         binding.viewModel = PersonalAnswerViewModel(this, this)
         usersObject = application as UsersObject
         switch = intent.getStringExtra("switch")
-        situationId = intent.getBooleanExtra("fin", false)
         if(switch == "s"){
             ServerClient(usersObject.authenticationKey)
                     .getSolution(intent.getIntExtra("solutionId", -1))
@@ -63,11 +61,7 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
     }
 
     override fun enableEditText(boolean: Boolean) {
-        if (boolean)
-            binding.commentEdit.visibility = View.VISIBLE
-        else {
-            binding.commentEdit.visibility = View.GONE
-        }
+        binding.commentEdit.visibility = if (boolean) View.VISIBLE else View.GONE
     }
 
     override fun finishedRefresh() {
