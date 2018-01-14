@@ -23,6 +23,7 @@ class SelectMainPeopleFragment : Fragment(), SelectPeopleFragment.Callback, Sear
     private lateinit var binding: FragmentSelectPeopleBinding
     private lateinit var searchFragment: SearchPeopleFragment
     private lateinit var selectFragment: SelectPeopleFragment
+    lateinit var peopleList: MutableList<User>
 
     fun newInstance(includeMember: Boolean): SelectMainPeopleFragment {
         val fragment = SelectMainPeopleFragment()
@@ -64,12 +65,15 @@ class SelectMainPeopleFragment : Fragment(), SelectPeopleFragment.Callback, Sear
         return binding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        peopleList = selectFragment.list
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
     }
-
-    fun getPeopleList(): MutableList<User> = selectFragment.getPeopleList()
 
     override fun selectChange(people: User) {
         selectFragment.onAddPeople(0, people)

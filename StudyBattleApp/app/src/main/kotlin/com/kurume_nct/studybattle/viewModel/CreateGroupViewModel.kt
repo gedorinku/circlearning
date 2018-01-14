@@ -51,7 +51,7 @@ class CreateGroupViewModel(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     usersObject.myGroupList.add(it)
-                    for (user in fragment.getPeopleList()) {
+                    for (user in fragment.peopleList) {
                         client
                                 .attachToGroup(it, user)
                                 .subscribeOn(Schedulers.io())
