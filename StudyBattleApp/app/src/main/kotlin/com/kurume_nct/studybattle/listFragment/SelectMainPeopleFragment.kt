@@ -24,6 +24,7 @@ class SelectMainPeopleFragment : Fragment(), SelectPeopleFragment.Callback, Sear
     private lateinit var searchFragment: SearchPeopleFragment
     private lateinit var selectFragment: SelectPeopleFragment
     lateinit var peopleList: MutableList<User>
+        private set
 
     fun newInstance(includeMember: Boolean): SelectMainPeopleFragment {
         val fragment = SelectMainPeopleFragment()
@@ -38,7 +39,7 @@ class SelectMainPeopleFragment : Fragment(), SelectPeopleFragment.Callback, Sear
         binding.selectPeopleUnit = SelectMainPeopleViewModel(context)
 
         val includeMember = arguments.getBoolean("includeMember")
-        searchFragment = SearchPeopleFragment.newInstance(includeMember ,this, this)
+        searchFragment = SearchPeopleFragment.newInstance(includeMember, this, this)
         selectFragment = SelectPeopleFragment.newInstance(this)
 
         activity.supportFragmentManager.beginTransaction()
@@ -57,7 +58,7 @@ class SelectMainPeopleFragment : Fragment(), SelectPeopleFragment.Callback, Sear
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if(binding.selectPeopleUnit.searchText.matches("^[a-zA-Z0-9_]".toRegex()))
+                if (binding.selectPeopleUnit.searchText.matches("^[a-zA-Z0-9_]".toRegex()))
                     searchFragment.onListReset(binding.selectPeopleUnit.searchText)
             }
         })
