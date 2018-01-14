@@ -39,13 +39,13 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
                     .subscribe({
                         otherSolution = it
                         problemId = it.problemId
-                        binding.viewModel.getInitData()
+                        binding.viewModel.initProblemData()
                     },{
                         Log.d("po","つらい")
                     })
         }else{
             problemId = intent.getIntExtra("problemId", 0)
-            binding.viewModel.getInitData()
+            binding.viewModel.initProblemData()
         }
         binding.apply {
             commentEdit.visibility = View.GONE

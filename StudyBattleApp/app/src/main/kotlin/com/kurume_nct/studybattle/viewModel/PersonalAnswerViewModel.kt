@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.client.ServerClient
+import com.kurume_nct.studybattle.model.Problem
 import com.kurume_nct.studybattle.model.Solution
 import com.kurume_nct.studybattle.model.UsersObject
 import com.kurume_nct.studybattle.view.ImageViewActivity
@@ -30,9 +31,11 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
     private var writeNow = false
     private val addText = "+コメントを追加"
     private val comfierText = "+コメントを送信"
-    private lateinit var solution: Solution
+    private var solution = Solution()
+    private var problem = Problem()
     private var lastCommentIndex = 0
     private var replyTo = 0
+    private val usersObject = context.applicationContext as UsersObject
 
     companion object {
         @BindingAdapter("loadImage")
@@ -55,10 +58,10 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
 
     @Bindable
     var writer = ""
-    set(value) {
-        field = value
-        notifyPropertyChanged(BR.writer)
-    }
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.writer)
+        }
 
     @Bindable
     var personalProblemUri: Uri? = null
@@ -140,9 +143,22 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
         onWriteComment()
     }
 
-    fun getInitData() {
-        val unitPer = context.applicationContext as UsersObject
-        val client = ServerClient(unitPer.authenticationKey)
+    fun deployData(id: Int, isProblmeId: Boolean) {
+        if (isProblmeId) {
+            /*need to get problemId*/
+            deployProblemData(id)
+        } else {
+            /*need to get solutionId*/
+            deploySolutionData(id)
+        }
+    }
+
+    fun deploySolutionData(solutionid: Int) {
+
+    }
+
+    fun deployProblemData(problemId: Int){
+        val client = ServerClient(usersObject.authenticationKey)
         client
                 .getProblem(callback.getProblemId())
                 .subscribeOn(Schedulers.io())
@@ -155,7 +171,7 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                         solution = callback.getSolution()
                     } else {
                         it.solutions.forEach {
-                            if (it.authorId == unitPer.user.id) {
+                            if (it.authorId == usersObject.user.id) {
                                 solution = it
                             }
                         }
@@ -165,7 +181,75 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
                     } else if (!solution.accepted) {
                         correctPersonal = "間違え"
                         callback.changeColor()
-                    }else{
+                    } else {
+                        correctPersonal = "正解"
+                    }
+                    //solutionが見つからないと爆発する。
+                    client.apply {
+                        getUser(solution.authorId)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe {
+                                    ansCreatorName = it.displayName + "(" + it.userName + ")"
+                                }
+                        if (solution.imageCount > 0)
+                            client
+                                    .getImageById(solution.imageIds[0])
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe({
+                                        url = it.url
+                                        personalAnswerUri = Uri.parse(url)
+                                        imageClickable = true
+                                        Log.d("解答のimage", "は存。")
+                                    }, {
+                                        Log.d("解答のimage", "は存在します。")
+                                    })
+                        else
+                            Log.d("解答のimage", "は存在しないです。")
+                    }
+                    lastCommentIndex = solution.comments.size
+                    solution.comments.forEach { comment ->
+                        everyoneComment += (comment.text + "\n")
+                    }
+                    client.getImageById(it.imageIds[0])
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                }
+                .subscribe({
+                    problemUrl = it.url
+                    personalProblemUri = Uri.parse(problemUrl)
+                }, {
+                    callback.onFinish()
+                    it.printStackTrace()
+                })
+    }
+
+    fun problemData() {
+        val client = ServerClient(usersObject.authenticationKey)
+        client
+                .getProblem(callback.getProblemId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap {
+                    //find owner solution.
+                    problemTitle = it.title
+                    writer = "by. " + it.assumedSolution.author.displayName
+                    if ("s" == callback.getSwitch()) {
+                        solution = callback.getSolution()
+                    } else {
+                        it.solutions.forEach {
+                            if (it.authorId == usersObject.user.id) {
+                                solution = it
+                            }
+                        }
+                    }
+                    if (!solution.judged) {
+                        callback.judgeYet()
+                    } else if (!solution.accepted) {
+                        correctPersonal = "間違え"
+                        callback.changeColor()
+                    } else {
                         correctPersonal = "正解"
                     }
                     //solutionが見つからないと爆発する。
