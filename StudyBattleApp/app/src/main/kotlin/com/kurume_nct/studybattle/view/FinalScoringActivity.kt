@@ -14,19 +14,17 @@ import com.kurume_nct.studybattle.viewModel.FinalScoringViewModel
 class FinalScoringActivity : AppCompatActivity(), FinalScoringViewModel.Callback {
 
     private lateinit var binding: ActivityFinalScoringBinding
-    private var solution = 0
     private val FINAL_SCORING_CODE = 10
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_final_scoring)
-        binding.viewModel = FinalScoringViewModel(this, this)
-        solution = intent.getIntExtra("solutionId", -1)
-        if (solution == -1) {
+        val solutionId = intent.getIntExtra("solutionId", -1)
+        if (solutionId == -1) {
             Log.d("soputionId", "適切ではない")
             finish()
         }
-
+        binding.viewModel = FinalScoringViewModel(this, this, solutionId)
         binding.apply {
             viewModel.getInitData()
             swipeRefreshFinal.setOnRefreshListener {
@@ -34,8 +32,6 @@ class FinalScoringActivity : AppCompatActivity(), FinalScoringViewModel.Callback
             }
         }
     }
-
-    override fun getSolutionId() = solution
 
     override fun onReset() {
         setResult(FINAL_SCORING_CODE)

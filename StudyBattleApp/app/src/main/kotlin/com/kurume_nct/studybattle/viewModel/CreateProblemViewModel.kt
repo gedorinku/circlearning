@@ -15,6 +15,7 @@ import android.widget.Toast
 import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.model.Solution
 import com.kurume_nct.studybattle.model.User
+import com.kurume_nct.studybattle.model.UsersObject
 import com.kurume_nct.studybattle.tools.ProgressDialogTool
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -25,11 +26,16 @@ import org.joda.time.Duration
 /**
  * Created by hanah on 9/26/2017.
  */
-class CreateProblemViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
+class CreateProblemViewModel(
+        private val context: Context,
+        private val callback: Callback
+) : BaseObservable() {
 
     val termExtra = "(解答回収期間より)"
-    var problemImageId = 0
-    var answerImageId = 0
+    private var problemImageId = 0
+    private var answerImageId = 0
+    private var duration: Duration? = null
+    private val usersObject = (context.applicationContext as UsersObject)
 
     companion object {
         @BindingAdapter("loadImage")
@@ -128,7 +134,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
         dialog.show()
         callback.onNotClickableButtons()
 
-        val client = ServerClient(callback.getKey())
+        val client = ServerClient(usersObject.authenticationKey)
         client
                 .uploadImage(problemUri!!, context)
                 .subscribeOn(Schedulers.io())
@@ -146,11 +152,11 @@ class CreateProblemViewModel(private val context: Context, private val callback:
                                                 text = "ごめんなさい",
                                                 imageIds = listOf(problemImageId),
                                                 startsAt = dateTime(),
-                                                duration = callback.getDuration(),
-                                                groupId = callback.getGroupId(),
+                                                duration = duration!!,
+                                                groupId = usersObject.nowGroup.id,
                                                 assumedSolution = Solution(
                                                         text = "お寿司と焼き肉の戦い。",
-                                                        authorId = callback.userInformation().id,
+                                                        authorId = usersObject.user.id,
                                                         imageCount = 1,
                                                         imageIds = listOf(answerImageId)
                                                 )
@@ -160,7 +166,7 @@ class CreateProblemViewModel(private val context: Context, private val callback:
                                         .subscribe({
                                             Log.d("問題のID", it.id.toString())
                                             dialog.dismiss()
-                                            callback.getCreateData(problemName)
+                                            callback.createData(problemName)
                                         }, {
                                             dialog.dismiss()
                                             Toast.makeText(context, "問題作成に失敗しなした。もう一度送りなおしてください。", Toast.LENGTH_SHORT).show()
@@ -182,14 +188,10 @@ class CreateProblemViewModel(private val context: Context, private val callback:
     private fun dateTime(): DateTime = DateTime.now()
 
     interface Callback {
-        fun userInformation(): User
-        fun getKey(): String
         fun startActivityForResult(intent: Intent, requestCode: Int)
-        fun getCreateData(title: String)
+        fun createData(title: String)
         fun alertDialog(problem: Boolean)
         fun onDateDialog()
-        fun getDuration(): Duration
-        fun getGroupId(): Int
         fun onClickableButtons()
         fun onNotClickableButtons()
     }

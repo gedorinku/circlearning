@@ -13,7 +13,10 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by hanah on 9/25/2017.
  */
-class RankingViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
+class RankingViewModel(
+        private val context: Context,
+        private val callback: Callback
+) : BaseObservable() {
 
     @Bindable
     var myNowScore = "0点"
@@ -41,6 +44,7 @@ class RankingViewModel(private val context: Context, private val callback: Callb
                     myAllScore = it.myTotalScore.toString() + "点"
                 }, {
                     Log.d("onGetScore", "error")
+                    it.printStackTrace()
                 })
     }
 

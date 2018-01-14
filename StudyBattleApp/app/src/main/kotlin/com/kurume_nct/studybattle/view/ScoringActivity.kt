@@ -13,21 +13,15 @@ class ScoringActivity : AppCompatActivity(), ScoringViewModel.Callback {
 
     lateinit var binding: ActivityScoringBinding
     private var solutionId = 0
-    private var problemUrl = ""
-    private var problemTitle = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("i'm ", javaClass.name)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_scoring)
         solutionId = intent.getIntExtra("solutionId", 0)
-        binding.viewModel = ScoringViewModel(this, this)
+        binding.viewModel = ScoringViewModel(this, this, solutionId)
         binding.viewModel.onCreate()
     }
-
-    override fun getProblem(): Pair<String, String> = Pair(problemTitle, problemUrl)
-
-    override fun getSolution() = solutionId
 
     override fun onFinish() {
         setResult(5)

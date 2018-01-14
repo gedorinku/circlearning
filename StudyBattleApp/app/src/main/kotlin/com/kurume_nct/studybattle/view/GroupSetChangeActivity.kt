@@ -42,7 +42,7 @@ class GroupSetChangeActivity : AppCompatActivity(), GroupSetChangeViewModel.Call
     }
 
     override fun onChange() {
-        fragment.getPeopleList().forEach {
+        fragment.peopleList.forEach {
             ServerClient(usersObject.authenticationKey)
                     .attachToGroup(usersObject.nowGroup, it)
                     .subscribeOn(Schedulers.io())
