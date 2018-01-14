@@ -6,23 +6,29 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 
 import com.kurume_nct.studybattle.R
-import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.ActivityPersonalAnswerBinding
 import com.kurume_nct.studybattle.model.Solution
 import com.kurume_nct.studybattle.model.UsersObject
 import com.kurume_nct.studybattle.viewModel.PersonalAnswerViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Callback {
 
     private lateinit var binding: ActivityPersonalAnswerBinding
     private lateinit var usersObject: UsersObject
-    private var switch = ""
+    private var idVariety = ""
     private var problemId = 0
     private var otherSolution: Solution = Solution()
+
+    companion object {
+        const val SOLUTION = "s"
+        const val DATA = "switch"
+        const val SOLUTIONID = "solutionId"
+        const val PROBLMEID = "problemId"
+        val errorId = -1
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,23 +36,18 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
         binding = DataBindingUtil.setContentView(this, R.layout.activity_personal_answer)
         binding.viewModel = PersonalAnswerViewModel(this, this)
         usersObject = application as UsersObject
-        switch = intent.getStringExtra("switch")
-        if(switch == "s"){
-            ServerClient(usersObject.authenticationKey)
-                    .getSolution(intent.getIntExtra("solutionId", -1))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
-                        otherSolution = it
-                        problemId = it.problemId
-                        binding.viewModel.initProblemData()
-                    },{
-                        Log.d("po","つらい")
-                    })
-        }else{
-            problemId = intent.getIntExtra("problemId", 0)
-            binding.viewModel.initProblemData()
+        idVariety = intent.getStringExtra(DATA)
+
+        val id = if(idVariety == SOLUTION)
+            intent.getIntExtra(SOLUTIONID, -1) else intent.getIntExtra(PROBLMEID, -1)
+
+        if(id == errorId){
+            onError()
+            onFinish()
         }
+
+        binding.viewModel.deployData(id, idVariety != SOLUTION)
+
         binding.apply {
             commentEdit.visibility = View.GONE
             swipeRefreshPersonal.setOnRefreshListener {
@@ -77,7 +78,7 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
 
     override fun getSolution(): Solution = otherSolution
 
-    override fun getSwitch(): String = switch
+    override fun getSwitch(): String = ""
 
     override fun changeColor() {
         binding.currentPersonalText.setTextColor(Color.BLUE)
@@ -86,5 +87,9 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
     override fun onFinish() {
         setResult(0)
         finish()
+    }
+
+    override fun onError(){
+        Toast.makeText(this, "データの取得に失敗しました", Toast.LENGTH_SHORT).show()
     }
 }

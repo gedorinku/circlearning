@@ -36,6 +36,7 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
     private var lastCommentIndex = 0
     private var replyTo = 0
     private val usersObject = context.applicationContext as UsersObject
+    private val client = ServerClient(usersObject.authenticationKey)
 
     companion object {
         @BindingAdapter("loadImage")
@@ -153,82 +154,43 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
         }
     }
 
-    fun deploySolutionData(solutionid: Int) {
-
-    }
-
-    fun deployProblemData(problemId: Int){
-        val client = ServerClient(usersObject.authenticationKey)
-        client
-                .getProblem(callback.getProblemId())
+    private fun deploySolutionData(solutionId: Int) {
+        client.getSolution(solutionId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .flatMap {
-                    //find owner solution.
-                    problemTitle = it.title
-                    writer = "by. " + it.assumedSolution.author.displayName
-                    if ("s" == callback.getSwitch()) {
-                        solution = callback.getSolution()
-                    } else {
-                        it.solutions.forEach {
-                            if (it.authorId == usersObject.user.id) {
-                                solution = it
-                            }
-                        }
-                    }
-                    if (!solution.judged) {
-                        callback.judgeYet()
-                    } else if (!solution.accepted) {
-                        correctPersonal = "間違え"
-                        callback.changeColor()
-                    } else {
-                        correctPersonal = "正解"
-                    }
-                    //solutionが見つからないと爆発する。
-                    client.apply {
-                        getUser(solution.authorId)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe {
-                                    ansCreatorName = it.displayName + "(" + it.userName + ")"
-                                }
-                        if (solution.imageCount > 0)
-                            client
-                                    .getImageById(solution.imageIds[0])
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe({
-                                        url = it.url
-                                        personalAnswerUri = Uri.parse(url)
-                                        imageClickable = true
-                                        Log.d("解答のimage", "は存。")
-                                    }, {
-                                        Log.d("解答のimage", "は存在します。")
-                                    })
-                        else
-                            Log.d("解答のimage", "は存在しないです。")
-                    }
-                    lastCommentIndex = solution.comments.size
-                    solution.comments.forEach { comment ->
-                        everyoneComment += (comment.text + "\n")
-                    }
-                    client.getImageById(it.imageIds[0])
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                }
                 .subscribe({
-                    problemUrl = it.url
-                    personalProblemUri = Uri.parse(problemUrl)
+                    solution = it
+                    if (problem == Problem()) deployProblemData(it.problemId)
                 }, {
-                    callback.onFinish()
-                    it.printStackTrace()
+                    callback.onError()
                 })
+    }
+
+    private fun deployProblemData(problemId: Int) {
+        client.getProblem(problemId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    problem = it
+                    if (solution == Solution()) {
+                        solution = it.solutions.last { solution.id == usersObject.user.id }
+                        if (solution == Solution()) throw Exception()
+                    }
+                }, {
+                    callback.onError()
+                })
+    }
+
+    fun setupView(){
+        problem.let {
+            problemTitle = it.title
+            writer = "by. " + it.assumedSolution.author.displayName
+        }
     }
 
     fun problemData() {
         val client = ServerClient(usersObject.authenticationKey)
-        client
-                .getProblem(callback.getProblemId())
+        client.getProblem(callback.getProblemId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap {
@@ -359,5 +321,6 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
         fun changeColor()
         fun getSwitch(): String
         fun getSolution(): Solution
+        fun onError()
     }
 }
