@@ -10,7 +10,10 @@ import com.kurume_nct.studybattle.BR
 /**
  * Created by hanah on 10/1/2017.
  */
-class GroupSetChangeViewModel(val context: Context, val callback: Callback): BaseObservable() {
+class GroupSetChangeViewModel(
+        private val context: Context,
+        private val callback: Callback
+): BaseObservable() {
 
 
     @Bindable

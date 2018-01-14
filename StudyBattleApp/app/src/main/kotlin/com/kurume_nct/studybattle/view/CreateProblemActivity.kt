@@ -71,7 +71,7 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
         binding.viewModel.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun getCreateData(title: String) {
+    override fun createData(title: String) {
         //send data📩
         val thxAlert = AlertDialog.Builder(this)
         val thxView = this.layoutInflater.inflate(R.layout.dialog_thx, null)
@@ -219,13 +219,5 @@ class CreateProblemActivity : AppCompatActivity(), CreateProblemViewModel.Callba
             button6.isClickable = false
         }
     }
-
-    override fun getDuration() = duration
-
-    override fun getGroupId() = usersObject.nowGroup.id
-
-    override fun userInformation() = usersObject.user
-
-    override fun getKey() = usersObject.authenticationKey
 
 }

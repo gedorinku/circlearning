@@ -12,7 +12,9 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by hanah on 9/25/2017.
  */
-class ItemInfoViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
+class ItemInfoViewModel(
+        private val context: Context
+) : BaseObservable() {
 
     val usersObject: UsersObject = context.applicationContext as UsersObject
 

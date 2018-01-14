@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.kurume_nct.studybattle.BR
 import com.kurume_nct.studybattle.R
 import com.kurume_nct.studybattle.client.ServerClient
+import com.kurume_nct.studybattle.model.SolutionStatus
 import com.kurume_nct.studybattle.model.UsersObject
 import com.kurume_nct.studybattle.view.ImageViewActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -22,9 +23,12 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by hanah on 9/28/2017.
  */
-class AnswerViewModel(private val context: Context, private val callback: Callback) : BaseObservable() {
-
-    //想定解を変える事を可能にしたとき用のVM
+class AnswerViewModel(
+        private val context: Context,
+        private val callback: Callback,
+        private val problemId: Int,
+        private val solutionStatus: SolutionStatus
+) : BaseObservable() {
 
     var pUri: String = ""
     var aUri: String = ""
@@ -34,7 +38,7 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
     private var solutionId = 0
     private var replyTo = 0
     private var lastCommentIndex = 0
-
+    private val usersObject = context.applicationContext as UsersObject
 
     companion object {
         @BindingAdapter("AnswerImageLoad")
@@ -156,7 +160,7 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
         val unitPer = context.applicationContext as UsersObject
         val client = ServerClient(unitPer.authenticationKey)
         client
-                .getProblem(callback.problemId())
+                .getProblem(problemId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
@@ -174,10 +178,9 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
     }
 
     fun onInitDataSet() {
-        val unitPer = context.applicationContext as UsersObject
-        val client = ServerClient(unitPer.authenticationKey)
+        val client = ServerClient(usersObject.authenticationKey)
         client
-                .getProblem(callback.problemId())
+                .getProblem(problemId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -217,8 +220,6 @@ class AnswerViewModel(private val context: Context, private val callback: Callba
     interface Callback {
         fun visibilityEditText(boolean: Boolean)
         fun onError()
-        fun solutionStatus(): Int
-        fun problemId(): Int
         fun finishedRefresh()
     }
 }

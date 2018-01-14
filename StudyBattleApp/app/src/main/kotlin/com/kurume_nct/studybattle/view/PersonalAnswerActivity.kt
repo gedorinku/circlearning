@@ -6,13 +6,15 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 
 import com.kurume_nct.studybattle.R
+import com.kurume_nct.studybattle.client.ServerClient
 import com.kurume_nct.studybattle.databinding.ActivityPersonalAnswerBinding
 import com.kurume_nct.studybattle.model.Solution
 import com.kurume_nct.studybattle.model.UsersObject
 import com.kurume_nct.studybattle.viewModel.PersonalAnswerViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Callback {
 
@@ -68,8 +70,6 @@ class PersonalAnswerActivity : AppCompatActivity(), PersonalAnswerViewModel.Call
     override fun finishedRefresh() {
         binding.swipeRefreshPersonal.isRefreshing = false
     }
-
-    override fun getProblemId() = problemId
 
     override fun judgeYet() {
         binding.currentPersonalText.visibility = View.GONE

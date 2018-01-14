@@ -17,7 +17,7 @@ import com.kurume_nct.studybattle.model.User
 class SelectPeopleFragment(val callback: Callback) : Fragment() {
 
     private lateinit var binding: FragmentJoinperopleListBinding
-    private val list = mutableListOf<User>()
+    val list = mutableListOf<User>()
     private lateinit var listAdapter: SelectedPeopleAdapter
 
     companion object {
@@ -42,8 +42,6 @@ class SelectPeopleFragment(val callback: Callback) : Fragment() {
         binding.list.layoutManager = LinearLayoutManager(binding.list.context)
         return binding.root
     }
-
-    fun getPeopleList(): MutableList<User> = list
 
     fun onAddPeople(position: Int, people: User) {
         Log.d("onAddPeople", position.toString())

@@ -23,7 +23,10 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by hanah on 9/30/2017.
  */
-class PersonalAnswerViewModel(val context: Context, val callback: Callback) : BaseObservable() {
+class PersonalAnswerViewModel(
+        val context: Context,
+        val callback: Callback,
+) : BaseObservable() {
 
     private var url = ""
     private var problemUrl = ""
@@ -58,10 +61,10 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
 
     @Bindable
     var writer = ""
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.writer)
-        }
+    set(value) {
+        field = value
+        notifyPropertyChanged(BR.writer)
+    }
 
     @Bindable
     var personalProblemUri: Uri? = null
@@ -227,6 +230,7 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
         }
     }
 
+
     private fun onWriteComment() {
         writeNow = if (writeNow) {
             if (yourComment.isNotBlank()) sendComment()
@@ -285,13 +289,10 @@ class PersonalAnswerViewModel(val context: Context, val callback: Callback) : Ba
 
     interface Callback {
         fun enableEditText(boolean: Boolean)
-        fun getProblemId(): Int
         fun onFinish()
         fun finishedRefresh()
         fun judgeYet()
         fun changeColor()
-        fun getSwitch(): String
-        fun getSolution(): Solution
         fun onError()
     }
 }

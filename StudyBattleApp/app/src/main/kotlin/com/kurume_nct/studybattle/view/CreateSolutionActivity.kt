@@ -58,6 +58,7 @@ class CreateSolutionActivity : Activity(), CreateSolutionViewModel.Callback {
             finish()
         }
         openProblemServer()
+        binding.viewModel = CreateSolutionViewModel(this, this, problemId)
         binding.viewModel.onCreateView()
     }
 
@@ -253,8 +254,6 @@ class CreateSolutionActivity : Activity(), CreateSolutionViewModel.Callback {
                     it.printStackTrace()
                 })
     }
-
-    override fun onGetProblemId() = problemId
 
     override fun startLotteryActivity(randomItem: Int) {
         val intent = Intent(this, LotteryActivity::class.java)

@@ -88,7 +88,7 @@ class SearchPeopleFragment(val callback: Callback, val context: SelectMainPeople
 
     private fun listFilter(newList: MutableList<User>) : MutableList<User>{
         includeMember = arguments.getBoolean("includeMember")
-        val filter = context.getPeopleList().toMutableList()
+        val filter = context.peopleList.toMutableList()
         if(!includeMember)filter.addAll(usersObject.nowGroup.members.toMutableList())
         filter.add(usersObject.user)
         return newList.apply {
